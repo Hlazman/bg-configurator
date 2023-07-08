@@ -1,24 +1,23 @@
-import logo from './logo.svg';
 import './App.css';
+import { Button, ConfigProvider } from 'antd';
+import { Route, Routes } from 'react-router-dom';
+import { NotFoundPage } from './Pages/NotFoundPage';
+import { AuthPage } from './Pages/AuthPage';
+import { TempPage } from './Pages/TempPage';
+
 
 function App() {
+
   return (
+
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Routes>
+        <Route path="/" element={<TempPage />} />
+        <Route path="/auth" element={<AuthPage />} />
+        <Route path="*" element={<NotFoundPage />} />
+      </Routes>
     </div>
+  
   );
 }
 
