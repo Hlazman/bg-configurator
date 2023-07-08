@@ -45,16 +45,17 @@ export const AuthPage = () => {
             </Form.Item>
 
             <Form.Item style={{ marginBottom: 20 }}>
-              <Button type="primary" htmlType="submit" style={{ width: '100%', backgroundColor: '#f06d20', height: 48 }}>Sign in</Button>
+              <Button type="primary" htmlType="submit" style={{ width: '100%', height: 48 }}>Sign in</Button>
             </Form.Item>
 
             <Form.Item style={{ marginBottom: 12 }}>
-              <a href="#" style={{ color: '#f06d20' }}>Forgot password?</a>
+              {/* <a href="#" style={{ color: '#f06d20' }}>Forgot password?</a> */}
+              <a href="#">Forgot password?</a>
             </Form.Item>
 
             <Form.Item>
               <span style={{ color: '#343339' }}>Don’t have an account? </span>
-              <a href="#" style={{ color: '#f06d20' }}>Sign up</a>
+              <a href="#">Sign up</a>
             </Form.Item>
 
           </Form>
