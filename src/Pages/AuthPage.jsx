@@ -1,4 +1,5 @@
 import React from 'react';
+import { NavLink } from 'react-router-dom';
 import { Card, Form, Input, Checkbox, Button, Typography } from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
 
@@ -40,8 +41,8 @@ export const AuthPage = () => {
               <Input.Password prefix={<LockOutlined />} placeholder="Password" style={{ height: 48 }} />
             </Form.Item>
 
-            <Form.Item name="remember" valuePropName="checked" style={{ marginBottom: 20, textAlign: 'left', colorPrimary: '#f06d20'}}>
-              <Checkbox style={{ color: '#343339' }}>Remember me</Checkbox>
+            <Form.Item name="remember" valuePropName="checked" style={{ marginBottom: 20, textAlign: 'left'}}>
+              <Checkbox >Remember me</Checkbox>
             </Form.Item>
 
             <Form.Item style={{ marginBottom: 20 }}>
@@ -49,13 +50,12 @@ export const AuthPage = () => {
             </Form.Item>
 
             <Form.Item style={{ marginBottom: 12 }}>
-              {/* <a href="#" style={{ color: '#f06d20' }}>Forgot password?</a> */}
-              <a href="#">Forgot password?</a>
+              <NavLink to="/ForgotPasswordPage"> Forgot password? </NavLink>
             </Form.Item>
 
             <Form.Item>
               <span style={{ color: '#343339' }}>Don’t have an account? </span>
-              <a href="#">Sign up</a>
+              <NavLink to="/registartion"> Sign up </NavLink>
             </Form.Item>
 
           </Form>

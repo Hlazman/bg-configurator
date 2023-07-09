@@ -3,11 +3,10 @@ import { ConfigProvider } from 'antd';
 import { Route, Routes } from 'react-router-dom';
 import { NotFoundPage } from './Pages/NotFoundPage';
 import { AuthPage } from './Pages/AuthPage';
+import { RegistrationPage } from './Pages/RegistrationPage';
 import { TempPage } from './Pages/TempPage';
 
-
 function App() {
-
   return (
 
     <ConfigProvider
@@ -22,6 +21,7 @@ function App() {
       <Routes>
         <Route path="/" element={<TempPage />} />
         <Route path="/auth" element={<AuthPage />} />
+        <Route path="/registartion" element={<RegistrationPage />} />
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
     </div>
