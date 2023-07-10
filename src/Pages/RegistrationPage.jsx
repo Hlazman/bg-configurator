@@ -1,7 +1,6 @@
 import React from 'react';
 import { Form, Input, Button, Checkbox, Radio, Select, Card } from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
-import logo from '../logo.svg';
 
 const { Option } = Select;
 
@@ -16,7 +15,6 @@ export const RegistrationPage = () => {
     <Card style={{ width: '60vw', margin: '30px auto' }}>
 
       <div>
-        <img src={logo} alt="Logo" style={{ height: 120, margin: 20 }} />
         <h1>Registration form</h1>
 
         <Form

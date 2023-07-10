@@ -3,8 +3,6 @@ import { NavLink } from 'react-router-dom';
 import { Card, Form, Input, Checkbox, Button, Typography } from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
 
-import logo from '../logo.svg';
-
 const { Title } = Typography;
 
 export const AuthPage = () => {
@@ -14,9 +12,7 @@ export const AuthPage = () => {
 
   return (
     <>
-      <img src={logo} alt="Logo" style={{ height: 120, margin: 20 }} />
-
-      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%' }}>
+      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%', marginTop: '30px' }}>
         <Card style={{ width: 400 }}>
           <div style={{ textAlign: 'left' }}>
             <Title level={4} style={{ margin: '20px 0', color: '#343339', textAlign: 'center' }}>Sign in to your account</Title>
@@ -50,7 +46,7 @@ export const AuthPage = () => {
             </Form.Item>
 
             <Form.Item style={{ marginBottom: 12 }}>
-              <NavLink to="/ForgotPasswordPage"> Forgot password? </NavLink>
+              <NavLink to="/resetpassword"> Forgot password? </NavLink>
             </Form.Item>
 
             <Form.Item>
