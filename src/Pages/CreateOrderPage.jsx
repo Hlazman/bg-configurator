@@ -1,5 +1,5 @@
 export const CreateOrderPage = () => {
   return (
-    <h1>CreateOrderPage page</h1>
+    <h1>Create Order Page page</h1>
   );
 };
