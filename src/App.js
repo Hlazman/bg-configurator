@@ -5,6 +5,7 @@ import { NotFoundPage } from './Pages/NotFoundPage';
 import { AuthPage } from './Pages/AuthPage';
 import { RegistrationPage } from './Pages/RegistrationPage';
 import { OrdersPage } from './Pages/OrdersPage';
+import { OrderPage } from './Pages/OrderPage';
 import { ClientsPage } from './Pages/ClientsPage';
 import { CreateClientPage } from './Pages/CreateClientPage';
 import { CreateOrderPage } from './Pages/CreateOrderPage';
@@ -22,6 +23,9 @@ import languageMap from './Languages/language';
 
 import logo from './logo.svg';
 import './App.css';
+
+
+import { NavLink } from 'react-router-dom'; // TEMP
 
 const { Header, Content, Footer, Sider } = Layout;
 
@@ -53,6 +57,10 @@ const App = () => {
         </Sider>
 
         <Layout>
+         {/* TEMP */}
+         <NavLink to="/order">{'ORDER'}</NavLink> 
+          {/* TEMP */}
+          
           <Header style={{ padding: 0, background: '#fff' }}>
             <Breadcrumb
               style={{ margin: '20px' }}
@@ -73,8 +81,11 @@ const App = () => {
                 {
                   title: 'Application',
                 },
+                
               ]}
             />
+
+
           </Header>
 
           <Content style={{ margin: '0 16px' }}>
@@ -92,6 +103,10 @@ const App = () => {
                 <Route path="/resetpassword" element={<ResetPasswordPage />} />
                 <Route path="/savepassword" element={<SavePasswordPage />} />
                 <Route path="*" element={<NotFoundPage />} />
+
+
+
+                <Route path="/order" element={<OrderPage />} />
               </Routes>
             </div>
           </Content>
