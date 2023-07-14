@@ -127,7 +127,6 @@ export const OrdersPage = () => {
       columns={columns}
       dataSource={data}
       scroll={{
-        marginTop: '20px',
         x: 1500,
       }}
       sticky

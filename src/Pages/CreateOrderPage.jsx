@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
 import { Steps, Form, Input, Button } from 'antd';
 
-const { Step } = Steps;
-
 export const CreateOrderPage = () => {
+
   const [currentStep, setCurrentStep] = useState(0);
   const [formData, setFormData] = useState({});
 
@@ -24,11 +23,15 @@ export const CreateOrderPage = () => {
     setCurrentStep(step);
   };
 
+  const handleFormValuesChange = (changedValues) => {
+    setFormData((prevFormData) => ({ ...prevFormData, ...changedValues }));
+  };
+
   const renderFormStep = () => {
     switch (currentStep) {
       case 0:
         return (
-          <Form onFinish={handleFormSubmit}>
+          <Form onFinish={handleFormSubmit} onValuesChange={handleFormValuesChange}>
             <Form.Item name="step1Field" label="Шаг 1">
               <Input />
             </Form.Item>
@@ -37,7 +40,7 @@ export const CreateOrderPage = () => {
         );
       case 1:
         return (
-          <Form onFinish={handleFormSubmit}>
+          <Form onFinish={handleFormSubmit} onValuesChange={handleFormValuesChange}>
             <Form.Item name="step2Field" label="Шаг 2">
               <Input />
             </Form.Item>
@@ -47,7 +50,7 @@ export const CreateOrderPage = () => {
         );
       case 2:
         return (
-          <Form onFinish={handleFormSubmit}>
+          <Form onFinish={handleFormSubmit} onValuesChange={handleFormValuesChange}>
             <Form.Item name="step3Field" label="Шаг 3">
               <Input />
             </Form.Item>
@@ -57,7 +60,7 @@ export const CreateOrderPage = () => {
         );
       case 3:
         return (
-          <Form onFinish={handleFormSubmit}>
+          <Form onFinish={handleFormSubmit} onValuesChange={handleFormValuesChange}>
             <Form.Item name="step4Field" label="Шаг 4">
               <Input />
             </Form.Item>
@@ -75,27 +78,27 @@ export const CreateOrderPage = () => {
       <Steps 
         current={currentStep} 
         type='navigation'
+        onChange={handleStepClick}
+        items={[
+          {
+            title: 'Шаг 1',
+            status: (currentStep === 0 ? 'process' : formData.step1Field ? 'finish' : 'error'),
+          },
+          {
+            title: 'Шаг 2',
+            status: (currentStep === 1 ? 'process' : formData.step2Field ? 'finish' : 'error'),
+          },
+          {
+            title: 'Шаг 3',
+            status: (currentStep === 2 ? 'process' : formData.step3Field ? 'finish' : 'error'),
+          },
+          {
+            title: 'Шаг 4',
+            status: (currentStep === 3 ? 'process' : formData.step4Field ? 'finish' : 'error'),
+          },
+        ]}
       >
-        <Step
-          style={{cursor: 'pointer'}}
-          title="Шаг 1"
-          onClick={() => handleStepClick(0)}
-        />
-        <Step
-          style={{cursor: 'pointer'}}
-          title="Шаг 2"
-          onClick={() => handleStepClick(1)}
-        />
-        <Step
-          style={{cursor: 'pointer'}}
-          title="Шаг 3"
-          onClick={() => handleStepClick(2)}
-        />
-        <Step
-          style={{cursor: 'pointer'}}
-          title="Шаг 4"
-          onClick={() => handleStepClick(3)}
-        />
+
       </Steps>
       {renderFormStep()}
     </div>

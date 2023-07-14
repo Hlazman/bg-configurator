@@ -25,7 +25,9 @@ import logo from './logo.svg';
 import './App.css';
 
 
-import { NavLink } from 'react-router-dom'; // TEMP
+// TEMP
+import { NavLink } from 'react-router-dom'; 
+// TEMP
 
 const { Header, Content, Footer, Sider } = Layout;
 
@@ -59,6 +61,7 @@ const App = () => {
         <Layout>
          {/* TEMP */}
          <NavLink to="/order">{'ORDER'}</NavLink> 
+         <NavLink to="/auth">{'AUTH'}</NavLink> 
           {/* TEMP */}
           
           <Header style={{ padding: 0, background: '#fff' }}>
@@ -89,7 +92,7 @@ const App = () => {
           </Header>
 
           <Content style={{ margin: '0 16px' }}>
-            <div className="App">
+          <div className="App">
               <Routes>
                 <Route path="/" element={<OrdersPage />} />
                 <Route path="/orders" element={<Navigate to="/" replace />} />
