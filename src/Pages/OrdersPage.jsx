@@ -1,19 +1,31 @@
-import { Table, Dropdown, Space, Button, Tag } from 'antd';
-import { DownOutlined } from '@ant-design/icons';
+import { Table, Dropdown, Space, Button, Tag, Input } from 'antd';
+import { DownOutlined, SearchOutlined, FilterOutlined } from '@ant-design/icons';
 import { useState, useEffect } from 'react';
 
 export const OrdersPage = () => {
 
   const [data, setData] = useState(() => {
     const initialData = [];
+    const currentDate = new Date();
       for (let i = 0; i < 100; i++) {
         initialData.push({
           key: i,
           orderName: `Edward ${i}`,
-          age: 32 + i,
-          status: 'draft',
-          address: `London Park no. ${i}`,
-          description: "This not expandable",
+          orderStatus: 'draft',
+          orderDateCreated: currentDate.toLocaleString(),
+          orderDeliveryAddress: `London Park no. ${i}`,
+          orderDeliveryAt: currentDate.toLocaleString(),
+          // orderUpdateAt: currentDate.toLocaleString(),
+          orderCreateBy: `Edward ${i}`,
+          orderPrice: 100 + i,
+          orderDiscount: '10%',
+          orderCurrency: '$',
+          orderComments: "This some text for order comment",
+          milestones: [
+            {'Publish': ''},
+            {'Paid': ''},
+            {'Closed': ''},
+          ]
         });
       }
       return initialData;
@@ -22,18 +34,45 @@ export const OrdersPage = () => {
   const [selectedRowData, setSelectedRowData] = useState(null);
   const [selectedFilters, setSelectedFilters] = useState([]);
 
+  const expandedRowRender = (record) => (
+    <div>
+      {record.milestones.map((milestone, index) => (
+        <p key={index} style={{ margin: 0}}>
+          <span style={{ margin: 0, color: '#f06d20'}}> {Object.keys(milestone)[0]}: </span> 
+          <span> {Object.values(milestone)[0]} </span>
+        </p>
+      ))}
+    </div>
+  );
+
   const handleFilterChange = (selectedFilterValues) => {
     setSelectedFilters(selectedFilterValues);
   };
 
   const handleActionClick = (action) => {
     if (selectedRowData) {
+      const currentDate = new Date().toLocaleString();
+      const updatedMilestones = selectedRowData.milestones.map((milestone) => {
+        switch (action) {
+          case 'publish':
+            return { ...milestone, 'Publish': currentDate };
+          case 'paid':
+            return { ...milestone, 'Paid': currentDate };
+          case 'closed':
+            return { ...milestone, 'Closed': currentDate };
+          default:
+            return milestone;
+        }
+      });
+  
       setSelectedRowData((prevSelectedRowData) => ({
         ...prevSelectedRowData,
-        status: action,
+        orderStatus: action,
+        milestones: updatedMilestones,
       }));
     }
   };
+
 
   useEffect(() => {
     if (selectedRowData) {
@@ -75,7 +114,7 @@ export const OrdersPage = () => {
         {
           key: 'paid',
           label: 'paid',
-          onClick: () => {handleActionClick('paid'); console.log(selectedRowData)},
+          onClick: () => {handleActionClick('paid')},
         },
         {
           key: 'closed',
@@ -87,27 +126,55 @@ export const OrdersPage = () => {
   ];
   
   const columns = [
-    // Table.SELECTION_COLUMN,
-    // Table.EXPAND_COLUMN,
     {
       title: 'Order Name',
       dataIndex: 'orderName',
       key: 'orderName',
+      width: '200px',
       fixed: 'left',
       sorter: (a, b) => a.orderName.localeCompare(b.orderName),
+      filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters }) => (
+        <div style={{ padding: 8 }}>
+          <Input
+            placeholder="Search Order Name"
+            value={selectedKeys[0]}
+            onChange={(e) => setSelectedKeys(e.target.value ? [e.target.value] : [])}
+            onPressEnter={() => confirm()}
+            style={{ width: 188, marginBottom: 8, display: 'block' }}
+          />
+          <Space>
+            <Button
+              type="primary"
+              onClick={() => confirm()}
+              icon={<SearchOutlined />}
+              size="small"
+              style={{ width: 90 }}
+            >
+              Search
+            </Button>
+            <Button onClick={() => { clearFilters(); confirm(); }} size="small" style={{ width: 90 }}>
+              Reset
+            </Button>
+          </Space>
+        </div>
+      ),
+      filterIcon: (filtered) => (
+        <SearchOutlined style={{ color: filtered ? 'blue' : '#f06d20' }} />
+      ),
+      onFilter: (value, record) => record.orderName.toLowerCase().includes(value.toLowerCase()),
+        onFilterDropdownOpenChange: (visible) => {
+        if (visible) {
+          setTimeout(() => {
+            document.querySelector('.ant-table-filter-dropdown input')?.focus();
+          }, 0);
+        }
+      },
     },
-    {
-      title: 'Age',
-      width: 100,
-      dataIndex: 'age',
-      key: 'age',
-      sorter: (a, b) => a.age - b.age,
-    },
-  
     {
       title: 'Status',
-      dataIndex: 'status',
-      key: '1',
+      dataIndex: 'orderStatus',
+      key: 'orderStatus',
+      width: '120px',
       sorter: (a, b) => a.status.localeCompare(b.status),
       filters: [
         { text: 'Draft', value: 'draft' },
@@ -115,6 +182,9 @@ export const OrdersPage = () => {
         { text: 'Paid', value: 'paid' },
         { text: 'Closed', value: 'closed' },
       ],
+      filterIcon: (filtered) => (
+        <FilterOutlined style={{ color: filtered ? 'blue' : '#f06d20'}} />
+      ),
       onFilter: (value, record) => record.status === value,
       render: (status) => {
         let color = 'default';
@@ -139,56 +209,67 @@ export const OrdersPage = () => {
         return <Tag color={color}>{status}</Tag>;
       },
     },
-    
     {
-      title: 'Column 2',
-      dataIndex: 'address',
-      key: '2',
+      title: 'Created at',
+      dataIndex: 'orderDateCreated',
+      key: 'orderCreateAt',
+      width: '150px',
+      sorter: (a, b) => a.createAt - b.createAt,
+    },
+    {
+      title: 'Delivery address',
+      dataIndex: 'orderDeliveryAddress',
+      key: 'orderDeliveryAddress',
+      width: '200px',
+      sorter: (a, b) => a.DeliveryAddress.localeCompare(b.DeliveryAddress),
+    },
+    {
+      title: 'Delivery at',
+      dataIndex: 'orderDeliveryAt',
+      key: 'orderDeliveryAt',
+      width: '150px',
+      sorter: (a, b) => a.deliveryAt - b.deliveryAt,
+    },
+    {
+      title: 'Created by',
+      dataIndex: 'orderCreateBy',
+      key: 'orderCreateBy',
+      width: '150px',
+      sorter: (a, b) => a.orderCreateBy.localeCompare(b.orderCreateBy),
+    },
+    {
+      title: 'Price',
+      dataIndex: 'orderPrice',
+      key: 'orderPrice',
+      width: '120px',
       sorter: (a, b) => a.age - b.age,
     },
     {
-      title: 'Column 3',
-      dataIndex: 'address',
-      key: '3',
+      title: 'Discount',
+      dataIndex: 'orderDiscount',
+      key: 'orderDiscount',
+      width: '150px',
       sorter: (a, b) => a.age - b.age,
     },
     {
-      title: 'Column 4',
-      dataIndex: 'address',
-      key: '4',
-      sorter: (a, b) => a.age - b.age,
+      title: 'Currency',
+      dataIndex: 'orderCurrency',
+      key: 'orderCurrency',
+      width: '120px',
+      sorter: (a, b) => a.orderCurrency.localeCompare(b.orderCurrency),
     },
     {
-      title: 'Column 5',
-      dataIndex: 'address',
-      key: '5',
-      sorter: (a, b) => a.age - b.age,
+      title: 'Comments',
+      dataIndex: 'orderComments',
+      key: 'orderComments',
+      width: '350px',
     },
-    {
-      title: 'Column 6',
-      dataIndex: 'address',
-      key: '6',
-      sorter: (a, b) => a.age - b.age,
-    },
-    {
-      title: 'Column 7',
-      dataIndex: 'address',
-      key: '7',
-      sorter: (a, b) => a.age - b.age,
-    },
-    {
-      title: 'Column 8',
-      dataIndex: 'address',
-      key: '8',
-      sorter: (a, b) => a.age - b.age,
-    },
-  
     {
       title: 'Action',
       dataIndex: 'operation',
       key: 'operation',
       fixed: 'right',
-      with: '80px',
+      width: '120px',
       render: (text, record) => (
         <Space size="large">
           <Dropdown menu={{items}} trigger={['click']} onClick={() => setSelectedRowData(record)}>
@@ -215,11 +296,7 @@ export const OrdersPage = () => {
   return (
     <Table
       rowSelection={{}}
-      expandable={{
-        expandedRowRender: record => (
-          <p style={{ margin: 0 }}>{record.description}</p>
-        ),
-      }}
+      expandable={{expandedRowRender}}
       columns={columns}
       dataSource={data}
       scroll={{
