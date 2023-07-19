@@ -3,62 +3,122 @@ import { NavLink } from 'react-router-dom';
 import { Menu } from 'antd';
 import { 
   DatabaseOutlined, UserOutlined, FormOutlined, UsergroupAddOutlined, PieChartOutlined, UserAddOutlined, FileOutlined, 
-  TranslationOutlined 
+  TranslationOutlined, AuditOutlined, BankOutlined,
 } from '@ant-design/icons';
 
-export const Navigation = ({ language, handleLanguageChange }) => {
-  const { SubMenu } = Menu;
-
-  const items = [
-    <Menu.Divider key="divider1" style={{ borderColor: '#fff', width: '80%', margin: '15px auto' }} />,
-    
-    <Menu.Item key="1" icon={<DatabaseOutlined />}>
-      <NavLink to="/">{language.orders}</NavLink>
-    </Menu.Item>,
-    
-    <Menu.Item key="2" icon={<UserOutlined />}>
-      <NavLink to="/clients">{language.clients}</NavLink>
-    </Menu.Item>,
-    
-    <Menu.Divider key="divider2" style={{ borderColor: '#fff', width: '80%', margin: '15px auto' }} />,
+export const Navigation = ({ language, handleLanguageChange, user }) => {
   
-    <Menu.Item key="3" icon={<FormOutlined />}>
-      <NavLink to="/createorder">{language.createOrder}</NavLink>
-    </Menu.Item>,
-  
-    <Menu.Item key="4" icon={<UsergroupAddOutlined />}>
-      <NavLink to="/createclient">{language.createClient}</NavLink>
-    </Menu.Item>,
-  
-    <Menu.Item key="5" icon={<PieChartOutlined />}>
-      <NavLink to="/createproduct">{language.createProduct}</NavLink>
-    </Menu.Item>,
-  
-    <Menu.Item key="6" icon={<UserAddOutlined />}>
-      <NavLink to="/registartion">{language.createManager}</NavLink>
-    </Menu.Item>,
-    
-    <Menu.Divider key="divider3" style={{ borderColor: '#fff', width: '80%', margin: '15px auto' }} />,
-  
-    <Menu.Item key="7" icon={<FileOutlined />}>
-      <NavLink to="/files">{language.files} </NavLink>
-    </Menu.Item>,
-    
-    <Menu.Divider key="divider4" style={{ borderColor: '#fff', width: '80%', margin: '15px auto' }} />,
-    
-    <SubMenu key="sub1" icon={<TranslationOutlined />} title={language.language}>
-      <Menu.Item onClick={() => handleLanguageChange('en')} key="en">English</Menu.Item>
-      <Menu.Item onClick={() => handleLanguageChange('ua')} key="ua">Українська</Menu.Item>
-      <Menu.Item onClick={() => handleLanguageChange('pl')} key="pl">Polski</Menu.Item>
-      <Menu.Item onClick={() => handleLanguageChange('cs')} key="cs">Čeština</Menu.Item>
-      <Menu.Item onClick={() => handleLanguageChange('es')} key="es">Español</Menu.Item>
-      <Menu.Item onClick={() => handleLanguageChange('de')} key="de">Deutsch</Menu.Item>
-    </SubMenu>,
+  const menuItems = [
+    { type: "divider" },
+    {
+      'key': "orders", 
+      'icon': <DatabaseOutlined />,
+      'label': (<NavLink to="/">{language.orders}</NavLink>)
+    },
+    {
+      'key': "clients", 
+      'icon': <UserOutlined />,
+      'label': (<NavLink to="/clients">{language.clients}</NavLink>)
+    },
+    {
+      'key': "managers", 
+      'icon': <AuditOutlined />,
+      'label': (<NavLink to="/managers">{language.managers}</NavLink>)
+    },
+    { type: "divider" },
+    {
+      'key': "createorder", 
+      'icon': <FormOutlined />,
+      'label': ( <NavLink to="/createorder">{language.createOrder}</NavLink>)
+    },
+    {
+      'key': "createclient", 
+      'icon': <UsergroupAddOutlined />,
+      'label': (<NavLink to="/createclient">{language.createClient}</NavLink>)
+    },
+    {
+      'key': "createproduct", 
+      'icon': <PieChartOutlined />,
+      'label': (<NavLink to="/createproduct">{language.createProduct}</NavLink>)
+    },
+    {
+      'key': "registartion", 
+      'icon': <UserAddOutlined />,
+      'label': (<NavLink to="/registration">{language.createManager}</NavLink>)
+    }, 
+    { type: "divider" },
+    {
+      'key': "aboutCompany", 
+      'icon': <BankOutlined />,
+      'label': (<NavLink to="/about">{language.aboutCompany} </NavLink>)
+    },
+    {
+      'key': "files", 
+      'icon': <FileOutlined />,
+      'label': (<NavLink to="/files">{language.files} </NavLink>)
+    }, 
+    { type: "divider" },
+    {
+      'key': "subLang", 
+      'icon': <TranslationOutlined />,
+      'label': language.language, 
+      'children': [
+        {
+          'key': "en", 
+          'label': 'English',
+          onClick: () => handleLanguageChange('en'),
+        },
+        {
+          'key': "ua", 
+          'label': 'Українська',
+          onClick: () => handleLanguageChange('ua'),
+        },
+        {
+          'key': "pl", 
+          'label': 'Polski',
+          onClick: () => handleLanguageChange('pl'),
+        },
+        {
+          'key': "cs", 
+          'label': 'Čeština',
+          onClick: () => handleLanguageChange('cs'),
+        },
+        {
+          'key': "es", 
+          'label': 'Español',
+          onClick: () => handleLanguageChange('es'),
+        },
+        {
+          'key': "de", 
+          'label': 'Deutsch',
+          onClick: () => handleLanguageChange('de'),
+        },
+      ]
+    },
   ];
 
-  return (
-    <Menu theme="dark" defaultSelectedKeys={['1']} mode="vertical">
-      {items}
-    </Menu>
+  const isAdmin = user?.role === "Admin";
+  const hasProductsPermission = user?.permission?.includes("Products data");
+  const hasClientsPermission = user?.permission?.includes("Clients data");
+
+  const filteredMenuItems = menuItems.filter((item) => {
+    if (!isAdmin) {
+      if (item.key === "createclient" && !hasClientsPermission) {
+        return false;
+      }
+
+      if (item.key === "createproduct" && !hasProductsPermission) {
+        return false;
+      }
+
+      if (item.key === "managers" || item.key === "aboutCompany" || item.key === "registartion") {
+        return false;
+      }
+    }
+    return true;
+  });
+
+    return (
+    <Menu theme="dark" defaultSelectedKeys={['1']} mode="vertical" items={filteredMenuItems}/>
   );
 };

@@ -5,6 +5,8 @@ const en = {
   createClient: 'Create Client',
   createProduct: 'Create Product',
   createManager: 'Create Manager',
+  managers: 'Managers',
+  aboutCompany: 'About Company',
   files: 'Files',
   language: 'Language',
   english: 'English',

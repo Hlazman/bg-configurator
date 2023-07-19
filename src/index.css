@@ -35,3 +35,10 @@ code {
 ::-webkit-scrollbar-thumb:window-inactive {
 background-color: #f06d20; 
 }
+
+.ant-menu-item-divider {
+  border-color: #fff !important;
+  width: 80% !important;
+  margin: 15px auto !important;
+}
+

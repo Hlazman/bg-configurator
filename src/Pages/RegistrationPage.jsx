@@ -83,7 +83,6 @@ export const RegistrationPage = () => {
           <Form.Item
             label="Locale"
             name="locale"
-            rules={[{ required: true, message: 'Please select a locale' }]}
           >
             <Select style={{ textAlign: 'left' }}>
               <Option value="en">English</Option>
@@ -100,25 +99,6 @@ export const RegistrationPage = () => {
             name="phone"
           >
             <Input type='number' />
-          </Form.Item>
-
-          <Form.Item
-            label="Comments"
-            name="comments"
-          >
-            <Input.TextArea size="large" />
-          </Form.Item>
-
-          <Form.Item
-            style={{ textAlign: 'left' }}
-            label="isActive"
-            name="isActive"
-            rules={[{ required: true, message: 'Please select an option' }]}
-          >
-            <Radio.Group>
-              <Radio value="yes">Yes</Radio>
-              <Radio value="no">No</Radio>
-            </Radio.Group>
           </Form.Item>
 
           <Form.Item
@@ -143,20 +123,9 @@ export const RegistrationPage = () => {
                     name="permission"
                   >
                     <Checkbox.Group>
-                      <Checkbox value="addProducts">Add Products</Checkbox>
-                      <Checkbox value="updateProducts">Update Products</Checkbox>
-                      <Checkbox value="deleteProducts">Delete Products</Checkbox>
-                      <Checkbox value="addClients">Add clients</Checkbox>
-                      <Checkbox value="updateClients">Update clients</Checkbox>
-                      <Checkbox value="deleteClients">Delete clients</Checkbox>
+                      <Checkbox value="workWithProducts">Working with Products data</Checkbox>
+                      <Checkbox value="workWithClientss">Working with Clients data</Checkbox>
                     </Checkbox.Group>
-                  </Form.Item>
-
-                  <Form.Item
-                    label="Manager Department"
-                    name="department"
-                  >
-                    <Input />
                   </Form.Item>
                 </>
               ) : null;

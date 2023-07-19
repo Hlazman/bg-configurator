@@ -1,0 +1,63 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "firstName": "Admin",
+      "lastName": "User",
+      "phone": "123456789",
+      "email": "admin@example.com",
+      "password": "adminpass",
+      "locale": "en",
+      "role": "Admin",
+      "isActive": true
+    },
+    {
+      "id": 2,
+      "firstName": "Manager",
+      "lastName": "User1",
+      "phone": "987654321",
+      "email": "manager1@example.com",
+      "password": "managerpass1",
+      "locale": "ru",
+      "role": "Manager",
+      "isActive": true,
+      "permission": ["Products data"]
+    },
+    {
+      "id": 3,
+      "firstName": "Manager",
+      "lastName": "User2",
+      "phone": "555555555",
+      "email": "manager2@example.com",
+      "password": "managerpass2",
+      "locale": "en",
+      "role": "Manager",
+      "isActive": true,
+      "permission": ["Clients data"]
+    },
+    {
+      "id": 4,
+      "firstName": "Manager",
+      "lastName": "User3",
+      "phone": "111111111",
+      "email": "manager3@example.com",
+      "password": "managerpass3",
+      "locale": "ru",
+      "role": "Manager",
+      "isActive": true,
+      "permission": ["Products data", "Clients data"]
+    },
+    {
+      "id": 5,
+      "firstName": "Manager",
+      "lastName": "User4",
+      "phone": "111111111",
+      "email": "manager5@example.com",
+      "password": "managerpass3",
+      "locale": "ru",
+      "role": "Manager",
+      "isActive": true,
+      "permission": []
+    } 
+  ]
+}
