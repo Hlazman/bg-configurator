@@ -15,7 +15,6 @@ export const OrdersPage = () => {
           orderDateCreated: currentDate.toLocaleString(),
           orderDeliveryAddress: `London Park no. ${i}`,
           orderDeliveryAt: currentDate.toLocaleString(),
-          // orderUpdateAt: currentDate.toLocaleString(),
           orderCreateBy: `Edward ${i}`,
           orderPrice: 100 + i,
           orderDiscount: '10%',
@@ -242,14 +241,14 @@ export const OrdersPage = () => {
       dataIndex: 'orderPrice',
       key: 'orderPrice',
       width: '120px',
-      sorter: (a, b) => a.age - b.age,
+      sorter: (a, b) => a.orderPrice - b.orderPrice ,
     },
     {
       title: 'Discount',
       dataIndex: 'orderDiscount',
       key: 'orderDiscount',
       width: '150px',
-      sorter: (a, b) => a.age - b.age,
+      sorter: (a, b) => a.orderDiscount - b.orderDiscount,
     },
     {
       title: 'Currency',
@@ -294,24 +293,25 @@ export const OrdersPage = () => {
   };
 
   return (
-    <Table
-      rowSelection={{}}
-      expandable={{expandedRowRender}}
-      columns={columns}
-      dataSource={data}
-      scroll={{
-        x: 1500,
-      }}
-      sticky
-      pagination={{
-        ...pagination,
-        position: ['topRight'],
-        showSizeChanger: true,
-        pageSizeOptions: ['5', '10', '20', '50', '100'],
-        onChange: handlePaginationChange,
-      }}
-      filters={selectedFilters}
-      onFilterChange={handleFilterChange}
-    />
+      <Table
+        rowSelection={{}}
+        expandable={{expandedRowRender}}
+        columns={columns}
+        dataSource={data}
+        scroll={{
+          x: 1500,
+        }}
+        sticky
+        pagination={{
+          ...pagination,
+          position: ['topRight'],
+          showSizeChanger: true,
+          pageSizeOptions: ['5', '10', '20', '50', '100'],
+          onChange: handlePaginationChange,
+        }}
+        filters={selectedFilters}
+        onFilterChange={handleFilterChange}
+      />
+
   );
 };

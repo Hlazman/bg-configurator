@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Steps, Form, Input, Button } from 'antd';
+import { OrderDetails } from '../Components/OrderDetails';
 
 export const CreateOrderPage = () => {
 
@@ -75,6 +76,9 @@ export const CreateOrderPage = () => {
 
   return (
     <div>
+      <div style={{textAlign: 'left', margin: '10px 0'}}>
+      <OrderDetails/>
+      </div>
       <Steps 
         current={currentStep} 
         type='navigation'
