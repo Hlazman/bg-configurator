@@ -23,25 +23,6 @@ export const AuthProvider = ({ children }) => {
     return user !== null;
   };
 
-  const isRouteAllowed = (route) => {
-    if (!isAuthenticated()) {
-      return false;
-    }
-
-    if (user.role === 'Admin') {
-      return true;
-    }
-
-    if (user.role === 'Manager') {
-      const managerPermissions = ['Clients data', 'Products data'];
-      if (managerPermissions.includes(route)) {
-        return user.permission.includes(route);
-      }
-    }
-
-    return false;
-  };
-
   // TEMP FUNCTION
   const loginUser = (userId) => {
     const authorizedUser = users.find((user) => user.id === userId);
@@ -54,9 +35,10 @@ export const AuthProvider = ({ children }) => {
 
   return (
     <AuthContext.Provider
-      value={{ user, login, logout, isAuthenticated, isRouteAllowed, loginUser }}
+      value={{ user, login, logout, isAuthenticated, loginUser }}
     >
       {children}
     </AuthContext.Provider>
   );
 };
+

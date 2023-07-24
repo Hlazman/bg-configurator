@@ -2,3 +2,11 @@
   text-align: center;
 }
 
+.header {
+  display: flex; 
+  justify-content: flex-end;
+  align-items: baseline;
+  height: auto; 
+  background-color: #f06d20;
+}
+

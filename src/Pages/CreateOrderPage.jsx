@@ -2,12 +2,12 @@ import React, { useState } from 'react';
 import { Steps, Form, Input, Button, Radio, Card } from 'antd';
 import { OrderDetails } from '../Components/OrderDetails';
 
-import im1 from '../tempData/im1.webp';
-import im2 from '../tempData/im2.webp';
-import im3 from '../tempData/im3.webp';
-import im4 from '../tempData/im4.webp';
-import im5 from '../tempData/im5.webp';
-import im6 from '../tempData/im6.webp';
+import im1 from '../tempData/pics/im1.webp';
+import im2 from '../tempData/pics/im2.webp';
+import im3 from '../tempData/pics/im3.webp';
+import im4 from '../tempData/pics/im4.webp';
+import im5 from '../tempData/pics/im5.webp';
+import im6 from '../tempData/pics/im6.webp';
 
 const imgS = [im1, im2, im3, im4, im5, im6];
 

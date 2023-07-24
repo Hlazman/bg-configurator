@@ -49,11 +49,6 @@ export const AuthPage = () => {
               <NavLink to="/resetpassword"> Forgot password? </NavLink>
             </Form.Item>
 
-            <Form.Item>
-              <span style={{ color: '#343339' }}>Don’t have an account? </span>
-              <NavLink to="/registartion"> Sign up </NavLink>
-            </Form.Item>
-
           </Form>
 
       </Card>
@@ -61,3 +56,4 @@ export const AuthPage = () => {
     </>
   );
 };
+
