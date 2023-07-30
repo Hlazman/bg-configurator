@@ -1,5 +1,6 @@
-import React, { useState, useContext, useEffect } from 'react';
-import { Route, Routes, Navigate } from 'react-router-dom';
+// import React, { useState, useContext, useEffect } from 'react';
+import React, { useState, useContext} from 'react';
+import { Route, Routes, Navigate, useNavigate  } from 'react-router-dom';
 import { AuthContext } from './Context/AuthContext';
 
 import { NotFoundPage } from './Pages/NotFoundPage';
@@ -12,7 +13,7 @@ import { FilesPage } from './Pages/FilesPage';
 import { CreateClientPage } from './Pages/CreateClientPage';
 import { CreateOrderPage } from './Pages/CreateOrderPage';
 
-import { ConfigProvider, Layout, Select, Dropdown } from 'antd';
+import { ConfigProvider, Layout, Select, Dropdown} from 'antd';
 import { UserOutlined } from '@ant-design/icons';
 import { Navigation } from './Components/Navigation';
 import languageMap from './Languages/language';
@@ -34,29 +35,43 @@ const options = [
 const { Header, Content, Footer, Sider } = Layout;
 
 const App = () => {
-  const { isAuthenticated, loginUser, user } = useContext(AuthContext);
+  const { isAuthenticated, user, logout } = useContext(AuthContext);
   const [collapsed, setCollapsed] = useState(false);
   const [selectedLanguage, setSelectedLanguage] = useState('en');
+
+  const handleLogout = () => {
+    logout();
+    return <Navigate to="/auth" replace />;
+  };
+
+  const navigate = useNavigate()
+  const handleResetPassword = () => {
+    // window.history.pushState(null, '', '/resetpassword')
+    return navigate('/resetpassword');
+  };
 
   const items = [
     {
       label: 'Reset password',
       key: 'resetPass',
       icon: <UserOutlined />,
+      onClick: handleResetPassword
     },
     {
       label: 'Logout',
       key: 'Logout',
       icon: <UserOutlined />,
+      onClick: handleLogout
     },
   ];
 
-  useEffect(() => {
+  // useEffect(() => {
     // TEMP FOR TESTING AUTH
-    loginUser(1);
+    // loginUser(1);
     // TEMP FOR TESTING AUTH
     // eslint-disable-next-line
-  }, []);
+    // console.log(user)
+  // }, [user]);
 
   const handleLanguageChange = (language) => {
     setSelectedLanguage(language);
@@ -91,15 +106,16 @@ const App = () => {
               </div>
               <Navigation language={language} handleLanguageChange={handleLanguageChange} />
           </Sider>
+          
           <Layout>
             <Header className="header">
               <div style={{ display: 'flex', gap: '10px', margin: '15px 0' }}>
                 
                 <Dropdown.Button size="large" menu={{ items }} placement="bottom" icon={<UserOutlined />}>
-                  {user?.firstName}
+                  {user.username}
                 </Dropdown.Button>
 
-                {user?.role==='Admin' && (
+                {/* {user?.role==='Admin' && ( */}
                   <Select
                     key="Company"
                     size="large"
@@ -107,7 +123,7 @@ const App = () => {
                     onChange={handleChange}
                     options={options}
                   />
-                )}
+                {/* )} */}
                 
               </div>
             </Header>

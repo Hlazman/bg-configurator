@@ -1,34 +1,17 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { NavLink } from 'react-router-dom';
-import { Card, Form, Input, Checkbox, Button, Typography, notification } from 'antd';
+import { Card, Form, Input, Checkbox, Button, Typography } from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
-import { AuthContext } from '../Context/AuthContext';
 
 const { Title } = Typography;
 
 export const AuthPage = () => {
-  const { loginUserWithApi } = useContext(AuthContext);
-  const [api, contextHolder] = notification.useNotification();
-
-  const onFinish = async (values) => {
-    const { email, password, remember } = values;
-    const loginSuccess = await loginUserWithApi(email, password, remember);
-    if (!loginSuccess) {
-      openNotification();
-    }
-  };
-
-  const openNotification = () => {
-    api.open({
-      message: 'Login Failed',
-      description: 'Invalid email or password. Please try again.',
-      duration: 3,
-    });
+  const onFinish = (values) => {
+    console.log('Received values:', values);
   };
 
   return (
     <>
-      {contextHolder}
       <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%', marginTop: '30px' }}>
         <Card style={{ width: 400 }}>
           <div style={{ textAlign: 'left' }}>
@@ -36,6 +19,7 @@ export const AuthPage = () => {
           </div>
 
           <Form name="login-form" onFinish={onFinish}>
+
             <Form.Item
               name="email"
               rules={[
@@ -53,8 +37,8 @@ export const AuthPage = () => {
               <Input.Password prefix={<LockOutlined />} placeholder="Password" style={{ height: 48 }} />
             </Form.Item>
 
-            <Form.Item name="remember" valuePropName="checked" style={{ marginBottom: 20, textAlign: 'left' }}>
-              <Checkbox>Remember me</Checkbox>
+            <Form.Item name="remember" valuePropName="checked" style={{ marginBottom: 20, textAlign: 'left'}}>
+              <Checkbox >Remember me</Checkbox>
             </Form.Item>
 
             <Form.Item style={{ marginBottom: 20 }}>
@@ -64,9 +48,11 @@ export const AuthPage = () => {
             <Form.Item style={{ marginBottom: 12 }}>
               <NavLink to="/resetpassword"> Forgot password? </NavLink>
             </Form.Item>
+
           </Form>
-        </Card>
-      </div>
+
+      </Card>
+    </div>
     </>
   );
 };
