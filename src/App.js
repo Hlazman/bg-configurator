@@ -145,7 +145,7 @@ const App = () => {
               </div>
             </Content>
 
-            <Footer style={{ textAlign: 'center', backgroundColor: 'white' }}>
+            <Footer style={{ textAlign: 'center', backgroundColor: 'white', marginTop:'30px' }}>
               Ant Design ©2023 Created by Ant UED
             </Footer>
           </Layout>
