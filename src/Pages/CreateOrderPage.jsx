@@ -2,25 +2,21 @@ import React, { useState } from 'react';
 import { Steps, Form, Input, Button, Divider} from 'antd';
 import { OrderDetails } from '../Components/OrderDetails';
 import DoorStep from '../Components/OrderSteps/DoorStep';
-
-// import im1 from '../tempData/pics/im1.webp';
-// import im2 from '../tempData/pics/im2.webp';
-// import im3 from '../tempData/pics/im3.webp';
-// import im4 from '../tempData/pics/im4.webp';
-// import im5 from '../tempData/pics/im5.webp';
-// import im6 from '../tempData/pics/im6.webp';
-
-// const imgS = [im1, im2, im3, im4, im5, im6];
+import DecorStep from '../Components/OrderSteps/DecorStep';
 
 export const CreateOrderPage = () => {
 
   const [currentStep, setCurrentStep] = useState(0);
-  const [formData, setFormData] = useState({});
-  // const [searchQuery, setSearchQuery] = useState('');
 
-  // const handleSearchInputChange = (e) => {
-  //   setSearchQuery(e.target.value);
-  // };
+  const [formData, setFormData] = useState({
+    step1Field: null,
+    step2Field: null,
+    step3Field: null,
+    step4Field: null,
+    step5Field: null,
+    step6Field: null,
+    step7Field: null,
+  });
 
   const handleFormSubmit = (values) => {
     setFormData({ ...formData, ...values });
@@ -43,10 +39,10 @@ export const CreateOrderPage = () => {
     setFormData((prevFormData) => ({ ...prevFormData, ...changedValues }));
   };
 
-  const handleCardClick = (value) => {
+  const handleCardClick = (step, value) => {
     setFormData((prevFormData) => ({
       ...prevFormData,
-      step1Field: prevFormData.step1Field === value ? null : value
+      [step]: prevFormData[step] === value ? null : value,
     }));
   };
 
@@ -62,18 +58,16 @@ export const CreateOrderPage = () => {
         );
       case 1:
         return (
-          <Form onFinish={handleFormSubmit} onValuesChange={handleFormValuesChange}>
-            <Form.Item name="step2Field" label="Шаг 2">
-              <Input />
-            </Form.Item>
-            <Button onClick={handlePrev}>Назад</Button>
-            <Button type="primary" onClick={handleNext}> Далее </Button> 
-          </Form>
+          <DecorStep
+            formData={formData}
+            handleCardClick={handleCardClick}
+            handleNext={handleNext}
+        />
         );
       case 2:
         return (
           <Form onFinish={handleFormSubmit} onValuesChange={handleFormValuesChange}>
-            <Form.Item name="step3Field" label="Шаг 3">
+            <Form.Item name="step4Field" label="Шаг 3">
               <Input />
             </Form.Item>
             <Button onClick={handlePrev}>Назад</Button>
@@ -83,7 +77,27 @@ export const CreateOrderPage = () => {
       case 3:
         return (
           <Form onFinish={handleFormSubmit} onValuesChange={handleFormValuesChange}>
-            <Form.Item name="step4Field" label="Шаг 4">
+            <Form.Item name="step5Field" label="Шаг 4">
+              <Input />
+            </Form.Item>
+            <Button onClick={handlePrev}>Назад</Button>
+            <Button type="primary" htmlType="submit"> Отправить </Button>
+          </Form>
+        );
+        case 4:
+        return (
+          <Form onFinish={handleFormSubmit} onValuesChange={handleFormValuesChange}>
+            <Form.Item name="step6Field" label="Шаг 5">
+              <Input />
+            </Form.Item>
+            <Button onClick={handlePrev}>Назад</Button>
+            <Button type="primary" htmlType="submit"> Отправить </Button>
+          </Form>
+        );
+        case 5:
+        return (
+          <Form onFinish={handleFormSubmit} onValuesChange={handleFormValuesChange}>
+            <Form.Item name="step7Field" label="Шаг 6">
               <Input />
             </Form.Item>
             <Button onClick={handlePrev}>Назад</Button>
@@ -115,15 +129,29 @@ export const CreateOrderPage = () => {
           },
           {
             title: 'Decor',
-            status: (currentStep === 1 ? 'process' : formData.step2Field ? 'finish' : 'error'),
+            status: (
+              currentStep === 1
+                ? 'process'
+                : (formData.step2Field || formData.step3Field)
+                  ? 'finish'
+                  : 'error'
+            ),
           },
           {
             title: 'Шаг 3',
-            status: (currentStep === 2 ? 'process' : formData.step3Field ? 'finish' : 'error'),
+            status: (currentStep === 2 ? 'process' : formData.step4Field ? 'finish' : 'error'),
           },
           {
             title: 'Шаг 4',
-            status: (currentStep === 3 ? 'process' : formData.step4Field ? 'finish' : 'error'),
+            status: (currentStep === 3 ? 'process' : formData.step5Field ? 'finish' : 'error'),
+          },
+          {
+            title: 'Шаг 5',
+            status: (currentStep === 3 ? 'process' : formData.step6Field ? 'finish' : 'error'),
+          },
+          {
+            title: 'Шаг 6',
+            status: (currentStep === 3 ? 'process' : formData.step7Field ? 'finish' : 'error'),
           },
         ]}
       >
