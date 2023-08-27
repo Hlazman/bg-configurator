@@ -21,6 +21,7 @@ const PaintStep = ({ formData, handleCardClick, handleNext }) => {
               query Data($pagination: PaginationArg) {
                 paints(pagination: $pagination) {
                   data {
+                    id
                     attributes {
                       color_code
                       color_group
@@ -137,28 +138,28 @@ const PaintStep = ({ formData, handleCardClick, handleNext }) => {
       {isLoading ? ( // Display Spin component while loading
         <Spin size="large" />
       ) : (
-        <Form.Item name="step3Field">
-          <Radio.Group value={formData.step3Field}>
+        <Form.Item name="step2Field">
+          <Radio.Group value={formData.step2Field}>
             <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}>
-              {filteredImages.map((imgSrc, index) => {
+              {filteredImages.map((imgSrc) => {
                 const paint = paintData.find(
                   paint =>
                     paint.attributes.main_properties.image.data.attributes.url === imgSrc
                 );
                 return (
-                  <div key={index} style={{ width: 220, margin: '20px 10px' }}>
+                  <div key={paint.id} style={{ width: 220, margin: '20px 10px' }}>
                     <Card
                       className="custom-card"
                       hoverable
                       style={{
                         border:
-                          formData.step3Field === `image${index + 1}.webp`
+                          formData.step2Field === paint.id
                             ? '7px solid #f06d20'
                             : 'none',
                       }}
-                      onClick={() => handleCardClick('step3Field', `image${index + 1}.webp`)}
+                      onClick={() => handleCardClick('step2Field', paint.id)}
                     >
-                      <div style={{ overflow: 'hidden', height: 220 }}>
+                      <div style={{ overflow: 'hidden', height: 120 }}>
                         <img
                           src={`https://api.boki.fortesting.com.ua${imgSrc}`}
                           alt={paint.attributes.color_code}
@@ -169,7 +170,7 @@ const PaintStep = ({ formData, handleCardClick, handleNext }) => {
                         title={paint.attributes.color_code}
                         style={{ paddingTop: '10px' }}
                       />
-                      <Radio value={`image${index + 1}.webp`} style={{ display: 'none' }} />
+                      <Radio value={paint.id} style={{ display: 'none' }} />
                     </Card>
                   </div>
                 );

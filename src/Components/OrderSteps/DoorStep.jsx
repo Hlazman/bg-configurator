@@ -63,7 +63,7 @@ const DoorStep = ({ formData, handleCardClick, handleNext }) => {
       } catch (error) {
         console.error('Error fetching data:', error);
       }
-      setIsLoading(false); // Set loading to false after fetching
+      setIsLoading(false);
     };
 
     const storedCollection = localStorage.getItem('selectedCollection') || 'ALL';
@@ -126,23 +126,23 @@ const DoorStep = ({ formData, handleCardClick, handleNext }) => {
         <Form.Item name="step1Field">
           <Radio.Group value={formData.step1Field}>
             <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}>
-              {filteredImgS.map((imgSrc, index) => {
+              {filteredImgS.map((imgSrc) => {
                 const door = doorData.find(
                   door =>
                     door.attributes.product_properties.image.data.attributes.url === imgSrc
                 );
                 return (
-                  <div key={index} style={{ width: 220, margin: '20px 10px' }}>
+                  <div key={door.id} style={{ width: 220, margin: '20px 10px' }}>
                     <Card
                       className="custom-card"
                       hoverable
                       style={{
                         border:
-                          formData.step1Field === `image${index + 1}.webp`
+                          formData.step1Field === door.id
                             ? '7px solid #f06d20'
                             : 'none',
                       }}
-                      onClick={() => handleCardClick('step1Field',`image${index + 1}.webp`)}
+                      onClick={() => handleCardClick('step1Field',door.id)}
                     >
                       <div style={{ overflow: 'hidden', height: 220 }}>
                         <img
@@ -155,7 +155,7 @@ const DoorStep = ({ formData, handleCardClick, handleNext }) => {
                         title={door.attributes.product_properties.title}
                         style={{ paddingTop: '10px' }}
                       />
-                      <Radio value={`image${index + 1}.webp`} style={{ display: 'none' }} />
+                      <Radio value={door.id} style={{ display: 'none' }} />
                     </Card>
                   </div>
                 );

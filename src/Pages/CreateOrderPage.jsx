@@ -3,6 +3,7 @@ import { Steps, Form, Input, Button, Divider} from 'antd';
 import { OrderDetails } from '../Components/OrderDetails';
 import DoorStep from '../Components/OrderSteps/DoorStep';
 import DecorStep from '../Components/OrderSteps/DecorStep';
+import OptionsStep from '../Components/OrderSteps/OptionsStep';
 
 export const CreateOrderPage = () => {
 
@@ -16,6 +17,10 @@ export const CreateOrderPage = () => {
     step5Field: null,
     step6Field: null,
     step7Field: null,
+    step10Field: null,
+    step11Field: null,
+    step12Field: null,
+    step13Field: null,
   });
 
   const handleFormSubmit = (values) => {
@@ -44,6 +49,7 @@ export const CreateOrderPage = () => {
       ...prevFormData,
       [step]: prevFormData[step] === value ? null : value,
     }));
+    console.log(formData)
   };
 
   const renderFormStep = () => {
@@ -76,13 +82,11 @@ export const CreateOrderPage = () => {
         );
       case 3:
         return (
-          <Form onFinish={handleFormSubmit} onValuesChange={handleFormValuesChange}>
-            <Form.Item name="step5Field" label="Шаг 4">
-              <Input />
-            </Form.Item>
-            <Button onClick={handlePrev}>Назад</Button>
-            <Button type="primary" htmlType="submit"> Отправить </Button>
-          </Form>
+          <OptionsStep
+            formData={formData}
+            handleCardClick={handleCardClick}
+            handleNext={handleNext}
+        />
         );
         case 4:
         return (
@@ -129,20 +133,24 @@ export const CreateOrderPage = () => {
           },
           {
             title: 'Decor',
-            status: (
-              currentStep === 1
-                ? 'process'
-                : (formData.step2Field || formData.step3Field)
-                  ? 'finish'
-                  : 'error'
-            ),
+            status: (currentStep === 1 ? 'process' : formData.step2Field ? 'finish' : 'error'),
           },
+          // {
+          //   title: 'Decor',
+          //   status: (
+          //     currentStep === 1
+          //       ? 'process'
+          //       : (formData.step2Field || formData.step3Field)
+          //         ? 'finish'
+          //         : 'error'
+          //   ),
+          // },
           {
             title: 'Шаг 3',
             status: (currentStep === 2 ? 'process' : formData.step4Field ? 'finish' : 'error'),
           },
           {
-            title: 'Шаг 4',
+            title: 'Options',
             status: (currentStep === 3 ? 'process' : formData.step5Field ? 'finish' : 'error'),
           },
           {

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Tabs } from 'antd';
 import VeneerStep from './VeneerStep';
 import PaintStep from './PaintStep';
+import StoneStep from './StoneStep';
 
 const { TabPane } = Tabs;
 
@@ -19,6 +20,9 @@ const DecorStep = ({ formData, handleCardClick, handleNext }) => {
       </TabPane>
       <TabPane tab="Paint" key="paint">
         <PaintStep formData={formData} handleCardClick={handleCardClick} handleNext={handleNext} />
+      </TabPane>
+      <TabPane tab="Stoneware" key="stoneware">
+        <StoneStep formData={formData} handleCardClick={handleCardClick} handleNext={handleNext} />
       </TabPane>
     </Tabs>
   );
