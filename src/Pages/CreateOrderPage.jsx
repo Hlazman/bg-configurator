@@ -1,14 +1,15 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Steps, Form, Input, Button, Divider} from 'antd';
 import { OrderDetails } from '../Components/OrderDetails';
 import DoorStep from '../Components/OrderSteps/DoorStep';
 import DecorStep from '../Components/OrderSteps/DecorStep';
 import OptionsStep from '../Components/OrderSteps/OptionsStep';
+import { useParams } from 'react-router-dom';
 
 export const CreateOrderPage = () => {
 
+  const { orderId } = useParams();
   const [currentStep, setCurrentStep] = useState(0);
-
   const [formData, setFormData] = useState({
     step1Field: null,
     step2Field: null,
@@ -51,6 +52,19 @@ export const CreateOrderPage = () => {
     }));
     console.log(formData)
   };
+
+  useEffect(() => {
+    // Загрузка данных из LocalStorage при загрузке страницы
+    const savedFormData = localStorage.getItem(`orderFormData_${orderId}`);
+    if (savedFormData) {
+      setFormData(JSON.parse(savedFormData));
+    }
+  }, [orderId]);
+
+  useEffect(() => {
+    // Сохранение данных в LocalStorage при изменении формы
+    localStorage.setItem(`orderFormData_${orderId}`, JSON.stringify(formData));
+  }, [formData, orderId]);
 
   const renderFormStep = () => {
     switch (currentStep) {
@@ -118,6 +132,9 @@ export const CreateOrderPage = () => {
       
       <div style={{textAlign: 'left', margin: '10px 0'}}>
       <OrderDetails/>
+      
+      <p>{orderId && `ID заказа: ${orderId}`}</p>
+      
       </div>
 
       <Divider/>
@@ -172,3 +189,4 @@ export const CreateOrderPage = () => {
     </div>
   );
 };
+

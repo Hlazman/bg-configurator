@@ -1,19 +1,58 @@
 import React from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate  } from 'react-router-dom';
 import { Menu } from 'antd';
 import { 
   DatabaseOutlined, UserOutlined, FormOutlined, UsergroupAddOutlined, FileOutlined, TranslationOutlined, SettingOutlined,
 } from '@ant-design/icons';
+import axios from 'axios';
 
 export const Navigation = ({ language, handleLanguageChange }) => {
 
-  
+
+  const navigate = useNavigate();
+  const jwtToken = localStorage.getItem('token');
+
+  const handleCreateOrderClick = async () => {
+    try {
+      const response = await axios.post(
+        'https://api.boki.fortesting.com.ua/graphql',
+        {
+          query: `
+            mutation CreateOrder($data: OrderInput!) {
+              createOrder(data: $data) {
+                data {
+                  id
+                }
+              }
+            }
+          `,
+          variables: {
+            data: {}
+          },
+        },
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${jwtToken}`,
+          },
+        }
+      );
+
+      const createdOrderId = response.data.data.createOrder.data.id;
+
+      navigate(`/createorder/${createdOrderId}`);
+    } catch (error) {
+      console.error('Error creating order:', error);
+    }
+  };
+
   const menuItems = [
     { type: "divider" },
     {
       'key': "createorder", 
       'icon': <FormOutlined />,
-      'label': ( <NavLink to="/createorder">{language.createOrder}</NavLink>)
+      'label': ( <NavLink to="/createorder">{language.createOrder}</NavLink>),
+      onClick: handleCreateOrderClick
     },
     {
       'key': "createclient", 
@@ -86,3 +125,4 @@ export const Navigation = ({ language, handleLanguageChange }) => {
     <Menu theme="dark" defaultSelectedKeys={['1']} mode="vertical" items={menuItems}/>
   );
 };
+

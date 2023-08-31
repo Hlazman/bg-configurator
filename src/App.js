@@ -1,6 +1,6 @@
-// import React, { useState, useContext, useEffect } from 'react';
-import React, { useState, useContext} from 'react';
-import { Route, Routes, Navigate, useNavigate  } from 'react-router-dom';
+import React, { useState, useContext, useEffect } from 'react';
+// import React, { useState, useContext} from 'react';
+import { Route, Routes, Navigate, useNavigate } from 'react-router-dom';
 import { AuthContext } from './Context/AuthContext';
 
 import { NotFoundPage } from './Pages/NotFoundPage';
@@ -12,8 +12,8 @@ import { ClientsPage } from './Pages/ClientsPage';
 import { FilesPage } from './Pages/FilesPage';
 import { CreateClientPage } from './Pages/CreateClientPage';
 import { CreateOrderPage } from './Pages/CreateOrderPage';
-
-import { ConfigProvider, Layout, Select, Dropdown} from 'antd';
+// eslint-disable-next-line
+import { ConfigProvider, Layout, Select, Dropdown, Spin} from 'antd';
 import { UserOutlined } from '@ant-design/icons';
 import { Navigation } from './Components/Navigation';
 import languageMap from './Languages/language';
@@ -38,6 +38,8 @@ const App = () => {
   const { isAuthenticated, user, logout } = useContext(AuthContext);
   const [collapsed, setCollapsed] = useState(false);
   const [selectedLanguage, setSelectedLanguage] = useState('en');
+  // eslint-disable-next-line
+  const [loading, setLoading] = useState(true);
 
   const handleLogout = () => {
     logout();
@@ -65,14 +67,6 @@ const App = () => {
     },
   ];
 
-  // useEffect(() => {
-    // TEMP FOR TESTING AUTH
-    // loginUser(1);
-    // TEMP FOR TESTING AUTH
-    // eslint-disable-next-line
-    // console.log(user)
-  // }, [user]);
-
   const handleLanguageChange = (language) => {
     setSelectedLanguage(language);
   };
@@ -82,6 +76,11 @@ const App = () => {
   };
 
   const language = languageMap[selectedLanguage];
+
+  useEffect(() => {
+    setLoading(false);
+  }, []);
+  
 
   return (
     <ConfigProvider
@@ -109,6 +108,7 @@ const App = () => {
           
           <Layout>
             <Header className="header">
+
               <div style={{ display: 'flex', gap: '10px', margin: '15px 0' }}>
                 
                 <Dropdown.Button size="large" menu={{ items }} placement="bottom" icon={<UserOutlined />}>
@@ -136,7 +136,8 @@ const App = () => {
                   <Route path="/orders" element={<Navigate to="/" replace />} />
                   <Route path="/clients" element={<ClientsPage />} />
                   <Route path="/createclient" element={<CreateClientPage />} />
-                  <Route path="/createorder" element={<CreateOrderPage />} />
+                  {/* <Route path="/createorder" element={<CreateOrderPage />} /> */}
+                  <Route path="/createorder/:orderId" element={<CreateOrderPage />} />
                   <Route path="/files" element={<FilesPage />} />
                   <Route path="/resetpassword" element={<ResetPasswordPage />} />
                   <Route path="/savepassword" element={<SavePasswordPage />} />
@@ -163,4 +164,3 @@ const App = () => {
 };
 
 export default App;
-

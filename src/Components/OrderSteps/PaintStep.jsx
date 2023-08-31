@@ -7,7 +7,8 @@ const PaintStep = ({ formData, handleCardClick, handleNext }) => {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedColorGroup, setSelectedColorGroup] = useState('ALL');
   const [selectedColorRange, setSelectedColorRange] = useState('RAL');
-  const [isLoading, setIsLoading] = useState(true); // New state for loading indicator
+  const [selectedPaintFor, setSelectedPaintFor] = useState('Paint for');
+  const [isLoading, setIsLoading] = useState(true);
 
   const jwtToken = localStorage.getItem('token');
 
@@ -56,7 +57,7 @@ const PaintStep = ({ formData, handleCardClick, handleNext }) => {
 
         const paints = response.data.data.paints.data;
         setPaintData(paints);
-        setIsLoading(false); // Data is fetched, loading is complete
+        setIsLoading(false);
       } catch (error) {
         console.error('Error fetching data:', error);
       }
@@ -83,6 +84,10 @@ const PaintStep = ({ formData, handleCardClick, handleNext }) => {
   const handleColorRangeChange = value => {
     setSelectedColorRange(value);
     setSearchQuery('');
+  };
+
+    const handlePaintForChange = value => {
+    setSelectedPaintFor(value);
   };
 
   const handleSearchQueryChange = value => {
@@ -125,6 +130,18 @@ const PaintStep = ({ formData, handleCardClick, handleNext }) => {
           ))}
         </Select>
 
+                <Select
+          value={selectedPaintFor}
+          onChange={handlePaintForChange}
+          style={{ marginBottom: '10px', width: '100%' }}
+        >
+          <Select.Option value="primer">Primer</Select.Option>
+          <Select.Option value="gloss">Gloss</Select.Option>
+          <Select.Option value="semigloss">Semigloss</Select.Option>
+          <Select.Option value="semigloss_diamond">Semigloss Diamond</Select.Option>
+          <Select.Option value="semigloss_veener">Semigloss Veener</Select.Option>
+        </Select>
+
         <Input
           placeholder="Search"
           value={searchQuery}
@@ -135,7 +152,7 @@ const PaintStep = ({ formData, handleCardClick, handleNext }) => {
 
       <Divider />
 
-      {isLoading ? ( // Display Spin component while loading
+      {isLoading ? (
         <Spin size="large" />
       ) : (
         <Form.Item name="step2Field">
