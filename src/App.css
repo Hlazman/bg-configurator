@@ -14,10 +14,10 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  height: 100%; /* Сделайте карточку занимающей всю доступную высоту */
+  height: 100%;
 }
 
 .custom-card .ant-card-meta-title {
-  margin-top: 10px; /* Отступ сверху для заголовка */
-  white-space: normal; /* Перенос текста на новую строку */
+  margin-top: 10px; 
+  white-space: normal;
 }

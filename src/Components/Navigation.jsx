@@ -6,11 +6,15 @@ import {
 } from '@ant-design/icons';
 import axios from 'axios';
 
+import { useProductVariant } from '../Context/ProductVariantContext';
+
 export const Navigation = ({ language, handleLanguageChange }) => {
 
 
   const navigate = useNavigate();
   const jwtToken = localStorage.getItem('token');
+  
+  const { updateProductVariantId } = useProductVariant();
 
   const handleCreateOrderClick = async () => {
     try {
@@ -39,6 +43,68 @@ export const Navigation = ({ language, handleLanguageChange }) => {
       );
 
       const createdOrderId = response.data.data.createOrder.data.id;
+
+
+      const createProductVariantData = {
+        data: {
+          door: null,
+        },
+      };
+  
+      const createProductVariantResponse = await axios.post(
+        'https://api.boki.fortesting.com.ua/graphql',
+        {
+          query: `
+            mutation CreateProductVariant($data: ProductVariantInput!) {
+              createProductVariant(data: $data) {
+                data {
+                  id
+                }
+              }
+            }
+          `,
+          variables: createProductVariantData,
+        },
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${jwtToken}`,
+          },
+        }
+      );
+  
+      const newProductVariantId = createProductVariantResponse.data.data.createProductVariant.data.id;
+      updateProductVariantId(newProductVariantId);
+
+       const createSuborderData = {
+        data: {
+          order: createdOrderId,
+          amount: 1,
+          product_variant: newProductVariantId,
+        },
+      };
+    
+      await axios.post(
+        'https://api.boki.fortesting.com.ua/graphql',
+        {
+          query: `
+            mutation CreateSuborder($data: SuborderInput!) {
+              createSuborder(data: $data) {
+                data {
+                  id
+                }
+              }
+            }
+          `,
+          variables: createSuborderData,
+        },
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${jwtToken}`,
+          },
+        }
+      );
 
       navigate(`/createorder/${createdOrderId}`);
     } catch (error) {
