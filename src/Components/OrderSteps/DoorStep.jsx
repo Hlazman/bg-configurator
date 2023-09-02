@@ -9,7 +9,7 @@ const DoorStep = ({ formData, handleCardClick, handleNext }) => {
   const [doorData, setDoorData] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCollection, setSelectedCollection] = useState('ALL');
-  const [isLoading, setIsLoading] = useState(true); // New state for loading
+  const [isLoading, setIsLoading] = useState(true);
   const [previousDoorId, setPreviousDoorId] = useState(null);
   const jwtToken = localStorage.getItem('token');
 
@@ -42,45 +42,37 @@ const DoorStep = ({ formData, handleCardClick, handleNext }) => {
           },
         }
       );
-    // }
-    setPreviousDoorId(doorId === previousDoorId ? null : doorId);
+
+      setPreviousDoorId(doorId === previousDoorId ? null : doorId);
 
     formData[fieldName] = productVariantId;
   };  
 
   useEffect(() => {
     const fetchData = async () => {
-      setIsLoading(true); // Set loading to true before fetching
+      setIsLoading(true);
       try {
         const response = await axios.post(
           'https://api.boki.fortesting.com.ua/graphql',
           {
             query: `
-              {
-                doors(
-                  pagination: { limit: 100 },
-                  sort: ["ASC"],
-                  publicationState: LIVE
-                ){
-                  data{
+              query Doors {
+                doors (pagination: { limit: 100 },) {
+                  data {
                     id
-                    attributes{
-                      __typename
+                    attributes {
                       collection
-                      product_properties{
+                      product_properties {
+                        description
                         id
                         title
-                        image{
-                          data{
-                            id
-                            attributes{
+                        image {
+                          data {
+                            attributes {
                               url
-                              name
-                              previewUrl
                             }
                           }
                         }
-                        description
                       }
                     }
                   }
@@ -95,7 +87,7 @@ const DoorStep = ({ formData, handleCardClick, handleNext }) => {
             },
           }
         );
-
+        
         const doors = response.data.data.doors.data;
         setDoorData(doors);
       } catch (error) {
