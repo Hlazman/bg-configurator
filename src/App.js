@@ -1,6 +1,6 @@
 import React, { useState, useContext, useEffect } from 'react';
 // import React, { useState, useContext} from 'react';
-import { Route, Routes, Navigate, useNavigate } from 'react-router-dom';
+import { Route, Routes, Navigate, useNavigate, useLocation } from 'react-router-dom';
 import { AuthContext } from './Context/AuthContext';
 
 import { NotFoundPage } from './Pages/NotFoundPage';
@@ -20,6 +20,7 @@ import languageMap from './Languages/language';
 
 import logo from './logo.svg';
 import './App.css';
+import { EditClientPage } from './Pages/EditClientPage';
 
 const options = [
   {
@@ -77,6 +78,40 @@ const App = () => {
 
   const language = languageMap[selectedLanguage];
 
+  const location = useLocation();
+  const orderId = location.pathname.split('/').pop();
+
+const getHeaderTitle = (location, Id) => {
+  if (location.pathname.startsWith('/createorder/')) {
+    return `Order #${Id}`;
+  }
+
+  if (location.pathname.startsWith('/editclient/')) {
+    return `Client #${Id}`;
+  }
+
+  switch (location.pathname) {
+    case '/':
+      return 'Orders';
+    case '/clients':
+      return 'Clients list';
+    case '/createclient':
+      return 'Create Client';
+      case '/editclient':
+      return 'Edit Client';
+    case '/files':
+      return 'Files and Instructions';
+      case '/resetpassword':
+        return 'Reset password';
+    case '/savepassword':
+      return 'Save password';
+    default:
+      return 'No such page';
+  }
+};
+
+  const headerTitle = getHeaderTitle(location, orderId);
+
   useEffect(() => {
     setLoading(false);
   }, []);
@@ -109,8 +144,10 @@ const App = () => {
           <Layout>
             <Header className="header">
 
+              <h1 className='headerTitle'>{headerTitle}</h1>
+
               <div style={{ display: 'flex', gap: '10px', margin: '15px 0' }}>
-                
+
                 <Dropdown.Button size="large" menu={{ items }} placement="bottom" icon={<UserOutlined />}>
                   {user.username}
                 </Dropdown.Button>
@@ -136,6 +173,7 @@ const App = () => {
                   <Route path="/orders" element={<Navigate to="/" replace />} />
                   <Route path="/clients" element={<ClientsPage />} />
                   <Route path="/createclient" element={<CreateClientPage />} />
+                  <Route path="/editclient/:clientId" element={<EditClientPage />} />
                   {/* <Route path="/createorder" element={<CreateOrderPage />} /> */}
                   <Route path="/createorder/:orderId" element={<CreateOrderPage />} />
                   <Route path="/files" element={<FilesPage />} />

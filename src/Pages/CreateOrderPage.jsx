@@ -131,10 +131,7 @@ export const CreateOrderPage = () => {
     <div>
       
       <div style={{textAlign: 'left', margin: '10px 0'}}>
-      <OrderDetails/>
-      
-      <p>{orderId && `ID заказа: ${orderId}`}</p>
-      
+        <OrderDetails/>
       </div>
 
       <Divider/>

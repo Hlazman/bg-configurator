@@ -7,14 +7,13 @@ import { AuthContext } from '../Context/AuthContext';
 export const CreateClientPage = () => {
   const { user } = useContext(AuthContext);
   const jwtToken = localStorage.getItem('token');
-
   const [form] = Form.useForm();
-
-  const [addresses, setAddresses] = useState([{ id: null, country: null, city: null, address: null, zipCode: null }]);
+  const [addresses, setAddresses] = useState([{ id: 0, country: null, city: null, address: null, zipCode: null }]);
   const [loading, setLoading] = useState(false);
 
   const handleAddAddress = () => {
-    setAddresses([...addresses, { id: null, country: null, city: null, address: null, zipCode: null }]);
+    const newId = addresses.length; // Уникальное значение для нового адреса
+    setAddresses([...addresses, { id: newId, country: null, city: null, address: null, zipCode: null }]);
   };
 
   const handleRemoveAddress = (index) => {
@@ -24,21 +23,21 @@ export const CreateClientPage = () => {
   };
 
   const onFinish = (values) => {
-    setLoading(true);
+    setLoading(true);  
+    const formValues = form.getFieldsValue();
+    
     const data = {
-      client_name: values.client_name,
-      addresses: addresses.filter((address) => address.id !== null),
+      client_name: formValues.client_name,
+      addresses: formValues.addresses,
       contacts: {
-        phone: values.phone,
-        email: values.email,
-        phone_2: values.phone_2,
+        phone: formValues.phone,
+        email: formValues.email,
+        phone_2: formValues.phone_2,
       },
-      client_company: values.client_company,
-      // company: values.company,
+      client_company: formValues.client_company,
       manager: user.id,
-      publishedAt: new Date().toISOString(),
     };
-
+  
     axios
       .post('https://api.boki.fortesting.com.ua/graphql', { query: 'mutation Mutation($data: ClientInput!) { createClient(data: $data) { data { id } } }', variables: { data } }, {
         headers: {
@@ -49,19 +48,19 @@ export const CreateClientPage = () => {
       .then((response) => {
         setLoading(false);
         form.resetFields();
-        setAddresses([{ id: null, country: null, city: null, address: null, zipCode: null }]);
         message.success('Client successfully added to database');
       })
       .catch((error) => {
         setLoading(false);
         console.error(error);
         message.error('An error occurred while adding a client');
-      });
+      })
+      // .finally(() => setAddresses([{ id: null, country: null, city: null, address: null, zipCode: null }]));
   };
 
   return (
     <Spin spinning={loading}>
-      <Card title="Create Client" style={{ marginTop: '35px' }}>
+      <Card style={{ marginTop: '35px' }}>
         <Form
           form={form}
           name="createClientForm"
