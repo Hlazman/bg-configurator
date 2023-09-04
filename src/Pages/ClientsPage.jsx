@@ -211,7 +211,7 @@ export const ClientsPage = () => {
             <p>{contacts.phone}</p>
           )}
           {contacts && contacts.phone_2 && (
-            <p style={{ marginLeft: 8 }}>{contacts.phone_2}</p>
+            <p>{contacts.phone_2}</p>
           )}
         </span>
       ),

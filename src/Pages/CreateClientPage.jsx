@@ -22,7 +22,7 @@ export const CreateClientPage = () => {
     setAddresses(updatedAddresses);
   };
 
-  const onFinish = (values) => {
+  const onFinish = () => {
     setLoading(true);  
     const formValues = form.getFieldsValue();
     
@@ -68,7 +68,16 @@ export const CreateClientPage = () => {
         >
           <Form.Item
             name="client_name"
-            rules={[{ required: true, message: 'Please enter the client name!' }]}
+            rules={[
+              {
+                required: true,
+                message: 'Please enter the client name!',
+              },
+              {
+                min: 2,
+                message: 'Client name must be at least 2 characters long.',
+              },
+            ]}
           >
             <Input prefix={<UserOutlined />} placeholder="Client Name" addonBefore="Client name" />
           </Form.Item>
@@ -98,6 +107,20 @@ export const CreateClientPage = () => {
               </Form.Item>
               <Form.Item
                 name={['addresses', index, 'zipCode']}
+                rules={[
+                  {
+                    pattern: /^[0-9]+$/,
+                    message: 'Zip Code must be a number.',
+                  },
+                  ({ getFieldValue }) => ({
+                    validator(_, value) {
+                      if (!getFieldValue(['addresses', index, 'zipCode']) || value.length >= 5) {
+                        return Promise.resolve();
+                      }
+                      return Promise.reject('Zip Code must be at least 5 characters long.');
+                    },
+                  }),
+                ]}
               >
                 <Input placeholder="Zip Code" addonBefore="Zip Code" />
               </Form.Item>
@@ -117,12 +140,24 @@ export const CreateClientPage = () => {
 
           <Form.Item
             name="phone"
+            rules={[
+              {
+                pattern: /^(\+)?[0-9]+$/,
+                message: 'Phone must start with "+" if present and consist of numbers.',
+              },
+            ]}
           >
             <Input placeholder="Phone" addonBefore="Phone"/>
           </Form.Item>
 
           <Form.Item
             name="phone_2"
+            rules={[
+              {
+                pattern: /^(\+)?[0-9]+$/,
+                message: 'Phone 2 must start with "+" if present and consist of numbers.',
+              },
+            ]}
           >
             <Input placeholder="Phone 2" addonBefore="Phone 2"/>
           </Form.Item>

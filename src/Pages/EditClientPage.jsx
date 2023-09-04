@@ -1,303 +1,18 @@
-// import React, { useState, useEffect } from 'react';
-// import { Form, Input, Button, Card, Space, Spin, message } from 'antd';
-// import { UserOutlined, PlusOutlined, MinusCircleOutlined } from '@ant-design/icons';
-// import axios from 'axios';
-// import { useParams } from 'react-router-dom';
-
-// export const EditClientPage = () => {
-//   const { clientId } = useParams();
-//   const jwtToken = localStorage.getItem('token');
-
-//   const [form] = Form.useForm();
-
-//   const [clientData, setClientData] = useState(null)
-//   const [loading, setLoading] = useState(false);
-
-//   const handleAddAddress = () => {
-//     setClientData((prevData) => ({
-//       ...prevData,
-//       addresses: [...prevData.addresses, { id: null, country: null, city: null, address: null, zipCode: null }],
-//     }));
-//   };
-
-//   const handleRemoveAddress = (index) => {
-//     setClientData((prevData) => {
-//       const updatedAddresses = [...prevData.addresses];
-//       updatedAddresses.splice(index, 1);
-//       return {
-//         ...prevData,
-//         addresses: updatedAddresses,
-//       };
-//     });
-//   };
-
-
-//   useEffect(() => {
-//       setLoading(true);
-//       axios
-//         .post(
-//           'https://api.boki.fortesting.com.ua/graphql',
-//           {
-//             query: `
-//             query Query($clientId: ID) {
-//               client(id: $clientId) {
-//                 data {
-//                   attributes {
-//                     client_name
-//                     client_company
-//                     addresses {
-//                       id
-//                       address
-//                       city
-//                       country
-//                       zipCode
-//                     }
-//                     contacts {
-//                       email
-//                       phone
-//                       phone_2
-//                     }
-//                   }
-//                 }
-//               }
-//             }
-//             `,
-//             variables: { clientId },
-//           },
-//           {
-//             headers: {
-//               'Content-Type': 'application/json',
-//               Authorization: `Bearer ${jwtToken}`,
-//             },
-//           }
-//         )
-//         .then((response) => {
-//           setLoading(false);
-//           const client = response.data.data.client.data.attributes;
-//           console.log(client)
-//           form.setFieldsValue({
-//             client_name: client.client_name,
-//             client_company: client.client_company || '',
-//             phone: client.contacts.phone || '',
-//             phone_2: client.contacts.phone_2 || '',
-//             email: client.contacts.email || '',
-//             addresses: client.addresses.map((address) => ({
-//               country: address.country || '',
-//               city: address.city || '',
-//               address: address.address || '',
-//               zipCode: address.zipCode || '',
-//             })),
-//           });
-//           setClientData(client);
-//         })
-//         .catch((error) => {
-//           setLoading(false);
-//           console.error(error);
-//           message.error('An error occurred while fetching client data');
-//         });
-//   }, [clientId, jwtToken, form]);
-
-//   const onFinish = (values) => {
-//     setLoading(true);
-//     const data = {
-//       client_name: values.client_name,
-//       client_company: values.client_company || null,
-//       addresses: clientData.addresses.map((address) => ({
-//         ...address,
-//         id: address.id || null,
-//       })),
-//       contacts: {
-//         phone: values.phone || null,
-//         email: values.email || null,
-//         phone_2: values.phone_2 || null,
-//       },
-//     };
-  
-//     axios
-//       .post(
-//         'https://api.boki.fortesting.com.ua/graphql',
-//         {
-//           query: `
-//             mutation UpdateClient($data: ClientInput!, $updateClientId: ID!) {
-//               updateClient(data: $data, id: $updateClientId) {
-//                 data {
-//                   id
-//                 }
-//               }
-//             }
-//           `,
-//           variables: {
-//             data,
-//             updateClientId: clientId, // Передайте ID клиента, которого вы хотите обновить
-//           },
-//         },
-//         {
-//           headers: {
-//             'Content-Type': 'application/json',
-//             Authorization: `Bearer ${jwtToken}`,
-//           },
-//         }
-//       )
-//       .then((response) => {
-//         setLoading(false);
-//         console.log(response.data.data)
-
-//         const responseData = response.data.data;
-//         if (responseData && responseData.updateClient) {
-//           const updatedClientId = responseData.updateClient.data.id;
-//           message.success(`Client with ID ${updatedClientId} successfully updated`);
-//         } else {
-//           message.error('An error occurred while updating the client');
-//         }
-//       })
-//       .catch((error) => {
-//         setLoading(false);
-//         console.error(error);
-//         message.error('An error occurred while updating the client');
-//       });
-//   };
-
-//   return (
-//     <Spin spinning={loading}>
-//       <Card style={{ marginTop: '35px' }}>
-//         <Form
-//           form={form}
-//           name="editClientForm"
-//           onFinish={onFinish}
-//         >
-//           <Form.Item
-//             name="client_name"
-//             rules={[{ required: true, message: 'Please enter the client name!' }]}
-//           >
-//             <Input prefix={<UserOutlined />} placeholder="Client Name" addonBefore="Client name" />
-//           </Form.Item>
-
-//           <Form.Item
-//             name="client_company"
-//           >
-//             <Input placeholder="Orgainzation" addonBefore="Orgainzation"/>
-//           </Form.Item>
-
-//           {clientData && clientData.addresses.map((address, index) => (
-//             <Space key={index} style={{ alignItems: 'flex-start' }}>
-//               <Form.Item
-//                 name={['addresses', index, 'country']}
-//               >
-//                 <Input placeholder="Country" addonBefore="Country" />
-//               </Form.Item>
-//               <Form.Item
-//                 name={['addresses', index, 'city']}
-//               >
-//                 <Input placeholder="City" addonBefore="City" />
-//               </Form.Item>
-//               <Form.Item
-//                 name={['addresses', index, 'address']}
-//               >
-//                 <Input placeholder="Address" addonBefore="Address" />
-//               </Form.Item>
-//               <Form.Item
-//                 name={['addresses', index, 'zipCode']}
-//               >
-//                 <Input placeholder="Zip Code" addonBefore="Zip Code" />
-//               </Form.Item>
-
-//               <Button danger type="primary" onClick={() => handleRemoveAddress(index)} icon={<MinusCircleOutlined />}>
-//                 Remove Address
-//               </Button>
-//             </Space>
-//           ))}
-
-//           <Form.Item>
-//             <Button type="primary" onClick={handleAddAddress} icon={<PlusOutlined />}>
-//               Add Address
-//             </Button>
-//           </Form.Item>
-
-//           <Form.Item
-//             name="phone"
-//           >
-//             <Input placeholder="Phone" addonBefore="Phone"/>
-//           </Form.Item>
-
-//           <Form.Item
-//             name="phone_2"
-//           >
-//             <Input placeholder="Phone 2" addonBefore="Phone 2"/>
-//           </Form.Item>
-
-//           <Form.Item
-//             name="email"
-//           >
-//             <Input placeholder="Email" addonBefore="Email"/>
-//           </Form.Item>
-
-//           <Form.Item>
-//             <Button type="primary" htmlType="submit">
-//               Update Client
-//             </Button>
-//           </Form.Item>
-//         </Form>
-//       </Card>
-//     </Spin>
-//   );
-// };
-
-
 import React, { useState, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
 import { Form, Input, Button, Card, Space, Spin, message } from 'antd';
 import { UserOutlined, PlusOutlined, MinusCircleOutlined } from '@ant-design/icons';
 import axios from 'axios';
-import { useParams } from 'react-router-dom';
 
 export const EditClientPage = () => {
-  const { clientId } = useParams();
   const jwtToken = localStorage.getItem('token');
-
+  const { clientId } = useParams();
   const [form] = Form.useForm();
-
-  const [clientData, setClientData] = useState(null)
+  const [addresses, setAddresses] = useState([{ id: 0, country: null, city: null, address: null, zipCode: null }]);
   const [loading, setLoading] = useState(false);
 
-
-  const generateUniqueId = () => {
-    // Генерируйте уникальный id здесь, например, используя библиотеку uuid
-    // В этом примере, мы используем текущее время для демонстрации
-    return new Date().getTime().toString();
-  };
-
-  const handleAddAddress = () => {
-    setClientData((prevData) => ({
-      ...prevData,
-      addresses: [...prevData.addresses, { id: generateUniqueId(), country: null, city: null, address: null, zipCode: null }],
-      // addresses: [...prevData.addresses, {country: null, city: null, address: null, zipCode: null }],
-    }));
-  };
-
-  const handleRemoveAddress = (index) => {
-    setClientData((prevData) => {
-      const updatedAddresses = [...prevData.addresses];
-      updatedAddresses.splice(index, 1);
-      return {
-        ...prevData,
-        addresses: updatedAddresses,
-      };
-    });
-  };
-
-  // Функция для обновления поля в массиве addresses
-  const handleUpdateAddressField = (index, field, value) => {
-    setClientData((prevData) => {
-      const updatedAddresses = [...prevData.addresses];
-      updatedAddresses[index][field] = value;
-      return {
-        ...prevData,
-        addresses: updatedAddresses,
-      };
-    });
-  };
-
   useEffect(() => {
-    setLoading(true);
+    // Запрос GraphQL для получения данных клиента
     axios
       .post(
         'https://api.boki.fortesting.com.ua/graphql',
@@ -336,47 +51,59 @@ export const EditClientPage = () => {
         }
       )
       .then((response) => {
-        setLoading(false);
-        const client = response.data.data.client.data.attributes;
-
+        const clientData = response.data.data.client.data.attributes;
         form.setFieldsValue({
-          client_name: client.client_name,
-          client_company: client.client_company || '',
-          phone: client.contacts.phone || '',
-          phone_2: client.contacts.phone_2 || '',
-          email: client.contacts.email || '',
-          addresses: client.addresses.map((address) => ({
-            country: address.country || '',
-            city: address.city || '',
-            address: address.address || '',
-            zipCode: address.zipCode || '',
+          client_name: clientData.client_name,
+          client_company: clientData.client_company,
+          phone: clientData.contacts.phone,
+          phone_2: clientData.contacts.phone_2,
+          email: clientData.contacts.email,
+          addresses: clientData.addresses.map((address) => ({
+            country: address.country,
+            city: address.city,
+            address: address.address,
+            zipCode: address.zipCode,
           })),
         });
-        setClientData(client);
+        setAddresses(clientData.addresses);
       })
       .catch((error) => {
-        setLoading(false);
         console.error(error);
         message.error('An error occurred while fetching client data');
       });
   }, [clientId, jwtToken, form]);
 
+  const handleAddAddress = () => {
+    setAddresses([...addresses, { country: null, city: null, address: null, zipCode: null }]);
+  };
+
+  const handleRemoveAddress = (index) => {
+    const updatedAddresses = [...addresses];
+    updatedAddresses.splice(index, 1);
+    setAddresses(updatedAddresses);
+  };
+
   const onFinish = (values) => {
     setLoading(true);
+    const formValues = form.getFieldsValue();
+
     const data = {
-      client_name: values.client_name,
-      client_company: values.client_company || null,
-      addresses: clientData.addresses.map((address) => ({
-        ...address,
-        id: address.id || null,
-      })),
+      client_company: formValues.client_company,
+      client_name: formValues.client_name,
       contacts: {
-        phone: values.phone || null,
-        email: values.email || null,
-        phone_2: values.phone_2 || null,
+        email: formValues.email,
+        phone: formValues.phone,
+        phone_2: formValues.phone_2,
       },
+      addresses: formValues.addresses.map((address, index) => ({
+        id: addresses[index].id,
+        address: address.address,
+        city: address.city,
+        country: address.country,
+        zipCode: address.zipCode,
+      })),
     };
-    
+
     axios
       .post(
         'https://api.boki.fortesting.com.ua/graphql',
@@ -390,10 +117,7 @@ export const EditClientPage = () => {
               }
             }
           `,
-          variables: {
-            data,
-            updateClientId: clientId,
-          },
+          variables: { data, updateClientId: clientId },
         },
         {
           headers: {
@@ -404,15 +128,7 @@ export const EditClientPage = () => {
       )
       .then((response) => {
         setLoading(false);
-
-        console.log(response.data)
-        const responseData = response.data.data;
-        if (responseData && responseData.updateClient) {
-          const updatedClientId = responseData.updateClient.data.id;
-          message.success(`Client with ID ${updatedClientId} successfully updated`);
-        } else {
-          message.error('An error occurred while updating the client');
-        }
+        message.success('Client successfully updated');
       })
       .catch((error) => {
         setLoading(false);
@@ -424,66 +140,70 @@ export const EditClientPage = () => {
   return (
     <Spin spinning={loading}>
       <Card style={{ marginTop: '35px' }}>
-        <Form
-          form={form}
-          name="editClientForm"
-          onFinish={onFinish}
-        >
-          <Form.Item
-            name="client_name"
-            rules={[{ required: true, message: 'Please enter the client name!' }]}
+        <Form form={form} name="editClientForm" onFinish={onFinish}>
+          
+          <Form.Item 
+            name="client_name" 
+            // rules={[{ required: true, message: 'Please enter the client name!' }]}
+            rules={[
+              {
+                required: true,
+                message: 'Please enter the client name!',
+              },
+              {
+                min: 2,
+                message: 'Client name must be at least 2 characters long.',
+              },
+            ]}
           >
             <Input prefix={<UserOutlined />} placeholder="Client Name" addonBefore="Client name" />
           </Form.Item>
 
-          <Form.Item
-            name="client_company"
-          >
-            <Input placeholder="Orgainzation" addonBefore="Orgainzation"/>
+          <Form.Item name="client_company">
+            <Input placeholder="Organization" addonBefore="Organization" />
           </Form.Item>
 
-          {clientData && clientData.addresses.map((address, index) => (
+          {addresses.map((address, index) => (
             <Space key={index} style={{ alignItems: 'flex-start' }}>
-              <Form.Item
-                name={['addresses', index, 'country']}
-              >
-                <Input
-                  placeholder="Country"
-                  addonBefore="Country"
-                  onChange={(e) => handleUpdateAddressField(index, 'country', e.target.value)}
-                />
-              </Form.Item>
-              <Form.Item
-                name={['addresses', index, 'city']}
-              >
-                <Input
-                  placeholder="City"
-                  addonBefore="City"
-                  onChange={(e) => handleUpdateAddressField(index, 'city', e.target.value)}
-                />
-              </Form.Item>
-              <Form.Item
-                name={['addresses', index, 'address']}
-              >
-                <Input
-                  placeholder="Address"
-                  addonBefore="Address"
-                  onChange={(e) => handleUpdateAddressField(index, 'address', e.target.value)}
-                />
-              </Form.Item>
-              <Form.Item
-                name={['addresses', index, 'zipCode']}
-              >
-                <Input
-                  placeholder="Zip Code"
-                  addonBefore="Zip Code"
-                  onChange={(e) => handleUpdateAddressField(index, 'zipCode', e.target.value)}
-                />
+
+              <Form.Item name={['addresses', index, 'country']}>
+                <Input placeholder="Country" addonBefore="Country" />
               </Form.Item>
 
-              <Button danger type="primary" onClick={() => handleRemoveAddress(index)} icon={<MinusCircleOutlined />}>
-                Remove Address
-              </Button>
+              <Form.Item name={['addresses', index, 'city']}>
+                <Input placeholder="City" addonBefore="City" />
+              </Form.Item>
+
+              <Form.Item name={['addresses', index, 'address']}>
+                <Input placeholder="Address" addonBefore="Address" />
+              </Form.Item>
+
+              <Form.Item 
+                name={['addresses', index, 'zipCode']}
+                rules={[
+                  {
+                    pattern: /^[0-9]+$/,
+                    message: 'Zip Code must be a number.',
+                  },
+                  ({ getFieldValue }) => ({
+                    validator(_, value) {
+                      if (!getFieldValue(['addresses', index, 'zipCode']) || value.length >= 5) {
+                        return Promise.resolve();
+                      }
+                      return Promise.reject('Zip Code must be at least 5 characters long.');
+                    },
+                  }),
+                ]}
+              >
+                <Input placeholder="Zip Code" addonBefore="Zip Code" />
+              </Form.Item>
+
+              <Button
+                danger
+                type="primary"
+                onClick={() => handleRemoveAddress(index)}
+                icon={<MinusCircleOutlined />}
+              ></Button>
             </Space>
           ))}
 
@@ -493,27 +213,37 @@ export const EditClientPage = () => {
             </Button>
           </Form.Item>
 
-          <Form.Item
+          <Form.Item 
             name="phone"
+            rules={[
+              {
+                pattern: /^(\+)?[0-9]+$/,
+                message: 'Phone must start with "+" if present and consist of numbers.',
+              },
+            ]}
           >
-            <Input placeholder="Phone" addonBefore="Phone"/>
+            <Input placeholder="Phone" addonBefore="Phone" />
           </Form.Item>
 
-          <Form.Item
+          <Form.Item 
             name="phone_2"
+            rules={[
+              {
+                pattern: /^(\+)?[0-9]+$/,
+                message: 'Phone must start with "+" if present and consist of numbers.',
+              },
+            ]}
           >
-            <Input placeholder="Phone 2" addonBefore="Phone 2"/>
+            <Input placeholder="Phone 2" addonBefore="Phone 2" />
           </Form.Item>
 
-          <Form.Item
-            name="email"
-          >
-            <Input placeholder="Email" addonBefore="Email"/>
+          <Form.Item name="email">
+            <Input placeholder="Email" addonBefore="Email" />
           </Form.Item>
 
           <Form.Item>
             <Button type="primary" htmlType="submit">
-              Update Client
+              Save Changes
             </Button>
           </Form.Item>
         </Form>
