@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext, useCallback } from 'react';
 import axios from 'axios';
-import { Table, Dropdown, Space, Button, Input, Spin } from 'antd';
+import { Table, Dropdown, Space, Button, Input, Spin, Modal, message } from 'antd';
 import { DownOutlined, SearchOutlined } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
+import { AuthContext } from '../Context/AuthContext';
 
 export const ClientsPage = () => {
   const [loading, setLoading] = useState(true);
@@ -13,80 +14,120 @@ export const ClientsPage = () => {
     current: 1,
     pageSize: 5,
   });
+  const [deleteClientId, setDeleteClientId] = useState(null);
+  const { user } = useContext(AuthContext);
 
-  useEffect(() => {
-    const jwtToken = localStorage.getItem('token');
+  const jwtToken = localStorage.getItem('token');
 
-    const fetchData = async () => {
-      try {
-        setLoading(true);
-        const response = await axios.post(
-          'https://api.boki.fortesting.com.ua/graphql',
-          {
-            query: `
-              query Query {
-                clients {
-                  data {
-                    id
-                    attributes {
-                      addresses {
-                        address
-                        city
-                        country
-                        zipCode
-                      }
-                      client_company
-                      client_name
-                      company {
-                        data {
-                          attributes {
-                            name
-                          }
+  const handleDeleteClient = async () => {
+    try {
+      const response = await axios.post(
+        'https://api.boki.fortesting.com.ua/graphql',
+        {
+          query: `
+            mutation Mutation($deleteClientId: ID!) {
+              deleteClient(id: $deleteClientId) {
+                data {
+                  id
+                }
+              }
+            }
+          `,
+          variables: {
+            deleteClientId,
+          },
+        },
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${jwtToken}`,
+          },
+        }
+      );
+  
+      if (response.data.data.deleteClient) {
+        message.success('The client was successfully removed from the database');
+        fetchData();
+      }
+    } catch (error) {
+      console.error('Error while executing delete request:', error);
+      message.error('An error occurred while deleting a client.');
+    } finally {
+      setDeleteClientId(null);
+    }
+  };
+
+  const fetchData = useCallback(async () => {
+    try {
+      setLoading(true);
+      const response = await axios.post(
+        'https://api.boki.fortesting.com.ua/graphql',
+        {
+          query: `
+            query Query {
+              clients (pagination: { limit: 200 },) {
+                data {
+                  id
+                  attributes {
+                    addresses {
+                      address
+                      city
+                      country
+                      zipCode
+                    }
+                    client_company
+                    client_name
+                    company {
+                      data {
+                        attributes {
+                          name
                         }
                       }
-                      contacts {
-                        email
-                        phone
-                        phone_2
-                      }
-                      manager {
-                        data {
-                          attributes {
-                            username
-                          }
+                    }
+                    contacts {
+                      email
+                      phone
+                      phone_2
+                    }
+                    manager {
+                      data {
+                        attributes {
+                          username
                         }
                       }
                     }
                   }
                 }
               }
-            `,
+            }
+          `,
+        },
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${jwtToken}`,
           },
-          {
-            headers: {
-              'Content-Type': 'application/json',
-              Authorization: `Bearer ${jwtToken}`,
-            },
-          }
-        );
+        }
+      );
 
-        const clientsWithKeys = response.data.data.clients.data.map((client) => ({
-          ...client,
-          key: client.id,
-        }));
+      const clientsWithKeys = response.data.data.clients.data.map((client) => ({
+        ...client,
+        key: client.id,
+      }));
 
-        setClients(clientsWithKeys);
-      } catch (error) {
-        console.error('Ошибка при выполнении запроса:', error);
-      } finally {
-        setLoading(false);
-      }
-    };
+      setClients(clientsWithKeys);
+    } catch (error) {
+      console.error('Ошибка при выполнении запроса:', error);
+    } finally {
+      setLoading(false);
+    }
+  }, [jwtToken]);
 
+  useEffect(() => {
     if (jwtToken) {
       fetchData();
     }
-  }, []);
+  }, [jwtToken, fetchData]);
 
   const handlePaginationChange = (pagination) => {
     setPagination(pagination);
@@ -101,6 +142,7 @@ export const ClientsPage = () => {
   const handleEditClient = (clientId) => {
     navigate(`/editclient/${clientId}`);
   };
+
 
   const columns = [
     {
@@ -225,25 +267,25 @@ export const ClientsPage = () => {
         <div>
           {addresses && addresses.length > 0 ? (
             showAllAddresses ? (
-              <ul>
+              <>
                 {addresses.map((address, index) => (
-                  <li key={index}>
-                    <span> {address?.zipCode + ','}</span>
-                    <span> {address?.city + ','}</span>
-                    <span> {address?.country + ','};</span>
-                    <span> {address?.address + ','};</span>
-                  </li>
+                  <div key={index}>
+                    <span> {address?.zipCode && address.zipCode + ','}</span>
+                    <span> {address?.city && address.city + ','}</span>
+                    <span> {address?.country && address.country + ','}</span>
+                    <span> {address?.address && address.address + ','}</span>
+                  </div>
                 ))}
-              </ul>
+              </>
             ) : (
-              <ul>
-                <li>
-                  <span> {addresses[0]?.zipCode + ','}</span>
-                  <span> {addresses[0]?.city + ','}</span>
-                  <span> {addresses[0]?.country + ','}</span>
-                  <span> {addresses[0]?.address + ','}</span>
-                </li>
-              </ul>
+              <>
+                <div>
+                  <span> {addresses[0]?.zipCode && addresses[0].zipCode + ','}</span>
+                  <span> {addresses[0]?.city && addresses[0].city + ','}</span>
+                  <span> {addresses[0]?.country && addresses[0].country + ','}</span>
+                  <span> {addresses[0]?.address && addresses[0].address + ','}</span>
+                </div>
+              </>
             )
           ) : (
             <p></p>
@@ -272,16 +314,6 @@ export const ClientsPage = () => {
       key: 'operation',
       fixed: 'right',
       width: '120px',
-      // render: () => (
-      //   <Space size="large">
-      //     <Dropdown menu={{items}} trigger={['click']}>
-      //       <Button>
-      //         <Space> Actions <DownOutlined />
-      //         </Space>
-      //       </Button>
-      //     </Dropdown>
-      //   </Space>
-      // ),
       render: (_, record) => (
         <Space size="large">
           <Dropdown
@@ -290,11 +322,12 @@ export const ClientsPage = () => {
                 {
                   key: '1',
                   label: 'Edit',
-                  onClick: () => handleEditClient(record.id), // Передаем record.id вместо clientId
+                  onClick: () => handleEditClient(record.id),
                 },
                 {
                   key: '2',
                   label: 'Delete',
+                  onClick: () => setDeleteClientId(record.id),
                 },
               ],
             }}
@@ -332,6 +365,19 @@ export const ClientsPage = () => {
           sticky
         />
       </Spin>
+
+      <Modal
+        title={`You definitely want to remove the client from the database ${user.username}?`}
+        open={deleteClientId !== null}
+        onOk={handleDeleteClient}
+        onCancel={() => setDeleteClientId(null)}
+        okText="Yes"
+        cancelText="Cancel"
+      >
+        <p>This action cannot be undone.</p>
+      </Modal>
+
     </div>
   );
 };
+

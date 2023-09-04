@@ -88,21 +88,21 @@ export const EditClientPage = () => {
     const formValues = form.getFieldsValue();
 
     const data = {
-      client_company: formValues.client_company,
-      client_name: formValues.client_name,
-      contacts: {
-        email: formValues.email,
-        phone: formValues.phone,
-        phone_2: formValues.phone_2,
-      },
-      addresses: formValues.addresses.map((address, index) => ({
-        id: addresses[index].id,
-        address: address.address,
-        city: address.city,
-        country: address.country,
-        zipCode: address.zipCode,
-      })),
-    };
+    client_company: formValues.client_company || null,
+    client_name: formValues.client_name || null,
+    contacts: {
+      email: formValues.email || null,
+      phone: formValues.phone || null,
+      phone_2: formValues.phone_2 || null,
+    },
+    addresses: formValues.addresses.map((address, index) => ({
+      id: addresses[index].id,
+      address: address.address || null,
+      city: address.city || null,
+      country: address.country || null,
+      zipCode: address.zipCode || null,
+    })),
+  };
 
     axios
       .post(
@@ -144,7 +144,6 @@ export const EditClientPage = () => {
           
           <Form.Item 
             name="client_name" 
-            // rules={[{ required: true, message: 'Please enter the client name!' }]}
             rules={[
               {
                 required: true,
