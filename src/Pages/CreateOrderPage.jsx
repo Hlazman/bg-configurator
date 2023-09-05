@@ -164,15 +164,15 @@ export const CreateOrderPage = () => {
             status: (currentStep === 2 ? 'process' : formData.step4Field ? 'finish' : 'error'),
           },
           {
-            title: 'Options',
+            title: 'Accessories',
             status: (currentStep === 3 ? 'process' : formData.step5Field ? 'finish' : 'error'),
           },
           {
-            title: 'Шаг 5',
+            title: 'Options',
             status: (currentStep === 3 ? 'process' : formData.step6Field ? 'finish' : 'error'),
           },
           {
-            title: 'Шаг 6',
+            title: 'Information',
             status: (currentStep === 3 ? 'process' : formData.step7Field ? 'finish' : 'error'),
           },
         ]}
