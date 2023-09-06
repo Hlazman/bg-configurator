@@ -7,7 +7,7 @@ import LockStep from './LockStep';
 
 const { TabPane } = Tabs;
 
-const OptionsStep = ({ formData, handleCardClick, handleNext }) => {
+const AccessoriesStep = ({ formData, handleCardClick, handleNext }) => {
   const [activeTab, setActiveTab] = useState('hinges');
 
   const handleTabChange = tabKey => {
@@ -35,4 +35,4 @@ const OptionsStep = ({ formData, handleCardClick, handleNext }) => {
   );
 };
 
-export default OptionsStep;
+export default AccessoriesStep;

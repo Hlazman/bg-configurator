@@ -1,12 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { Form, Input, Button, Card, Radio, Select, Divider, Spin } from 'antd';
 import axios from 'axios';
+import { useProductVariant } from '../../Context/ProductVariantContext';
 
-const KnobesStep = ({ formData, handleCardClick, handleNext }) => {
+const KnobesStep = ({ formData, handleNext }) => {
   const [knobesData, setKnobesData] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedBrand, setSelectedBrand] = useState('ALL');
   const [loading, setLoading] = useState(true);
+  const [previousKnobId, setPreviousKnobId] = useState(null);
+  const { productVariantId } = useProductVariant();
 
   const jwtToken = localStorage.getItem('token');
 
@@ -92,6 +95,41 @@ const KnobesStep = ({ formData, handleCardClick, handleNext }) => {
       id: knob.id,
     }));
 
+  const handleKnobClick = async (fieldName, knobId) => {
+    const updateProductVariantData = {
+      updateProductVariantId: productVariantId,
+      data: {
+        knobe: knobId === previousKnobId ? null : knobId,
+      },
+    };
+
+    await axios.post(
+      'https://api.boki.fortesting.com.ua/graphql',
+      {
+        query: `
+          mutation UpdateProductVariant($updateProductVariantId: ID!, $data: ProductVariantInput!) {
+            updateProductVariant(id: $updateProductVariantId, data: $data) {
+              data {
+                id
+              }
+            }
+          }
+        `,
+        variables: updateProductVariantData,
+      },
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${jwtToken}`,
+        },
+      }
+    );
+
+    setPreviousKnobId(knobId === previousKnobId ? null : knobId);
+
+    formData['knobeStep'] = productVariantId;
+  };
+
   return (
     <Form onFinish={formData} onValuesChange={formData}>
       <div style={{ display: 'flex', gap: '30px' }}>
@@ -120,8 +158,8 @@ const KnobesStep = ({ formData, handleCardClick, handleNext }) => {
       {loading ? (
         <Spin size="large" />
       ) : (
-        <Form.Item name="step13Field">
-          <Radio.Group value={formData.step13Field}>
+        <Form.Item name="knobeStep">
+          <Radio.Group value={formData.knobeStep}>
             <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}>
               {filteredImgs.map((knob) => (
                 <div key={knob.id} style={{ width: 220, margin: '20px 10px' }}>
@@ -130,13 +168,11 @@ const KnobesStep = ({ formData, handleCardClick, handleNext }) => {
                     hoverable
                     style={{
                       border:
-                        formData.step13Field === knob.id
+                      previousKnobId === knob.id
                         ? '7px solid #f06d20'
                         : 'none',
                     }}
-                    onClick={() => {
-                      handleCardClick('step13Field', knob.id);
-                    }}
+                    onClick={() => handleKnobClick('knobeStep', knob.id)}
                   >
                     <div style={{ overflow: 'hidden', height: 120 }}>
                       <img

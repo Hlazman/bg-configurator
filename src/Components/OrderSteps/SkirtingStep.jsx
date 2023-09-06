@@ -1,11 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { Form, Input, Button, Card, Radio, Divider, Spin } from 'antd';
 import axios from 'axios';
+import { useProductVariant } from '../../Context/ProductVariantContext';
 
-const SkirtingStep = ({ formData, handleCardClick, handleNext }) => {
+const SkirtingStep = ({ formData, handleNext }) => {
   const [veneerData, setVeneerData] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
   const [loading, setLoading] = useState(true);
+  const [previousSkirtingId, setPreviousSkirtingId] = useState(null); 
+  const { productVariantId } = useProductVariant();
 
   const jwtToken = localStorage.getItem('token');
 
@@ -72,6 +75,41 @@ const SkirtingStep = ({ formData, handleCardClick, handleNext }) => {
       id: skirting.id,
     }));
 
+  const handleSkirtingClick = async (fieldName, skirtingId) => {
+    const updateProductVariantData = {
+      updateProductVariantId: productVariantId,
+      data: {
+        skirting: skirtingId === previousSkirtingId ? null : skirtingId,
+      },
+    };
+
+    await axios.post(
+      'https://api.boki.fortesting.com.ua/graphql',
+      {
+        query: `
+          mutation UpdateProductVariant($updateProductVariantId: ID!, $data: ProductVariantInput!) {
+            updateProductVariant(id: $updateProductVariantId, data: $data) {
+              data {
+                id
+              }
+            }
+          }
+        `,
+        variables: updateProductVariantData,
+      },
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${jwtToken}`,
+        },
+      }
+    );
+
+    setPreviousSkirtingId(skirtingId === previousSkirtingId ? null : skirtingId);
+
+    formData['skirtingStep'] = productVariantId;
+  };
+
   return (
     <Form onFinish={formData} onValuesChange={formData}>
       <div style={{ display: 'flex', gap: '30px' }}>
@@ -88,8 +126,8 @@ const SkirtingStep = ({ formData, handleCardClick, handleNext }) => {
       {loading ? (
         <Spin size="large" />
       ) : (
-        <Form.Item name="step12Field">
-          <Radio.Group value={formData.step12Field}>
+        <Form.Item name="skirtingStep">
+          <Radio.Group value={formData.skirtingStep}>
             <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}>
               {filteredImgs.map((skirting) => (
                 <div key={skirting.id} style={{ width: 220, margin: '20px 10px' }}>
@@ -98,13 +136,11 @@ const SkirtingStep = ({ formData, handleCardClick, handleNext }) => {
                     hoverable
                     style={{
                       border:
-                        formData.step12Field === skirting.id
+                      previousSkirtingId === skirting.id
                         ? '7px solid #f06d20'
                         : 'none',
                     }}
-                    onClick={() => {
-                      handleCardClick('step12Field', skirting.id);
-                    }}
+                    onClick={() => handleSkirtingClick('skirtingStep', skirting.id)}
                   >
                     <div style={{ overflow: 'hidden', height: 220 }}>
                       <img

@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Form, Input, Button, Card, Radio, Select, Divider, Spin } from 'antd';
 import axios from 'axios';
-
 import { useProductVariant } from '../../Context/ProductVariantContext';
 
-const DoorStep = ({ formData, handleCardClick, handleNext }) => {
+const DoorStep = ({ formData, handleNext }) => {
   const { productVariantId } = useProductVariant();
   const [doorData, setDoorData] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
@@ -128,6 +127,7 @@ const DoorStep = ({ formData, handleCardClick, handleNext }) => {
   return (
     <Form onFinish={formData} onValuesChange={formData}>
       <div style={{ display: 'flex', gap: '30px' }}>
+        
         <Select
           value={selectedCollection}
           onChange={handleCollectionChange}
@@ -139,6 +139,7 @@ const DoorStep = ({ formData, handleCardClick, handleNext }) => {
             </Select.Option>
           ))}
         </Select>
+
         <Input
           placeholder="Search"
           value={searchQuery}
@@ -146,6 +147,7 @@ const DoorStep = ({ formData, handleCardClick, handleNext }) => {
           style={{ marginBottom: '10px' }}
         />
       </div>
+      
       <Divider />
 
       {isLoading ? (
@@ -153,8 +155,8 @@ const DoorStep = ({ formData, handleCardClick, handleNext }) => {
           <Spin size="large" />
         </div>
       ) : (
-        <Form.Item name="step1Field">
-          <Radio.Group value={formData.step1Field}>
+        <Form.Item name="doorStep">
+          <Radio.Group value={formData.doorStep}>
             <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}>
               {filteredImgS.map((imgSrc) => {
                 const door = doorData.find(
@@ -168,13 +170,11 @@ const DoorStep = ({ formData, handleCardClick, handleNext }) => {
                       hoverable
                       style={{
                         border:
-                          // formData.step1Field === door.id
                           previousDoorId === door.id
                             ? '7px solid #f06d20'
                             : 'none',
                       }}
-                      // onClick={() => handleCardClick('step1Field',door.id)}
-                      onClick={() => handleDoorClick('step1Field',door.id)}
+                      onClick={() => handleDoorClick('doorStep', door.id)}
                     >
                       <div style={{ overflow: 'hidden', height: 220 }}>
                         <img

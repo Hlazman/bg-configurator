@@ -3,30 +3,30 @@ import { Steps, Form, Input, Button, Divider} from 'antd';
 import { OrderDetails } from '../Components/OrderDetails';
 import DoorStep from '../Components/OrderSteps/DoorStep';
 import DecorStep from '../Components/OrderSteps/DecorStep';
-import OptionsStep from '../Components/OrderSteps/OptionsStep';
+import AccessoriesStep from '../Components/OrderSteps/AccessoriesStep';
 import { useParams } from 'react-router-dom';
+import InformationStep from '../Components/OrderSteps/InformationStep';
 
 export const CreateOrderPage = () => {
 
   const { orderId } = useParams();
   const [currentStep, setCurrentStep] = useState(0);
   const [formData, setFormData] = useState({
-    step1Field: null,
+    doorStep: null,
     step2Field: null,
     step3Field: null,
     step4Field: null,
     step5Field: null,
     step6Field: null,
     step7Field: null,
-    step10Field: null,
-    step11Field: null,
-    step12Field: null,
-    step13Field: null,
+    hingesStep: null,
+    knobeStep: null,
+    lockStep: null,
+    skirtingStep: null,
   });
 
   const handleFormSubmit = (values) => {
     setFormData({ ...formData, ...values });
-    // Здесь можно выполнить дополнительные действия при отправке формы
   };
 
   const handleNext = () => {
@@ -54,7 +54,6 @@ export const CreateOrderPage = () => {
   };
 
   useEffect(() => {
-    // Загрузка данных из LocalStorage при загрузке страницы
     const savedFormData = localStorage.getItem(`orderFormData_${orderId}`);
     if (savedFormData) {
       setFormData(JSON.parse(savedFormData));
@@ -62,7 +61,6 @@ export const CreateOrderPage = () => {
   }, [orderId]);
 
   useEffect(() => {
-    // Сохранение данных в LocalStorage при изменении формы
     localStorage.setItem(`orderFormData_${orderId}`, JSON.stringify(formData));
   }, [formData, orderId]);
 
@@ -96,7 +94,7 @@ export const CreateOrderPage = () => {
         );
       case 3:
         return (
-          <OptionsStep
+          <AccessoriesStep
             formData={formData}
             handleCardClick={handleCardClick}
             handleNext={handleNext}
@@ -114,13 +112,9 @@ export const CreateOrderPage = () => {
         );
         case 5:
         return (
-          <Form onFinish={handleFormSubmit} onValuesChange={handleFormValuesChange}>
-            <Form.Item name="step7Field" label="Шаг 6">
-              <Input />
-            </Form.Item>
-            <Button onClick={handlePrev}>Назад</Button>
-            <Button type="primary" htmlType="submit"> Отправить </Button>
-          </Form>
+          <InformationStep
+            formData={formData}
+        />
         );
       default:
         return null;
@@ -143,11 +137,11 @@ export const CreateOrderPage = () => {
         items={[
           {
             title: 'Canvas',
-            status: (currentStep === 0 ? 'process' : formData.step1Field ? 'finish' : 'error'),
+            // status: (currentStep === 0 ? 'process' : formData.doorStep ? 'finish' : 'error'),
           },
           {
             title: 'Decor',
-            status: (currentStep === 1 ? 'process' : formData.step2Field ? 'finish' : 'error'),
+            // status: (currentStep === 1 ? 'process' : formData.step2Field ? 'finish' : 'error'),
           },
           // {
           //   title: 'Decor',
@@ -161,19 +155,19 @@ export const CreateOrderPage = () => {
           // },
           {
             title: 'Шаг 3',
-            status: (currentStep === 2 ? 'process' : formData.step4Field ? 'finish' : 'error'),
+            // status: (currentStep === 2 ? 'process' : formData.step4Field ? 'finish' : 'error'),
           },
           {
             title: 'Accessories',
-            status: (currentStep === 3 ? 'process' : formData.step5Field ? 'finish' : 'error'),
+            // status: (currentStep === 4 ? 'process' : formData.step5Field ? 'finish' : 'error'),
           },
           {
             title: 'Options',
-            status: (currentStep === 3 ? 'process' : formData.step6Field ? 'finish' : 'error'),
+            // status: (currentStep === 5 ? 'process' : formData.step6Field ? 'finish' : 'error'),
           },
           {
             title: 'Information',
-            status: (currentStep === 3 ? 'process' : formData.step7Field ? 'finish' : 'error'),
+            // status: (currentStep === 6 ? 'process' : formData.step7Field ? 'finish' : 'error'),
           },
         ]}
       >

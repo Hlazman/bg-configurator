@@ -1,12 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { Form, Input, Button, Card, Radio, Select, Divider, Spin } from 'antd';
 import axios from 'axios';
+import { useProductVariant } from '../../Context/ProductVariantContext';
 
-const HingeStep = ({ formData, handleCardClick, handleNext }) => {
+const HingeStep = ({ formData, handleNext }) => {
   const [hingeData, setHingeData] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedBrand, setSelectedBrand] = useState('ALL');
   const [loading, setLoading] = useState(true);
+  const [previousHingeId, setPreviousHingeId] = useState(null); 
+  const { productVariantId } = useProductVariant();
 
   const jwtToken = localStorage.getItem('token');
 
@@ -96,6 +99,43 @@ const HingeStep = ({ formData, handleCardClick, handleNext }) => {
       id: hinge.id,
     }));
 
+    const handleHingeClick = async (fieldName, hingeId) => {
+      console.log(productVariantId)
+      const updateProductVariantData = {
+        updateProductVariantId: productVariantId, // Используем productVariantId
+        data: {
+          // hinge: hingeId,
+          hinge: hingeId === previousHingeId ? null : hingeId,
+        },
+      };
+  
+      await axios.post(
+        'https://api.boki.fortesting.com.ua/graphql',
+        {
+          query: `
+            mutation UpdateProductVariant($updateProductVariantId: ID!, $data: ProductVariantInput!) {
+              updateProductVariant(id: $updateProductVariantId, data: $data) {
+                data {
+                  id
+                }
+              }
+            }
+          `,
+          variables: updateProductVariantData,
+        },
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${jwtToken}`,
+          },
+        }
+      );
+  
+      setPreviousHingeId(hingeId === previousHingeId ? null : hingeId);
+  
+      formData[fieldName] = productVariantId;
+    };
+
   return (
     <Form onFinish={formData} onValuesChange={formData}>
       <div style={{ display: 'flex', gap: '30px' }}>
@@ -124,8 +164,8 @@ const HingeStep = ({ formData, handleCardClick, handleNext }) => {
       {loading ? (
         <Spin size="large" />
       ) : (
-        <Form.Item name="step10Field">
-          <Radio.Group value={formData.step10Field}>
+        <Form.Item name="hingesStep">
+          <Radio.Group value={formData.hingesStep}>
             <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}>
               {filteredImgs.map((hinge) => (
                 <div key={hinge.id} style={{ width: 220, margin: '20px 10px' }}>
@@ -134,13 +174,11 @@ const HingeStep = ({ formData, handleCardClick, handleNext }) => {
                     hoverable
                     style={{
                       border:
-                        formData.step10Field === hinge.id
-                        ? '7px solid #f06d20'
-                        : 'none',
+                        previousHingeId === hinge.id
+                          ? '7px solid #f06d20'
+                          : 'none',
                     }}
-                    onClick={() => {
-                      handleCardClick('step10Field', hinge.id);
-                    }}
+                    onClick={() => handleHingeClick('hingesStep', hinge.id)}
                   >
                     <div style={{ overflow: 'hidden', height: 220 }}>
                       <img

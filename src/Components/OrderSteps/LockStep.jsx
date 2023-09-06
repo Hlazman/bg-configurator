@@ -1,12 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { Form, Input, Button, Card, Radio, Select, Divider, Spin } from 'antd';
 import axios from 'axios';
+import { useProductVariant } from '../../Context/ProductVariantContext';
 
-const LockStep = ({ formData, handleCardClick, handleNext }) => {
+const LockStep = ({ formData, handleNext }) => {
   const [lockData, setLockData] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedBrand, setSelectedBrand] = useState('ALL');
   const [loading, setLoading] = useState(true);
+  const [previousLockId, setPreviousLockId] = useState(null); 
+  const { productVariantId } = useProductVariant();
 
   const jwtToken = localStorage.getItem('token');
 
@@ -95,6 +98,41 @@ const LockStep = ({ formData, handleCardClick, handleNext }) => {
       id: lock.id,
     }));
 
+  const handleLockClick = async (fieldName, lockId) => {
+    const updateProductVariantData = {
+      updateProductVariantId: productVariantId,
+      data: {
+        lock: lockId === previousLockId ? null : lockId,
+      },
+    };
+
+    await axios.post(
+      'https://api.boki.fortesting.com.ua/graphql',
+      {
+        query: `
+          mutation UpdateProductVariant($updateProductVariantId: ID!, $data: ProductVariantInput!) {
+            updateProductVariant(id: $updateProductVariantId, data: $data) {
+              data {
+                id
+              }
+            }
+          }
+        `,
+        variables: updateProductVariantData,
+      },
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${jwtToken}`,
+        },
+      }
+    );
+
+    setPreviousLockId(lockId === previousLockId ? null : lockId);
+
+    formData['lockStep'] = productVariantId;
+  };
+
   return (
     <Form onFinish={formData} onValuesChange={formData}>
       <div style={{ display: 'flex', gap: '30px' }}>
@@ -123,8 +161,8 @@ const LockStep = ({ formData, handleCardClick, handleNext }) => {
       {loading ? (
         <Spin size="large" />
       ) : (
-        <Form.Item name="step11Field">
-          <Radio.Group value={formData.step11Field}>
+        <Form.Item name="lockStep">
+          <Radio.Group value={formData.lockStep}>
             <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}>
               {filteredLocks.map((lock) => (
                 <div key={lock.id} style={{ width: 220, margin: '20px 10px' }}>
@@ -133,13 +171,11 @@ const LockStep = ({ formData, handleCardClick, handleNext }) => {
                     hoverable
                     style={{
                       border:
-                        formData.step11Field === lock.id
+                      previousLockId === lock.id
                         ? '7px solid #f06d20'
                         : 'none',
                     }}
-                    onClick={() => {
-                      handleCardClick('step11Field', lock.id);
-                    }}
+                    onClick={() => handleLockClick('lockStep', lock.id)}
                   >
                     <div style={{ overflow: 'hidden', height: 220 }}>
                       <img
@@ -169,4 +205,3 @@ const LockStep = ({ formData, handleCardClick, handleNext }) => {
 };
 
 export default LockStep;
-
