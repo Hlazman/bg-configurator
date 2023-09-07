@@ -1,5 +1,4 @@
 import React, { useState, useContext, useEffect } from 'react';
-// import React, { useState, useContext} from 'react';
 import { Route, Routes, Navigate, useNavigate, useLocation } from 'react-router-dom';
 import { AuthContext } from './Context/AuthContext';
 
@@ -12,7 +11,6 @@ import { ClientsPage } from './Pages/ClientsPage';
 import { FilesPage } from './Pages/FilesPage';
 import { CreateClientPage } from './Pages/CreateClientPage';
 import { CreateOrderPage } from './Pages/CreateOrderPage';
-// eslint-disable-next-line
 import { ConfigProvider, Layout, Select, Dropdown, Spin} from 'antd';
 import { UserOutlined } from '@ant-design/icons';
 import { Navigation } from './Components/Navigation';
@@ -38,7 +36,10 @@ const { Header, Content, Footer, Sider } = Layout;
 const App = () => {
   const { isAuthenticated, user, logout } = useContext(AuthContext);
   const [collapsed, setCollapsed] = useState(false);
-  const [selectedLanguage, setSelectedLanguage] = useState('en');
+  // const [selectedLanguage, setSelectedLanguage] = useState('en');
+  const [selectedLanguage, setSelectedLanguage] = useState(
+    localStorage.getItem('selectedLanguage') || 'en'
+  );
   // eslint-disable-next-line
   const [loading, setLoading] = useState(true);
 
@@ -49,7 +50,6 @@ const App = () => {
 
   const navigate = useNavigate()
   const handleResetPassword = () => {
-    // window.history.pushState(null, '', '/resetpassword')
     return navigate('/resetpassword');
   };
 
@@ -69,6 +69,7 @@ const App = () => {
   ];
 
   const handleLanguageChange = (language) => {
+    localStorage.setItem('selectedLanguage', language);
     setSelectedLanguage(language);
   };
 
@@ -83,11 +84,11 @@ const App = () => {
 
 const getHeaderTitle = (location, Id) => {
   if (location.pathname.startsWith('/createorder/')) {
-    return `Order #${Id}`;
+    return `${language.order} #${Id}`;
   }
 
   if (location.pathname.startsWith('/editclient/')) {
-    return `Client #${Id}`;
+    return `${language.client} #${Id}`;
   }
 
   switch (location.pathname) {
@@ -126,7 +127,7 @@ const getHeaderTitle = (location, Id) => {
         },
       }}
     >
-      {isAuthenticated() ? ( // If user is authenticated
+      {isAuthenticated() ? (
         <Layout style={{ minHeight: '100vh' }}>
           <Sider 
             style={{ zIndex: '1000000' }} 
@@ -171,11 +172,11 @@ const getHeaderTitle = (location, Id) => {
                   <Route path="/" element={<OrdersPage />} />
                   <Route path="/auth" element={<Navigate to="/" replace />} />
                   <Route path="/orders" element={<Navigate to="/" replace />} />
-                  <Route path="/clients" element={<ClientsPage />} />
+                  <Route path="/clients" element={<ClientsPage language={language}/>} />
                   <Route path="/createclient" element={<CreateClientPage />} />
                   <Route path="/editclient/:clientId" element={<EditClientPage />} />
                   {/* <Route path="/createorder" element={<CreateOrderPage />} /> */}
-                  <Route path="/createorder/:orderId" element={<CreateOrderPage />} />
+                  <Route path="/createorder/:orderId" element={<CreateOrderPage language={language}/>} />
                   <Route path="/files" element={<FilesPage />} />
                   <Route path="/resetpassword" element={<ResetPasswordPage />} />
                   <Route path="/savepassword" element={<SavePasswordPage />} />
@@ -189,9 +190,9 @@ const getHeaderTitle = (location, Id) => {
             </Footer>
           </Layout>
         </Layout>
-      ) : ( // If user is not authenticated
+      ) : (
         <Routes>
-          <Route path="/auth" element={<AuthPage />} />
+          <Route path="/auth" element={<AuthPage language={language} handleLanguageChange={handleLanguageChange}/>} />
           <Route path="*" element={<Navigate to="/auth" replace />} />
           <Route path="/resetpassword" element={<ResetPasswordPage />} />
           <Route path="/savepassword" element={<SavePasswordPage />} />

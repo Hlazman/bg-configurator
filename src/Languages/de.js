@@ -13,6 +13,38 @@ const de = {
   czech: 'Tschechisch',
   spanish: 'Spanisch',
   german: 'Deutsch',
+  AdminPanel: 'Admin Panel',
+  order: 'Bestellung',
+  client: 'Kunde',
+  organization: 'Organisation',
+  phone: 'Telefon',
+  addresses: 'Adressen',
+  hideAddresses: 'Adressen ausblenden',
+  showAddresses: 'Adressen anzeigen',
+  manager: 'Manager',
+  companyBy: 'Firma nach',
+  action: 'Aktion',
+  actions: 'Aktionen',
+  edit: 'Bearbeiten',
+  delete: 'Löschen',
+  cancel: 'Abbrechen',
+  yes: 'Ja',
+
+  // MESSAGE
+  clientSuccsesRemove: 'Der Kunde wurde erfolgreich aus der Datenbank entfernt',
+  clientError: 'Beim Löschen eines Kunden ist ein Fehler aufgetreten',
+  removeClient: 'Möchten Sie den Kunden wirklich aus der Datenbank entfernen',
+  undone: 'Diese Aktion kann nicht rückgängig gemacht werden',
+  loginFailed: 'Anmeldung fehlgeschlagen',
+  invalid: 'Ungültige E-Mail oder Passwort. Bitte versuchen Sie es erneut',
+  inputEmail: 'Bitte geben Sie Ihre E-Mail-Adresse ein!',
+  invalidEmail: 'Bitte geben Sie eine gültige E-Mail-Adresse ein!',
+  inputPassword: 'Bitte geben Sie Ihr Passwort ein!',
+  remember: 'Erinnere dich an mich',
+  forgotPass: 'Passwort vergessen?',
+  signInAcc: 'Melden Sie sich in Ihrem Konto an',
+  signIn: 'Anmelden',
+
 };
 
 export default de;

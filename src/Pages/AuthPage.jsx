@@ -3,10 +3,12 @@ import { NavLink } from 'react-router-dom';
 import { Card, Form, Input, Checkbox, Button, Typography, notification } from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
 import { AuthContext } from '../Context/AuthContext';
+import { Select } from 'antd';
 
+const { Option } = Select;
 const { Title } = Typography;
 
-export const AuthPage = () => {
+export const AuthPage = ({language, handleLanguageChange}) => {
   const { loginUserWithApi } = useContext(AuthContext);
   const [api, contextHolder] = notification.useNotification();
 
@@ -20,8 +22,8 @@ export const AuthPage = () => {
 
   const openNotification = () => {
     api.open({
-      message: 'Login Failed',
-      description: 'Invalid email or password. Please try again.',
+      message: `${language.loginFailed}`,
+      description: `${language.invalid}`,
       duration: 3,
     });
   };
@@ -32,15 +34,15 @@ export const AuthPage = () => {
       <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%', marginTop: '30px' }}>
         <Card style={{ width: 400 }}>
           <div style={{ textAlign: 'left' }}>
-            <Title level={4} style={{ margin: '20px 0', color: '#343339', textAlign: 'center' }}>Sign in to your account</Title>
+            <Title level={4} style={{ margin: '20px 0', color: '#343339', textAlign: 'center' }}>{language.signInAcc}</Title>
           </div>
 
           <Form name="login-form" onFinish={onFinish}>
             <Form.Item
               name="email"
               rules={[
-                { required: true, message: 'Please input your email!' },
-                { type: 'email', message: 'Please enter a valid email address!' },
+                { required: true, message: `${language.inputEmail}` },
+                { type: 'email', message: `${language.invalidEmail}` },
               ]}
             >
               <Input prefix={<UserOutlined />} placeholder="Email" type="email" style={{ height: 48 }} />
@@ -48,22 +50,36 @@ export const AuthPage = () => {
 
             <Form.Item
               name="password"
-              rules={[{ required: true, message: 'Please input your password!' }]}
+              rules={[{ required: true, message: `${language.inputPassword}` }]}
             >
               <Input.Password prefix={<LockOutlined />} placeholder="Password" style={{ height: 48 }} />
             </Form.Item>
 
             <Form.Item name="remember" valuePropName="checked" style={{ marginBottom: 20, textAlign: 'left' }}>
-              <Checkbox>Remember me</Checkbox>
+              <Checkbox>{language.remember}</Checkbox>
             </Form.Item>
 
             <Form.Item style={{ marginBottom: 20 }}>
-              <Button type="primary" htmlType="submit" style={{ width: '100%', height: 48 }}>Sign in</Button>
+              <Button type="primary" htmlType="submit" style={{ width: '100%', height: 48 }}>{language.signIn}</Button>
             </Form.Item>
 
             <Form.Item style={{ marginBottom: 12 }}>
-              <NavLink to="/resetpassword"> Forgot password? </NavLink>
+              <NavLink to="/resetpassword"> {language.forgotPass} </NavLink>
             </Form.Item>
+
+            <Select defaultValue={'English'} style={{ width: 120 }} onChange={handleLanguageChange}>
+            {[
+              { key: "en", label: 'English' },
+              { key: "ua", label: 'Українська' },
+              { key: "pl", label: 'Polski' },
+              { key: "cs", label: 'Čeština' },
+              { key: "es", label: 'Español' },
+              { key: "de", label: 'Deutsch' },
+            ].map((option) => (
+              <Option key={option.key} value={option.key}>{option.label}</Option>
+            ))}
+          </Select>
+
           </Form>
         </Card>
       </div>

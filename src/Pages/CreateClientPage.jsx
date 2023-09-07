@@ -12,7 +12,7 @@ export const CreateClientPage = () => {
   const [loading, setLoading] = useState(false);
 
   const handleAddAddress = () => {
-    const newId = addresses.length; // Уникальное значение для нового адреса
+    const newId = addresses.length;
     setAddresses([...addresses, { id: newId, country: null, city: null, address: null, zipCode: null }]);
   };
 

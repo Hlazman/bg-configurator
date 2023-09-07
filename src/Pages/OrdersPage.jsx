@@ -144,9 +144,6 @@ export const OrdersPage = () => {
           order.id === updatedOrder.id ? { ...order, attributes: { ...order.attributes, status: newStatus } } : order
         )
       );
-
-      console.log('Successfully updated order status:', response.data);
-      // fetchData();
     } catch (error) {
       console.error('Error updating order status:', error);
     }
@@ -344,7 +341,8 @@ export const OrdersPage = () => {
       width: '200px',
       render: (shippingAddress) => (
         shippingAddress
-          ? `${shippingAddress.address}, ${shippingAddress.city}, ${shippingAddress.country}, ${shippingAddress.zipCode}`
+          // ? `${shippingAddress.address}, ${shippingAddress.city}, ${shippingAddress.country}, ${shippingAddress.zipCode}`
+          ? `${shippingAddress.address || ''}${shippingAddress.city ? `, ${shippingAddress.city}` : ''}${shippingAddress.country ? `, ${shippingAddress.country}` : ''}${shippingAddress.zipCode ? `, ${shippingAddress.zipCode}` : ''}`
           : ''
       ),
       sorter: (a, b) => {

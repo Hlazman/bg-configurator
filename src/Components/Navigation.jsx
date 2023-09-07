@@ -43,8 +43,6 @@ export const Navigation = ({ language, handleLanguageChange }) => {
       );
 
       const createdOrderId = response.data.data.createOrder.data.id;
-
-
       const createProductVariantData = {
         data: {
           door: null,
@@ -145,7 +143,7 @@ export const Navigation = ({ language, handleLanguageChange }) => {
     {
       'key': "adminPanel", 
       'icon': <SettingOutlined />,
-      'label': (<a href="https://www.google.com" target="_blank" rel="noopener noreferrer"> Admin Panel </a>),
+      'label': (<a href="https://www.google.com" target="_blank" rel="noopener noreferrer"> {language.AdminPanel} </a>),
     }, 
     { type: "divider" },
     {

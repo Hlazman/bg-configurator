@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { Steps, Form, Input, Button, Divider} from 'antd';
 import { OrderDetails } from '../Components/OrderDetails';
-import DoorStep from '../Components/OrderSteps/DoorStep';
-import DecorStep from '../Components/OrderSteps/DecorStep';
-import AccessoriesStep from '../Components/OrderSteps/AccessoriesStep';
+import DoorStep from '../Components/CreateOrderSteps/DoorStep';
+import GroupDecorStep from '../Components/CreateOrderSteps/GroupDecorStep';
+import GroupAccessoriesStep from '../Components/CreateOrderSteps/GroupAccessoriesStep';
 import { useParams } from 'react-router-dom';
-import InformationStep from '../Components/OrderSteps/InformationStep';
+import InformationStep from '../Components/CreateOrderSteps/InformationStep';
 
-export const CreateOrderPage = () => {
+export const CreateOrderPage = ({language}) => {
 
   const { orderId } = useParams();
   const [currentStep, setCurrentStep] = useState(0);
@@ -72,14 +72,16 @@ export const CreateOrderPage = () => {
             formData={formData}
             handleCardClick={handleCardClick}
             handleNext={handleNext}
+            language={language}
           />
         );
       case 1:
         return (
-          <DecorStep
+          <GroupDecorStep
             formData={formData}
             handleCardClick={handleCardClick}
             handleNext={handleNext}
+            language={language}
         />
         );
       case 2:
@@ -94,10 +96,11 @@ export const CreateOrderPage = () => {
         );
       case 3:
         return (
-          <AccessoriesStep
+          <GroupAccessoriesStep
             formData={formData}
             handleCardClick={handleCardClick}
             handleNext={handleNext}
+            language={language}
         />
         );
         case 4:
@@ -114,6 +117,7 @@ export const CreateOrderPage = () => {
         return (
           <InformationStep
             formData={formData}
+            language={language}
         />
         );
       default:
@@ -137,7 +141,7 @@ export const CreateOrderPage = () => {
         items={[
           {
             title: 'Canvas',
-            // status: (currentStep === 0 ? 'process' : formData.doorStep ? 'finish' : 'error'),
+            status: (currentStep === 0 ? 'process' : formData.doorStep ? 'finish' : 'error'),
           },
           {
             title: 'Decor',
@@ -145,13 +149,13 @@ export const CreateOrderPage = () => {
           },
           // {
           //   title: 'Decor',
-          //   status: (
-          //     currentStep === 1
-          //       ? 'process'
-          //       : (formData.step2Field || formData.step3Field)
-          //         ? 'finish'
-          //         : 'error'
-          //   ),
+            // status: (
+            //   currentStep === 1
+            //     ? 'process'
+            //     : (formData.step2Field || formData.step3Field)
+            //       ? 'finish'
+            //       : 'error'
+            // ),
           // },
           {
             title: 'Шаг 3',
@@ -160,6 +164,13 @@ export const CreateOrderPage = () => {
           {
             title: 'Accessories',
             // status: (currentStep === 4 ? 'process' : formData.step5Field ? 'finish' : 'error'),
+            status: (
+              currentStep === 4
+                ? 'process'
+                : (formData.hingesStep || formData.knobeStep || formData.lockStep || formData.skirtingStep)
+                  ? 'finish'
+                  : 'error'
+            ),
           },
           {
             title: 'Options',

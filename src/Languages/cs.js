@@ -13,6 +13,38 @@ const cs = {
   czech: 'Čeština',
   spanish: 'Španělština',
   german: 'Němčina',
+  AdminPanel: 'Správa admin',
+  order: 'Objednávka',
+  client: 'Klient',
+  organization: 'Organizace',
+  phone: 'Telefon',
+  addresses: 'Adresy',
+  hideAddresses: 'Skrýt adresy',
+  showAddresses: 'Zobrazit adresy',
+  manager: 'Manažer',
+  companyBy: 'Společnost podle',
+  action: 'Akce',
+  actions: 'Akce',
+  edit: 'Upravit',
+  delete: 'Smazat',
+  cancel: 'Zrušit',
+  yes: 'Ano',
+
+  // MESSAGE
+  clientSuccsesRemove: 'Klient byl úspěšně odstraněn z databáze',
+  clientError: 'Při odstraňování klienta došlo k chybě',
+  removeClient: 'Určitě chcete klienta odstranit z databáze',
+  undone: 'Tuto akci nelze vrátit zpět',
+  loginFailed: 'Přihlášení se nezdařilo',
+  invalid: 'Neplatný e-mail nebo heslo. Zkuste to prosím znovu',
+  inputEmail: 'Prosím, zadejte svůj e-mail!',
+  invalidEmail: 'Prosím, zadejte platnou e-mailovou adresu!',
+  inputPassword: 'Prosím, zadejte své heslo!',
+  remember: 'Pamatovat si mě',
+  forgotPass: 'Zapomněli jste heslo?',
+  signInAcc: 'Přihlásit se do svého účtu',
+  signIn: 'Přihlásit se'
+
 };
 
 export default cs;

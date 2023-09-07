@@ -15,6 +15,41 @@ const en = {
   czech: 'Čeština',
   spanish: 'Español',
   german: 'Deutsch',
+  AdminPanel: 'Admin Panel',
+  order: 'Order',
+  client: 'Client',
+  organization: 'Organization',
+  phone: 'Phone',
+  addresses: 'Addresses',
+  hideAddresses: 'Hide addresses',
+  showAddresses: 'Show addresses',
+  manager: 'Manager',
+  companyBy: 'Company by',
+  action: 'Action',
+  actions: 'Actions',
+  edit: 'Edit',
+  delete: 'Delete',
+  cancel: 'Cancel',
+  yes: 'Yes',
+  
+
+  
+
+    // MESSAGE
+    clientSuccsesRemove: 'The client was successfully removed from the database',
+    clientError: 'An error occurred while deleting a client',
+    removeClient: 'You definitely want to remove the client from the database',
+    undone: 'This action cannot be undone',
+
+    loginFailed: 'Login Failed',
+    invalid: 'Invalid email or password. Please try again',
+    inputEmail: 'Please input your email!',
+    invalidEmail: 'Please enter a valid email address!',
+    inputPassword: 'Please input your password!',
+    remember: 'Remember me',
+    forgotPass: 'Forgot password?',
+    signInAcc: 'Sign in to your account',
+    signIn: 'Sign in',
 };
 
 export default en;

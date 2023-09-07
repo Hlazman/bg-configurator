@@ -5,7 +5,7 @@ import { DownOutlined, SearchOutlined } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../Context/AuthContext';
 
-export const ClientsPage = () => {
+export const ClientsPage = ({language}) => {
   const [loading, setLoading] = useState(true);
   const [clients, setClients] = useState([]);
   const [selectedFilters, setSelectedFilters] = useState([]);
@@ -46,12 +46,11 @@ export const ClientsPage = () => {
       );
   
       if (response.data.data.deleteClient) {
-        message.success('The client was successfully removed from the database');
+        message.success(`${language.clientSuccsesRemove}`);
         fetchData();
       }
     } catch (error) {
-      console.error('Error while executing delete request:', error);
-      message.error('An error occurred while deleting a client.');
+      message.error(`${language.clientError}`);
     } finally {
       setDeleteClientId(null);
     }
@@ -117,7 +116,7 @@ export const ClientsPage = () => {
 
       setClients(clientsWithKeys);
     } catch (error) {
-      console.error('Ошибка при выполнении запроса:', error);
+      console.error('Error:', error);
     } finally {
       setLoading(false);
     }
@@ -146,7 +145,7 @@ export const ClientsPage = () => {
 
   const columns = [
     {
-      title: 'Client',
+      title: `${language.client}`,
       dataIndex: ['attributes', 'client_name'],
       key: 'attributes.client_name',
       width: '200px',
@@ -190,7 +189,7 @@ export const ClientsPage = () => {
       },
     },
     {
-      title: 'Organization',
+      title: `${language.organization}`,
       dataIndex: ['attributes', 'client_company'],
       key: 'attributes.client_company',
       sorter: (a, b) => {
@@ -244,7 +243,7 @@ export const ClientsPage = () => {
       key: 'attributes.contacts.email',
     },
     {
-      title: 'Phone',
+      title: `${language.phone}`,
       dataIndex: ['attributes', 'contacts'],
       key: 'attributes.contacts.phone',
       render: (contacts, record) => (
@@ -259,7 +258,7 @@ export const ClientsPage = () => {
       ),
     },
     {
-      title: 'Addresses',
+      title: `${language.addresses}`,
       dataIndex: ['attributes', 'addresses'],
       key: 'addresses',
       width: '300px',
@@ -292,28 +291,28 @@ export const ClientsPage = () => {
           )}
           {addresses && addresses.length > 1 && (
             <Button type='link' onClick={() => setShowAllAddresses(!showAllAddresses)}>
-              {showAllAddresses ? 'Скрыть адреса' : 'Показать еще'}
+              {showAllAddresses ? `${language.hideAddresses}` : `${language.showAddresses}`}
             </Button>
           )}
         </div>
       ),
     },
     {
-      title: 'Manager',
+      title: `${language.manager}`,
       dataIndex: ['attributes', 'manager', 'data', 'attributes', 'username'],
       key: 'attributes.manager.data.attributes.username',
     },
     {
-      title: 'Company by',
+      title: `${language.companBy}`,
       dataIndex: ['attributes', 'company', 'data', 'attributes', 'name'],
       key: 'attributes.company.data.attributes.name',
     },
     {
-      title: 'Action',
+      title: `${language.action}`,
       dataIndex: 'operation',
       key: 'operation',
       fixed: 'right',
-      width: '120px',
+      width: '150px',
       render: (_, record) => (
         <Space size="large">
           <Dropdown
@@ -321,21 +320,20 @@ export const ClientsPage = () => {
               items: [
                 {
                   key: '1',
-                  label: 'Edit',
+                  label: `${language.edit}`,
                   onClick: () => handleEditClient(record.id),
                 },
                 {
                   key: '2',
-                  label: 'Delete',
+                  label: `${language.delete}`,
                   onClick: () => setDeleteClientId(record.id),
                 },
               ],
             }}
             trigger={['click']}
           >
-            <Button>
-              <Space> Actions <DownOutlined />
-              </Space>
+            <Button> 
+            {language.actions} <DownOutlined />
             </Button>
           </Dropdown>
         </Space>
@@ -367,14 +365,14 @@ export const ClientsPage = () => {
       </Spin>
 
       <Modal
-        title={`You definitely want to remove the client from the database ${user.username}?`}
+        title={`${language.removeClient} ${user.username}?`}
         open={deleteClientId !== null}
         onOk={handleDeleteClient}
         onCancel={() => setDeleteClientId(null)}
-        okText="Yes"
-        cancelText="Cancel"
+        okText={`${language.yes}`}
+        cancelText={`${language.cancel}`}
       >
-        <p>This action cannot be undone.</p>
+        <p>{language.undone}</p>
       </Modal>
 
     </div>

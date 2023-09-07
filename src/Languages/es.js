@@ -13,6 +13,39 @@ const es = {
   czech: 'Checo',
   spanish: 'Español',
   german: 'Alemán',
+  AdminPanel: 'Panel de admin',
+  order: 'Orden',
+  client: 'Cliente',
+  organization: 'Organización',
+  phone: 'Teléfono',
+  addresses: 'Direcciones',
+  hideAddresses: 'Ocultar direcciones',
+  showAddresses: 'Mostrar direcciones',
+  manager: 'Gerente',
+  companyBy: 'Empresa por',
+  action: 'Acción',
+  actions: 'Acciones',
+  edit: 'Editar',
+  delete: 'Eliminar',
+  cancel: 'Cancelar',
+  yes: 'Sí',
+
+  // MESSAGE
+  clientSuccsesRemove: 'El cliente se eliminó correctamente de la base de datos',
+  clientError: 'Se produjo un error al eliminar un cliente',
+  removeClient: '¿Seguro que quieres eliminar el cliente de la base de datos',
+  undone: 'Esta acción no se puede deshacer',
+  loginFailed: 'Inicio de sesión fallido',
+  invalid: 'Correo electrónico o contraseña no válidos. Por favor, inténtalo de nuevo',
+  inputEmail: '¡Por favor ingresa tu correo electrónico!',
+  invalidEmail: '¡Por favor ingresa una dirección de correo electrónico válida!',
+  inputPassword: '¡Por favor ingresa tu contraseña!',
+  remember: 'Recuérdame',
+  forgotPass: '¿Olvidaste tu contraseña?',
+  signInAcc: 'Inicia sesión en tu cuenta',
+  signIn: 'Iniciar sesión'
+
+
 };
 
 export default es;
