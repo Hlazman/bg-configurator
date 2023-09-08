@@ -45,6 +45,49 @@ const de = {
   signInAcc: 'Melden Sie sich in Ihrem Konto an',
   signIn: 'Anmelden',
 
+  clientAddSuccses: 'Kunde wurde erfolgreich zur Datenbank hinzugefügt',
+  clientAddError: 'Beim Hinzufügen eines Kunden ist ein Fehler aufgetreten',
+  clientNameRequred: 'Bitte geben Sie den Namen des Kunden ein!',
+  clientNameValid: 'Der Name des Kunden muss mindestens 2 Zeichen lang sein.',
+  clientName: 'Kundenname',
+  country: 'Land',
+  city: 'Stadt',
+  address: 'Adresse',
+  zipCodeNumber: 'Postleitzahl muss eine Zahl sein.',
+  zipCodeValid: 'Postleitzahl muss mindestens 5 Zeichen lang sein.',
+  zipCode: 'Postleitzahl',
+  addAddress: 'Adresse hinzufügen',
+  phoneValid: 'Die Telefonnummer muss mit "+" beginnen, wenn vorhanden, und aus Zahlen bestehen.',
+  phone2: 'Telefon-2',
+  addclient: 'Kunden hinzufügen',
+  clientGetError: 'Beim Abrufen der Kundendaten ist ein Fehler aufgetreten',
+  clientEditSuccses: 'Kunde wurde erfolgreich aktualisiert',
+  clientEditError: 'Beim Aktualisieren des Kunden ist ein Fehler aufgetreten',
+  saveChanges: 'Änderungen speichern',
+
+  notFound: 'Seite nicht gefunden',
+  resetPass: 'Passwort zurücksetzen',
+  savePass: 'Neues Passwort speichern',
+  newPass: 'Neues Passwort',
+  enterPass: 'Bitte geben Sie ein Passwort ein',
+  confirmPass: 'Passwort bestätigen',
+  confirmPassMes: 'Bitte bestätigen Sie Ihr Passwort',
+  passMatch: 'Die Passwörter stimmen nicht überein',
+
+  open: 'Öffnen',
+  status: 'Status',
+  search: 'Suche',
+  reset: 'Zurücksetzen',
+  createdAt: 'Erstellt am',
+  deliveryAddress: 'Lieferadresse',
+  deliveryAt: 'Geliefert am',
+  price: 'Preis',
+  discount: 'Rabatt',
+  currency: 'Währung',
+
+
+
+
 };
 
 export default de;

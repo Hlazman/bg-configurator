@@ -4,7 +4,7 @@ import { LockOutlined } from '@ant-design/icons';
 
 const { Title } = Typography;
 
-export const SavePasswordPage = () => {
+export const SavePasswordPage = ({language}) => {
   const onFinish = (values) => {
     console.log('Received values:', values);
   };
@@ -14,31 +14,31 @@ export const SavePasswordPage = () => {
       <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%', marginTop: '50px' }}>
         <Card style={{ width: 400 }}>
           <div style={{ textAlign: 'left' }}>
-            <Title level={4} style={{ margin: '20px 0', color: '#343339', textAlign: 'center' }}>Save new Password</Title>
+            <Title level={4} style={{ margin: '20px 0', color: '#343339', textAlign: 'center' }}>{language.savePass}</Title>
           </div>
 
           <Form name="savePassword-form" onFinish={onFinish}>
 
           <Form.Item
-            label="New password"
+            label={language.newPass}
             name="password"
-            rules={[{ required: true, message: 'Please enter a password' }]}
+            rules={[{ required: true, message: `${language.enterPass}` }]}
           >
             <Input.Password prefix={<LockOutlined />} />
           </Form.Item>
 
           <Form.Item
-            label = "Confirm password"
+            label = {language.confirmPass}
             name="confirmPassword"
             dependencies={['password']}
             rules={[
-              { required: true, message: 'Please confirm your password' },
+              { required: true, message: `${language.confirmPassMes}` },
               ({ getFieldValue }) => ({
                 validator(_, value) {
                   if (!value || getFieldValue('password') === value) {
                     return Promise.resolve();
                   }
-                  return Promise.reject(new Error('The passwords do not match'));
+                  return Promise.reject(new Error(`${language.passMatch}`));
                 },
               }),
             ]}
@@ -46,10 +46,8 @@ export const SavePasswordPage = () => {
             <Input.Password prefix={<LockOutlined />} />
           </Form.Item>
 
-
-
             <Form.Item style={{ marginBottom: 20 }}>
-              <Button type="primary" htmlType="submit" style={{ width: '100%', height: 48 }}>Save Password</Button>
+              <Button type="primary" htmlType="submit" style={{ width: '100%', height: 48 }}>{language.savePass}</Button>
             </Form.Item>
 
           </Form>

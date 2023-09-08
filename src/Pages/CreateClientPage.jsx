@@ -4,7 +4,7 @@ import { UserOutlined, PlusOutlined, MinusCircleOutlined } from '@ant-design/ico
 import axios from 'axios';
 import { AuthContext } from '../Context/AuthContext';
 
-export const CreateClientPage = () => {
+export const CreateClientPage = ({language}) => {
   const { user } = useContext(AuthContext);
   const jwtToken = localStorage.getItem('token');
   const [form] = Form.useForm();
@@ -48,12 +48,12 @@ export const CreateClientPage = () => {
       .then((response) => {
         setLoading(false);
         form.resetFields();
-        message.success('Client successfully added to database');
+        message.success(language.clientAddSuccses);
       })
       .catch((error) => {
         setLoading(false);
         console.error(error);
-        message.error('An error occurred while adding a client');
+        message.error(language.clientAddError);
       })
       // .finally(() => setAddresses([{ id: null, country: null, city: null, address: null, zipCode: null }]));
   };
@@ -71,21 +71,21 @@ export const CreateClientPage = () => {
             rules={[
               {
                 required: true,
-                message: 'Please enter the client name!',
+                message: `${language.clientNameRequred}`,
               },
               {
                 min: 2,
-                message: 'Client name must be at least 2 characters long.',
+                message: `${language.clientNameValid}`,
               },
             ]}
           >
-            <Input prefix={<UserOutlined />} placeholder="Client Name" addonBefore="Client name" />
+            <Input prefix={<UserOutlined />} placeholder={language.clientName} addonBefore={language.clientName} />
           </Form.Item>
 
           <Form.Item
             name="client_company"
           >
-            <Input placeholder="Orgainzation" addonBefore="Orgainzation"/>
+            <Input placeholder={language.organization} addonBefore={language.organization}/>
           </Form.Item>
 
           {addresses.map((address, index) => (
@@ -93,36 +93,36 @@ export const CreateClientPage = () => {
               <Form.Item
                 name={['addresses', index, 'country']}
               >
-                <Input placeholder="Country" addonBefore="Country" />
+                <Input placeholder={language.country} addonBefore={language.country} />
               </Form.Item>
               <Form.Item
                 name={['addresses', index, 'city']}
               >
-                <Input placeholder="City" addonBefore="City" />
+                <Input placeholder={language.city} addonBefore={language.city} />
               </Form.Item>
               <Form.Item
                 name={['addresses', index, 'address']}
               >
-                <Input placeholder="Address" addonBefore="Address" />
+                <Input placeholder={language.address} addonBefore={language.address} />
               </Form.Item>
               <Form.Item
                 name={['addresses', index, 'zipCode']}
                 rules={[
                   {
                     pattern: /^[0-9]+$/,
-                    message: 'Zip Code must be a number.',
+                    message: `${language.zipCodeNumber}`,
                   },
                   ({ getFieldValue }) => ({
                     validator(_, value) {
                       if (!getFieldValue(['addresses', index, 'zipCode']) || value.length >= 5) {
                         return Promise.resolve();
                       }
-                      return Promise.reject('Zip Code must be at least 5 characters long.');
+                      return Promise.reject(`${language.zipCodeValid}`);
                     },
                   }),
                 ]}
               >
-                <Input placeholder="Zip Code" addonBefore="Zip Code" />
+                <Input placeholder={language.zipCode} addonBefore={language.zipCode} />
               </Form.Item>
               
               <Button danger
@@ -134,7 +134,7 @@ export const CreateClientPage = () => {
 
           <Form.Item>
             <Button type="primary" onClick={handleAddAddress} icon={<PlusOutlined />}>
-              Add Address
+              {language.addAddress}
             </Button>
           </Form.Item>
 
@@ -143,11 +143,11 @@ export const CreateClientPage = () => {
             rules={[
               {
                 pattern: /^(\+)?[0-9]+$/,
-                message: 'Phone must start with "+" if present and consist of numbers.',
+                message: `${language.phoneValid}`,
               },
             ]}
           >
-            <Input placeholder="Phone" addonBefore="Phone"/>
+            <Input placeholder={language.phone} addonBefore={language.phone}/>
           </Form.Item>
 
           <Form.Item
@@ -155,11 +155,11 @@ export const CreateClientPage = () => {
             rules={[
               {
                 pattern: /^(\+)?[0-9]+$/,
-                message: 'Phone 2 must start with "+" if present and consist of numbers.',
+                message: `${language.phoneValid}`,
               },
             ]}
           >
-            <Input placeholder="Phone 2" addonBefore="Phone 2"/>
+            <Input placeholder={language.phone2} addonBefore={language.phone2}/>
           </Form.Item>
 
           <Form.Item
@@ -176,7 +176,7 @@ export const CreateClientPage = () => {
 
           <Form.Item>
             <Button type="primary" htmlType="submit">
-              Add client
+              {language.addclient}
             </Button>
           </Form.Item>
 

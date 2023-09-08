@@ -43,7 +43,49 @@ const es = {
   remember: 'Recuérdame',
   forgotPass: '¿Olvidaste tu contraseña?',
   signInAcc: 'Inicia sesión en tu cuenta',
-  signIn: 'Iniciar sesión'
+  signIn: 'Iniciar sesión',
+
+  clientAddSuccses: 'Cliente añadido correctamente a la base de datos',
+  clientAddError: 'Se produjo un error al añadir un cliente',
+  clientNameRequred: '¡Por favor ingresa el nombre del cliente!',
+  clientNameValid: 'El nombre del cliente debe tener al menos 2 caracteres.',
+  clientName: 'Nombre del cliente',
+  country: 'País',
+  city: 'Ciudad',
+  address: 'Dirección',
+  zipCodeNumber: 'El código postal debe ser un número.',
+  zipCodeValid: 'El código postal debe tener al menos 5 caracteres.',
+  zipCode: 'Código postal',
+  addAddress: 'Añadir dirección',
+  phoneValid: 'El teléfono debe comenzar con "+" si está presente y consistir en números.',
+  phone2: 'Teléfono-2',
+  addclient: 'Añadir cliente',
+  clientGetError: 'Se produjo un error al obtener los datos del cliente',
+  clientEditSuccses: 'Cliente actualizado correctamente',
+  clientEditError: 'Se produjo un error al actualizar el cliente',
+  saveChanges: 'Guardar cambios',
+
+  notFound: 'Página no encontrada',
+  resetPass: 'Restablecer contraseña',
+  savePass: 'Guardar nueva contraseña',
+  newPass: 'Nueva contraseña',
+  enterPass: 'Por favor ingresa una contraseña',
+  confirmPass: 'Confirmar contraseña',
+  confirmPassMes: 'Por favor confirma tu contraseña',
+  passMatch: 'Las contraseñas no coinciden',
+  
+  open: 'Abrir',
+  status: 'Estado',
+  search: 'Buscar',
+  reset: 'Restablecer',
+  createdAt: 'Creado el',
+  deliveryAddress: 'Dirección de entrega',
+  deliveryAt: 'Entrega el',
+  price: 'Precio',
+  discount: 'Descuento',
+  currency: 'Moneda',
+
+
 
 
 };

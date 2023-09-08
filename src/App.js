@@ -36,11 +36,9 @@ const { Header, Content, Footer, Sider } = Layout;
 const App = () => {
   const { isAuthenticated, user, logout } = useContext(AuthContext);
   const [collapsed, setCollapsed] = useState(false);
-  // const [selectedLanguage, setSelectedLanguage] = useState('en');
   const [selectedLanguage, setSelectedLanguage] = useState(
     localStorage.getItem('selectedLanguage') || 'en'
   );
-  // eslint-disable-next-line
   const [loading, setLoading] = useState(true);
 
   const handleLogout = () => {
@@ -93,21 +91,19 @@ const getHeaderTitle = (location, Id) => {
 
   switch (location.pathname) {
     case '/':
-      return 'Orders';
+      return language.orders;
     case '/clients':
-      return 'Clients list';
+      return language.clients;
     case '/createclient':
-      return 'Create Client';
-      case '/editclient':
-      return 'Edit Client';
+      return language.createClient;
     case '/files':
-      return 'Files and Instructions';
+      return language.files;
       case '/resetpassword':
-        return 'Reset password';
+        return language.resetPass;
     case '/savepassword':
-      return 'Save password';
+      return language.savePass;
     default:
-      return 'No such page';
+      return language.notFound;
   }
 };
 
@@ -169,18 +165,18 @@ const getHeaderTitle = (location, Id) => {
             <Content style={{ margin: '0 16px' }}>
               <div className="App">
                 <Routes>
-                  <Route path="/" element={<OrdersPage />} />
+                  <Route path="/" element={<OrdersPage language={language} />} />
                   <Route path="/auth" element={<Navigate to="/" replace />} />
                   <Route path="/orders" element={<Navigate to="/" replace />} />
                   <Route path="/clients" element={<ClientsPage language={language}/>} />
-                  <Route path="/createclient" element={<CreateClientPage />} />
-                  <Route path="/editclient/:clientId" element={<EditClientPage />} />
+                  <Route path="/createclient" element={<CreateClientPage language={language} />} />
+                  <Route path="/editclient/:clientId" element={<EditClientPage language={language} />} />
                   {/* <Route path="/createorder" element={<CreateOrderPage />} /> */}
                   <Route path="/createorder/:orderId" element={<CreateOrderPage language={language}/>} />
                   <Route path="/files" element={<FilesPage />} />
-                  <Route path="/resetpassword" element={<ResetPasswordPage />} />
-                  <Route path="/savepassword" element={<SavePasswordPage />} />
-                  <Route path="*" element={<NotFoundPage />} />
+                  <Route path="/resetpassword" element={<ResetPasswordPage language={language} />} />
+                  <Route path="/savepassword" element={<SavePasswordPage language={language} />} />
+                  <Route path="*" element={<NotFoundPage language={language} />} />
                 </Routes>
               </div>
             </Content>

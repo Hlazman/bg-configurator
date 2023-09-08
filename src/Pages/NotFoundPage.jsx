@@ -1,5 +1,5 @@
-export const NotFoundPage = () => {
+export const NotFoundPage = ({language}) => {
   return (
-    <h1>Page not found</h1>
+    <h1>{language.notFound}</h1>
   );
 };

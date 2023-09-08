@@ -3,7 +3,7 @@ import { DownOutlined, SearchOutlined, FilterOutlined, EditOutlined, FolderOpenO
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 
-export const OrdersPage = () => {
+export const OrdersPage = ({language}) => {
   const [selectedFilters, setSelectedFilters] = useState();
   const [data, setData] = useState([]);
     const [pagination, setPagination] = useState({
@@ -152,24 +152,24 @@ export const OrdersPage = () => {
     const items = [
     {
       key: '1',
-      label: 'Open',
+      label: `${language.open}`,
       icon: <FolderOpenOutlined />,
     },
     {
       key: '2',
-      label: 'Edit',
+      label: `${language.edit}`,
       icon: <EditOutlined/>,
 
     },
     {
       key: '3',
-      label: 'Delete',
+      label: `${language.delete}`,
       icon: <CloseCircleOutlined />,
       danger: true,
     },
     {
       key: '10',
-      label: 'Status',
+      label: `${language.status}`,
       children: [
         {
           key: 'draft',
@@ -193,7 +193,7 @@ export const OrdersPage = () => {
 
   const columns = [
     {
-      title: 'Order Name',
+      title: `${language.order}`,
       dataIndex: 'id',
       key: 'id',
       width: '200px',
@@ -203,7 +203,7 @@ export const OrdersPage = () => {
       filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters }) => (
         <div style={{ padding: 8 }}>
           <Input
-            placeholder="Search Order Name"
+            placeholder={language.search}
             value={selectedKeys[0]}
             onChange={(e) => setSelectedKeys(e.target.value ? [e.target.value] : [])}
             onPressEnter={() => confirm()}
@@ -217,10 +217,10 @@ export const OrdersPage = () => {
               size="small"
               style={{ width: 90 }}
             >
-              Search
+              {language.search}
             </Button>
             <Button onClick={() => { clearFilters(); confirm(); }} size="small" style={{ width: 90 }}>
-              Reset
+              {language.reset}
             </Button>
           </Space>
         </div>
@@ -241,7 +241,7 @@ export const OrdersPage = () => {
       },
     },
     {
-      title: 'Status',
+      title: `${language.status}`,
       dataIndex: ['attributes', 'status'],
       key: 'orderStatus',
       width: '120px',
@@ -280,7 +280,7 @@ export const OrdersPage = () => {
       },
     },
     {
-      title: 'Created at',
+      title: `${language.createdAt}`,
       dataIndex: ['attributes', 'createdAt'],
       key: 'orderCreatedAt',
       width: '150px',
@@ -295,7 +295,7 @@ export const OrdersPage = () => {
       filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters }) => (
         <div style={{ padding: 8 }}>
           <Input
-            placeholder="Search Created at"
+            placeholder={language.search}
             value={selectedKeys[0]}
             onChange={(e) => setSelectedKeys(e.target.value ? [e.target.value] : [])}
             onPressEnter={() => confirm()}
@@ -309,10 +309,10 @@ export const OrdersPage = () => {
               size="small"
               style={{ width: 90 }}
             >
-              Search
+              {language.search}
             </Button>
             <Button onClick={() => { clearFilters(); confirm(); }} size="small" style={{ width: 90 }}>
-              Reset
+              {language.reset}
             </Button>
           </Space>
         </div>
@@ -335,13 +335,12 @@ export const OrdersPage = () => {
       },
     },
     {
-      title: 'Delivery address',
+      title: `${language.deliveryAddress}`,
       dataIndex: ['attributes', 'shippingAddress'],
       key: 'orderDeliveryAddress',
       width: '200px',
       render: (shippingAddress) => (
         shippingAddress
-          // ? `${shippingAddress.address}, ${shippingAddress.city}, ${shippingAddress.country}, ${shippingAddress.zipCode}`
           ? `${shippingAddress.address || ''}${shippingAddress.city ? `, ${shippingAddress.city}` : ''}${shippingAddress.country ? `, ${shippingAddress.country}` : ''}${shippingAddress.zipCode ? `, ${shippingAddress.zipCode}` : ''}`
           : ''
       ),
@@ -353,7 +352,7 @@ export const OrdersPage = () => {
       filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters }) => (
         <div style={{ padding: 8 }}>
           <Input
-            placeholder="Search Address"
+            placeholder={language.search}
             value={selectedKeys[0]}
             onChange={(e) => setSelectedKeys(e.target.value ? [e.target.value] : [])}
             onPressEnter={() => confirm()}
@@ -367,10 +366,10 @@ export const OrdersPage = () => {
               size="small"
               style={{ width: 90 }}
             >
-              Search
+              {language.search}
             </Button>
             <Button onClick={() => { clearFilters(); confirm(); }} size="small" style={{ width: 90 }}>
-              Reset
+              {language.reset}
             </Button>
           </Space>
         </div>
@@ -392,7 +391,7 @@ export const OrdersPage = () => {
       },
     },
     {
-      title: 'Delivery at',
+      title: `${language.deliveryAt}`,
       dataIndex: ['attributes', 'deliveryAt'],
       key: 'orderDeliveryAt',
       width: '150px',
@@ -406,7 +405,7 @@ export const OrdersPage = () => {
       filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters }) => (
         <div style={{ padding: 8 }}>
           <Input
-            placeholder="Search Delivery at"
+            placeholder={language.search}
             value={selectedKeys[0]}
             onChange={(e) => setSelectedKeys(e.target.value ? [e.target.value] : [])}
             onPressEnter={() => confirm()}
@@ -420,10 +419,10 @@ export const OrdersPage = () => {
               size="small"
               style={{ width: 90 }}
             >
-              Search
+              {language.search}
             </Button>
             <Button onClick={() => { clearFilters(); confirm(); }} size="small" style={{ width: 90 }}>
-              Reset
+              {language.reset}
             </Button>
           </Space>
         </div>
@@ -446,7 +445,7 @@ export const OrdersPage = () => {
       },    
     },
     {
-      title: 'Price',
+      title: `${language.price}`,
       dataIndex: ['attributes', 'totalCost'],
       key: 'orderPrice',
       width: '120px',
@@ -454,7 +453,7 @@ export const OrdersPage = () => {
       render: (text) => text || '',
     },
     {
-      title: 'Discount',
+      title: `${language.discount}`,
       dataIndex: ['attributes', 'discount'],
       key: 'orderDiscount',
       width: '150px',
@@ -466,7 +465,7 @@ export const OrdersPage = () => {
       render: (text) => text || '',
     },
     {
-      title: 'Currency',
+      title: `${language.currency}`,
       dataIndex: ['attributes', 'currency'],
       key: 'orderCurrency',
       width: '120px',
@@ -474,7 +473,7 @@ export const OrdersPage = () => {
       render: (text) => text || '',
     },
     {
-      title: 'Client',
+      title: `${language.client}`,
       dataIndex: ['attributes', 'client', 'data', 'attributes', 'client_name'],
       key: 'orderClient',
       width: '150px',
@@ -487,7 +486,7 @@ export const OrdersPage = () => {
       filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters }) => (
         <div style={{ padding: 8 }}>
           <Input
-            placeholder="Search Client"
+            placeholder={language.search}
             value={selectedKeys[0]}
             onChange={(e) => setSelectedKeys(e.target.value ? [e.target.value] : [])}
             onPressEnter={() => confirm()}
@@ -501,10 +500,10 @@ export const OrdersPage = () => {
               size="small"
               style={{ width: 90 }}
             >
-              Search
+              {language.search}
             </Button>
             <Button onClick={() => { clearFilters(); confirm(); }} size="small" style={{ width: 90 }}>
-              Reset
+              {language.reset}
             </Button>
           </Space>
         </div>
@@ -525,7 +524,7 @@ export const OrdersPage = () => {
       },
     },
     {
-      title: 'Manager',
+      title: `${language.manager}`,
       dataIndex: ['attributes', 'manager', 'data', 'attributes', 'username'],
       key: 'orderManager',
       width: '150px',
@@ -538,7 +537,7 @@ export const OrdersPage = () => {
       filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters }) => (
         <div style={{ padding: 8 }}>
           <Input
-            placeholder="Search Manager"
+            placeholder={language.search}
             value={selectedKeys[0]}
             onChange={(e) => setSelectedKeys(e.target.value ? [e.target.value] : [])}
             onPressEnter={() => confirm()}
@@ -552,10 +551,10 @@ export const OrdersPage = () => {
               size="small"
               style={{ width: 90 }}
             >
-              Search
+              {language.search}
             </Button>
             <Button onClick={() => { clearFilters(); confirm(); }} size="small" style={{ width: 90 }}>
-              Reset
+              {language.reset}
             </Button>
           </Space>
         </div>
@@ -576,7 +575,7 @@ export const OrdersPage = () => {
       },
     },
     {
-      title: 'Action',
+      title: `${language.action}`,
       dataIndex: 'operation',
       key: 'operation',
       fixed: 'right',
@@ -595,8 +594,7 @@ export const OrdersPage = () => {
           }
           } trigger={['click']} >
             <Button>
-              <Space> Actions <DownOutlined />
-              </Space>
+               {language.actions} <DownOutlined />
             </Button>
           </Dropdown>
         </Space>

@@ -40,16 +40,61 @@ const en = {
     clientError: 'An error occurred while deleting a client',
     removeClient: 'You definitely want to remove the client from the database',
     undone: 'This action cannot be undone',
+    clientAddSuccses: 'Client successfully added to database',
+    clientAddError: 'An error occurred while adding a client',
+    clientNameRequred: 'Please enter the client name!',
+    clientNameValid: 'Client name must be at least 2 characters long.',
+    clientName: 'Client Name',
+    country: 'Country',
+    city: 'City',
+    address: 'Address',
+    zipCodeNumber: 'Zip Code must be a number.',
+    zipCodeValid: 'Zip Code must be at least 5 characters long.',
+    zipCode: 'Zip Code',
+    addAddress: 'Add Address',
+    phoneValid: 'Phone must start with "+" if present and consist of numbers.',
+    phone2: 'Phone-2',
+    addclient: 'Add client',
+    clientGetError: 'An error occurred while fetching client data',
+    clientEditSuccses: 'Client successfully updated',
+    clientEditError: 'An error occurred while updating the client',
+    saveChanges: 'Save Changes',
 
     loginFailed: 'Login Failed',
     invalid: 'Invalid email or password. Please try again',
+
     inputEmail: 'Please input your email!',
     invalidEmail: 'Please enter a valid email address!',
+    
     inputPassword: 'Please input your password!',
     remember: 'Remember me',
     forgotPass: 'Forgot password?',
     signInAcc: 'Sign in to your account',
     signIn: 'Sign in',
+    
+    notFound: 'Page not found',
+    resetPass: 'Reset Password',
+    savePass: 'Save new Password',
+    newPass: 'New password',
+    enterPass: 'Please enter a password',
+    confirmPass: 'Confirm password',
+    confirmPassMes: 'Please confirm your password',
+    passMatch: 'The passwords do not match',
+    
+    open: 'Open',
+    status: 'Status',
+    search: 'Search',
+    reset: 'Reset',
+    createdAt: 'Created at',
+    deliveryAddress: 'Delivery address',
+    deliveryAt: 'Delivery at',
+    price: 'Price',
+    discount: 'Discount',
+    currency: 'Currency',
+
+
+
+
 };
 
 export default en;

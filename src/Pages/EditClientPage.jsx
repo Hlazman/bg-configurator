@@ -4,7 +4,7 @@ import { Form, Input, Button, Card, Space, Spin, message } from 'antd';
 import { UserOutlined, PlusOutlined, MinusCircleOutlined } from '@ant-design/icons';
 import axios from 'axios';
 
-export const EditClientPage = () => {
+export const EditClientPage = ({language}) => {
   const jwtToken = localStorage.getItem('token');
   const { clientId } = useParams();
   const [form] = Form.useForm();
@@ -12,7 +12,6 @@ export const EditClientPage = () => {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    // Запрос GraphQL для получения данных клиента
     axios
       .post(
         'https://api.boki.fortesting.com.ua/graphql',
@@ -69,9 +68,9 @@ export const EditClientPage = () => {
       })
       .catch((error) => {
         console.error(error);
-        message.error('An error occurred while fetching client data');
+        message.error(language.clientGetError);
       });
-  }, [clientId, jwtToken, form]);
+  }, [clientId, jwtToken, form, language]);
 
   const handleAddAddress = () => {
     setAddresses([...addresses, { country: null, city: null, address: null, zipCode: null }]);
@@ -128,12 +127,12 @@ export const EditClientPage = () => {
       )
       .then((response) => {
         setLoading(false);
-        message.success('Client successfully updated');
+        message.success(language.clientEditSuccses);
       })
       .catch((error) => {
         setLoading(false);
         console.error(error);
-        message.error('An error occurred while updating the client');
+        message.error(language.clientEditError);
       });
   };
 
@@ -147,34 +146,34 @@ export const EditClientPage = () => {
             rules={[
               {
                 required: true,
-                message: 'Please enter the client name!',
+                message: `${language.clientNameRequred}`,
               },
               {
                 min: 2,
-                message: 'Client name must be at least 2 characters long.',
+                message: `${language.clientNameValid}`,
               },
             ]}
           >
-            <Input prefix={<UserOutlined />} placeholder="Client Name" addonBefore="Client name" />
+            <Input prefix={<UserOutlined />} placeholder={language.clientName} addonBefore={language.clientName} />
           </Form.Item>
 
           <Form.Item name="client_company">
-            <Input placeholder="Organization" addonBefore="Organization" />
+            <Input placeholder={language.organization} addonBefore={language.organization} />
           </Form.Item>
 
           {addresses.map((address, index) => (
             <Space key={index} style={{ alignItems: 'flex-start' }}>
 
               <Form.Item name={['addresses', index, 'country']}>
-                <Input placeholder="Country" addonBefore="Country" />
+                <Input placeholder={language.country} addonBefore={language.country} />
               </Form.Item>
 
               <Form.Item name={['addresses', index, 'city']}>
-                <Input placeholder="City" addonBefore="City" />
+                <Input placeholder={language.city} addonBefore={language.city} />
               </Form.Item>
 
               <Form.Item name={['addresses', index, 'address']}>
-                <Input placeholder="Address" addonBefore="Address" />
+                <Input placeholder={language.address} addonBefore={language.address} />
               </Form.Item>
 
               <Form.Item 
@@ -182,19 +181,19 @@ export const EditClientPage = () => {
                 rules={[
                   {
                     pattern: /^[0-9]+$/,
-                    message: 'Zip Code must be a number.',
+                    message: `${language.zipCodeNumber}`,
                   },
                   ({ getFieldValue }) => ({
                     validator(_, value) {
                       if (!getFieldValue(['addresses', index, 'zipCode']) || value.length >= 5) {
                         return Promise.resolve();
                       }
-                      return Promise.reject('Zip Code must be at least 5 characters long.');
+                      return Promise.reject(`${language.zipCodeValid}`);
                     },
                   }),
                 ]}
               >
-                <Input placeholder="Zip Code" addonBefore="Zip Code" />
+                <Input placeholder={language.zipCode} addonBefore={language.zipCode} />
               </Form.Item>
 
               <Button
@@ -208,7 +207,7 @@ export const EditClientPage = () => {
 
           <Form.Item>
             <Button type="primary" onClick={handleAddAddress} icon={<PlusOutlined />}>
-              Add Address
+              {language.addAddress}
             </Button>
           </Form.Item>
 
@@ -217,11 +216,11 @@ export const EditClientPage = () => {
             rules={[
               {
                 pattern: /^(\+)?[0-9]+$/,
-                message: 'Phone must start with "+" if present and consist of numbers.',
+                message: `${language.phoneValid}`,
               },
             ]}
           >
-            <Input placeholder="Phone" addonBefore="Phone" />
+            <Input placeholder={language.phone} addonBefore={language.phone} />
           </Form.Item>
 
           <Form.Item 
@@ -229,11 +228,11 @@ export const EditClientPage = () => {
             rules={[
               {
                 pattern: /^(\+)?[0-9]+$/,
-                message: 'Phone must start with "+" if present and consist of numbers.',
+                message: `${language.phoneValid}`,
               },
             ]}
           >
-            <Input placeholder="Phone 2" addonBefore="Phone 2" />
+            <Input placeholder={language.phone2} addonBefore={language.phone2} />
           </Form.Item>
 
           <Form.Item name="email">
@@ -242,7 +241,7 @@ export const EditClientPage = () => {
 
           <Form.Item>
             <Button type="primary" htmlType="submit">
-              Save Changes
+              {language.saveChanges}
             </Button>
           </Form.Item>
         </Form>

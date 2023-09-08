@@ -3,7 +3,7 @@ import React, { useRef } from 'react';
 import { Button } from 'antd';
 import html2pdf from 'html2pdf.js';
 
-export const OrderDetails = () => {
+export const OrderDetailsPage = () => {
   const orderFileNameRef = useRef(null);
 
   const handlePdfExport = () => {

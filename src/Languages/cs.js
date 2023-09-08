@@ -43,7 +43,50 @@ const cs = {
   remember: 'Pamatovat si mě',
   forgotPass: 'Zapomněli jste heslo?',
   signInAcc: 'Přihlásit se do svého účtu',
-  signIn: 'Přihlásit se'
+  signIn: 'Přihlásit se',
+
+  clientAddSuccses: 'Klient byl úspěšně přidán do databáze',
+  clientAddError: 'Při přidávání klienta došlo k chybě',
+  clientNameRequred: 'Prosím, zadejte jméno klienta!',
+  clientNameValid: 'Jméno klienta musí být dlouhé alespoň 2 znaky.',
+  clientName: 'Jméno klienta',
+  country: 'Země',
+  city: 'Město',
+  address: 'Adresa',
+  zipCodeNumber: 'PSČ musí být číslo.',
+  zipCodeValid: 'PSČ musí být dlouhé alespoň 5 znaků.',
+  zipCode: 'PSČ',
+  addAddress: 'Přidat adresu',
+  phoneValid: 'Telefon musí začínat "+" pokud je přítomno a skládat se z čísel.',
+  phone2: 'Telefon-2',
+  addclient: 'Přidat klienta',
+  clientGetError: 'Při načítání dat klienta došlo k chybě',
+  clientEditSuccses: 'Klient byl úspěšně aktualizován',
+  clientEditError: 'Při aktualizaci klienta došlo k chybě',
+  saveChanges: 'Uložit změny',
+
+  notFound: 'Stránka nenalezena',
+  resetPass: 'Obnovit heslo',
+  savePass: 'Uložit nové heslo',
+  newPass: 'Nové heslo',
+  enterPass: 'Prosím, zadejte heslo',
+  confirmPass: 'Potvrďte heslo',
+  confirmPassMes: 'Prosím, potvrďte své heslo',
+  passMatch: 'Hesla se neshodují',
+
+  open: 'Otevřít',
+  status: 'Stav',
+  search: 'Hledat',
+  reset: 'Resetovat',
+  createdAt: 'Vytvořeno dne',
+  deliveryAddress: 'Dodací adresa',
+  deliveryAt: 'Dodání dne',
+  price: 'Cena',
+  discount: 'Sleva',
+  currency: 'Měna',
+
+
+
 
 };
 
