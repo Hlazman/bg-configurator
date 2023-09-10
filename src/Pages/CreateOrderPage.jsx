@@ -4,6 +4,7 @@ import { OrderDetails } from '../Components/OrderDetails';
 import DoorStep from '../Components/CreateOrderSteps/DoorStep';
 import GroupDecorStep from '../Components/CreateOrderSteps/GroupDecorStep';
 import GroupAccessoriesStep from '../Components/CreateOrderSteps/GroupAccessoriesStep';
+import ElementsStep from '../Components/CreateOrderSteps/ElementsStep';
 import { useParams } from 'react-router-dom';
 import InformationStep from '../Components/CreateOrderSteps/InformationStep';
 
@@ -86,13 +87,12 @@ export const CreateOrderPage = ({language}) => {
         );
       case 2:
         return (
-          <Form onFinish={handleFormSubmit} onValuesChange={handleFormValuesChange}>
-            <Form.Item name="step4Field" label="Шаг 3">
-              <Input />
-            </Form.Item>
-            <Button onClick={handlePrev}>Назад</Button>
-            <Button type="primary" onClick={handleNext}> Далее </Button> 
-          </Form>
+          <ElementsStep
+            formData={formData}
+            handleCardClick={handleCardClick}
+            handleNext={handleNext}
+            language={language}
+          />
         );
       case 3:
         return (
@@ -158,7 +158,7 @@ export const CreateOrderPage = ({language}) => {
             // ),
           // },
           {
-            title: 'Шаг 3',
+            title: 'Elements',
             // status: (currentStep === 2 ? 'process' : formData.step4Field ? 'finish' : 'error'),
           },
           {
