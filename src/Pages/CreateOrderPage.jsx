@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Steps, Form, Input, Button, Divider} from 'antd';
 import { OrderDetails } from '../Components/OrderDetails';
-import DoorStep from '../Components/CreateOrderSteps/DoorStep';
+import GroupDoorStep from '../Components/CreateOrderSteps/GroupDoorStep';
 import GroupDecorStep from '../Components/CreateOrderSteps/GroupDecorStep';
 import GroupAccessoriesStep from '../Components/CreateOrderSteps/GroupAccessoriesStep';
 import ElementsStep from '../Components/CreateOrderSteps/ElementsStep';
@@ -69,7 +69,7 @@ export const CreateOrderPage = ({language}) => {
     switch (currentStep) {
       case 0:
         return (
-          <DoorStep
+          <GroupDoorStep
             formData={formData}
             handleCardClick={handleCardClick}
             handleNext={handleNext}

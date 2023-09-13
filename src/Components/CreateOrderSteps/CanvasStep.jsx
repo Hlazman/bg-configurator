@@ -1,53 +1,69 @@
 import React, { useState, useEffect } from 'react';
-import { Form, Input, Button, Card, Radio, Select, Divider, Spin } from 'antd';
+import { Form, Input, InputNumber, Button, Card, Radio, Select, Divider, Spin } from 'antd';
 import axios from 'axios';
-import { useProductVariant } from '../../Context/ProductVariantContext';
+import { useOrder } from '../../Context/OrderContext';
 
-const DoorStep = ({ formData, handleNext }) => {
-  const { productVariantId } = useProductVariant();
+const CanvasStep = ({ formData, handleNext }) => {
+  const { order } = useOrder();
+  const { addSuborder } = useOrder();
+  const doorSuborder = order.suborders.find(suborder => suborder.name === 'doorSub');
+  const orderId = order.id;
+  const jwtToken = localStorage.getItem('token');
+
   const [doorData, setDoorData] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCollection, setSelectedCollection] = useState('ALL');
   const [isLoading, setIsLoading] = useState(true);
   const [previousDoorId, setPreviousDoorId] = useState(null);
-  const jwtToken = localStorage.getItem('token');
 
-  const handleDoorClick = async (fieldName, doorId) => {
-      const updateProductVariantData = {
-        updateProductVariantId: productVariantId,
-        data: {
-          door: doorId === previousDoorId ? null : doorId,
-        },
-      };
-  
-      await axios.post(
+  const [form] = Form.useForm();
+
+  const handleUpdateDoorSuborder = async () => {
+    try {
+      const response = await axios.post(
         'https://api.boki.fortesting.com.ua/graphql',
         {
           query: `
-            mutation UpdateProductVariant($updateProductVariantId: ID!, $data: ProductVariantInput!) {
-              updateProductVariant(id: $updateProductVariantId, data: $data) {
+            mutation Mutation($updateDoorSuborderId: ID!, $data: DoorSuborderInput!) {
+              updateDoorSuborder(id: $updateDoorSuborderId, data: $data) {
                 data {
                   id
                 }
               }
             }
           `,
-          variables: updateProductVariantData,
-        },
-        {
+          variables: {
+            updateDoorSuborderId: doorSuborder.data.id,
+            data: {
+              decor: null,
+              door: null,
+              order: orderId, 
+              sizes: {
+                height: formData.height, 
+                thickness: formData.thickness,
+                width: formData.width,
+              }
+            }
+          },
           headers: {
             'Content-Type': 'application/json',
             Authorization: `Bearer ${jwtToken}`,
           },
         }
       );
+  
+      console.log('Door Suborder updated:', response.data);
+    } catch (error) {
+      console.error('Error updating Door Suborder:', error);
+    }
+  };
 
-      setPreviousDoorId(doorId === previousDoorId ? null : doorId);
+  const onFinish = async (values) => {
+    await handleUpdateDoorSuborder(); 
+  };
+  
 
-    formData[fieldName] = productVariantId;
-  };  
-
-  useEffect(() => {
+  useEffect(() => {    
     const fetchData = async () => {
       setIsLoading(true);
       try {
@@ -125,7 +141,34 @@ const DoorStep = ({ formData, handleNext }) => {
     .map(door => door.attributes.product_properties.image.data.attributes.url);
 
   return (
-    <Form onFinish={formData} onValuesChange={formData}>
+    <Form
+      form={form}
+      onFinish={onFinish}
+      // onValuesChange={formData}
+      style={{ padding: '10px 25px' }}
+    >
+      <div style={{ display: 'flex', gap: '30px'}}>
+    
+        <Form.Item name="width" style={{ width: '100%' }} >
+          <InputNumber addonBefore="Width" addonAfter="mm"/>
+        </Form.Item>
+        
+        <Form.Item name="height" style={{ width: '100%' }} >
+          <InputNumber addonBefore="Height" addonAfter="mm"/>
+        </Form.Item>
+
+        <Form.Item name="thickness" style={{ width: '100%' }} >
+          <InputNumber addonBefore="Thickness" addonAfter="mm"/>
+        </Form.Item>
+        
+        <Form.Item wrapperCol={{ offset: 4, span: 16 }}>
+        <Button type="primary" htmlType="submit">
+          Submit
+        </Button>
+      </Form.Item>
+
+    </div>
+    
       <div style={{ display: 'flex', gap: '30px' }}>
         
         <Select
@@ -174,7 +217,8 @@ const DoorStep = ({ formData, handleNext }) => {
                             ? '7px solid #f06d20'
                             : 'none',
                       }}
-                      onClick={() => handleDoorClick('doorStep', door.id)}
+                      // onClick={() => handleDoorClick('doorStep', door.id)}
+                      onClick={() => setPreviousDoorId(door.id)}
                     >
                       <div style={{ overflow: 'hidden', height: 220 }}>
                         <img
@@ -204,5 +248,4 @@ const DoorStep = ({ formData, handleNext }) => {
   );
 };
 
-export default DoorStep;
-
+export default CanvasStep;

@@ -20,11 +20,11 @@ const ElementsStep = ({formData, handleCardClick, handleNext, language}) => {
             </Form.Item>
 
             <Form.Item name="width" style={{ width: '100%' }} >
-              <Input addonBefore="Width"/>
+              <Input addonBefore="Width" addonAfter="mm"/>
             </Form.Item>
             
             <Form.Item name="height" style={{ width: '100%' }} >
-              <Input addonBefore="Height"/>
+              <Input addonBefore="Height" addonAfter="mm"/>
             </Form.Item>
             
             <Form.Item wrapperCol={{ offset: 4, span: 16 }}>
