@@ -18,7 +18,23 @@ const CanvasStep = ({ formData, handleNext }) => {
 
   const [form] = Form.useForm();
 
-  const handleUpdateDoorSuborder = async () => {
+  const onFinish = async (values) => {
+    const { width, height, thickness } = values; // Извлекаем значения из формы
+    const updateDoorSuborderId = doorSuborder.data.id; // Получаем id субордера
+
+    const data = {
+      decor: null,
+      door: previousDoorId.toString(),
+      order: null,
+      sizes: {
+        height: height,
+        thickness: thickness,
+        width: width
+      }
+    };
+
+    console.log(previousDoorId)
+
     try {
       const response = await axios.post(
         'https://api.boki.fortesting.com.ua/graphql',
@@ -33,33 +49,22 @@ const CanvasStep = ({ formData, handleNext }) => {
             }
           `,
           variables: {
-            updateDoorSuborderId: doorSuborder.data.id,
-            data: {
-              decor: null,
-              door: null,
-              order: orderId, 
-              sizes: {
-                height: formData.height, 
-                thickness: formData.thickness,
-                width: formData.width,
-              }
-            }
-          },
+            updateDoorSuborderId: updateDoorSuborderId,
+            data: data
+          }
+        },
+        {
           headers: {
             'Content-Type': 'application/json',
             Authorization: `Bearer ${jwtToken}`,
           },
         }
       );
-  
-      console.log('Door Suborder updated:', response.data);
-    } catch (error) {
-      console.error('Error updating Door Suborder:', error);
-    }
-  };
 
-  const onFinish = async (values) => {
-    await handleUpdateDoorSuborder(); 
+      console.log('Data sent successfully:', response.data);
+    } catch (error) {
+      console.error('Error sending data:', error);
+    }
   };
   
 
@@ -144,7 +149,6 @@ const CanvasStep = ({ formData, handleNext }) => {
     <Form
       form={form}
       onFinish={onFinish}
-      // onValuesChange={formData}
       style={{ padding: '10px 25px' }}
     >
       <div style={{ display: 'flex', gap: '30px'}}>
