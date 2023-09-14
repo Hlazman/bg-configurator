@@ -4,6 +4,7 @@ import VeneerStep from './VeneerStep';
 import PaintStep from './PaintStep';
 import StoneStep from './StoneStep';
 import MirrorStep from './MirrorStep';
+import HPLStep from './HPLStep';
 
 const GroupDecorStep = ({ formData, handleCardClick, handleNext }) => {
   const [activeTab, setActiveTab] = useState('veneer');
@@ -37,6 +38,11 @@ const GroupDecorStep = ({ formData, handleCardClick, handleNext }) => {
           label: 'Mirror',
           key: 'mirror',
           children: <MirrorStep formData={formData} handleCardClick={handleCardClick} handleNext={handleNext} />,
+        },
+        {
+          label: 'HPL Panels',
+          key: 'hpl',
+          children: <HPLStep formData={formData} handleCardClick={handleCardClick} handleNext={handleNext} />,
         },
       ]}
     />

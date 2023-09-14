@@ -131,10 +131,10 @@ export const CreateOrderPage = ({language}) => {
       <div style={{textAlign: 'left', margin: '10px 0'}}>
         <OrderDetails/>
       </div>
-
+      
       <Divider/>
 
-      <Steps 
+      <Steps
         current={currentStep} 
         type='navigation'
         onChange={handleStepClick}
@@ -184,9 +184,7 @@ export const CreateOrderPage = ({language}) => {
       >
 
       </Steps>
-
       <Divider />
-      
       {renderFormStep()}
     </div>
   );

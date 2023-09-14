@@ -1,26 +1,23 @@
 import React, { useState, useEffect } from 'react';
-import { Form, Input, Button, Card, Radio, Select, Divider, Spin } from 'antd';
+import { Form, Input, Button, Card, Radio, Divider, Spin } from 'antd';
 import axios from 'axios';
 import { useOrder } from '../../Context/OrderContext';
 
-const VeneerStep = ({ formData, handleCardClick, handleNext }) => {
-  const [veneerData, setVeneerData] = useState([]);
+const HPLStep = ({ formData, handleCardClick, handleNext }) => {
+  const [stoneData, setStoneData] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
-  const [selectedCategory, setSelectedCategory] = useState('ALL');
-  const [loading, setLoading] = useState(true);
-  // const [isLoading, setIsLoading] = useState(true);
-  
+
   const jwtToken = localStorage.getItem('token');
 
-  const [previousVeneerId, setPreviousVeneerId] = useState(null);
+  const [previousHPLId, setPreviousHPLId] = useState(null);
   const [decorData, setDecorData] = useState([]);
   const [selectedDecorId, setSelectedDecorId] = useState(null);
   const { order } = useOrder();
   const doorSuborder = order.suborders.find(suborder => suborder.name === 'doorSub');
 
   const fetchDecorData = async () => {
-    // setIsLoading(true);
-    setLoading(true);
+    setIsLoading(true);
     try {
       const decorResponse = await axios.post(
         'https://api.boki.fortesting.com.ua/graphql',
@@ -57,7 +54,7 @@ const VeneerStep = ({ formData, handleCardClick, handleNext }) => {
     } catch (error) {
       console.error('Error fetching decor data:', error);
     }
-    setLoading(false);
+    setIsLoading(false);
     console.log(decorData)
   };
 
@@ -121,7 +118,7 @@ const VeneerStep = ({ formData, handleCardClick, handleNext }) => {
   };
 
   const onFinish = async (values) => {
-    const updateDoorSuborderId = doorSuborder.data.id; // Получаем id субордера
+    const updateDoorSuborderId = doorSuborder.data.id; 
 
     const data = {
       decor: selectedDecorId,
@@ -161,38 +158,31 @@ const VeneerStep = ({ formData, handleCardClick, handleNext }) => {
 
   useEffect(() => {
     const fetchData = async () => {
+      setIsLoading(true);
       try {
         const response = await axios.post(
           'https://api.boki.fortesting.com.ua/graphql',
           {
             query: `
-              query Veneers($pagination: PaginationArg) {
-                veneers(pagination: $pagination) {
-                  data {
-                    attributes {
-                      category
-                      code
-                      main_properties {
-                        title
-                        id
-                        image {
-                          data {
-                            attributes {
-                              url
-                            }
-                          }
+            query Query {
+              hplPanels {
+                data {
+                  id
+                  attributes {
+                    brand
+                    image {
+                      data {
+                        attributes {
+                          url
                         }
                       }
                     }
+                    title
                   }
                 }
               }
-            `,
-            variables: {
-              pagination: {
-                limit: 100
-              }
             }
+            `,
           },
           {
             headers: {
@@ -202,132 +192,76 @@ const VeneerStep = ({ formData, handleCardClick, handleNext }) => {
           }
         );
 
-        const veneers = response.data.data.veneers.data.map(veneer => ({
-          ...veneer,
-          id: veneer.attributes.main_properties.id,
-        }));
-        setVeneerData(veneers);
-        setLoading(false);
+        const ceramogranites = response.data.data.hplPanels.data;
+        setStoneData(ceramogranites);
       } catch (error) {
         console.error('Error fetching data:', error);
-        setLoading(false);
       }
+      setIsLoading(false);
     };
-
-    const storedCategory = localStorage.getItem('selectedCategory') || 'ALL';
-    const storedSearchQuery = localStorage.getItem('searchQuery') || '';
-
-    setSelectedCategory(storedCategory);
-    setSearchQuery(storedSearchQuery);
 
     fetchData();
     fetchDecorData();
   }, [jwtToken]);
 
-  const categoryOptions = ['ALL', ...new Set(veneerData.map(veneer => veneer.attributes.category))];
-
-  const handleCategoryChange = value => {
-    localStorage.setItem('selectedCategory', value);
-    setSelectedCategory(value);
-    setSearchQuery('');
-  };
-
-  const handleSearchQueryChange = value => {
-    localStorage.setItem('searchQuery', value);
-    setSearchQuery(value);
-  };
-
-  const filteredImgs = veneerData
-    .filter(veneer =>
-      (selectedCategory === 'ALL' || veneer.attributes.category === selectedCategory) &&
-      (veneer.attributes.main_properties.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-       veneer.attributes.code.toLowerCase().includes(searchQuery.toLowerCase()))
-    )
-    .map(veneer => ({
-      imgSrc: veneer.attributes.main_properties.image.data.attributes.url,
-      title: veneer.attributes.main_properties.title,
-      description: veneer.attributes.code,
-      id: veneer.id,
-    }));
+  const filteredStoneData = stoneData.filter(stone =>
+    stone.attributes.title.toLowerCase().includes(searchQuery.toLowerCase())
+  );
 
   return (
     // <Form onFinish={formData} onValuesChange={formData}>
     <Form onFinish={onFinish}>
 
-<Form.Item wrapperCol={{ offset: 4, span: 16 }}>
+        <Form.Item wrapperCol={{ offset: 4, span: 16 }}>
         <Button type="primary" htmlType="submit">
           Submit
         </Button>
       </Form.Item>
 
       <div style={{ display: 'flex', gap: '30px' }}>
-        <Select
-          value={selectedCategory}
-          onChange={handleCategoryChange}
-          style={{ marginBottom: '10px', width: '100%' }}
-        >
-          {categoryOptions.map((category, index) => (
-            <Select.Option key={index} value={category}>
-              {category}
-            </Select.Option>
-          ))}
-        </Select>
-
-        {/* <Select style={{ marginBottom: '10px', width: '100%' }} defaultValue="horizontal">
-          <Select.Option value="horizontal">Horizontal</Select.Option>
-          <Select.Option value="vertical">Vertical</Select.Option>
-        </Select> */}
-
         <Input
           placeholder="Search"
           value={searchQuery}
-          onChange={e => handleSearchQueryChange(e.target.value)}
+          onChange={e => setSearchQuery(e.target.value)}
           style={{ marginBottom: '10px' }}
         />
       </div>
-
       <Divider />
 
-      {loading ? (
-        <Spin size="large" />
+      {isLoading ? (
+        <div style={{ textAlign: 'center', marginTop: '20px' }}>
+          <Spin size="large" />
+        </div>
       ) : (
         <Form.Item name="step2Field">
           <Radio.Group value={formData.step2Field}>
             <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}>
-              {filteredImgs.map((veneer) => (
-                <div key={veneer.id} style={{ width: 220, margin: '20px 10px' }}>
+              {filteredStoneData.map(hpl => (
+                <div key={hpl.id} style={{ width: 220, margin: '20px 10px' }}>
                   <Card
                     className="custom-card"
                     hoverable
                     style={{
                       border:
-                        // formData.step2Field === veneer.id
-                        previousVeneerId === veneer.id
-                        ? '7px solid #f06d20'
-                        : 'none',
+                        // formData.step2Field === stone.id ? '7px solid #f06d20' : 'none',
+                        previousHPLId === hpl.id ? '7px solid #f06d20' : 'none',
                     }}
-                    // onClick={() => {
-                    //   handleCardClick('step2Field', veneer.id);
-                    // }}
-
                     onClick={() => {
-                      checkDecor('veneer', veneer.title);
-                      setPreviousVeneerId(veneer.id);
+                      checkDecor('HPL', hpl.attributes.title);
+                      setPreviousHPLId(hpl.id);
                     }}
+                    // onClick={() => checkDecor('ceramogranite', stone.attributes.title)}
+                    // onClick={() => handleCardClick('step2Field', stone.id)}
                   >
                     <div style={{ overflow: 'hidden', height: 220 }}>
                       <img
-                        src={`https://api.boki.fortesting.com.ua${veneer.imgSrc}`}
-                        alt={veneer.title}
+                        src={`https://api.boki.fortesting.com.ua${hpl.attributes.image.data.attributes.url}`}
+                        alt={hpl.attributes.title}
                         style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                       />
                     </div>
-                    <Card.Meta
-                      title={veneer.title}
-                      description={veneer.description}
-                      style={{ paddingTop: '10px' }}
-                    />
-                    <Radio value={veneer.id} style={{ display: 'none' }} />
+                    <Card.Meta title={hpl.attributes.title} style={{ paddingTop: '10px' }} />
+                    <Radio value={hpl.id} style={{ display: 'none' }} />
                   </Card>
                 </div>
               ))}
@@ -343,4 +277,4 @@ const VeneerStep = ({ formData, handleCardClick, handleNext }) => {
   );
 };
 
-export default VeneerStep;
+export default HPLStep;

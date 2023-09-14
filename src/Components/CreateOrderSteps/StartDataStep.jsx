@@ -64,7 +64,7 @@ const StartDataStep = ({ formData, handleNext }) => {
           name="hidden"
           rules={[{ required: true, message: 'Please select Hidden option!' }]}
         >
-          <Radio.Group>
+          <Radio.Group buttonStyle="solid">
             <Radio.Button value={true}>Yes</Radio.Button>
             <Radio.Button value={false}>No</Radio.Button>
           </Radio.Group>
@@ -77,7 +77,7 @@ const StartDataStep = ({ formData, handleNext }) => {
           name="side"
           rules={[{ required: true, message: 'Please select Side option!' }]}
         >
-          <Radio.Group>
+          <Radio.Group buttonStyle="solid">
             <Radio.Button value="left">Left</Radio.Button>
             <Radio.Button value="right">Right</Radio.Button>
           </Radio.Group>
@@ -90,7 +90,7 @@ const StartDataStep = ({ formData, handleNext }) => {
           name="opening"
           rules={[{ required: true, message: 'Please select Opening option!' }]}
         >
-          <Radio.Group>
+          <Radio.Group buttonStyle="solid">
             <Radio.Button value="inside">Inside</Radio.Button>
             <Radio.Button value="outside">Outside</Radio.Button>
             <Radio.Button value="universal">Universal</Radio.Button>

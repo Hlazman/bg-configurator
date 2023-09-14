@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Form, Input, Button, Card, Radio, Divider, Spin } from 'antd';
 import axios from 'axios';
+import { useOrder } from '../../Context/OrderContext';
 
 const MirrorStep = ({ formData, handleCardClick, handleNext }) => {
   const [mirrorData, setMirrorData] = useState([]);
@@ -8,6 +9,152 @@ const MirrorStep = ({ formData, handleCardClick, handleNext }) => {
   const [searchQuery, setSearchQuery] = useState('');
 
   const jwtToken = localStorage.getItem('token');
+
+  const [previousMirrorId, setPreviousMirrorId] = useState(null);
+  const [decorData, setDecorData] = useState([]);
+  const [selectedDecorId, setSelectedDecorId] = useState(null);
+  const { order } = useOrder();
+  const doorSuborder = order.suborders.find(suborder => suborder.name === 'doorSub');
+
+  const fetchDecorData = async () => {
+    setIsLoading(true);
+    try {
+      const decorResponse = await axios.post(
+        'https://api.boki.fortesting.com.ua/graphql',
+        {
+          query: `
+            query Decors($pagination: PaginationArg) {
+              decors(pagination: $pagination) {
+                data {
+                  attributes {
+                    title
+                    type
+                  }
+                  id
+                }
+              }
+            }
+          `,
+          variables: {
+            pagination: {
+              limit: 100
+            }
+          }
+        },
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${jwtToken}`,
+          },
+        }
+      );
+
+      const decorData = decorResponse.data.data.decors.data;
+      setDecorData(decorData);
+    } catch (error) {
+      console.error('Error fetching decor data:', error);
+    }
+    setIsLoading(false);
+    console.log(decorData)
+  };
+
+  const createDecor = async (data) => {
+    try {
+      const response = await axios.post(
+        'https://api.boki.fortesting.com.ua/graphql',
+        {
+          query: `
+            mutation CreateDecor($data: DecorInput!) {
+              createDecor(data: $data) {
+                data {
+                  id
+                }
+              }
+            }
+          `,
+          variables: {
+            data: {
+              title: data.title,
+              type: data.type,
+            }
+          }
+        },
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${jwtToken}`,
+          },
+        }
+      );
+  
+      return response.data.data.createDecor.data.id;
+    } catch (error) {
+      console.error('Error creating decor:', error);
+      throw error;
+    }
+  };
+
+  const checkDecor = async (type, title) => {
+    const foundDecor = decorData.find(decor =>
+      decor.attributes.type === type && decor.attributes.title.toLowerCase() === title.toLowerCase()
+    );
+  
+    if (foundDecor) {
+      setSelectedDecorId(foundDecor.id);
+      console.log(`Найден декор с типом ${type} и названием ${title}`);
+      console.log(foundDecor.id);
+    } else {
+      console.log(`Декор с типом ${type} и названием ${title} не найден. Создаем новый...`);
+  
+      try {
+        const newDecorId = await createDecor({ title, type });
+        fetchDecorData();
+        setSelectedDecorId(newDecorId);
+        console.log(`Декор успешно создан с id: ${newDecorId}`);
+      } catch (error) {
+        console.error('Ошибка при создании декора:', error);
+      }
+    }
+  };
+
+  const onFinish = async (values) => {
+    const updateDoorSuborderId = doorSuborder.data.id; // Получаем id субордера
+
+    const data = {
+      decor: selectedDecorId,
+      order: order.id,
+    };
+
+    try {
+      const response = await axios.post(
+        'https://api.boki.fortesting.com.ua/graphql',
+        {
+          query: `
+            mutation Mutation($updateDoorSuborderId: ID!, $data: DoorSuborderInput!) {
+              updateDoorSuborder(id: $updateDoorSuborderId, data: $data) {
+                data {
+                  id
+                }
+              }
+            }
+          `,
+          variables: {
+            updateDoorSuborderId: updateDoorSuborderId,
+            data: data
+          }
+        },
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${jwtToken}`,
+          },
+        }
+      );
+      console.log('Data sent successfully:', response.data);
+    } catch (error) {
+      console.error('Error sending data:', error);
+    }
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -60,7 +207,15 @@ const MirrorStep = ({ formData, handleCardClick, handleNext }) => {
   );
 
   return (
-    <Form onFinish={formData} onValuesChange={formData}>
+    // <Form onFinish={formData} onValuesChange={formData}>
+    <Form onFinish={onFinish}>
+
+<Form.Item wrapperCol={{ offset: 4, span: 16 }}>
+        <Button type="primary" htmlType="submit">
+          Submit
+        </Button>
+      </Form.Item>
+
       <div style={{ display: 'flex', gap: '30px' }}>
         <Input
           placeholder="Search"
@@ -86,9 +241,14 @@ const MirrorStep = ({ formData, handleCardClick, handleNext }) => {
                     hoverable
                     style={{
                       border:
-                        formData.step2Field === mirror.id ? '7px solid #f06d20' : 'none',
+                        // formData.step2Field === mirror.id ? '7px solid #f06d20' : 'none',
+                        previousMirrorId === mirror.id ? '7px solid #f06d20' : 'none',
                     }}
-                    onClick={() => handleCardClick('step2Field', mirror.id)}
+                    // onClick={() => handleCardClick('step2Field', mirror.id)}
+                    onClick={() => {
+                      checkDecor('mirror', mirror.attributes.title);
+                      setPreviousMirrorId(mirror.id);
+                    }}
                   >
                     <div style={{ overflow: 'hidden', height: 220 }}>
                       <img

@@ -23,7 +23,7 @@ const CanvasStep = ({ formData, handleNext }) => {
     const updateDoorSuborderId = doorSuborder.data.id; // Получаем id субордера
 
     const data = {
-      decor: null,
+      // decor: null,
       door: previousDoorId.toString(),
       order: null,
       sizes: {
@@ -32,8 +32,6 @@ const CanvasStep = ({ formData, handleNext }) => {
         width: width
       }
     };
-
-    console.log(previousDoorId)
 
     try {
       const response = await axios.post(
@@ -149,36 +147,16 @@ const CanvasStep = ({ formData, handleNext }) => {
     <Form
       form={form}
       onFinish={onFinish}
-      style={{ padding: '10px 25px' }}
+      style={{ padding: '0 25px'}}
     >
-      <div style={{ display: 'flex', gap: '30px'}}>
-    
-        <Form.Item name="width" style={{ width: '100%' }} >
-          <InputNumber addonBefore="Width" addonAfter="mm"/>
-        </Form.Item>
-        
-        <Form.Item name="height" style={{ width: '100%' }} >
-          <InputNumber addonBefore="Height" addonAfter="mm"/>
-        </Form.Item>
+        <Divider/>
 
-        <Form.Item name="thickness" style={{ width: '100%' }} >
-          <InputNumber addonBefore="Thickness" addonAfter="mm"/>
-        </Form.Item>
-        
-        <Form.Item wrapperCol={{ offset: 4, span: 16 }}>
-        <Button type="primary" htmlType="submit">
-          Submit
-        </Button>
-      </Form.Item>
-
-    </div>
-    
-      <div style={{ display: 'flex', gap: '30px' }}>
-        
-        <Select
+      {/* <div style={{ display: 'flex', gap: '30px' }}> */}
+      <Form.Item label="Sorting by Models">
+      <Select
           value={selectedCollection}
           onChange={handleCollectionChange}
-          style={{ marginBottom: '10px', width: '100%' }}
+          // style={{ margin: '10px', width: '40%' }}
         >
           {collectionOptions.map((collection, index) => (
             <Select.Option key={index} value={collection}>
@@ -187,13 +165,39 @@ const CanvasStep = ({ formData, handleNext }) => {
           ))}
         </Select>
 
+        
+        </Form.Item>
+        
+        <Form.Item label="Search by door name">
         <Input
           placeholder="Search"
           value={searchQuery}
           onChange={e => handleSearchQueryChange(e.target.value)}
-          style={{ marginBottom: '10px' }}
+          // style={{ margin: '10px', width: '40%' }}
         />
-      </div>
+        </Form.Item>
+        
+      {/* </div> */}
+      <Divider />
+
+      {/* <div style={{ display: 'flex', gap: '30px'}}> */}
+    
+        {/* <Form.Item name="width" style={{ width: '100%' }} > */}
+        <Form.Item name="width" >
+          <InputNumber addonBefore="Width" addonAfter="mm"/>
+        </Form.Item>
+        
+        {/* <Form.Item name="height" style={{ width: '100%' }} > */}
+        <Form.Item name="height" >
+          <InputNumber addonBefore="Height" addonAfter="mm"/>
+        </Form.Item>
+
+        {/* <Form.Item name="thickness" style={{ width: '100%' }} > */}
+        <Form.Item name="thickness" >
+          <InputNumber addonBefore="Thickness" addonAfter="mm"/>
+        </Form.Item>
+
+    {/* </div> */}
       
       <Divider />
 
@@ -245,9 +249,15 @@ const CanvasStep = ({ formData, handleNext }) => {
         </Form.Item>
       )}
 
-      <Button type="primary" onClick={handleNext}>
+      {/* <Button type="primary" onClick={handleNext}>
         Далее
-      </Button>
+      </Button> */}
+
+          <Form.Item>
+          <Button type="primary" htmlType="submit">
+            Submit
+          </Button>
+        </Form.Item>
     </Form>
   );
 };

@@ -15,13 +15,6 @@ export const OrderProvider = ({ children }) => {
     }));
   };
 
-  //  const addSuborder = (suborder) => {
-  //   setOrder(prevOrder => ({
-  //     ...prevOrder,
-  //     suborders: [...prevOrder.suborders, suborder],
-  //   }));
-  // };
-
   const addSuborder = (name, id) => {
     setOrder(prevOrder => ({
       ...prevOrder,
