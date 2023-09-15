@@ -3,7 +3,7 @@ import { Form, Input, Button, Card, Radio, Divider, Spin } from 'antd';
 import axios from 'axios';
 import { useOrder } from '../../Context/OrderContext';
 
-const MirrorStep = ({ formData, handleCardClick, handleNext }) => {
+const MirrorStep = ({ formData, handleCardClick, handleNext, orderID }) => {
   const [mirrorData, setMirrorData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
@@ -15,6 +15,71 @@ const MirrorStep = ({ formData, handleCardClick, handleNext }) => {
   const [selectedDecorId, setSelectedDecorId] = useState(null);
   const { order } = useOrder();
   const doorSuborder = order.suborders.find(suborder => suborder.name === 'doorSub');
+
+  const orderId = order.id;
+  const orderIdToUse = orderID || orderId;
+
+  const fetchOrderData = async () => {
+    try {
+      const response = await axios.post(
+        'https://api.boki.fortesting.com.ua/graphql',
+        {
+          query: `
+            query Query($orderId: ID) {
+              order(id: $orderId) {
+                data {
+                  attributes {
+                    door_suborder {
+                      data {
+                        id
+                        attributes {
+                          decor {
+                            data {
+                              id
+                              attributes {
+                                type
+                                title
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          `,
+          variables: {
+            orderId: orderIdToUse,
+          }
+        },
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${jwtToken}`,
+          },
+        }
+      );
+      
+      console.log(response.data)
+
+      const decorData = response.data.data.order?.data?.attributes?.door_suborder?.data?.attributes?.decor?.data;
+
+      if (decorData && decorData.attributes && decorData.attributes.type === "mirror") {
+        // const initialValues = {
+        //   decor: decorData.id || null,
+        // };
+
+        // form.setFieldsValue(initialValues);
+        setPreviousMirrorId(decorData.attributes.title);
+
+      }
+    } catch (error) {
+      console.error('Error fetching door suborder data:', error);
+    }
+  };
+
 
   const fetchDecorData = async () => {
     setIsLoading(true);
@@ -200,6 +265,8 @@ const MirrorStep = ({ formData, handleCardClick, handleNext }) => {
     };
 
     fetchData();
+    fetchDecorData();
+    fetchOrderData();
   }, [jwtToken]);
 
   const filteredMirrorData = mirrorData.filter(mirror =>
@@ -242,12 +309,14 @@ const MirrorStep = ({ formData, handleCardClick, handleNext }) => {
                     style={{
                       border:
                         // formData.step2Field === mirror.id ? '7px solid #f06d20' : 'none',
-                        previousMirrorId === mirror.id ? '7px solid #f06d20' : 'none',
+                        // previousMirrorId === mirror.id ? '7px solid #f06d20' : 'none',
+                        previousMirrorId === mirror.attributes.title ? '7px solid #f06d20' : 'none',
                     }}
                     // onClick={() => handleCardClick('step2Field', mirror.id)}
                     onClick={() => {
                       checkDecor('mirror', mirror.attributes.title);
-                      setPreviousMirrorId(mirror.id);
+                      // setPreviousMirrorId(mirror.id);
+                      setPreviousMirrorId(mirror.attributes.title);
                     }}
                   >
                     <div style={{ overflow: 'hidden', height: 220 }}>

@@ -8,12 +8,22 @@ import ElementsStep from '../Components/CreateOrderSteps/ElementsStep';
 import { useParams } from 'react-router-dom';
 import InformationStep from '../Components/CreateOrderSteps/InformationStep';
 
+import axios from 'axios';
+import { useOrder } from '../Context/OrderContext';
+import { useNavigate  } from 'react-router-dom';
+
 export const CreateOrderPage = ({language}) => {
+
+
+  const jwtToken = localStorage.getItem('token');  
+  const { addOrder, addSuborder } = useOrder();
+  const navigate = useNavigate();
 
   const { orderId } = useParams();
   const [currentStep, setCurrentStep] = useState(0);
   const [formData, setFormData] = useState({
     doorStep: null,
+    veenerStep: null,
     step2Field: null,
     step3Field: null,
     step4Field: null,
@@ -53,6 +63,82 @@ export const CreateOrderPage = ({language}) => {
     }));
     console.log(formData)
   };
+
+  const handleCreateOrderClick = async () => {
+    try {
+      const response = await axios.post(
+        'https://api.boki.fortesting.com.ua/graphql',
+        {
+          query: `
+            mutation CreateOrder($data: OrderInput!) {
+              createOrder(data: $data) {
+                data {
+                  id
+                }
+              }
+            }
+          `,
+          variables: {
+            data: {}
+          },
+        },
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${jwtToken}`,
+          },
+        }
+      );
+  
+      const createdOrderId = response.data.data.createOrder.data.id;  
+      addOrder({ id: createdOrderId });
+  
+      const doorSuborderData = {
+        data: {
+          door: null,
+          sizes: {
+            height: null,
+            thickness: null,
+            width: null
+          },
+          decor: null,
+          order: createdOrderId
+        }
+      };
+
+      const doorSuborderResponse = await axios.post(
+        'https://api.boki.fortesting.com.ua/graphql',
+        {
+          query: `
+            mutation CreateDoorSuborder($data: DoorSuborderInput!) {
+              createDoorSuborder(data: $data) {
+                data {
+                  id
+                }
+              }
+            }
+          `,
+          variables: doorSuborderData,
+        },
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${jwtToken}`,
+          },
+        }
+      );
+  
+      const newDoorSuborderId = doorSuborderResponse.data.data.createDoorSuborder.data.id;
+      addSuborder('doorSub', newDoorSuborderId);
+      navigate(`/createorder/${createdOrderId}`);
+    } catch (error) {
+      console.error('Error creating order:', error);
+    }
+  };
+    
+  useEffect(() => {
+    handleCreateOrderClick();
+  },[])
 
   useEffect(() => {
     const savedFormData = localStorage.getItem(`orderFormData_${orderId}`);

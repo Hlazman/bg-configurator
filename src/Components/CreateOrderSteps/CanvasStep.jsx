@@ -1,22 +1,92 @@
 import React, { useState, useEffect } from 'react';
-import { Form, Input, InputNumber, Button, Card, Radio, Select, Divider, Spin } from 'antd';
+import { Form, Input, InputNumber, Button, Card, Radio, Select, Divider, Spin, Space } from 'antd';
 import axios from 'axios';
 import { useOrder } from '../../Context/OrderContext';
 
-const CanvasStep = ({ formData, handleNext }) => {
+const CanvasStep = ({ formData, handleNext, orderID }) => {
   const { order } = useOrder();
   const { addSuborder } = useOrder();
   const doorSuborder = order.suborders.find(suborder => suborder.name === 'doorSub');
   const orderId = order.id;
+  const orderIdToUse = orderID || orderId;
   const jwtToken = localStorage.getItem('token');
 
   const [doorData, setDoorData] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
-  const [selectedCollection, setSelectedCollection] = useState('ALL');
+  // const [selectedCollection, setSelectedCollection] = useState('ALL');
+  const [selectedCollection, setSelectedCollection] = useState('Loft');
   const [isLoading, setIsLoading] = useState(true);
   const [previousDoorId, setPreviousDoorId] = useState(null);
 
   const [form] = Form.useForm();
+  // const [doorSuborderData, setDoorSuborderData] = useState(null);
+
+  useEffect(() => {
+    const fetchOrderData = async () => {
+      try {
+        const response = await axios.post(
+          'https://api.boki.fortesting.com.ua/graphql',
+          {
+            query: `
+              query Query($orderId: ID) {
+                order(id: $orderId) {
+                  data {
+                    attributes {
+                      door_suborder {
+                        data {
+                          id
+                          attributes {
+                            door {
+                              data {
+                                id
+                              }
+                            }
+                            sizes {
+                              height
+                              thickness
+                              width
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            `,
+            variables: {
+              orderId: orderIdToUse,
+            }
+          },
+          {
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: `Bearer ${jwtToken}`,
+            },
+          }
+        );
+  
+        const doorSuborder = response.data.data.order?.data?.attributes?.door_suborder;
+  
+        if (doorSuborder && doorSuborder.data && doorSuborder.data.attributes) {
+          const { door, sizes } = doorSuborder.data.attributes;
+          const initialValues = {
+            door: door?.data?.id || null,
+            height: sizes?.height || null,
+            thickness: sizes?.thickness || null,
+            width: sizes?.width || null,
+          };
+  
+          form.setFieldsValue(initialValues);
+          setPreviousDoorId(initialValues.door)
+        }
+      } catch (error) {
+        console.error('Error fetching door suborder data:', error);
+      }
+    };
+  
+    fetchOrderData();
+  }, [orderID, jwtToken, form]);
 
   const onFinish = async (values) => {
     const { width, height, thickness } = values; // Извлекаем значения из формы
@@ -25,7 +95,7 @@ const CanvasStep = ({ formData, handleNext }) => {
     const data = {
       // decor: null,
       door: previousDoorId.toString(),
-      order: null,
+      order: orderIdToUse,
       sizes: {
         height: height,
         thickness: thickness,
@@ -66,7 +136,7 @@ const CanvasStep = ({ formData, handleNext }) => {
   };
   
 
-  useEffect(() => {    
+  useEffect(() => {
     const fetchData = async () => {
       setIsLoading(true);
       try {
@@ -148,66 +218,88 @@ const CanvasStep = ({ formData, handleNext }) => {
       form={form}
       onFinish={onFinish}
       style={{ padding: '0 25px'}}
+      // initialValues={doorSuborderData}
     >
-        <Divider/>
+      <Divider/>
 
-      {/* <div style={{ display: 'flex', gap: '30px' }}> */}
-      <Form.Item label="Sorting by Models">
-      <Select
-          value={selectedCollection}
-          onChange={handleCollectionChange}
-          // style={{ margin: '10px', width: '40%' }}
-        >
-          {collectionOptions.map((collection, index) => (
-            <Select.Option key={index} value={collection}>
-              {collection}
-            </Select.Option>
-          ))}
-        </Select>
-
-        
-        </Form.Item>
-        
-        <Form.Item label="Search by door name">
-        <Input
-          placeholder="Search"
-          value={searchQuery}
-          onChange={e => handleSearchQueryChange(e.target.value)}
-          // style={{ margin: '10px', width: '40%' }}
-        />
-        </Form.Item>
-        
-      {/* </div> */}
-      <Divider />
-
-      {/* <div style={{ display: 'flex', gap: '30px'}}> */}
-    
-        {/* <Form.Item name="width" style={{ width: '100%' }} > */}
-        <Form.Item name="width" >
+      <Space direction="hirizontal" size="large">
+      <Form.Item
+       name="width"
+       rules={[
+        {
+          required: true,
+          message: 'Please enter the width!',
+        },
+      ]}
+       >
           <InputNumber addonBefore="Width" addonAfter="mm"/>
         </Form.Item>
         
-        {/* <Form.Item name="height" style={{ width: '100%' }} > */}
-        <Form.Item name="height" >
+        <Form.Item
+         name="height"
+         rules={[
+          {
+            required: true,
+            message: 'Please enter the height!',
+          },
+        ]}
+        >
           <InputNumber addonBefore="Height" addonAfter="mm"/>
         </Form.Item>
 
-        {/* <Form.Item name="thickness" style={{ width: '100%' }} > */}
-        <Form.Item name="thickness" >
+        <Form.Item 
+          name="thickness" 
+          rules={[
+            {
+              required: true,
+              message: 'Please enter the thickness!',
+            },
+          ]}
+        >
           <InputNumber addonBefore="Thickness" addonAfter="mm"/>
         </Form.Item>
+        
+      </Space>
 
-    {/* </div> */}
-      
       <Divider />
+      
+      <Space.Compact direction="horizontal" size="large">
+      {/* <Form.Item label="Sorting by Models"> */}
+      <Form.Item>
+          <Select
+              value={selectedCollection}
+              onChange={handleCollectionChange}
+            >
+              {collectionOptions.map((collection, index) => (
+                <Select.Option key={index} value={collection}>
+                  {collection}
+                </Select.Option>
+              ))}
+            </Select>
+          </Form.Item>
+        
+        <Form.Item style={{width: '100%'}}>
+          <Input
+            addonBefore="Search by door name"
+            placeholder="Search"
+            value={searchQuery}
+            onChange={e => handleSearchQueryChange(e.target.value)}   
+          />
+        </Form.Item>
+        </Space.Compact>
 
       {isLoading ? (
         <div style={{ textAlign: 'center', marginTop: '20px' }}>
           <Spin size="large" />
         </div>
       ) : (
-        <Form.Item name="doorStep">
-          <Radio.Group value={formData.doorStep}>
+        <Form.Item 
+          name="doorStep"
+        >
+          <Radio.Group 
+            // value={formData.doorStep}>
+            value={form.door}>
+            
             <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}>
               {filteredImgS.map((imgSrc) => {
                 const door = doorData.find(

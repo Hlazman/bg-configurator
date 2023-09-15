@@ -3,7 +3,7 @@ import { Form, Input, Button, Card, Radio, Divider, Spin } from 'antd';
 import axios from 'axios';
 import { useOrder } from '../../Context/OrderContext';
 
-const StoneStep = ({ formData, handleCardClick, handleNext }) => {
+const StoneStep = ({ formData, handleCardClick, handleNext, orderID }) => {
   const [stoneData, setStoneData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
@@ -15,6 +15,70 @@ const StoneStep = ({ formData, handleCardClick, handleNext }) => {
   const [selectedDecorId, setSelectedDecorId] = useState(null);
   const { order } = useOrder();
   const doorSuborder = order.suborders.find(suborder => suborder.name === 'doorSub');
+
+  const orderId = order.id;
+  const orderIdToUse = orderID || orderId;
+
+  const fetchOrderData = async () => {
+    try {
+      const response = await axios.post(
+        'https://api.boki.fortesting.com.ua/graphql',
+        {
+          query: `
+            query Query($orderId: ID) {
+              order(id: $orderId) {
+                data {
+                  attributes {
+                    door_suborder {
+                      data {
+                        id
+                        attributes {
+                          decor {
+                            data {
+                              id
+                              attributes {
+                                type
+                                title
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          `,
+          variables: {
+            orderId: orderIdToUse,
+          }
+        },
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${jwtToken}`,
+          },
+        }
+      );
+      
+      console.log(response.data)
+
+      const decorData = response.data.data.order?.data?.attributes?.door_suborder?.data?.attributes?.decor?.data;
+
+      if (decorData && decorData.attributes && decorData.attributes.type === "ceramogranite") {
+        // const initialValues = {
+        //   decor: decorData.id || null,
+        // };
+
+        // form.setFieldsValue(initialValues);
+        setPreviousStoneId(decorData.attributes.title);
+
+      }
+    } catch (error) {
+      console.error('Error fetching door suborder data:', error);
+    }
+  };
 
   const fetchDecorData = async () => {
     setIsLoading(true);
@@ -201,6 +265,7 @@ const StoneStep = ({ formData, handleCardClick, handleNext }) => {
 
     fetchData();
     fetchDecorData();
+    fetchOrderData();
   }, [jwtToken]);
 
   const filteredStoneData = stoneData.filter(stone =>
@@ -243,11 +308,13 @@ const StoneStep = ({ formData, handleCardClick, handleNext }) => {
                     style={{
                       border:
                         // formData.step2Field === stone.id ? '7px solid #f06d20' : 'none',
-                        previousStoneId === stone.id ? '7px solid #f06d20' : 'none',
+                        // previousStoneId === stone.id ? '7px solid #f06d20' : 'none',
+                        previousStoneId === stone.attributes.title ? '7px solid #f06d20' : 'none',
                     }}
                     onClick={() => {
                       checkDecor('ceramogranite', stone.attributes.title);
-                      setPreviousStoneId(stone.id);
+                      // setPreviousStoneId(stone.id);
+                      setPreviousStoneId(stone.attributes.title);
                     }}
                     // onClick={() => checkDecor('ceramogranite', stone.attributes.title)}
                     // onClick={() => handleCardClick('step2Field', stone.id)}

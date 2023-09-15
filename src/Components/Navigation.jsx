@@ -1,93 +1,89 @@
 import React from 'react';
-import { NavLink, useNavigate  } from 'react-router-dom';
+// import { NavLink, useNavigate  } from 'react-router-dom';
+import { NavLink} from 'react-router-dom';
 import { Menu } from 'antd';
 import { 
   DatabaseOutlined, UserOutlined, FormOutlined, UsergroupAddOutlined, FileOutlined, TranslationOutlined, SettingOutlined,
 } from '@ant-design/icons';
-import axios from 'axios';
-import { useOrder } from '../Context/OrderContext';
+// import axios from 'axios';
+// import { useOrder } from '../Context/OrderContext';
 
 export const Navigation = ({ language, handleLanguageChange }) => {
-  const navigate = useNavigate();
-  const jwtToken = localStorage.getItem('token');  
-  const { addOrder, addSuborder } = useOrder();
+  // const navigate = useNavigate();
+  // const jwtToken = localStorage.getItem('token');  
+  // const { addOrder, addSuborder } = useOrder();
 
-  const handleCreateOrderClick = async () => {
-    try {
-      const response = await axios.post(
-        'https://api.boki.fortesting.com.ua/graphql',
-        {
-          query: `
-            mutation CreateOrder($data: OrderInput!) {
-              createOrder(data: $data) {
-                data {
-                  id
-                }
-              }
-            }
-          `,
-          variables: {
-            data: {}
-          },
-        },
-        {
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${jwtToken}`,
-          },
-        }
-      );
+  // const handleCreateOrderClick = async () => {
+  //   try {
+  //     const response = await axios.post(
+  //       'https://api.boki.fortesting.com.ua/graphql',
+  //       {
+  //         query: `
+  //           mutation CreateOrder($data: OrderInput!) {
+  //             createOrder(data: $data) {
+  //               data {
+  //                 id
+  //               }
+  //             }
+  //           }
+  //         `,
+  //         variables: {
+  //           data: {}
+  //         },
+  //       },
+  //       {
+  //         headers: {
+  //           'Content-Type': 'application/json',
+  //           Authorization: `Bearer ${jwtToken}`,
+  //         },
+  //       }
+  //     );
   
-      const createdOrderId = response.data.data.createOrder.data.id;  
-      addOrder({ id: createdOrderId });
+  //     const createdOrderId = response.data.data.createOrder.data.id;  
+  //     addOrder({ id: createdOrderId });
   
-      const doorSuborderData = {
-        data: {
-          door: null,
-          sizes: {
-            height: null,
-            thickness: null,
-            width: null
-          },
-          decor: null,
-          order: createdOrderId
-        }
-      };
+  //     const doorSuborderData = {
+  //       data: {
+  //         door: null,
+  //         sizes: {
+  //           height: null,
+  //           thickness: null,
+  //           width: null
+  //         },
+  //         decor: null,
+  //         order: createdOrderId
+  //       }
+  //     };
 
-      // const suborderName = 'doorSub';
-      const doorSuborderResponse = await axios.post(
-        'https://api.boki.fortesting.com.ua/graphql',
-        {
-          query: `
-            mutation CreateDoorSuborder($data: DoorSuborderInput!) {
-              createDoorSuborder(data: $data) {
-                data {
-                  id
-                }
-              }
-            }
-          `,
-          variables: doorSuborderData,
-        },
-        {
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${jwtToken}`,
-          },
-        }
-      );
+  //     const doorSuborderResponse = await axios.post(
+  //       'https://api.boki.fortesting.com.ua/graphql',
+  //       {
+  //         query: `
+  //           mutation CreateDoorSuborder($data: DoorSuborderInput!) {
+  //             createDoorSuborder(data: $data) {
+  //               data {
+  //                 id
+  //               }
+  //             }
+  //           }
+  //         `,
+  //         variables: doorSuborderData,
+  //       },
+  //       {
+  //         headers: {
+  //           'Content-Type': 'application/json',
+  //           Authorization: `Bearer ${jwtToken}`,
+  //         },
+  //       }
+  //     );
   
-      // if (doorSuborderResponse.data && doorSuborderResponse.data.data && doorSuborderResponse.data.data.createDoorSuborder) {
-      //   const newDoorSuborderId = doorSuborderResponse.data.data.createDoorSuborder.data.id;
-      //   addSuborder({ name: suborderName, data: { id: newDoorSuborderId } });
-      // }
-      const newDoorSuborderId = doorSuborderResponse.data.data.createDoorSuborder.data.id;
-      addSuborder('doorSub', newDoorSuborderId);
-      navigate(`/createorder/${createdOrderId}`);
-    } catch (error) {
-      console.error('Error creating order:', error);
-    }
-  };
+  //     const newDoorSuborderId = doorSuborderResponse.data.data.createDoorSuborder.data.id;
+  //     addSuborder('doorSub', newDoorSuborderId);
+  //     navigate(`/createorder/${createdOrderId}`);
+  //   } catch (error) {
+  //     console.error('Error creating order:', error);
+  //   }
+  // };
   
 
   const menuItems = [
@@ -96,7 +92,7 @@ export const Navigation = ({ language, handleLanguageChange }) => {
       'key': "createorder", 
       'icon': <FormOutlined />,
       'label': ( <NavLink to="/createorder">{language.createOrder}</NavLink>),
-      onClick: handleCreateOrderClick
+      // onClick: handleCreateOrderClick
     },
     {
       'key': "createclient", 

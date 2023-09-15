@@ -171,7 +171,7 @@ const getHeaderTitle = (location, Id) => {
                   <Route path="/clients" element={<ClientsPage language={language}/>} />
                   <Route path="/createclient" element={<CreateClientPage language={language} />} />
                   <Route path="/editclient/:clientId" element={<EditClientPage language={language} />} />
-                  {/* <Route path="/createorder" element={<CreateOrderPage />} /> */}
+                  <Route path="/createorder" element={<CreateOrderPage />} />
                   <Route path="/createorder/:orderId" element={<CreateOrderPage language={language}/>} />
                   <Route path="/files" element={<FilesPage />} />
                   <Route path="/resetpassword" element={<ResetPasswordPage language={language} />} />

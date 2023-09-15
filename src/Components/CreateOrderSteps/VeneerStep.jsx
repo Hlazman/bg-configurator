@@ -3,7 +3,7 @@ import { Form, Input, Button, Card, Radio, Select, Divider, Spin } from 'antd';
 import axios from 'axios';
 import { useOrder } from '../../Context/OrderContext';
 
-const VeneerStep = ({ formData, handleCardClick, handleNext }) => {
+const VeneerStep = ({ formData, handleCardClick, handleNext, orderID }) => {
   const [veneerData, setVeneerData] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('ALL');
@@ -16,7 +16,135 @@ const VeneerStep = ({ formData, handleCardClick, handleNext }) => {
   const [decorData, setDecorData] = useState([]);
   const [selectedDecorId, setSelectedDecorId] = useState(null);
   const { order } = useOrder();
+  const orderId = order.id;
+  const orderIdToUse = orderID || orderId;
   const doorSuborder = order.suborders.find(suborder => suborder.name === 'doorSub');
+
+  // const [form] = Form.useForm();
+  
+  // useEffect(() => {
+  //   const fetchOrderData = async () => {
+  //     try {
+  //       const response = await axios.post(
+  //         'https://api.boki.fortesting.com.ua/graphql',
+  //         {
+  //           query: `
+  //             query Query($orderId: ID) {
+  //               order(id: $orderId) {
+  //                 data {
+  //                   attributes {
+  //                     door_suborder {
+  //                       data {
+  //                         id
+  //                         attributes {
+  //                           decor {
+  //                             data {
+  //                               id
+  //                               attributes {
+  //                                 type
+  //                               }
+  //                             }
+  //                           }
+  //                         }
+  //                       }
+  //                     }
+  //                   }
+  //                 }
+  //               }
+  //             }
+  //           `,
+  //           variables: {
+  //             orderId: orderIdToUse,
+  //           }
+  //         },
+  //         {
+  //           headers: {
+  //             'Content-Type': 'application/json',
+  //             Authorization: `Bearer ${jwtToken}`,
+  //           },
+  //         }
+  //       );
+  
+  //       const decorData = response.data.data.order?.data?.attributes?.door_suborder?.data?.attributes?.decor?.data;
+  
+  //       if (decorData && decorData.attributes && decorData.attributes.type === "veneer") {
+  //         const initialValues = {
+  //           decor: decorData.id || null,
+  //         };
+
+  //         form.setFieldsValue(initialValues);
+  //         setPreviousVeneerId(initialValues.decor);
+
+  //       }
+  //     } catch (error) {
+  //       console.error('Error fetching door suborder data:', error);
+  //     }
+  //   };
+  
+  //   fetchOrderData();
+  // }, [orderIdToUse, jwtToken, form]);
+
+  const fetchOrderData = async () => {
+    try {
+      const response = await axios.post(
+        'https://api.boki.fortesting.com.ua/graphql',
+        {
+          query: `
+            query Query($orderId: ID) {
+              order(id: $orderId) {
+                data {
+                  attributes {
+                    door_suborder {
+                      data {
+                        id
+                        attributes {
+                          decor {
+                            data {
+                              id
+                              attributes {
+                                type
+                                title
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          `,
+          variables: {
+            orderId: orderIdToUse,
+          }
+        },
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${jwtToken}`,
+          },
+        }
+      );
+      
+      console.log(response.data)
+
+      const decorData = response.data.data.order?.data?.attributes?.door_suborder?.data?.attributes?.decor?.data;
+
+      if (decorData && decorData.attributes && decorData.attributes.type === "veneer") {
+        // const initialValues = {
+        //   decor: decorData.id || null,
+        // };
+
+        // form.setFieldsValue(initialValues);
+        setPreviousVeneerId(decorData.attributes.title);
+
+      }
+    } catch (error) {
+      console.error('Error fetching door suborder data:', error);
+    }
+  };
+
 
   const fetchDecorData = async () => {
     // setIsLoading(true);
@@ -58,7 +186,6 @@ const VeneerStep = ({ formData, handleCardClick, handleNext }) => {
       console.error('Error fetching decor data:', error);
     }
     setLoading(false);
-    console.log(decorData)
   };
 
   const createDecor = async (data) => {
@@ -105,7 +232,6 @@ const VeneerStep = ({ formData, handleCardClick, handleNext }) => {
     if (foundDecor) {
       setSelectedDecorId(foundDecor.id);
       console.log(`Найден декор с типом ${type} и названием ${title}`);
-      console.log(foundDecor.id);
     } else {
       console.log(`Декор с типом ${type} и названием ${title} не найден. Создаем новый...`);
   
@@ -125,7 +251,8 @@ const VeneerStep = ({ formData, handleCardClick, handleNext }) => {
 
     const data = {
       decor: selectedDecorId,
-      order: order.id,
+      // order: order.id,
+      order: orderIdToUse,
     };
 
     try {
@@ -222,7 +349,9 @@ const VeneerStep = ({ formData, handleCardClick, handleNext }) => {
 
     fetchData();
     fetchDecorData();
+    fetchOrderData();
   }, [jwtToken]);
+  // }, [jwtToken, form]);
 
   const categoryOptions = ['ALL', ...new Set(veneerData.map(veneer => veneer.attributes.category))];
 
@@ -252,7 +381,8 @@ const VeneerStep = ({ formData, handleCardClick, handleNext }) => {
 
   return (
     // <Form onFinish={formData} onValuesChange={formData}>
-    <Form onFinish={onFinish}>
+    // <Form onFinish={onFinish} form={form}>
+    <Form onFinish={onFinish} > 
 
 <Form.Item wrapperCol={{ offset: 4, span: 16 }}>
         <Button type="primary" htmlType="submit">
@@ -291,8 +421,10 @@ const VeneerStep = ({ formData, handleCardClick, handleNext }) => {
       {loading ? (
         <Spin size="large" />
       ) : (
-        <Form.Item name="step2Field">
-          <Radio.Group value={formData.step2Field}>
+        // <Form.Item name="step2Field">
+        <Form.Item name="veenerStep">
+          {/* <Radio.Group value={formData.step2Field}> */}
+          <Radio.Group value={formData.veneerStep}>
             <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}>
               {filteredImgs.map((veneer) => (
                 <div key={veneer.id} style={{ width: 220, margin: '20px 10px' }}>
@@ -302,7 +434,9 @@ const VeneerStep = ({ formData, handleCardClick, handleNext }) => {
                     style={{
                       border:
                         // formData.step2Field === veneer.id
-                        previousVeneerId === veneer.id
+                        // previousVeneerId === veneer.id
+                        previousVeneerId === veneer.title
+                        // selectedDecorId === veneer.id
                         ? '7px solid #f06d20'
                         : 'none',
                     }}
@@ -312,7 +446,8 @@ const VeneerStep = ({ formData, handleCardClick, handleNext }) => {
 
                     onClick={() => {
                       checkDecor('veneer', veneer.title);
-                      setPreviousVeneerId(veneer.id);
+                      // setPreviousVeneerId(veneer.id);
+                      setPreviousVeneerId(veneer.title);
                     }}
                   >
                     <div style={{ overflow: 'hidden', height: 220 }}>
