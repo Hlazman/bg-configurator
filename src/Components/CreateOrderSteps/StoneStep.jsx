@@ -3,221 +3,22 @@ import { Form, Input, Button, Card, Radio, Divider, Spin } from 'antd';
 import axios from 'axios';
 import { useOrder } from '../../Context/OrderContext';
 
-const StoneStep = ({ formData, handleCardClick, handleNext, orderID }) => {
+const StoneStep = ({ orderID, fetchOrderData, fetchDecorData, checkDecor, sendDecorForm }) => {
   const [stoneData, setStoneData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
-
   const jwtToken = localStorage.getItem('token');
-
-  const [previousStoneId, setPreviousStoneId] = useState(null);
+  const [previousStoneTitle, setPreviousStoneTitle] = useState(null);
   const [decorData, setDecorData] = useState([]);
   const [selectedDecorId, setSelectedDecorId] = useState(null);
+  
   const { order } = useOrder();
-  const doorSuborder = order.suborders.find(suborder => suborder.name === 'doorSub');
-
   const orderId = order.id;
   const orderIdToUse = orderID || orderId;
-
-  const fetchOrderData = async () => {
-    try {
-      const response = await axios.post(
-        'https://api.boki.fortesting.com.ua/graphql',
-        {
-          query: `
-            query Query($orderId: ID) {
-              order(id: $orderId) {
-                data {
-                  attributes {
-                    door_suborder {
-                      data {
-                        id
-                        attributes {
-                          decor {
-                            data {
-                              id
-                              attributes {
-                                type
-                                title
-                              }
-                            }
-                          }
-                        }
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          `,
-          variables: {
-            orderId: orderIdToUse,
-          }
-        },
-        {
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${jwtToken}`,
-          },
-        }
-      );
-      
-      console.log(response.data)
-
-      const decorData = response.data.data.order?.data?.attributes?.door_suborder?.data?.attributes?.decor?.data;
-
-      if (decorData && decorData.attributes && decorData.attributes.type === "ceramogranite") {
-        // const initialValues = {
-        //   decor: decorData.id || null,
-        // };
-
-        // form.setFieldsValue(initialValues);
-        setPreviousStoneId(decorData.attributes.title);
-
-      }
-    } catch (error) {
-      console.error('Error fetching door suborder data:', error);
-    }
-  };
-
-  const fetchDecorData = async () => {
-    setIsLoading(true);
-    try {
-      const decorResponse = await axios.post(
-        'https://api.boki.fortesting.com.ua/graphql',
-        {
-          query: `
-            query Decors($pagination: PaginationArg) {
-              decors(pagination: $pagination) {
-                data {
-                  attributes {
-                    title
-                    type
-                  }
-                  id
-                }
-              }
-            }
-          `,
-          variables: {
-            pagination: {
-              limit: 100
-            }
-          }
-        },
-        {
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${jwtToken}`,
-          },
-        }
-      );
-
-      const decorData = decorResponse.data.data.decors.data;
-      setDecorData(decorData);
-    } catch (error) {
-      console.error('Error fetching decor data:', error);
-    }
-    setIsLoading(false);
-    console.log(decorData)
-  };
-
-  const createDecor = async (data) => {
-    try {
-      const response = await axios.post(
-        'https://api.boki.fortesting.com.ua/graphql',
-        {
-          query: `
-            mutation CreateDecor($data: DecorInput!) {
-              createDecor(data: $data) {
-                data {
-                  id
-                }
-              }
-            }
-          `,
-          variables: {
-            data: {
-              title: data.title,
-              type: data.type,
-            }
-          }
-        },
-        {
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${jwtToken}`,
-          },
-        }
-      );
+  const doorSuborder = order.suborders.find(suborder => suborder.name === 'doorSub');
   
-      return response.data.data.createDecor.data.id;
-    } catch (error) {
-      console.error('Error creating decor:', error);
-      throw error;
-    }
-  };
-
-  const checkDecor = async (type, title) => {
-    const foundDecor = decorData.find(decor =>
-      decor.attributes.type === type && decor.attributes.title.toLowerCase() === title.toLowerCase()
-    );
-  
-    if (foundDecor) {
-      setSelectedDecorId(foundDecor.id);
-      console.log(`Найден декор с типом ${type} и названием ${title}`);
-      console.log(foundDecor.id);
-    } else {
-      console.log(`Декор с типом ${type} и названием ${title} не найден. Создаем новый...`);
-  
-      try {
-        const newDecorId = await createDecor({ title, type });
-        fetchDecorData();
-        setSelectedDecorId(newDecorId);
-        console.log(`Декор успешно создан с id: ${newDecorId}`);
-      } catch (error) {
-        console.error('Ошибка при создании декора:', error);
-      }
-    }
-  };
-
-  const onFinish = async (values) => {
-    const updateDoorSuborderId = doorSuborder.data.id; // Получаем id субордера
-
-    const data = {
-      decor: selectedDecorId,
-      order: order.id,
-    };
-
-    try {
-      const response = await axios.post(
-        'https://api.boki.fortesting.com.ua/graphql',
-        {
-          query: `
-            mutation Mutation($updateDoorSuborderId: ID!, $data: DoorSuborderInput!) {
-              updateDoorSuborder(id: $updateDoorSuborderId, data: $data) {
-                data {
-                  id
-                }
-              }
-            }
-          `,
-          variables: {
-            updateDoorSuborderId: updateDoorSuborderId,
-            data: data
-          }
-        },
-        {
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${jwtToken}`,
-          },
-        }
-      );
-      console.log('Data sent successfully:', response.data);
-    } catch (error) {
-      console.error('Error sending data:', error);
-    }
+  const onFinish = async () => {
+    sendDecorForm(orderIdToUse, doorSuborder, selectedDecorId);
   };
 
   useEffect(() => {
@@ -264,16 +65,15 @@ const StoneStep = ({ formData, handleCardClick, handleNext, orderID }) => {
     };
 
     fetchData();
-    fetchDecorData();
-    fetchOrderData();
-  }, [jwtToken]);
+    fetchDecorData(setDecorData);
+    fetchOrderData(orderIdToUse, setPreviousStoneTitle, 'ceramogranite');
+  }, [jwtToken, orderIdToUse, fetchDecorData, fetchOrderData]);
 
   const filteredStoneData = stoneData.filter(stone =>
     stone.attributes.title.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
   return (
-    // <Form onFinish={formData} onValuesChange={formData}>
     <Form onFinish={onFinish}>
 
         <Form.Item wrapperCol={{ offset: 4, span: 16 }}>
@@ -297,8 +97,8 @@ const StoneStep = ({ formData, handleCardClick, handleNext, orderID }) => {
           <Spin size="large" />
         </div>
       ) : (
-        <Form.Item name="step2Field">
-          <Radio.Group value={formData.step2Field}>
+        <Form.Item>
+          <Radio.Group>
             <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}>
               {filteredStoneData.map(stone => (
                 <div key={stone.id} style={{ width: 220, margin: '20px 10px' }}>
@@ -307,17 +107,12 @@ const StoneStep = ({ formData, handleCardClick, handleNext, orderID }) => {
                     hoverable
                     style={{
                       border:
-                        // formData.step2Field === stone.id ? '7px solid #f06d20' : 'none',
-                        // previousStoneId === stone.id ? '7px solid #f06d20' : 'none',
-                        previousStoneId === stone.attributes.title ? '7px solid #f06d20' : 'none',
+                        previousStoneTitle === stone.attributes.title ? '7px solid #f06d20' : 'none',
                     }}
                     onClick={() => {
-                      checkDecor('ceramogranite', stone.attributes.title);
-                      // setPreviousStoneId(stone.id);
-                      setPreviousStoneId(stone.attributes.title);
+                      checkDecor('ceramogranite', stone.attributes.title, decorData, setSelectedDecorId);
+                      setPreviousStoneTitle(stone.attributes.title);
                     }}
-                    // onClick={() => checkDecor('ceramogranite', stone.attributes.title)}
-                    // onClick={() => handleCardClick('step2Field', stone.id)}
                   >
                     <div style={{ overflow: 'hidden', height: 220 }}>
                       <img
@@ -335,10 +130,6 @@ const StoneStep = ({ formData, handleCardClick, handleNext, orderID }) => {
           </Radio.Group>
         </Form.Item>
       )}
-
-      <Button type="primary" onClick={handleNext}>
-        Далее
-      </Button>
     </Form>
   );
 };

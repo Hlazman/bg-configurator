@@ -8,6 +8,7 @@ export const OrderProvider = ({ children }) => {
     suborders: [],
   });
 
+
   const addOrder = (newOrder) => {
     setOrder(prevOrder => ({
       ...prevOrder,
@@ -23,7 +24,7 @@ export const OrderProvider = ({ children }) => {
   };
 
   return (
-    <OrderContext.Provider value={{ order, addOrder, addSuborder }}>
+    <OrderContext.Provider value={{ order, addOrder, addSuborder}}>
       {children}
     </OrderContext.Provider>
   );

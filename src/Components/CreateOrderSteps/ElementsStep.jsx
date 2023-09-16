@@ -1,55 +1,73 @@
-import React, { useRef, useState } from 'react';
-import { Tabs, Form, Input, Button } from 'antd';
-import GroupDecorStep from './GroupDecorStep';
+import React, { useRef, useState, useEffect } from 'react';
+// import { Tabs, Form, Input, Button, Select, InputNumber, Spin } from 'antd';
+import { Tabs, Spin } from 'antd';
+import GroupDecorElementStep from './GroupDecorElementStep';
+import axios from 'axios';
+import { useOrder } from '../../Context/OrderContext';
+import DecorElementForm from '../Forms/DecorElementForm';
 
 
-const ElementsStep = ({formData, handleCardClick, handleNext, language}) => {
-  const [form] = Form.useForm();
+// const { Option } = Select;
+
+const ElementsStep = ({language, orderID}) => {
+  const jwtToken = localStorage.getItem('token');
+  const { order } = useOrder();
+  const orderId = order.id;
+  const orderIdToUse = orderID || orderId;
+  const doorSuborder = order.suborders.find(suborder => suborder.name === 'doorSub');
+  const [decorDataId, setDecorDataId] = useState(null);
+  // const [isloading, setIsLoading] = useState(false);
+
+  // useEffect(() => {
+  //   axios.post(
+  //     'https://api.boki.fortesting.com.ua/graphql',
+  //     {
+  //       query: `
+  //         query Query($doorSuborderId: ID) {
+  //           doorSuborder(id: $doorSuborderId) {
+  //             data {
+  //               attributes {
+  //                 decor {
+  //                   data {
+  //                     id
+  //                   }
+  //                 }
+  //               }
+  //             }
+  //           }
+  //         }
+  //       `,
+  //       variables: {
+  //         doorSuborderId: doorSuborder.data.id,
+  //       },
+  //     },
+  //     {
+  //       headers: {
+  //         'Content-Type': 'application/json',
+  //         Authorization: `Bearer ${jwtToken}`,
+  //       },
+  //     }
+  //   )
+  //   .then(response => {
+  //     setDecorDataId(response.data.data.doorSuborder.data.attributes.decor.data);
+  //   })
+  //   .catch(error => {
+  //     console.error('Error fetching decor data:', error);
+  //   });
+  // }, [jwtToken, doorSuborder.data.id]);
+
+
   const onFinish = () => {
   };
   
   const initialItems = [
     {
       label: "Element 1",
-      children: (
-        <Form form={form} onFinish={onFinish} > 
-          <div style={{ display: 'flex', gap: '30px', padding: '10px 25px' }}>
-            
-            <Form.Item name="name" style={{ width: '100%' }} >
-              <Input addonBefore="Name"/>
-            </Form.Item>
-
-            <Form.Item name="width" style={{ width: '100%' }} >
-              <Input addonBefore="Width" addonAfter="mm"/>
-            </Form.Item>
-            
-            <Form.Item name="height" style={{ width: '100%' }} >
-              <Input addonBefore="Height" addonAfter="mm"/>
-            </Form.Item>
-            
-            <Form.Item wrapperCol={{ offset: 4, span: 16 }}>
-            <Button type="primary" htmlType="submit">
-              Submit
-            </Button>
-          </Form.Item>
-
-          </div>
-
-        <div style={{padding: '0 25px' }}>
-          <GroupDecorStep
-              formData={formData}
-              handleCardClick={handleCardClick}
-              handleNext={handleNext}
-              language={language}
-            />
-        </div>
-
-        </Form>
-      ),
+      children: (<DecorElementForm onFinish={onFinish}/>),
       key: '1',
     },
   ];
-  
+
   const [activeKey, setActiveKey] = useState(initialItems[0].key);
   const [items, setItems] = useState(initialItems);
   const newTabIndex = useRef(0);
@@ -62,42 +80,8 @@ const ElementsStep = ({formData, handleCardClick, handleNext, language}) => {
     const newActiveKey = `Element${newTabIndex.current++}`;
     const newPanes = [...items];
     newPanes.push({
-      label: `Element new`,
-      children: (
-        <Form form={form} onFinish={onFinish} > 
-          <div style={{ display: 'flex', gap: '30px', padding: '10px 25px' }}>
-            
-            <Form.Item name="name" style={{ width: '100%' }} >
-              <Input addonBefore="Name"/>
-            </Form.Item>
-
-            <Form.Item name="width" style={{ width: '100%' }} >
-              <Input addonBefore="Width"/>
-            </Form.Item>
-            
-            <Form.Item name="height" style={{ width: '100%' }} >
-              <Input addonBefore="Height"/>
-            </Form.Item>
-            
-            <Form.Item wrapperCol={{ offset: 4, span: 16 }}>
-            <Button type="primary" htmlType="submit">
-              Submit
-            </Button>
-          </Form.Item>
-
-          </div>
-
-        <div style={{padding: '0 25px' }}>
-          <GroupDecorStep
-              formData={formData}
-              handleCardClick={handleCardClick}
-              handleNext={handleNext}
-              language={language}
-            />
-        </div>
-
-        </Form>
-      ),
+      label: newActiveKey,
+      children: (<DecorElementForm onFinish={onFinish}/>),
       key: newActiveKey,
     });
     setItems(newPanes);
@@ -133,14 +117,15 @@ const ElementsStep = ({formData, handleCardClick, handleNext, language}) => {
   };
 
   return (
+    // <Spin spinning={isloading}>
     <Tabs
       type="editable-card"
       onChange={onChange}
       activeKey={activeKey}
       onEdit={onEdit}
       items={items}
-      // tabPosition="left"
     />
+  // </Spin>
   );
 };
 

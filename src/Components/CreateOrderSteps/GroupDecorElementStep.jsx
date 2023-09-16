@@ -7,7 +7,7 @@ import MirrorStep from './MirrorStep';
 import HPLStep from './HPLStep';
 import axios from 'axios';
 
-const GroupDecorStep = () => {
+const GroupDecorElementStep = () => {
   const [activeTab, setActiveTab] = useState('veneer');
   const jwtToken = localStorage.getItem('token');
 
@@ -152,16 +152,16 @@ const GroupDecorStep = () => {
   
     if (foundDecor) {
       setSelectedDecorId(foundDecor.id);
-      console.log(`Найден декор c типом ${type} и названием ${title}`);
+      console.log(`Найден декор с типом ${type} и названием ${title}`);
       console.log(foundDecor.id);
     } else {
-      console.log(`Декор c типом ${type} и названием ${title} не найден. Cоздаем новый...`);
+      console.log(`Декор с типом ${type} и названием ${title} не найден. Создаем новый...`);
   
       try {
         const newDecorId = await createDecor({ title, type });
         fetchDecorData();
         setSelectedDecorId(newDecorId);
-        console.log(`Декор успешно создан c id: ${newDecorId}`);
+        console.log(`Декор успешно создан с id: ${newDecorId}`);
       } catch (error) {
         console.error('Ошибка при создании декора:', error);
       }
@@ -274,4 +274,4 @@ const GroupDecorStep = () => {
   );
 };
 
-export default GroupDecorStep;
+export default GroupDecorElementStep;

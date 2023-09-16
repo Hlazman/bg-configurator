@@ -86,7 +86,7 @@ const CanvasStep = ({ formData, handleNext, orderID }) => {
     };
   
     fetchOrderData();
-  }, [orderID, jwtToken, form]);
+  }, [orderID, jwtToken, form, orderIdToUse]);
 
   const onFinish = async (values) => {
     const { width, height, thickness } = values; // Извлекаем значения из формы
@@ -184,7 +184,8 @@ const CanvasStep = ({ formData, handleNext, orderID }) => {
       setIsLoading(false);
     };
 
-    const storedCollection = localStorage.getItem('selectedCollection') || 'ALL';
+    // const storedCollection = localStorage.getItem('selectedCollection') || 'ALL';
+    const storedCollection = localStorage.getItem('selectedCollection') || 'Loft';
     const storedSearchQuery = localStorage.getItem('searchQuery') || '';
 
     setSelectedCollection(storedCollection);

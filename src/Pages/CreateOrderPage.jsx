@@ -64,7 +64,7 @@ export const CreateOrderPage = ({language}) => {
     console.log(formData)
   };
 
-  const handleCreateOrderClick = async () => {
+  const handleCreateOrder = async () => {
     try {
       const response = await axios.post(
         'https://api.boki.fortesting.com.ua/graphql',
@@ -137,7 +137,7 @@ export const CreateOrderPage = ({language}) => {
   };
     
   useEffect(() => {
-    handleCreateOrderClick();
+    handleCreateOrder();
   },[])
 
   useEffect(() => {

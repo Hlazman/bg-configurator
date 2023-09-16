@@ -3,162 +3,60 @@ import { Form, Input, Button, Card, Radio, Select, Divider, Spin } from 'antd';
 import axios from 'axios';
 import { useOrder } from '../../Context/OrderContext';
 
-const PaintStep = ({ formData, handleCardClick, handleNext }) => {
+const PaintStep = ({ orderID, fetchOrderData, fetchDecorData, checkDecor, sendDecorForm }) => {
   const [paintData, setPaintData] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
-  const [selectedColorGroup, setSelectedColorGroup] = useState('ALL');
+  // const [selectedColorGroup, setSelectedColorGroup] = useState('ALL');
+  const [selectedColorGroup, setSelectedColorGroup] = useState('');
   const [selectedColorRange, setSelectedColorRange] = useState('RAL');
-  // const [selectedPaintFor, setSelectedPaintFor] = useState('Paint for');
   const [selectedPaintFor, setSelectedPaintFor] = useState('paint');
   const [isLoading, setIsLoading] = useState(true);
-
   const jwtToken = localStorage.getItem('token');
-
-  const [previousColorId, setPreviousColorId] = useState(null);
+  const [previousColorTittle, setPreviousColorTitle] = useState(null);
   const [decorData, setDecorData] = useState([]);
   const [selectedDecorId, setSelectedDecorId] = useState(null);
+  
   const { order } = useOrder();
+  const orderId = order.id;
+  const orderIdToUse = orderID || orderId;
   const doorSuborder = order.suborders.find(suborder => suborder.name === 'doorSub');
 
-  const fetchDecorData = async () => {
-    setIsLoading(true);
-    try {
-      const decorResponse = await axios.post(
-        'https://api.boki.fortesting.com.ua/graphql',
-        {
-          query: `
-            query Decors($pagination: PaginationArg) {
-              decors(pagination: $pagination) {
-                data {
-                  attributes {
-                    title
-                    type
-                  }
-                  id
-                }
-              }
-            }
-          `,
-          variables: {
-            pagination: {
-              limit: 100
-            }
-          }
-        },
-        {
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${jwtToken}`,
-          },
-        }
-      );
-
-      const decorData = decorResponse.data.data.decors.data;
-      setDecorData(decorData);
-    } catch (error) {
-      console.error('Error fetching decor data:', error);
-    }
-    setIsLoading(false);
-    console.log(decorData)
+  const onFinish = async () => {
+    sendDecorForm(orderIdToUse, doorSuborder, selectedDecorId);
   };
 
-  const createDecor = async (data) => {
-    try {
-      const response = await axios.post(
-        'https://api.boki.fortesting.com.ua/graphql',
-        {
-          query: `
-            mutation CreateDecor($data: DecorInput!) {
-              createDecor(data: $data) {
-                data {
-                  id
-                }
-              }
-            }
-          `,
-          variables: {
-            data: {
-              title: data.title,
-              type: data.type,
-            }
-          }
-        },
-        {
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${jwtToken}`,
-          },
-        }
-      );
-  
-      return response.data.data.createDecor.data.id;
-    } catch (error) {
-      console.error('Error creating decor:', error);
-      throw error;
-    }
+  // const colorGroupOptions = ['ALL', ...new Set(paintData.map(paint => paint.attributes.color_group))];
+  const colorGroupOptions = [...new Set(paintData.map(paint => paint.attributes.color_group)), 'ALL'];
+  const colorRangeOptions = [...new Set(paintData.map(paint => paint.attributes.color_range))];
+
+  const handleColorGroupChange = value => {
+    localStorage.setItem('selectedColorGroup', value);
+    setSelectedColorGroup(value);
+    setSearchQuery('');
   };
 
-  const checkDecor = async (type, title) => {
-    const foundDecor = decorData.find(decor =>
-      decor.attributes.type === type && decor.attributes.title.toLowerCase() === title.toLowerCase()
-    );
-  
-    if (foundDecor) {
-      setSelectedDecorId(foundDecor.id);
-      console.log(`Найден декор с типом ${type} и названием ${title}`);
-      console.log(foundDecor.id);
-    } else {
-      console.log(`Декор с типом ${type} и названием ${title} не найден. Создаем новый...`);
-  
-      try {
-        const newDecorId = await createDecor({ title, type });
-        fetchDecorData();
-        setSelectedDecorId(newDecorId);
-        console.log(`Декор успешно создан с id: ${newDecorId}`);
-      } catch (error) {
-        console.error('Ошибка при создании декора:', error);
-      }
-    }
+  const handleColorRangeChange = value => {
+    setSelectedColorRange(value);
+    setSearchQuery('');
   };
 
-  const onFinish = async (values) => {
-    const updateDoorSuborderId = doorSuborder.data.id; // Получаем id субордера
-
-    const data = {
-      decor: selectedDecorId,
-      order: order.id,
-    };
-
-    try {
-      const response = await axios.post(
-        'https://api.boki.fortesting.com.ua/graphql',
-        {
-          query: `
-            mutation Mutation($updateDoorSuborderId: ID!, $data: DoorSuborderInput!) {
-              updateDoorSuborder(id: $updateDoorSuborderId, data: $data) {
-                data {
-                  id
-                }
-              }
-            }
-          `,
-          variables: {
-            updateDoorSuborderId: updateDoorSuborderId,
-            data: data
-          }
-        },
-        {
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${jwtToken}`,
-          },
-        }
-      );
-      console.log('Data sent successfully:', response.data);
-    } catch (error) {
-      console.error('Error sending data:', error);
-    }
+    const handlePaintForChange = value => {
+    setSelectedPaintFor(value);
+    console.log(selectedPaintFor)
   };
+
+  const handleSearchQueryChange = value => {
+    localStorage.setItem('searchQuery', value);
+    setSearchQuery(value);
+  };
+
+  const filteredImages = paintData
+    .filter(paint =>
+      (selectedColorGroup === 'ALL' || paint.attributes.color_group === selectedColorGroup) &&
+      paint.attributes.color_range === selectedColorRange &&
+      paint.attributes.color_code.toLowerCase().includes(searchQuery.toLowerCase())
+    )
+    .map(paint => paint.attributes.main_properties.image.data.attributes.url);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -211,49 +109,19 @@ const PaintStep = ({ formData, handleCardClick, handleNext }) => {
       }
     };
 
-    const storedColorGroup = localStorage.getItem('selectedColorGroup') || 'ALL';
+    // const storedColorGroup = localStorage.getItem('selectedColorGroup') || 'ALL';
+    const storedColorGroup = localStorage.getItem('selectedColorGroup') || 'black_white_9';
     const storedSearchQuery = localStorage.getItem('searchQuery') || '';
 
     setSelectedColorGroup(storedColorGroup);
     setSearchQuery(storedSearchQuery);
 
     fetchData();
-  }, [jwtToken]);
-
-  const colorGroupOptions = ['ALL', ...new Set(paintData.map(paint => paint.attributes.color_group))];
-  const colorRangeOptions = [...new Set(paintData.map(paint => paint.attributes.color_range))];
-
-  const handleColorGroupChange = value => {
-    localStorage.setItem('selectedColorGroup', value);
-    setSelectedColorGroup(value);
-    setSearchQuery('');
-  };
-
-  const handleColorRangeChange = value => {
-    setSelectedColorRange(value);
-    setSearchQuery('');
-  };
-
-    const handlePaintForChange = value => {
-    setSelectedPaintFor(value);
-    console.log(selectedPaintFor)
-  };
-
-  const handleSearchQueryChange = value => {
-    localStorage.setItem('searchQuery', value);
-    setSearchQuery(value);
-  };
-
-  const filteredImages = paintData
-    .filter(paint =>
-      (selectedColorGroup === 'ALL' || paint.attributes.color_group === selectedColorGroup) &&
-      paint.attributes.color_range === selectedColorRange &&
-      paint.attributes.color_code.toLowerCase().includes(searchQuery.toLowerCase())
-    )
-    .map(paint => paint.attributes.main_properties.image.data.attributes.url);
+    fetchDecorData(setDecorData);
+    fetchOrderData(orderIdToUse, setPreviousColorTitle, selectedPaintFor);
+  }, [jwtToken, orderIdToUse, fetchDecorData, fetchOrderData, selectedPaintFor]);
 
   return (
-    // <Form onFinish={formData} onValuesChange={formData}>
     <Form onFinish={onFinish}>
 
 <Form.Item wrapperCol={{ offset: 4, span: 16 }}>
@@ -288,16 +156,6 @@ const PaintStep = ({ formData, handleCardClick, handleNext }) => {
           ))}
         </Select>
 
-          {/* <Select
-          value={selectedPaintFor}
-          onChange={handlePaintForChange}
-          style={{ marginBottom: '10px', width: '100%' }}
-        >
-          <Select.Option value="paint">Paint</Select.Option>
-          <Select.Option value="painted_glass">Glass</Select.Option>
-          <Select.Option value="painted_veneer">Veener</Select.Option>
-        </Select> */}
-
         <Form.Item
         label="Paint for"
         name="selectedPaintFor" // Add a name to the Form.Item
@@ -308,7 +166,6 @@ const PaintStep = ({ formData, handleCardClick, handleNext }) => {
         <Select
           value={selectedPaintFor}
           onChange={handlePaintForChange}
-          // style={{ marginBottom: '10px', width: '100%' }}
         >
           <Select.Option value="paint">Paint</Select.Option>
           <Select.Option value="painted_glass">Glass</Select.Option>
@@ -329,8 +186,8 @@ const PaintStep = ({ formData, handleCardClick, handleNext }) => {
       {isLoading ? (
         <Spin size="large" />
       ) : (
-        <Form.Item name="step2Field">
-          <Radio.Group value={formData.step2Field}>
+        <Form.Item>
+          <Radio.Group>
             <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}>
               {filteredImages.map((imgSrc) => {
                 const paint = paintData.find(
@@ -344,15 +201,13 @@ const PaintStep = ({ formData, handleCardClick, handleNext }) => {
                       hoverable
                       style={{
                         border:
-                          // formData.step2Field === paint.id
-                          previousColorId === paint.id
+                          previousColorTittle === paint.attributes.color_code
                             ? '7px solid #f06d20'
                             : 'none',
                       }}
-                      // onClick={() => handleCardClick('step2Field', paint.id)}
                       onClick={() => {
-                        checkDecor(selectedPaintFor, paint.attributes.color_code);
-                        setPreviousColorId(paint.id);
+                        checkDecor(selectedPaintFor, paint.attributes.color_code, decorData, setSelectedDecorId);
+                        setPreviousColorTitle(paint.attributes.color_code);
                       }}
                     >
                       <div style={{ overflow: 'hidden', height: 120 }}>
@@ -375,9 +230,6 @@ const PaintStep = ({ formData, handleCardClick, handleNext }) => {
           </Radio.Group>
         </Form.Item>
       )}
-      <Button type="primary" onClick={handleNext}>
-        Далее
-      </Button>
     </Form>
   );
 };
