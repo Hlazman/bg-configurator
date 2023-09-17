@@ -7,47 +7,40 @@ import MirrorStep from './MirrorStep';
 import HPLStep from './HPLStep';
 import axios from 'axios';
 
-const GroupDecorElementStep = () => {
+const GroupDecorElementStep = (elementID) => {
   const [activeTab, setActiveTab] = useState('veneer');
   const jwtToken = localStorage.getItem('token');
 
   const handleTabChange = tabKey => {
     setActiveTab(tabKey);
   };
-
+  
   const fetchOrderData = async (orderIdToUse, setPreviousTitle, type) => {
     try {
       const response = await axios.post(
         'https://api.boki.fortesting.com.ua/graphql',
         {
           query: `
-            query Query($orderId: ID) {
-              order(id: $orderId) {
-                data {
-                  attributes {
-                    door_suborder {
-                      data {
-                        id
-                        attributes {
-                          decor {
-                            data {
-                              id
-                              attributes {
-                                type
-                                title
-                              }
-                            }
-                          }
-                        }
+          query ElementSuborder($elementSuborderId: ID) {
+            elementSuborder(id: $elementSuborderId) {
+              data {
+                attributes {
+                  decor {
+                    data {
+                      id
+                      attributes {
+                        type
+                        title
                       }
                     }
                   }
                 }
               }
             }
+          }
           `,
           variables: {
-            orderId: orderIdToUse,
+            elementSuborderId: elementID.elementID.toString(),
           }
         },
         {
@@ -57,18 +50,17 @@ const GroupDecorElementStep = () => {
           },
         }
       );
-      
-      const decorData = response.data.data.order?.data?.attributes?.door_suborder?.data?.attributes?.decor?.data;
-
-      if (decorData && decorData.attributes && decorData.attributes.type === type) {
-        setPreviousTitle(decorData.attributes.title);
-
+    
+    const decorData = response.data.data.elementSuborder?.data?.attributes?.decor?.data;
+    
+    if (decorData && decorData.attributes && decorData.attributes.type === type) {
+      const title = decorData.attributes.title;
+      setPreviousTitle(title);
       }
     } catch (error) {
       console.error('Error fetching door suborder data:', error);
     }
   };
-
 
   const fetchDecorData = async (setDecorData) => {
     try {
@@ -169,20 +161,17 @@ const GroupDecorElementStep = () => {
   };
 
   const sendDecorForm = async (orderIdToUse, doorSuborder, selectedDecorId) => {
-    const updateDoorSuborderId = doorSuborder.data.id; // Получаем id субордера
-
     const data = {
       decor: selectedDecorId,
-      order: orderIdToUse,
     };
 
     try {
-      const response = await axios.post(
+      await axios.post(
         'https://api.boki.fortesting.com.ua/graphql',
         {
           query: `
-            mutation Mutation($updateDoorSuborderId: ID!, $data: DoorSuborderInput!) {
-              updateDoorSuborder(id: $updateDoorSuborderId, data: $data) {
+            mutation Mutation($updateElementSuborderId: ID!, $data: ElementSuborderInput!) {
+              updateElementSuborder(id: $updateElementSuborderId, data: $data) {
                 data {
                   id
                 }
@@ -190,7 +179,7 @@ const GroupDecorElementStep = () => {
             }
           `,
           variables: {
-            updateDoorSuborderId: updateDoorSuborderId,
+            updateElementSuborderId: elementID.elementID.toString(),
             data: data
           }
         },
@@ -201,7 +190,7 @@ const GroupDecorElementStep = () => {
           },
         }
       );
-      console.log('Data sent successfully:', response.data);
+      console.log('Data sent successfully:');
     } catch (error) {
       console.error('Error sending data:', error);
     }
