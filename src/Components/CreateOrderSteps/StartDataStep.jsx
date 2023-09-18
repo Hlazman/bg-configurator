@@ -48,7 +48,7 @@ const StartDataStep = ({ handleNext, orderID }) => {
       if (response.data.data && response.data.data.order) {
         const orderData = response.data.data.order.data.attributes;
         setOrderData(orderData);
-        form.setFieldsValue(orderData); // Устанавливаем начальные значения в форму
+        form.setFieldsValue(orderData);
       }
     } catch (error) {
       console.error('Error fetching order data:', error);

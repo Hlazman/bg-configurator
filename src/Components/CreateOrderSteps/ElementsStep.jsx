@@ -9,10 +9,11 @@ const ElementsStep = ({language, orderID}) => {
   const { order } = useOrder();
   const orderId = order.id;
   const orderIdToUse = orderID || orderId;
-  const doorSuborder = order.suborders.find(suborder => suborder.name === 'doorSub');
-  const [decorDataId, setDecorDataId] = useState(null);
+  // const doorSuborder = order.suborders.find(suborder => suborder.name === 'doorSub');
+  // const [decorDataId, setDecorDataId] = useState(null);
+  // const [elementID, setElementID] = useState(null);
 
-  const [elementID, setElementID] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     const fetchElementSuborders = async () => {
@@ -56,9 +57,9 @@ const ElementsStep = ({language, orderID}) => {
               const newActiveKey = `Element ${1 + newTabIndex.current++}`;
 
               return {
-                // label: newActiveKey,
-                label: data.id,
-                children: (<DecorElementForm onFinish={onFinish} elementID={data.id}/>),
+                label: newActiveKey,
+                elemID: data.id,
+                children: (<DecorElementForm elementID={data.id}/>),
                 key: newActiveKey,
               };
             });
@@ -111,55 +112,85 @@ const ElementsStep = ({language, orderID}) => {
     }
   };
 
-  const onFinish = () => {
-  };
-
   const [items, setItems] = useState([]);
   const [activeKey, setActiveKey] = useState(0);
   const newTabIndex = useRef(0);
   
-  // const getSuborderIDFromLabel = (label) => {
-  //   const match = label.match(/Element id# (\d+)/);
-  //   return match ? match[1] : null;
-  // };
 
-  // const getCurrentElementID = () => {
-  //   const currentItem = items.find(item => item.key === activeKey);
-  //   if (currentItem) {
-  //     const label = currentItem.label;
-  //     return getSuborderIDFromLabel(label);
-  //   }
-  //   return null;
-  // };
+  const getCurrentElementID = () => {
+    const currentItem = items.find(item => item.key === activeKey);
+    if (currentItem) {
+      const currentElementID = currentItem.elemID;
+      return currentElementID;
+    }
+    return null;
+  };
 
-  //     const elID = () => {
-  //     const currentElementID = getCurrentElementID();
-  //     console.log('Current Element ID:', currentElementID);
-  //   };
-
-  //   elID();
+  const deleteElementSuborder = async () => {
+    const currentElementID = getCurrentElementID();
+  
+    try {
+      const response = await axios.post('https://api.boki.fortesting.com.ua/graphql', {
+        query: `
+          mutation DeleteElementSuborder($deleteElementSuborderId: ID!) {
+            deleteElementSuborder(id: $deleteElementSuborderId) {
+              data {
+                id
+              }
+            }
+          }
+        `,
+        variables: {
+          "deleteElementSuborderId": currentElementID
+        }
+      }, 
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${jwtToken}`,
+        },
+      });
+  
+      console.log('Успешно удалено', response.data);
+    } catch (error) {
+      console.error('Ошибка при удалении', error);
+    }
+  }
 
   const onChange = (newActiveKey) => {
     setActiveKey(newActiveKey);
+
+    setItems(prevItems => 
+      prevItems.map(item => ({
+        ...item,
+        closable: item.key === newActiveKey
+      }))
+    );
   };
 
   const add = async () => {
+    setIsLoading(true);
     const suborderId = await createElementSuborder();
     const newActiveKey = `Element ${1 + newTabIndex.current++}`;
     const newPanes = [...items];
     newPanes.push({
-      // label: newActiveKey,
-      // label: suborderId,
-      label: `Element id# ${suborderId}`,
-      children: (<DecorElementForm onFinish={onFinish} elementID={suborderId}/>),
+      label: newActiveKey,
+      elemID: suborderId,
+      children: (<DecorElementForm elementID={suborderId}/>),
       key: newActiveKey,
+      closable: false,
     });
+
     setItems(newPanes);
-    setActiveKey(newActiveKey);
+    onChange(newActiveKey)
+    setIsLoading(false)
   };
 
 
   const remove = (targetKey) => {
+    setIsLoading(true);
+    deleteElementSuborder();
+
     let newActiveKey = activeKey;
     let lastIndex = -1;
     items.forEach((item, i) => {
@@ -176,15 +207,23 @@ const ElementsStep = ({language, orderID}) => {
       }
     }
     setItems(newPanes);
-    setActiveKey(newActiveKey);
+    onChange(newActiveKey)
+    setIsLoading(false)
   };
 
-  const onEdit = (targetKey, action) => {
-    if (action === 'add') {
-      add();
-    } else {
-      remove(targetKey);
+  const onEdit = async (targetKey, action) => {
+    if (isLoading) {
+      return; 
     }
+    setIsLoading(true);
+
+    if (action === 'add') {
+      await add();
+    } else {
+      await remove(targetKey);
+    }
+
+    setIsLoading(false);
   };
 
   return (

@@ -7,6 +7,7 @@ import GroupAccessoriesStep from '../Components/CreateOrderSteps/GroupAccessorie
 import ElementsStep from '../Components/CreateOrderSteps/ElementsStep';
 import { useParams } from 'react-router-dom';
 import InformationStep from '../Components/CreateOrderSteps/InformationStep';
+import FrameStep from '../Components/CreateOrderSteps/FrameStep';
 
 import axios from 'axios';
 import { useOrder } from '../Context/OrderContext';
@@ -16,7 +17,7 @@ export const CreateOrderPage = ({language}) => {
 
 
   const jwtToken = localStorage.getItem('token');  
-  const { addOrder, addSuborder } = useOrder();
+  const { addOrder, addSuborder, order } = useOrder();
   const navigate = useNavigate();
 
   const { orderId } = useParams();
@@ -63,7 +64,7 @@ export const CreateOrderPage = ({language}) => {
     }));
     console.log(formData)
   };
-
+   
   const handleCreateOrder = async () => {
     try {
       const response = await axios.post(
@@ -130,12 +131,76 @@ export const CreateOrderPage = ({language}) => {
   
       const newDoorSuborderId = doorSuborderResponse.data.data.createDoorSuborder.data.id;
       addSuborder('doorSub', newDoorSuborderId);
+
+      const frameSuborderData = {
+        data: {
+          order: createdOrderId
+        }
+      };
+  
+      const frameSuborderResponse = await axios.post(
+        'https://api.boki.fortesting.com.ua/graphql',
+        {
+          query: `
+            mutation CreateFrameSuborder($data: FrameSuborderInput!) {
+              createFrameSuborder(data: $data) {
+                data {
+                  id
+                }
+              }
+            }
+          `,
+          variables: frameSuborderData,
+        },
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${jwtToken}`,
+          },
+        }
+      );
+  
+      const newFrameSuborderId = frameSuborderResponse.data.data.createFrameSuborder.data.id;
+      addSuborder('frameSub', newFrameSuborderId);
+  
+      // Запрос для создания FrameFitting
+      const frameFittingData = {
+        data: {
+          order: createdOrderId
+        }
+      };
+  
+      const frameFittingResponse = await axios.post(
+        'https://api.boki.fortesting.com.ua/graphql',
+        {
+          query: `
+            mutation CreateFrameFitting($data: FrameFittingInput!) {
+              createFrameFitting(data: $data) {
+                data {
+                  id
+                }
+              }
+            }
+          `,
+          variables: frameFittingData,
+        },
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${jwtToken}`,
+          },
+        }
+      );
+  
+      const newFrameFittingId = frameFittingResponse.data.data.createFrameFitting.data.id;
+      addSuborder('frameFitting', newFrameFittingId);
+
       navigate(`/createorder/${createdOrderId}`);
     } catch (error) {
       console.error('Error creating order:', error);
     }
   };
-    
+
   useEffect(() => {
     handleCreateOrder();
   },[])
@@ -171,9 +236,9 @@ export const CreateOrderPage = ({language}) => {
             language={language}
         />
         );
-      case 2:
+        case 2:
         return (
-          <ElementsStep
+          <FrameStep
             formData={formData}
             handleCardClick={handleCardClick}
             handleNext={handleNext}
@@ -182,6 +247,15 @@ export const CreateOrderPage = ({language}) => {
         );
       case 3:
         return (
+          <ElementsStep
+            formData={formData}
+            handleCardClick={handleCardClick}
+            handleNext={handleNext}
+            language={language}
+          />
+        );
+      case 4:
+        return (
           <GroupAccessoriesStep
             formData={formData}
             handleCardClick={handleCardClick}
@@ -189,7 +263,7 @@ export const CreateOrderPage = ({language}) => {
             language={language}
         />
         );
-        case 4:
+        case 5:
         return (
           <Form onFinish={handleFormSubmit} onValuesChange={handleFormValuesChange}>
             <Form.Item name="step6Field" label="Шаг 5">
@@ -199,7 +273,7 @@ export const CreateOrderPage = ({language}) => {
             <Button type="primary" htmlType="submit"> Отправить </Button>
           </Form>
         );
-        case 5:
+        case 6:
         return (
           <InformationStep
             formData={formData}
@@ -244,19 +318,23 @@ export const CreateOrderPage = ({language}) => {
             // ),
           // },
           {
+            title: 'Frame',
+            // status: (currentStep === 2 ? 'process' : formData.step4Field ? 'finish' : 'error'),
+          },
+          {
             title: 'Elements',
             // status: (currentStep === 2 ? 'process' : formData.step4Field ? 'finish' : 'error'),
           },
           {
-            title: 'Accessories',
+            title: 'Fitting',
             // status: (currentStep === 4 ? 'process' : formData.step5Field ? 'finish' : 'error'),
-            status: (
-              currentStep === 4
-                ? 'process'
-                : (formData.hingesStep || formData.knobeStep || formData.lockStep || formData.skirtingStep)
-                  ? 'finish'
-                  : 'error'
-            ),
+            // status: (
+            //   currentStep === 4
+            //     ? 'process'
+            //     : (formData.hingesStep || formData.knobeStep || formData.lockStep || formData.skirtingStep)
+            //       ? 'finish'
+            //       : 'error'
+            // ),
           },
           {
             title: 'Options',

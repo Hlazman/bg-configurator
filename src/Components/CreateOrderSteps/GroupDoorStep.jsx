@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Tabs } from 'antd';
 import CanvasStep from './CanvasStep';
 import StartDataStep from './StartDataStep';
+// import FrameStep from './FrameStep';
 
 const GroupDoorStep = ({ formData, handleCardClick, handleNext }) => {
   const [activeTab, setActiveTab] = useState('startdata');
@@ -26,6 +27,11 @@ const GroupDoorStep = ({ formData, handleCardClick, handleNext }) => {
           key: 'canvas',
           children: <CanvasStep formData={formData} handleCardClick={handleCardClick} handleNext={handleNext} />,
         },
+        // {
+        //   label: 'Frame',
+        //   key: 'frame',
+        //   children: <FrameStep formData={formData} handleCardClick={handleCardClick} handleNext={handleNext} />,
+        // },
       ]}
     />
   );

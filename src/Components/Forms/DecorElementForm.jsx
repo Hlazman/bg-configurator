@@ -19,6 +19,12 @@ const DecorElementForm = ({ orderID, elementID, language}) => {
 
   const [form] = Form.useForm();
 
+  const [showDecor, setShowDecor] = useState(false); // Состояние для отслеживания нажатия кнопки "Show Decor"
+
+  const handleShowDecorClick = () => {
+    setShowDecor(true); // Устанавливаем состояние в true при нажатии кнопки
+  }
+
   useEffect(() => {
     axios.post(
       'https://api.boki.fortesting.com.ua/graphql',
@@ -239,6 +245,126 @@ const DecorElementForm = ({ orderID, elementID, language}) => {
   //     });
   //   }
   // }, [jwtToken, doorSuborder, elementID]);
+  // toCHANGE
+
+  useEffect(() => {
+    axios.post(
+      'https://api.boki.fortesting.com.ua/graphql',
+      {
+        query: `
+          query Query($elementSuborderId: ID) {
+            elementSuborder(id: $elementSuborderId) {
+              data {
+                id
+                attributes {
+                  decor {
+                    data {
+                      id
+                    }
+                  }
+                }
+              }
+            }
+          }
+        `,
+        variables: {
+          elementSuborderId: elementID.toString(),
+        },
+      },
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${jwtToken}`,
+        },
+      }
+    )
+    .then(response => {
+      const decorData = response.data.data.elementSuborder.data.attributes.decor.data;
+  
+      if (!decorData || !decorData.id) {
+        // Если данных нет, выполняем остальные запросы
+        if (doorSuborder) {
+          axios.post(
+            'https://api.boki.fortesting.com.ua/graphql',
+            {
+              query: `
+                query Query($doorSuborderId: ID) {
+                  doorSuborder(id: $doorSuborderId) {
+                    data {
+                      attributes {
+                        decor {
+                          data {
+                            id
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              `,
+              variables: {
+                doorSuborderId: doorSuborder.data.id,
+              },
+            },
+            {
+              headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${jwtToken}`,
+              },
+            }
+          )
+          .then(response => {
+            const decorDataId = response.data.data.doorSuborder.data.attributes.decor.data;
+  
+            if (decorDataId && decorDataId.id) {
+              axios.post(
+                'https://api.boki.fortesting.com.ua/graphql',
+                {
+                  query: `
+                    mutation Mutation($updateElementSuborderId: ID!, $data: ElementSuborderInput!) {
+                      updateElementSuborder(id: $updateElementSuborderId, data: $data) {
+                        data {
+                          id
+                        }
+                      }
+                    }
+                  `,
+                  variables: {
+                    updateElementSuborderId: elementID.toString(),
+                    data: {
+                      decor: decorDataId.id,
+                    },
+                  },
+                },
+                {
+                  headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${jwtToken}`,
+                  },
+                }
+              )
+              .then(response => {
+                console.log('Update successful:', response);
+                console.log('decorDataId', decorDataId);
+              })
+              .catch(error => {
+                console.error('Error updating element suborder:', error);
+              });
+            } else {
+              console.log('No decor data found');
+            }
+          })
+          .catch(error => {
+            console.error('Error fetching decor data:', error);
+          });
+        }
+      }
+    })
+    .catch(error => {
+      console.error('Error fetching decor data:', error);
+    });
+  }, [jwtToken, doorSuborder, elementID]);
+  
 
 
   return (
@@ -288,14 +414,19 @@ const DecorElementForm = ({ orderID, elementID, language}) => {
         </div>
       </Form>
       
-      <div style={{padding: '0 25px' }}>
+      {/* <div style={{padding: '0 25px' }}>
         <GroupDecorElementStep
           elementID={elementID}
           language={language}
         />
-        </div>
-    </Spin>
+        </div> */}
 
+        <div style={{padding: '0 25px' }}>
+          <Button type="primary" onClick={handleShowDecorClick}>Show Decor</Button>
+          {showDecor && <GroupDecorElementStep elementID={elementID} language={language} />}
+        </div>
+
+    </Spin>
   );
 };
 
