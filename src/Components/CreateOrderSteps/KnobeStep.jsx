@@ -1,15 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import { Form, Input, Button, Card, Radio, Select, Divider, Spin } from 'antd';
 import axios from 'axios';
-import { useProductVariant } from '../../Context/ProductVariantContext';
+import { useOrder } from '../../Context/OrderContext';
 
-const KnobesStep = ({ formData, handleNext }) => {
+const KnobesStep = ({ orderID }) => {
   const [knobesData, setKnobesData] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedBrand, setSelectedBrand] = useState('ALL');
-  const [loading, setLoading] = useState(true);
-  const [previousKnobId, setPreviousKnobId] = useState(null);
-  const { productVariantId } = useProductVariant();
+  const [isLoading, setIsLoading] = useState(true);
+  const [previousKnobeId, setPreviousKnobeId] = useState(null);
+
+  
+  const { order } = useOrder();
+  const orderId = order.id;
+  const orderIdToUse = orderID || orderId;
+  const knobeSuborder = order.suborders.find(suborder => suborder.name === 'knobeSub');
 
   const jwtToken = localStorage.getItem('token');
 
@@ -55,10 +60,10 @@ const KnobesStep = ({ formData, handleNext }) => {
 
         const knobes = response.data.data.knobes.data;
         setKnobesData(knobes);
-        setLoading(false);
+        setIsLoading(false);
       } catch (error) {
         console.error('Error fetching data:', error);
-        setLoading(false);
+        setIsLoading(false);
       }
     };
 
@@ -95,43 +100,96 @@ const KnobesStep = ({ formData, handleNext }) => {
       id: knob.id,
     }));
 
-  const handleKnobClick = async (fieldName, knobId) => {
-    const updateProductVariantData = {
-      updateProductVariantId: productVariantId,
-      data: {
-        knobe: knobId === previousKnobId ? null : knobId,
-      },
-    };
-
-    await axios.post(
-      'https://api.boki.fortesting.com.ua/graphql',
-      {
+    const handleSbmitForm = async () => {    
+      const variables = {
+        "updateFrameFittingId": knobeSuborder.data.id,
+        "data": {
+          "knobe": previousKnobeId
+        }
+      };
+  
+      axios.post(
+        'https://api.boki.fortesting.com.ua/graphql',
+        {
+          query: `
+            mutation UpdateFrameFitting($updateFrameFittingId: ID!, $data: FrameFittingInput!) {
+              updateFrameFitting(id: $updateFrameFittingId, data: $data) {
+                data {
+                  id
+                }
+              }
+            }
+          `,
+          variables,
+        },
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${jwtToken}`,
+          },
+        }
+      )
+      .then((response) => {
+        console.log('Успешный ответ:', response.data);
+      })
+      .catch((error) => {
+        console.error('Ошибка:', error);
+      });
+    }
+  
+  
+    useEffect(() => {
+      setIsLoading(true);
+  
+      const variables = {
+        frameFittingId: knobeSuborder.data.id
+      };
+  
+      axios.post('https://api.boki.fortesting.com.ua/graphql', {
         query: `
-          mutation UpdateProductVariant($updateProductVariantId: ID!, $data: ProductVariantInput!) {
-            updateProductVariant(id: $updateProductVariantId, data: $data) {
+          query GetFrameFitting($frameFittingId: ID) {
+            frameFitting(id: $frameFittingId) {
               data {
-                id
+                attributes {
+                  knobe {
+                    data {
+                      id
+                    }
+                  }
+                }
               }
             }
           }
         `,
-        variables: updateProductVariantData,
-      },
-      {
+        variables
+      }, {
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${jwtToken}`,
         },
-      }
-    );
-
-    setPreviousKnobId(knobId === previousKnobId ? null : knobId);
-
-    formData['knobeStep'] = productVariantId;
-  };
+      })
+      .then((response) => {
+        const knobeId = response.data.data.frameFitting.data.attributes.knobe.data.id;
+        setPreviousKnobeId(knobeId);
+        setIsLoading(false);
+      })
+      .catch((error) => {
+        console.error('Ошибка:', error);
+        setIsLoading(false);
+      });
+  
+    }, [jwtToken, knobeSuborder]);
 
   return (
-    <Form onFinish={formData} onValuesChange={formData}>
+    <Form onFinish={handleSbmitForm} >
+
+<Form.Item wrapperCol={{ offset: 4, span: 16 }}>
+        <Button type="primary" htmlType="submit">
+          Submit
+        </Button>
+      </Form.Item>
+
+
       <div style={{ display: 'flex', gap: '30px' }}>
         <Select
           value={selectedBrand}
@@ -155,11 +213,11 @@ const KnobesStep = ({ formData, handleNext }) => {
 
       <Divider />
 
-      {loading ? (
+      {isLoading ? (
         <Spin size="large" />
       ) : (
         <Form.Item name="knobeStep">
-          <Radio.Group value={formData.knobeStep}>
+          <Radio.Group>
             <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}>
               {filteredImgs.map((knob) => (
                 <div key={knob.id} style={{ width: 220, margin: '20px 10px' }}>
@@ -168,11 +226,11 @@ const KnobesStep = ({ formData, handleNext }) => {
                     hoverable
                     style={{
                       border:
-                      previousKnobId === knob.id
+                      previousKnobeId === knob.id
                         ? '7px solid #f06d20'
                         : 'none',
                     }}
-                    onClick={() => handleKnobClick('knobeStep', knob.id)}
+                    onClick={() => setPreviousKnobeId(knob.id)}
                   >
                     <div style={{ overflow: 'hidden', height: 120 }}>
                       <img
@@ -193,10 +251,6 @@ const KnobesStep = ({ formData, handleNext }) => {
           </Radio.Group>
         </Form.Item>
       )}
-
-      <Button type="primary" onClick={handleNext}>
-        Далее
-      </Button>
     </Form>
   );
 };

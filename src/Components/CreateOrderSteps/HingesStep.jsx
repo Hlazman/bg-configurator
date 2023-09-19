@@ -1,15 +1,22 @@
 import React, { useState, useEffect } from 'react';
 import { Form, Input, Button, Card, Radio, Select, Divider, Spin } from 'antd';
 import axios from 'axios';
-import { useProductVariant } from '../../Context/ProductVariantContext';
+import { useOrder } from '../../Context/OrderContext';
 
-const HingeStep = ({ formData, handleNext }) => {
+const HingeStep = ({ orderID }) => {
   const [hingeData, setHingeData] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedBrand, setSelectedBrand] = useState('ALL');
-  const [loading, setLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(true);
   const [previousHingeId, setPreviousHingeId] = useState(null); 
-  const { productVariantId } = useProductVariant();
+
+  const [selectedHingeId, setSelectedHingeId] = useState(null);
+
+  
+  const { order } = useOrder();
+  const orderId = order.id;
+  const orderIdToUse = orderID || orderId;
+  const hingeSuborder = order.suborders.find(suborder => suborder.name === 'hingeSub');
 
   const jwtToken = localStorage.getItem('token');
 
@@ -58,10 +65,10 @@ const HingeStep = ({ formData, handleNext }) => {
           id: hinge.id,
         }));
         setHingeData(hinges);
-        setLoading(false);
+        setIsLoading(false);
       } catch (error) {
         console.error('Error fetching data:', error);
-        setLoading(false);
+        setIsLoading(false);
       }
     };
 
@@ -99,29 +106,27 @@ const HingeStep = ({ formData, handleNext }) => {
       id: hinge.id,
     }));
 
-    const handleHingeClick = async (fieldName, hingeId) => {
-      console.log(productVariantId)
-      const updateProductVariantData = {
-        updateProductVariantId: productVariantId, // Используем productVariantId
-        data: {
-          // hinge: hingeId,
-          hinge: hingeId === previousHingeId ? null : hingeId,
-        },
+    const handleSbmitForm = async () => {    
+      const variables = {
+        "updateFrameFittingId": hingeSuborder.data.id,
+        "data": {
+          "hinge": previousHingeId
+        }
       };
   
-      await axios.post(
+      axios.post(
         'https://api.boki.fortesting.com.ua/graphql',
         {
           query: `
-            mutation UpdateProductVariant($updateProductVariantId: ID!, $data: ProductVariantInput!) {
-              updateProductVariant(id: $updateProductVariantId, data: $data) {
+            mutation UpdateFrameFitting($updateFrameFittingId: ID!, $data: FrameFittingInput!) {
+              updateFrameFitting(id: $updateFrameFittingId, data: $data) {
                 data {
                   id
                 }
               }
             }
           `,
-          variables: updateProductVariantData,
+          variables,
         },
         {
           headers: {
@@ -129,15 +134,67 @@ const HingeStep = ({ formData, handleNext }) => {
             Authorization: `Bearer ${jwtToken}`,
           },
         }
-      );
+      )
+      .then((response) => {
+        console.log('Успешный ответ:', response.data);
+      })
+      .catch((error) => {
+        console.error('Ошибка:', error);
+      });
+    }
   
-      setPreviousHingeId(hingeId === previousHingeId ? null : hingeId);
   
-      formData[fieldName] = productVariantId;
-    };
+    useEffect(() => {
+      setIsLoading(true);
+  
+      const variables = {
+        frameFittingId: hingeSuborder.data.id
+      };
+  
+      axios.post('https://api.boki.fortesting.com.ua/graphql', {
+        query: `
+          query GetFrameFitting($frameFittingId: ID) {
+            frameFitting(id: $frameFittingId) {
+              data {
+                attributes {
+                  hinge {
+                    data {
+                      id
+                    }
+                  }
+                }
+              }
+            }
+          }
+        `,
+        variables
+      }, {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${jwtToken}`,
+        },
+      })
+      .then((response) => {
+        const hingeId = response.data.data.frameFitting.data.attributes.hinge.data.id;
+        setPreviousHingeId(hingeId);
+        setIsLoading(false);
+      })
+      .catch((error) => {
+        console.error('Ошибка:', error);
+        setIsLoading(false);
+      });
+  
+    }, [jwtToken, hingeSuborder]);
 
   return (
-    <Form onFinish={formData} onValuesChange={formData}>
+    <Form onFinish={handleSbmitForm}>
+
+<Form.Item wrapperCol={{ offset: 4, span: 16 }}>
+        <Button type="primary" htmlType="submit">
+          Submit
+        </Button>
+      </Form.Item>
+
       <div style={{ display: 'flex', gap: '30px' }}>
         <Select
           value={selectedBrand}
@@ -161,11 +218,11 @@ const HingeStep = ({ formData, handleNext }) => {
 
       <Divider />
 
-      {loading ? (
+      {isLoading ? (
         <Spin size="large" />
       ) : (
         <Form.Item name="hingesStep">
-          <Radio.Group value={formData.hingesStep}>
+          <Radio.Group >
             <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}>
               {filteredImgs.map((hinge) => (
                 <div key={hinge.id} style={{ width: 220, margin: '20px 10px' }}>
@@ -178,7 +235,7 @@ const HingeStep = ({ formData, handleNext }) => {
                           ? '7px solid #f06d20'
                           : 'none',
                     }}
-                    onClick={() => handleHingeClick('hingesStep', hinge.id)}
+                    onClick={() => setPreviousHingeId(hinge.id)}
                   >
                     <div style={{ overflow: 'hidden', height: 220 }}>
                       <img
@@ -200,10 +257,6 @@ const HingeStep = ({ formData, handleNext }) => {
           </Radio.Group>
         </Form.Item>
       )}
-
-      <Button type="primary" onClick={handleNext}>
-        Далее
-      </Button>
     </Form>
   );
 };

@@ -1,9 +1,11 @@
-import { Table, Dropdown, Space, Button, Tag, Input, Spin } from 'antd';
+import { Table, Dropdown, Space, Button, Tag, Input, Spin, Modal, message } from 'antd';
 import { DownOutlined, SearchOutlined, FilterOutlined, EditOutlined, FolderOpenOutlined, CloseCircleOutlined } from '@ant-design/icons';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import axios from 'axios';
+import { AuthContext } from '../Context/AuthContext';
 
 export const OrdersPage = ({language}) => {
+
   const [selectedFilters, setSelectedFilters] = useState();
   const [data, setData] = useState([]);
     const [pagination, setPagination] = useState({
@@ -13,6 +15,8 @@ export const OrdersPage = ({language}) => {
   
   const [loading, setLoading] = useState(true);
   const jwtToken = localStorage.getItem('token');
+  const { user } = useContext(AuthContext);
+  const [deleteOrderId, setDeleteOrderId] = useState(null);
 
   const handlePaginationChange = (current, pageSize) => {
     setPagination({ ...pagination, current, pageSize });
@@ -93,6 +97,46 @@ export const OrdersPage = ({language}) => {
     }
   }
 
+  const deleteOrder = async (orderId) => {
+    try {
+      const response = await axios.post(
+        'https://api.boki.fortesting.com.ua/graphql',
+        {
+          query: `
+            mutation Mutation($deleteOrderId: ID!) {
+              deleteOrder(id: $deleteOrderId) {
+                data {
+                  id
+                }
+              }
+            }
+          `,
+          variables: {
+            deleteOrderId: orderId,
+          },
+        },
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${jwtToken}`,
+          },
+        }
+      );
+
+      if (response.data.data.deleteOrder) {
+        // message.success(`${language.clientSuccsesRemove}`); ++++++++++++++++++++
+        message.success(`${language.clientSuccsesRemove}`);
+        fetchData();
+      }
+    } catch (error) {
+      // message.error(`${language.clientError}`); ++++++++++++++++++++
+      message.error(`${language.clientError}`);
+      console.log(error)
+    } finally {
+      setDeleteOrderId(null);
+    }
+  };
+
   useEffect(() => {
     fetchData();
   }, []);
@@ -151,18 +195,18 @@ export const OrdersPage = ({language}) => {
 
     const items = [
     {
-      key: '1',
+      key: 'openeOrder',
       label: `${language.open}`,
       icon: <FolderOpenOutlined />,
     },
     {
-      key: '2',
+      key: 'editOrder',
       label: `${language.edit}`,
       icon: <EditOutlined/>,
 
     },
     {
-      key: '3',
+      key: 'deleteOrder',
       label: `${language.delete}`,
       icon: <CloseCircleOutlined />,
       danger: true,
@@ -590,6 +634,8 @@ export const OrdersPage = ({language}) => {
                   else if (key === 'active') handleStatusClick(record.id, 'Active');
                   else if (key === 'paid') handleStatusClick(record.id, 'Paid');
                   else if (key === 'closed') handleStatusClick(record.id, 'Closed');
+                  // else if (key === 'deleteOrder') deleteOrder(record.id);
+                  else if (key === 'deleteOrder') setDeleteOrderId(record.id);
               }
           }
           } trigger={['click']} >
@@ -603,29 +649,42 @@ export const OrdersPage = ({language}) => {
   ];
 
   return (
-    <Spin spinning={loading} size="large">
-      <Table
-        rowSelection={{}}
-        expandable={{
-          expandedRowRender,
-          rowExpandable: isExpandable,
-        }}
-        columns={columns}
-        dataSource={data}
-        scroll={{
-          x: 1500,
-        }}
-        sticky
-        pagination={{
-          ...pagination,
-          position: ['topRight'],
-          showSizeChanger: true,
-          pageSizeOptions: ['5', '10', '20', '50', '100'],
-          onChange: handlePaginationChange,
-        }}
-        filters={selectedFilters}
-        onFilterChange={handleFilterChange}
-      />
-    </Spin>
+    <>
+      <Spin spinning={loading} size="large">
+        <Table
+          rowSelection={{}}
+          expandable={{
+            expandedRowRender,
+            rowExpandable: isExpandable,
+          }}
+          columns={columns}
+          dataSource={data}
+          scroll={{
+            x: 1500,
+          }}
+          sticky
+          pagination={{
+            ...pagination,
+            position: ['topRight'],
+            showSizeChanger: true,
+            pageSizeOptions: ['5', '10', '20', '50', '100'],
+            onChange: handlePaginationChange,
+          }}
+          filters={selectedFilters}
+          onFilterChange={handleFilterChange}
+        />
+      </Spin>
+
+      <Modal
+        title={`${language.removeClient} ${user.username}?`}
+        open={deleteOrderId !== null}
+        onOk={() => deleteOrder(deleteOrderId)}
+        onCancel={() => setDeleteOrderId(null)}
+        okText={`${language.yes}`}
+        cancelText={`${language.cancel}`}
+      >
+        <p>{language.undone}</p>
+      </Modal>
+    </>
   );
 };

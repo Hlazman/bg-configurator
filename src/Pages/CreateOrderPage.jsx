@@ -65,6 +65,143 @@ export const CreateOrderPage = ({language}) => {
     console.log(formData)
   };
    
+  // const handleCreateOrder = async () => {
+  //   try {
+  //     const response = await axios.post(
+  //       'https://api.boki.fortesting.com.ua/graphql',
+  //       {
+  //         query: `
+  //           mutation CreateOrder($data: OrderInput!) {
+  //             createOrder(data: $data) {
+  //               data {
+  //                 id
+  //               }
+  //             }
+  //           }
+  //         `,
+  //         variables: {
+  //           data: {}
+  //         },
+  //       },
+  //       {
+  //         headers: {
+  //           'Content-Type': 'application/json',
+  //           Authorization: `Bearer ${jwtToken}`,
+  //         },
+  //       }
+  //     );
+  
+  //     const createdOrderId = response.data.data.createOrder.data.id;  
+  //     addOrder({ id: createdOrderId });
+  
+  //     const doorSuborderData = {
+  //       data: {
+  //         door: null,
+  //         sizes: {
+  //           height: null,
+  //           thickness: null,
+  //           width: null
+  //         },
+  //         decor: null,
+  //         order: createdOrderId
+  //       }
+  //     };
+
+  //     const doorSuborderResponse = await axios.post(
+  //       'https://api.boki.fortesting.com.ua/graphql',
+  //       {
+  //         query: `
+  //           mutation CreateDoorSuborder($data: DoorSuborderInput!) {
+  //             createDoorSuborder(data: $data) {
+  //               data {
+  //                 id
+  //               }
+  //             }
+  //           }
+  //         `,
+  //         variables: doorSuborderData,
+  //       },
+  //       {
+  //         headers: {
+  //           'Content-Type': 'application/json',
+  //           Authorization: `Bearer ${jwtToken}`,
+  //         },
+  //       }
+  //     );
+  
+  //     const newDoorSuborderId = doorSuborderResponse.data.data.createDoorSuborder.data.id;
+  //     addSuborder('doorSub', newDoorSuborderId);
+
+  //     const frameSuborderData = {
+  //       data: {
+  //         order: createdOrderId
+  //       }
+  //     };
+  
+  //     const frameSuborderResponse = await axios.post(
+  //       'https://api.boki.fortesting.com.ua/graphql',
+  //       {
+  //         query: `
+  //           mutation CreateFrameSuborder($data: FrameSuborderInput!) {
+  //             createFrameSuborder(data: $data) {
+  //               data {
+  //                 id
+  //               }
+  //             }
+  //           }
+  //         `,
+  //         variables: frameSuborderData,
+  //       },
+  //       {
+  //         headers: {
+  //           'Content-Type': 'application/json',
+  //           Authorization: `Bearer ${jwtToken}`,
+  //         },
+  //       }
+  //     );
+  
+  //     const newFrameSuborderId = frameSuborderResponse.data.data.createFrameSuborder.data.id;
+  //     addSuborder('frameSub', newFrameSuborderId);
+  
+  //     // Запрос для создания FrameFitting
+  //     const frameFittingData = {
+  //       data: {
+  //         order: createdOrderId
+  //       }
+  //     };
+  
+  //     const frameFittingResponse = await axios.post(
+  //       'https://api.boki.fortesting.com.ua/graphql',
+  //       {
+  //         query: `
+  //           mutation CreateFrameFitting($data: FrameFittingInput!) {
+  //             createFrameFitting(data: $data) {
+  //               data {
+  //                 id
+  //               }
+  //             }
+  //           }
+  //         `,
+  //         variables: frameFittingData,
+  //       },
+  //       {
+  //         headers: {
+  //           'Content-Type': 'application/json',
+  //           Authorization: `Bearer ${jwtToken}`,
+  //         },
+  //       }
+  //     );
+  
+  //     const newFrameFittingId = frameFittingResponse.data.data.createFrameFitting.data.id;
+  //     addSuborder('frameFitting', newFrameFittingId);
+
+  //     navigate(`/createorder/${createdOrderId}`);
+  //   } catch (error) {
+  //     console.error('Error creating order:', error);
+  //   }
+  // };
+
+
   const handleCreateOrder = async () => {
     try {
       const response = await axios.post(
@@ -162,38 +299,43 @@ export const CreateOrderPage = ({language}) => {
   
       const newFrameSuborderId = frameSuborderResponse.data.data.createFrameSuborder.data.id;
       addSuborder('frameSub', newFrameSuborderId);
+
+      const fittingTypes = ['hinge', 'knobe', 'lock'];
+
+      for (const fittingType of fittingTypes) {
+        const fittingSuborderData = {
+          data: {
+            type: fittingType,
+            title: fittingType,
+            order: createdOrderId
+          }
+        };
   
-      // Запрос для создания FrameFitting
-      const frameFittingData = {
-        data: {
-          order: createdOrderId
-        }
-      };
-  
-      const frameFittingResponse = await axios.post(
-        'https://api.boki.fortesting.com.ua/graphql',
-        {
-          query: `
-            mutation CreateFrameFitting($data: FrameFittingInput!) {
-              createFrameFitting(data: $data) {
-                data {
-                  id
+        const fittingSuborderResponse = await axios.post(
+          'https://api.boki.fortesting.com.ua/graphql',
+          {
+            query: `
+              mutation CreateFrameFitting($data: FrameFittingInput!) {
+                createFrameFitting(data: $data) {
+                  data {
+                    id
+                  }
                 }
               }
-            }
-          `,
-          variables: frameFittingData,
-        },
-        {
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${jwtToken}`,
+            `,
+            variables: fittingSuborderData,
           },
-        }
-      );
+          {
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: `Bearer ${jwtToken}`,
+            },
+          }
+        );
   
-      const newFrameFittingId = frameFittingResponse.data.data.createFrameFitting.data.id;
-      addSuborder('frameFitting', newFrameFittingId);
+        const newFittingSuborderId = fittingSuborderResponse.data.data.createFrameFitting.data.id;
+        addSuborder(`${fittingType}Sub`, newFittingSuborderId);
+      }
 
       navigate(`/createorder/${createdOrderId}`);
     } catch (error) {

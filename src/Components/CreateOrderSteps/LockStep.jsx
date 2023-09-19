@@ -1,15 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import { Form, Input, Button, Card, Radio, Select, Divider, Spin } from 'antd';
 import axios from 'axios';
-import { useProductVariant } from '../../Context/ProductVariantContext';
+import { useOrder } from '../../Context/OrderContext';
 
-const LockStep = ({ formData, handleNext }) => {
+const LockStep = ({ orderID }) => {
   const [lockData, setLockData] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedBrand, setSelectedBrand] = useState('ALL');
-  const [loading, setLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(true);
   const [previousLockId, setPreviousLockId] = useState(null); 
-  const { productVariantId } = useProductVariant();
+
+  
+  const { order } = useOrder();
+  const orderId = order.id;
+  const orderIdToUse = orderID || orderId;
+  const lockSuborder = order.suborders.find(suborder => suborder.name === 'lockSub');
 
   const jwtToken = localStorage.getItem('token');
 
@@ -58,10 +63,10 @@ const LockStep = ({ formData, handleNext }) => {
           id: lock.id,
         }));
         setLockData(locks);
-        setLoading(false);
+        setIsLoading(false);
       } catch (error) {
         console.error('Error fetching data:', error);
-        setLoading(false);
+        setIsLoading(false);
       }
     };
 
@@ -98,27 +103,27 @@ const LockStep = ({ formData, handleNext }) => {
       id: lock.id,
     }));
 
-  const handleLockClick = async (fieldName, lockId) => {
-    const updateProductVariantData = {
-      updateProductVariantId: productVariantId,
-      data: {
-        lock: lockId === previousLockId ? null : lockId,
-      },
+  const handleSbmitForm = async () => {    
+    const variables = {
+      "updateFrameFittingId": lockSuborder.data.id,
+      "data": {
+        "lock": previousLockId
+      }
     };
 
-    await axios.post(
+    axios.post(
       'https://api.boki.fortesting.com.ua/graphql',
       {
         query: `
-          mutation UpdateProductVariant($updateProductVariantId: ID!, $data: ProductVariantInput!) {
-            updateProductVariant(id: $updateProductVariantId, data: $data) {
+          mutation UpdateFrameFitting($updateFrameFittingId: ID!, $data: FrameFittingInput!) {
+            updateFrameFitting(id: $updateFrameFittingId, data: $data) {
               data {
                 id
               }
             }
           }
         `,
-        variables: updateProductVariantData,
+        variables,
       },
       {
         headers: {
@@ -126,15 +131,67 @@ const LockStep = ({ formData, handleNext }) => {
           Authorization: `Bearer ${jwtToken}`,
         },
       }
-    );
+    )
+    .then((response) => {
+      console.log('Успешный ответ:', response.data);
+    })
+    .catch((error) => {
+      console.error('Ошибка:', error);
+    });
+  }
 
-    setPreviousLockId(lockId === previousLockId ? null : lockId);
 
-    formData['lockStep'] = productVariantId;
-  };
+  useEffect(() => {
+    setIsLoading(true);
+
+    const variables = {
+      frameFittingId: lockSuborder.data.id
+    };
+
+    axios.post('https://api.boki.fortesting.com.ua/graphql', {
+      query: `
+        query GetFrameFitting($frameFittingId: ID) {
+          frameFitting(id: $frameFittingId) {
+            data {
+              attributes {
+                lock {
+                  data {
+                    id
+                  }
+                }
+              }
+            }
+          }
+        }
+      `,
+      variables
+    }, {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${jwtToken}`,
+      },
+    })
+    .then((response) => {
+      const lockId = response.data.data.frameFitting.data.attributes.lock.data.id;
+      setPreviousLockId(lockId);
+      setIsLoading(false);
+    })
+    .catch((error) => {
+      console.error('Ошибка:', error);
+      setIsLoading(false);
+    });
+
+  }, [jwtToken, lockSuborder]);
 
   return (
-    <Form onFinish={formData} onValuesChange={formData}>
+    <Form onFinish={handleSbmitForm}>
+
+<Form.Item wrapperCol={{ offset: 4, span: 16 }}>
+        <Button type="primary" htmlType="submit">
+          Submit
+        </Button>
+      </Form.Item>
+
       <div style={{ display: 'flex', gap: '30px' }}>
         <Select
           value={selectedBrand}
@@ -158,11 +215,11 @@ const LockStep = ({ formData, handleNext }) => {
 
       <Divider />
 
-      {loading ? (
+      {isLoading ? (
         <Spin size="large" />
       ) : (
         <Form.Item name="lockStep">
-          <Radio.Group value={formData.lockStep}>
+          <Radio.Group >
             <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}>
               {filteredLocks.map((lock) => (
                 <div key={lock.id} style={{ width: 220, margin: '20px 10px' }}>
@@ -175,7 +232,7 @@ const LockStep = ({ formData, handleNext }) => {
                         ? '7px solid #f06d20'
                         : 'none',
                     }}
-                    onClick={() => handleLockClick('lockStep', lock.id)}
+                    onClick={() => setPreviousLockId(lock.id)}
                   >
                     <div style={{ overflow: 'hidden', height: 220 }}>
                       <img
@@ -196,10 +253,6 @@ const LockStep = ({ formData, handleNext }) => {
           </Radio.Group>
         </Form.Item>
       )}
-
-      <Button type="primary" onClick={handleNext}>
-        Далее
-      </Button>
     </Form>
   );
 };

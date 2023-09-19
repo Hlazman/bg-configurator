@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Form, Button, Select, InputNumber, Spin } from 'antd';
+import { Form, Button, Select, InputNumber, Spin, Radio } from 'antd';
 import axios from 'axios';
 import { useOrder } from '../../Context/OrderContext';
 import GroupDecorElementStep from '../CreateOrderSteps/GroupDecorElementStep';
@@ -15,14 +15,12 @@ const DecorElementForm = ({ orderID, elementID, language}) => {
   const orderId = order.id;
   const orderIdToUse = orderID || orderId;
   const doorSuborder = order.suborders.find(suborder => suborder.name === 'doorSub');
-  const [decorDataId, setDecorDataId] = useState(null);
 
   const [form] = Form.useForm();
 
-  const [showDecor, setShowDecor] = useState(false); // Состояние для отслеживания нажатия кнопки "Show Decor"
-
+  const [showDecor, setShowDecor] = useState(false); 
   const handleShowDecorClick = () => {
-    setShowDecor(true); // Устанавливаем состояние в true при нажатии кнопки
+    setShowDecor(true);
   }
 
   useEffect(() => {
@@ -167,205 +165,95 @@ const DecorElementForm = ({ orderID, elementID, language}) => {
     }
   };
 
-// NEED TO DO ONCE AND NOTE REWRITE
-  // useEffect(() => {
-  //   if (doorSuborder) {
-  //     axios.post(
-  //       'https://api.boki.fortesting.com.ua/graphql',
-  //       {
-  //         query: `
-  //           query Query($doorSuborderId: ID) {
-  //             doorSuborder(id: $doorSuborderId) {
-  //               data {
-  //                 attributes {
-  //                   decor {
-  //                     data {
-  //                       id
-  //                     }
-  //                   }
-  //                 }
-  //               }
-  //             }
-  //           }
-  //         `,
-  //         variables: {
-  //           doorSuborderId: doorSuborder.data.id,
-  //         },
-  //       },
-  //       {
-  //         headers: {
-  //           'Content-Type': 'application/json',
-  //           Authorization: `Bearer ${jwtToken}`,
-  //         },
-  //       }
-  //     )
-  //     .then(response => {
-  //       const decorDataId = response.data.data.doorSuborder.data.attributes.decor.data;
-        
-  //       if (decorDataId && decorDataId.id) {
-  //         axios.post(
-  //           'https://api.boki.fortesting.com.ua/graphql',
-  //           {
-  //             query: `
-  //               mutation Mutation($updateElementSuborderId: ID!, $data: ElementSuborderInput!) {
-  //                 updateElementSuborder(id: $updateElementSuborderId, data: $data) {
-  //                   data {
-  //                     id
-  //                   }
-  //                 }
-  //               }
-  //             `,
-  //             variables: {
-  //               updateElementSuborderId: elementID.toString(),
-  //               data: {
-  //                 decor: decorDataId.id,
-  //               },
-  //             },
-  //           },
-  //           {
-  //             headers: {
-  //               'Content-Type': 'application/json',
-  //               Authorization: `Bearer ${jwtToken}`,
-  //             },
-  //           }
-  //         )
-  //         .then(response => {
-  //           console.log('Update successful:', response);
-  //           console.log('decorDataId', decorDataId)
-  //         })
-  //         .catch(error => {
-  //           console.error('Error updating element suborder:', error);
-  //         });
-  //       } else {
-  //           console.log('No decor data found');
-  //         }
-  //     })
-  //     .catch(error => {
-  //       console.error('Error fetching decor data:', error);
-  //     });
-  //   }
-  // }, [jwtToken, doorSuborder, elementID]);
-  // toCHANGE
-
-  useEffect(() => {
-    axios.post(
-      'https://api.boki.fortesting.com.ua/graphql',
-      {
-        query: `
-          query Query($elementSuborderId: ID) {
-            elementSuborder(id: $elementSuborderId) {
-              data {
-                id
-                attributes {
-                  decor {
-                    data {
-                      id
+  const getDecorFromSuborder = () => {
+    if (doorSuborder) {
+      axios.post(
+        'https://api.boki.fortesting.com.ua/graphql',
+        {
+          query: `
+            query Query($doorSuborderId: ID) {
+              doorSuborder(id: $doorSuborderId) {
+                data {
+                  attributes {
+                    decor {
+                      data {
+                        id
+                      }
                     }
                   }
                 }
               }
             }
-          }
-        `,
-        variables: {
-          elementSuborderId: elementID.toString(),
+          `,
+          variables: {
+            doorSuborderId: doorSuborder.data.id,
+          },
         },
-      },
-      {
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${jwtToken}`,
-        },
-      }
-    )
-    .then(response => {
-      const decorData = response.data.data.elementSuborder.data.attributes.decor.data;
-  
-      if (!decorData || !decorData.id) {
-        // Если данных нет, выполняем остальные запросы
-        if (doorSuborder) {
-          axios.post(
-            'https://api.boki.fortesting.com.ua/graphql',
-            {
-              query: `
-                query Query($doorSuborderId: ID) {
-                  doorSuborder(id: $doorSuborderId) {
-                    data {
-                      attributes {
-                        decor {
-                          data {
-                            id
-                          }
-                        }
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${jwtToken}`,
+          },
+        }
+      )
+        .then((response) => {
+          const decorDataId = response.data.data.doorSuborder.data.attributes.decor.data;
+
+          if (decorDataId && decorDataId.id) {
+            axios.post(
+              'https://api.boki.fortesting.com.ua/graphql',
+              {
+                query: `
+                  mutation Mutation($updateElementSuborderId: ID!, $data: ElementSuborderInput!) {
+                    updateElementSuborder(id: $updateElementSuborderId, data: $data) {
+                      data {
+                        id
                       }
                     }
                   }
-                }
-              `,
-              variables: {
-                doorSuborderId: doorSuborder.data.id,
-              },
-            },
-            {
-              headers: {
-                'Content-Type': 'application/json',
-                Authorization: `Bearer ${jwtToken}`,
-              },
-            }
-          )
-          .then(response => {
-            const decorDataId = response.data.data.doorSuborder.data.attributes.decor.data;
-  
-            if (decorDataId && decorDataId.id) {
-              axios.post(
-                'https://api.boki.fortesting.com.ua/graphql',
-                {
-                  query: `
-                    mutation Mutation($updateElementSuborderId: ID!, $data: ElementSuborderInput!) {
-                      updateElementSuborder(id: $updateElementSuborderId, data: $data) {
-                        data {
-                          id
-                        }
-                      }
-                    }
-                  `,
-                  variables: {
-                    updateElementSuborderId: elementID.toString(),
-                    data: {
-                      decor: decorDataId.id,
-                    },
+                `,
+                variables: {
+                  updateElementSuborderId: elementID.toString(),
+                  data: {
+                    decor: decorDataId.id,
                   },
                 },
-                {
-                  headers: {
-                    'Content-Type': 'application/json',
-                    Authorization: `Bearer ${jwtToken}`,
-                  },
-                }
-              )
-              .then(response => {
+              },
+              {
+                headers: {
+                  'Content-Type': 'application/json',
+                  Authorization: `Bearer ${jwtToken}`,
+                },
+              }
+            )
+              .then((response) => {
                 console.log('Update successful:', response);
                 console.log('decorDataId', decorDataId);
               })
-              .catch(error => {
+              .catch((error) => {
                 console.error('Error updating element suborder:', error);
               });
-            } else {
-              console.log('No decor data found');
-            }
-          })
-          .catch(error => {
-            console.error('Error fetching decor data:', error);
-          });
-        }
-      }
-    })
-    .catch(error => {
-      console.error('Error fetching decor data:', error);
-    });
-  }, [jwtToken, doorSuborder, elementID]);
-  
+          } else {
+            console.log('No decor data found');
+          }
+        })
+        .catch((error) => {
+          console.error('Error fetching decor data:', error);
+        });
+    } else {
+      console.log('Door decor is not selected');
+    }
+  };
 
+  const handleRadioChange = (e) => {
+    const value = e.target.value;
+    if (value === 'choose') {
+      handleShowDecorClick();
+    } else if (value === 'get') {
+      setShowDecor(false)
+      getDecorFromSuborder();
+    }
+  };
 
   return (
     <Spin spinning={isloading}>
@@ -412,20 +300,23 @@ const DecorElementForm = ({ orderID, elementID, language}) => {
           </Form.Item>
 
         </div>
+
+        <Form.Item
+          name="radioOption"
+          label="Choose Decor Option"
+          rules={[{ required: true, message: 'Please select an option!' }]}
+        >
+          <Radio.Group buttonStyle="solid" onChange={handleRadioChange}>
+            <Radio.Button value="choose">Choose Decor for element</Radio.Button>
+            <Radio.Button value="get">Get Decor from door</Radio.Button>
+          </Radio.Group>
+        </Form.Item>
+
       </Form>
-      
-      {/* <div style={{padding: '0 25px' }}>
-        <GroupDecorElementStep
-          elementID={elementID}
-          language={language}
-        />
-        </div> */}
 
         <div style={{padding: '0 25px' }}>
-          <Button type="primary" onClick={handleShowDecorClick}>Show Decor</Button>
           {showDecor && <GroupDecorElementStep elementID={elementID} language={language} />}
         </div>
-
     </Spin>
   );
 };
