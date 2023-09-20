@@ -4,11 +4,13 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { Form, Input, Select, Radio, DatePicker, Button, message, InputNumber, Card } from 'antd';
 import { useOrder } from '../../Context/OrderContext';
+import dayjs from 'dayjs';
 
 const { Option } = Select;
 const { TextArea } = Input;
 
 const InformationStep = ({ formData, language }) => {
+  const dateFormat = 'YYYY-MM-DD HH:mm';
   const { user } = useContext(AuthContext);
   const jwtToken = localStorage.getItem('token');
   const locale = localStorage.getItem('selectedLanguage') || 'en'
@@ -59,17 +61,17 @@ const InformationStep = ({ formData, language }) => {
 
   const onFinish = (values) => {
     const data = {
-      client: values.client,
-      comment: values.comment,
+      client: values.client || null,
+      comment: values.comment || null,
       shippingAddress: {
-        address: values.address,
-        city: values.city,
-        country: values.country,
-        zipCode: values.zipCode,
+        address: values.address || null,
+        city: values.city || null,
+        country: values.country || null,
+        zipCode: values.zipCode || null,
       },
       status: values.status,
       deliveryAt: values.deliveryAt ? values.deliveryAt.toISOString() : null,
-      discount: values.discount,
+      discount: values.discount || null,
       currency: values.currency,
       manager: user.id,
     };
@@ -159,16 +161,15 @@ const InformationStep = ({ formData, language }) => {
       )
       .then((response) => {
         const orderData = response?.data?.data?.order?.data?.attributes;
+        const deliveryAtFormated = orderData?.deliveryAt ? dayjs(orderData?.deliveryAt, dateFormat) : null;
 
         if (orderData) {
-          // const formattedDeliveryAt = orderData?.deliveryAt ? moment(orderData?.deliveryAt).format('YYYY-MM-DD HH:mm:ss') : null;
-
           form.setFieldsValue({
             address: orderData?.shippingAddress?.address || '',
             city: orderData?.shippingAddress?.city || '',
             country: orderData?.shippingAddress?.country || '',
             zipCode: orderData?.shippingAddress?.zipCode || '',
-            // deliveryAt: formattedDeliveryAt,
+            deliveryAt: deliveryAtFormated,
             discount: orderData?.discount || '',
             status: orderData?.status || 'Draft',
             comment: orderData?.comment || '',
@@ -223,7 +224,11 @@ const InformationStep = ({ formData, language }) => {
 
         <div style={{ display: 'flex', gap: '30px' }}>
           <Form.Item label="Delivery Date" name="deliveryAt" style={{ width: '100%' }}>
-            <DatePicker addonBefore="deliveryAt" />
+            {/* <DatePicker showTime addonBefore="deliveryAt" /> */}
+            <DatePicker
+              format={dateFormat}
+              showTime 
+              addonBefore="deliveryAt" />
           </Form.Item>
 
           <Form.Item 
