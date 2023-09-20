@@ -5,18 +5,19 @@ import GroupDoorStep from '../Components/CreateOrderSteps/GroupDoorStep';
 import GroupDecorStep from '../Components/CreateOrderSteps/GroupDecorStep';
 import GroupAccessoriesStep from '../Components/CreateOrderSteps/GroupAccessoriesStep';
 import ElementsStep from '../Components/CreateOrderSteps/ElementsStep';
-import { useParams } from 'react-router-dom';
+// import { useParams } from 'react-router-dom';
 import InformationStep from '../Components/CreateOrderSteps/InformationStep';
 import FrameStep from '../Components/CreateOrderSteps/FrameStep';
 
 import axios from 'axios';
 import { useOrder } from '../Context/OrderContext';
-import { useNavigate  } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
-export const CreateOrderPage = ({language}) => {
+// export const EditOrderPage = ({language, orderID}) => {
+export const EditOrderPage = ({language, }) => {
 
   const jwtToken = localStorage.getItem('token');  
-  // const { addOrder, addSuborder } = useOrder();
+  // const { addOrder, addSuborder, editOrderId } = useOrder();
   const { 
     orderId, setOrderId, 
     dorSuborderId, setDoorSuborderId, 
@@ -24,6 +25,7 @@ export const CreateOrderPage = ({language}) => {
     hingeSuborderId, sethiHgeSuborderId,
     knobeSuborderId, setKnobeSuborderId,
     lockSuborderId, setLockSuborderId,
+    // editOrderId,
    } = useOrder();
   const navigate = useNavigate();
 
@@ -72,8 +74,7 @@ export const CreateOrderPage = ({language}) => {
   //   console.log(formData)
   // };
    
-  // TOSAVE !!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-  // const handleCreateOrder = async () => {
+  // const handleEditOrder = async () => {
   //   try {
   //     const response = await axios.post(
   //       'https://api.boki.fortesting.com.ua/graphql',
@@ -208,28 +209,122 @@ export const CreateOrderPage = ({language}) => {
   //       addSuborder(`${fittingType}Sub`, newFittingSuborderId);
   //     }
 
-  //     navigate(`/createorder/${createdOrderId}`);
+  //     navigate(`/editorder/${orderID}`);
   //   } catch (error) {
   //     console.error('Error creating order:', error);
   //   }
   // };
 
-  const handleCreateOrder = async () => {
+
+  // TOSAVE!!!!!!!!!!!!!!!!!!!! 
+  // const handleEditOrder = async () => {
+  //   try {
+  //     const response = await axios.post(
+  //       'https://api.boki.fortesting.com.ua/graphql',
+  //       {
+  //         query: `
+  //           query Query($orderId: ID) {
+  //             order(id: $orderId) {
+  //               data {
+  //                 id
+  //                 attributes {
+  //                   door_suborder {
+  //                     data {
+  //                       id
+  //                     }
+  //                   }
+  //                   fitting_suborders {
+  //                     data {
+  //                       id
+  //                       attributes {
+  //                         type
+  //                       }
+  //                     }
+  //                   }
+  //                   frame_suborder {
+  //                     data {
+  //                       id
+  //                     }
+  //                   }
+  //                 }
+  //               }
+  //             }
+  //           }
+  //         `,
+  //         variables: {
+  //           // orderId: orderID
+  //           orderId: editOrderId
+  //         },
+  //       },
+  //       {
+  //         headers: {
+  //           'Content-Type': 'application/json',
+  //           Authorization: `Bearer ${jwtToken}`,
+  //         },
+  //       }
+  //     );
+  
+  //     const orderData = response.data.data.order.data.attributes;
+  
+  //     // addOrder({ id: orderData.id });
+  //     addOrder({ id: editOrderId });
+  
+  //     const doorSuborderId = orderData.door_suborder.data.id;
+  //     addSuborder('doorSub', doorSuborderId);
+  
+  //     const frameSuborderId = orderData.frame_suborder.data.id;
+  //     addSuborder('frameSub', frameSuborderId);
+  
+  //     for (const fittingSuborder of orderData.fitting_suborders.data) {
+  //       const fittingType = fittingSuborder.attributes.type;
+  //       const fittingSuborderId = fittingSuborder.id;
+  //       addSuborder(`${fittingType}Sub`, fittingSuborderId);
+  //     }
+  
+  //     navigate(`/editorder/${orderData.id}`);
+  //   } catch (error) {
+  //     console.error('Error handling order data:', error);
+  //   }
+  // };
+
+
+  const handleEditOrder = async () => {
     try {
       const response = await axios.post(
         'https://api.boki.fortesting.com.ua/graphql',
         {
           query: `
-            mutation CreateOrder($data: OrderInput!) {
-              createOrder(data: $data) {
+            query Query($orderId: ID) {
+              order(id: $orderId) {
                 data {
                   id
+                  attributes {
+                    door_suborder {
+                      data {
+                        id
+                      }
+                    }
+                    fitting_suborders {
+                      data {
+                        id
+                        attributes {
+                          type
+                        }
+                      }
+                    }
+                    frame_suborder {
+                      data {
+                        id
+                      }
+                    }
+                  }
                 }
               }
             }
           `,
           variables: {
-            data: {}
+            // orderId: orderID
+            orderId: orderId
           },
         },
         {
@@ -240,136 +335,36 @@ export const CreateOrderPage = ({language}) => {
         }
       );
   
-      const createdOrderId = response.data.data.createOrder.data.id;  
-      // addOrder({ id: createdOrderId });
-      setOrderId(createdOrderId);
+      const orderData = response.data.data.order.data.attributes;  
+      // setOrderId(orderData);
   
-      const doorSuborderData = {
-        data: {
-          door: null,
-          sizes: {
-            height: null,
-            thickness: null,
-            width: null
-          },
-          decor: null,
-          order: createdOrderId
-        }
-      };
-
-      const doorSuborderResponse = await axios.post(
-        'https://api.boki.fortesting.com.ua/graphql',
-        {
-          query: `
-            mutation CreateDoorSuborder($data: DoorSuborderInput!) {
-              createDoorSuborder(data: $data) {
-                data {
-                  id
-                }
-              }
-            }
-          `,
-          variables: doorSuborderData,
-        },
-        {
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${jwtToken}`,
-          },
-        }
-      );
+      const doorSuborderId = orderData.door_suborder.data.id;
+      setDoorSuborderId(doorSuborderId);
   
-      const newDoorSuborderId = doorSuborderResponse.data.data.createDoorSuborder.data.id;
-      // addSuborder('doorSub', newDoorSuborderId);
-      setDoorSuborderId(newDoorSuborderId);
-
-      const frameSuborderData = {
-        data: {
-          order: createdOrderId
-        }
-      };
+      const frameSuborderId = orderData.frame_suborder.data.id;
+      setFrameSuborderId(frameSuborderId);
   
-      const frameSuborderResponse = await axios.post(
-        'https://api.boki.fortesting.com.ua/graphql',
-        {
-          query: `
-            mutation CreateFrameSuborder($data: FrameSuborderInput!) {
-              createFrameSuborder(data: $data) {
-                data {
-                  id
-                }
-              }
-            }
-          `,
-          variables: frameSuborderData,
-        },
-        {
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${jwtToken}`,
-          },
-        }
-      );
-  
-      const newFrameSuborderId = frameSuborderResponse.data.data.createFrameSuborder.data.id;
-      // addSuborder('frameSub', newFrameSuborderId);
-      setFrameSuborderId(newFrameSuborderId);
-
-      const fittingTypes = ['hinge', 'knobe', 'lock'];
-
-      for (const fittingType of fittingTypes) {
-        const fittingSuborderData = {
-          data: {
-            type: fittingType,
-            title: fittingType,
-            order: createdOrderId
-          }
-        };
-  
-        const fittingSuborderResponse = await axios.post(
-          'https://api.boki.fortesting.com.ua/graphql',
-          {
-            query: `
-              mutation CreateFrameFitting($data: FrameFittingInput!) {
-                createFrameFitting(data: $data) {
-                  data {
-                    id
-                  }
-                }
-              }
-            `,
-            variables: fittingSuborderData,
-          },
-          {
-            headers: {
-              'Content-Type': 'application/json',
-              Authorization: `Bearer ${jwtToken}`,
-            },
-          }
-        );
-  
-        const newFittingSuborderId = fittingSuborderResponse.data.data.createFrameFitting.data.id;
+      for (const fittingSuborder of orderData.fitting_suborders.data) {
+        const fittingType = fittingSuborder.attributes.type;
+        const fittingSuborderId = fittingSuborder.id;
+        
         if (fittingType === 'hinge') {
-          sethiHgeSuborderId(newFittingSuborderId);
+          sethiHgeSuborderId(fittingSuborderId);
         } else if (fittingType === 'knobe') {
-          setKnobeSuborderId(newFittingSuborderId);
+          setKnobeSuborderId(fittingSuborderId);
         } else if (fittingType === 'lock') {
-          setLockSuborderId(newFittingSuborderId);
+          setLockSuborderId(fittingSuborderId);
         }
       }
-
-      
-      
-      
-
-      navigate(`/createorder/${createdOrderId}`);
+  
+      navigate(`/editorder/${orderId}`);
     } catch (error) {
-      console.error('Error creating order:', error);
+      console.error('Error handling order data:', error);
     }
   };
 
   useEffect(() => {
-    handleCreateOrder();
+    handleEditOrder();
   },[])
 
   // useEffect(() => {
@@ -391,6 +386,7 @@ export const CreateOrderPage = ({language}) => {
             // formData={formData}
             // handleCardClick={handleCardClick}
             // handleNext={handleNext}
+            // orderId={editOrderId}
             language={language}
           />
         );

@@ -6,9 +6,14 @@ import DecorElementForm from '../Forms/DecorElementForm';
 
 const ElementsStep = ({language, orderID}) => {
   const jwtToken = localStorage.getItem('token');
-  const { order } = useOrder();
-  const orderId = order.id;
-  const orderIdToUse = orderID || orderId;
+  
+  // const { order } = useOrder();
+  // const orderId = order.id;
+  // const orderIdToUse = orderID || orderId;
+
+  const { orderId } = useOrder();
+  const orderIdToUse = orderId;
+  
   // const doorSuborder = order.suborders.find(suborder => suborder.name === 'doorSub');
   // const [decorDataId, setDecorDataId] = useState(null);
   // const [elementID, setElementID] = useState(null);

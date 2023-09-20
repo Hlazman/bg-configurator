@@ -5,12 +5,18 @@ import { useEffect, useState } from 'react';
 
 const { Option } = Select;
 
-const FrameStep = ({ orderID }) => {
+// const FrameStep = ({ orderID }) => {
+const FrameStep = () => {
   const jwtToken = localStorage.getItem('token');
-  const { order } = useOrder();
-  const updateOrderId = order?.id;
-  const orderIdToUse = orderID || updateOrderId;
-  const frameSuborder = order.suborders.find(suborder => suborder.name === 'frameSub');
+  
+  // const { order } = useOrder();
+  // const updateOrderId = order?.id;
+  // const orderIdToUse = orderID || updateOrderId;
+  // const frameSuborder = order.suborders.find(suborder => suborder.name === 'frameSub');
+  
+  const { orderId, frameSuborderId } = useOrder()
+    const orderIdToUse = orderId;
+  
   // const [isloading, setIsLoading] = useState(false);
 
   const [frames, setFrames] = useState([]);
@@ -163,7 +169,8 @@ const FrameStep = ({ orderID }) => {
           }
         `,
         variables: {
-          updateFrameSuborderId: frameSuborder.data.id,
+          // updateFrameSuborderId: frameSuborder.data.id,
+          updateFrameSuborderId: frameSuborderId,
           data: dataToUpdate
         }
       },

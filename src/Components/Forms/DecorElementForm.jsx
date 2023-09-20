@@ -11,10 +11,13 @@ const DecorElementForm = ({ orderID, elementID, language}) => {
   const [isloading, setIsLoading] = useState(true);
   const jwtToken = localStorage.getItem('token');
 
-  const { order } = useOrder();
-  const orderId = order.id;
-  const orderIdToUse = orderID || orderId;
-  const doorSuborder = order.suborders.find(suborder => suborder.name === 'doorSub');
+  // const { order } = useOrder();
+  // const orderId = order.id;
+  // const orderIdToUse = orderID || orderId;
+  // const doorSuborder = order.suborders.find(suborder => suborder.name === 'doorSub');
+
+    const { dorSuborderId } = useOrder();
+    // const orderIdToUse = orderId;
 
   const [form] = Form.useForm();
 
@@ -166,7 +169,8 @@ const DecorElementForm = ({ orderID, elementID, language}) => {
   };
 
   const getDecorFromSuborder = () => {
-    if (doorSuborder) {
+    // if (doorSuborder) {
+    if (dorSuborderId) {
       axios.post(
         'https://api.boki.fortesting.com.ua/graphql',
         {
@@ -186,7 +190,8 @@ const DecorElementForm = ({ orderID, elementID, language}) => {
             }
           `,
           variables: {
-            doorSuborderId: doorSuborder.data.id,
+            // doorSuborderId: doorSuborder.data.id,
+            doorSuborderId: dorSuborderId,
           },
         },
         {

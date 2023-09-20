@@ -1,8 +1,9 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { AuthContext } from '../../Context/AuthContext';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { Form, Input, Select, Radio, DatePicker, Button, message, InputNumber, Card } from 'antd';
+import { useOrder } from '../../Context/OrderContext';
 
 const { Option } = Select;
 const { TextArea } = Input;
@@ -12,8 +13,8 @@ const InformationStep = ({ formData, language }) => {
   const jwtToken = localStorage.getItem('token');
   const locale = localStorage.getItem('selectedLanguage') || 'en'
   const navigate = useNavigate()
-  const location = useLocation();
-  const orderId = location.pathname.split('/').pop();
+  
+  const { orderId } = useOrder();
 
   const [clients, setClients] = useState([]);
   const [form] = Form.useForm();
@@ -105,11 +106,81 @@ const InformationStep = ({ formData, language }) => {
         localStorage.setItem('user', JSON.stringify(user));
         localStorage.setItem('token', jwtToken);
         localStorage.setItem('selectedLanguage', locale);
-      }).then(()=> navigate('/'))
+      })
+      // .then(()=> navigate('/'))
       .catch((error) => {
         message.error('An error has occurred!');
       });
   };
+
+  useEffect(() => {
+    // Fetch order data when component mounts
+    axios
+      .post(
+        'https://api.boki.fortesting.com.ua/graphql',
+        {
+          query: `
+            query Order($orderId: ID) {
+              order(id: $orderId) {
+                data {
+                  id
+                  attributes {
+                    client {
+                      data {
+                        id
+                      }
+                    }
+                    deliveryAt
+                    currency
+                    discount
+                    status
+                    comment
+                    shippingAddress {
+                      address
+                      city
+                      country
+                      zipCode
+                    }
+                  }
+                }
+              }
+            }
+          `,
+          variables: {
+            orderId: orderId
+          },
+        },
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${jwtToken}`,
+          },
+        }
+      )
+      .then((response) => {
+        const orderData = response?.data?.data?.order?.data?.attributes;
+
+        if (orderData) {
+          // const formattedDeliveryAt = orderData?.deliveryAt ? moment(orderData?.deliveryAt).format('YYYY-MM-DD HH:mm:ss') : null;
+
+          form.setFieldsValue({
+            address: orderData?.shippingAddress?.address || '',
+            city: orderData?.shippingAddress?.city || '',
+            country: orderData?.shippingAddress?.country || '',
+            zipCode: orderData?.shippingAddress?.zipCode || '',
+            // deliveryAt: formattedDeliveryAt,
+            discount: orderData?.discount || '',
+            status: orderData?.status || 'Draft',
+            comment: orderData?.comment || '',
+            currency: orderData?.currency || 'EUR',
+            client: orderData?.client ? orderData?.client?.data?.id : '',
+          });
+        }
+      })
+      .catch((error) => {
+        console.error('Error while fetching order data:', error);
+      });
+  }, [jwtToken, orderId, form]);
 
   return (
     <Card style={{ marginTop: '20px' }}>
@@ -152,7 +223,7 @@ const InformationStep = ({ formData, language }) => {
 
         <div style={{ display: 'flex', gap: '30px' }}>
           <Form.Item label="Delivery Date" name="deliveryAt" style={{ width: '100%' }}>
-            <DatePicker showTime addonBefore="deliveryAt" />
+            <DatePicker addonBefore="deliveryAt" />
           </Form.Item>
 
           <Form.Item 

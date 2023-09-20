@@ -169,7 +169,8 @@ const GroupDecorStep = () => {
   };
 
   const sendDecorForm = async (orderIdToUse, doorSuborder, selectedDecorId) => {
-    const updateDoorSuborderId = doorSuborder.data.id; // Получаем id субордера
+    // const updateDoorSuborderId = doorSuborder.data.id; // Получаем id субордера
+    const updateDoorSuborderId = doorSuborder; // Получаем id субордера
 
     const data = {
       decor: selectedDecorId,

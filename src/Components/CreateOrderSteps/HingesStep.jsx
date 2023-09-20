@@ -13,10 +13,11 @@ const HingeStep = ({ orderID }) => {
   const [selectedHingeId, setSelectedHingeId] = useState(null);
 
   
-  const { order } = useOrder();
-  const orderId = order.id;
-  const orderIdToUse = orderID || orderId;
-  const hingeSuborder = order.suborders.find(suborder => suborder.name === 'hingeSub');
+  // const { order } = useOrder();
+  // const orderId = order.id;
+  // const orderIdToUse = orderID || orderId;
+  // const hingeSuborder = order.suborders.find(suborder => suborder.name === 'hingeSub');
+  const { hingeSuborderId } = useOrder();
 
   const jwtToken = localStorage.getItem('token');
 
@@ -79,7 +80,7 @@ const HingeStep = ({ orderID }) => {
     setSearchQuery(storedSearchQuery);
 
     fetchData();
-  }, [jwtToken]);
+  }, [jwtToken, hingeSuborderId]);
 
   const brandOptions = ['ALL', ...new Set(hingeData.map(hinge => hinge.attributes.brand))];
 
@@ -108,7 +109,8 @@ const HingeStep = ({ orderID }) => {
 
     const handleSbmitForm = async () => {    
       const variables = {
-        "updateFrameFittingId": hingeSuborder.data.id,
+        // "updateFrameFittingId": hingeSuborder.data.id,
+        "updateFrameFittingId": hingeSuborderId,
         "data": {
           "hinge": previousHingeId
         }
@@ -148,7 +150,8 @@ const HingeStep = ({ orderID }) => {
       setIsLoading(true);
   
       const variables = {
-        frameFittingId: hingeSuborder.data.id
+        // frameFittingId: hingeSuborder.data.id
+        frameFittingId: hingeSuborderId
       };
   
       axios.post('https://api.boki.fortesting.com.ua/graphql', {
@@ -175,8 +178,10 @@ const HingeStep = ({ orderID }) => {
         },
       })
       .then((response) => {
-        const hingeId = response.data.data.frameFitting.data.attributes.hinge.data.id;
-        setPreviousHingeId(hingeId);
+        const hingeId = response?.data?.data?.frameFitting?.data?.attributes?.hinge?.data?.id;
+        if (hingeId) {
+          setPreviousHingeId(hingeId);
+        }
         setIsLoading(false);
       })
       .catch((error) => {
@@ -184,7 +189,8 @@ const HingeStep = ({ orderID }) => {
         setIsLoading(false);
       });
   
-    }, [jwtToken, hingeSuborder]);
+    // }, [jwtToken, hingeSuborder]);
+    }, [jwtToken, hingeSuborderId]);
 
   return (
     <Form onFinish={handleSbmitForm}>

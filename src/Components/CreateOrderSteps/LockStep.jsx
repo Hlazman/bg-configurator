@@ -11,10 +11,12 @@ const LockStep = ({ orderID }) => {
   const [previousLockId, setPreviousLockId] = useState(null); 
 
   
-  const { order } = useOrder();
-  const orderId = order.id;
-  const orderIdToUse = orderID || orderId;
-  const lockSuborder = order.suborders.find(suborder => suborder.name === 'lockSub');
+  // const { order } = useOrder();
+  // const orderId = order.id;
+  // const orderIdToUse = orderID || orderId;
+  // const lockSuborder = order.suborders.find(suborder => suborder.name === 'lockSub');
+
+  const { lockSuborderId } = useOrder();
 
   const jwtToken = localStorage.getItem('token');
 
@@ -105,7 +107,8 @@ const LockStep = ({ orderID }) => {
 
   const handleSbmitForm = async () => {    
     const variables = {
-      "updateFrameFittingId": lockSuborder.data.id,
+      // "updateFrameFittingId": lockSuborder.data.id,
+      "updateFrameFittingId": lockSuborderId,
       "data": {
         "lock": previousLockId
       }
@@ -145,7 +148,8 @@ const LockStep = ({ orderID }) => {
     setIsLoading(true);
 
     const variables = {
-      frameFittingId: lockSuborder.data.id
+      // frameFittingId: lockSuborder.data.id
+      frameFittingId: lockSuborderId
     };
 
     axios.post('https://api.boki.fortesting.com.ua/graphql', {
@@ -172,8 +176,10 @@ const LockStep = ({ orderID }) => {
       },
     })
     .then((response) => {
-      const lockId = response.data.data.frameFitting.data.attributes.lock.data.id;
-      setPreviousLockId(lockId);
+      const lockId = response?.data?.data?.frameFitting?.data?.attributes?.lock?.data?.id;
+      if (lockId) {
+        setPreviousLockId(lockId);
+      }
       setIsLoading(false);
     })
     .catch((error) => {
@@ -181,7 +187,8 @@ const LockStep = ({ orderID }) => {
       setIsLoading(false);
     });
 
-  }, [jwtToken, lockSuborder]);
+  // }, [jwtToken, lockSuborder]);
+  }, [jwtToken, lockSuborderId]);
 
   return (
     <Form onFinish={handleSbmitForm}>

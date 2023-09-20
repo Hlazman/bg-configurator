@@ -12,13 +12,16 @@ const HPLStep = ({ orderID, fetchOrderData, fetchDecorData, checkDecor, sendDeco
   const [decorData, setDecorData] = useState([]);
   const [selectedDecorId, setSelectedDecorId] = useState(null);
   
-  const { order } = useOrder();
-  const orderId = order.id;
-  const orderIdToUse = orderID || orderId;
-  const doorSuborder = order.suborders.find(suborder => suborder.name === 'doorSub');
+  // const { order } = useOrder();
+  // const orderId = order.id;
+  // const orderIdToUse = orderID || orderId;
+  // const doorSuborder = order.suborders.find(suborder => suborder.name === 'doorSub');
+  const { orderId, dorSuborderId } = useOrder();
+  const orderIdToUse = orderId;
 
   const onFinish = async () => {
-    sendDecorForm(orderIdToUse, doorSuborder, selectedDecorId);
+    // sendDecorForm(orderIdToUse, doorSuborder, selectedDecorId);
+    sendDecorForm(orderIdToUse, dorSuborderId, selectedDecorId);
   };
 
   useEffect(() => {

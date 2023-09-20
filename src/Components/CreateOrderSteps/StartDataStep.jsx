@@ -3,11 +3,14 @@ import axios from 'axios';
 import { useOrder } from '../../Context/OrderContext';
 import { useEffect, useState } from 'react';
 
-const StartDataStep = ({ handleNext, orderID }) => {
-  const { order } = useOrder();
-  const updateOrderId = order?.id;
+// const StartDataStep = ({ handleNext, orderID }) => {
+const StartDataStep = ({ handleNext }) => {
+  // const { order } = useOrder();
+  const { orderId } = useOrder();
+  // const updateOrderId = order?.id;
   const jwtToken = localStorage.getItem('token');
-  const orderIdToUse = orderID || updateOrderId;
+  // const orderIdToUse = orderID || updateOrderId;
+  const orderIdToUse = orderId;
 
   const [form] = Form.useForm();
   const [orderData, setOrderData] = useState(null);

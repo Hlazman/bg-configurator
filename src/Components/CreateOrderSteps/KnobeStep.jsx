@@ -11,10 +11,11 @@ const KnobesStep = ({ orderID }) => {
   const [previousKnobeId, setPreviousKnobeId] = useState(null);
 
   
-  const { order } = useOrder();
-  const orderId = order.id;
-  const orderIdToUse = orderID || orderId;
-  const knobeSuborder = order.suborders.find(suborder => suborder.name === 'knobeSub');
+  // const { order } = useOrder();
+  // const orderId = order.id;
+  // const orderIdToUse = orderID || orderId;
+  // const knobeSuborder = order.suborders.find(suborder => suborder.name === 'knobeSub');
+  const { knobeSuborderId } = useOrder();
 
   const jwtToken = localStorage.getItem('token');
 
@@ -102,7 +103,8 @@ const KnobesStep = ({ orderID }) => {
 
     const handleSbmitForm = async () => {    
       const variables = {
-        "updateFrameFittingId": knobeSuborder.data.id,
+        // "updateFrameFittingId": knobeSuborder.data.id,
+        "updateFrameFittingId": knobeSuborderId,
         "data": {
           "knobe": previousKnobeId
         }
@@ -142,7 +144,8 @@ const KnobesStep = ({ orderID }) => {
       setIsLoading(true);
   
       const variables = {
-        frameFittingId: knobeSuborder.data.id
+        // frameFittingId: knobeSuborder.data.id
+        frameFittingId: knobeSuborderId
       };
   
       axios.post('https://api.boki.fortesting.com.ua/graphql', {
@@ -169,8 +172,10 @@ const KnobesStep = ({ orderID }) => {
         },
       })
       .then((response) => {
-        const knobeId = response.data.data.frameFitting.data.attributes.knobe.data.id;
-        setPreviousKnobeId(knobeId);
+        const knobeId = response?.data?.data?.frameFitting?.data?.attributes?.knobe?.data?.id;
+        if (knobeId) {
+          setPreviousKnobeId(knobeId);
+        }
         setIsLoading(false);
       })
       .catch((error) => {
@@ -178,7 +183,8 @@ const KnobesStep = ({ orderID }) => {
         setIsLoading(false);
       });
   
-    }, [jwtToken, knobeSuborder]);
+    // }, [jwtToken, knobeSuborder]);
+    }, [jwtToken, knobeSuborderId]);
 
   return (
     <Form onFinish={handleSbmitForm} >

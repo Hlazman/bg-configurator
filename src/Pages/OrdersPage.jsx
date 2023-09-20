@@ -3,6 +3,9 @@ import { DownOutlined, SearchOutlined, FilterOutlined, EditOutlined, FolderOpenO
 import { useState, useEffect, useContext } from 'react';
 import axios from 'axios';
 import { AuthContext } from '../Context/AuthContext';
+import { useOrder } from '../Context/OrderContext';
+import { EditOrderPage } from './EditOrderPage';
+import { useNavigate } from 'react-router-dom';
 
 export const OrdersPage = ({language}) => {
 
@@ -21,6 +24,19 @@ export const OrdersPage = ({language}) => {
   const handlePaginationChange = (current, pageSize) => {
     setPagination({ ...pagination, current, pageSize });
   };
+
+  const navigate = useNavigate();
+  // const { editOrderId, setEditOrderId } = useOrder();
+  const { setOrderId } = useOrder();
+
+  const handleEditOrder = (orderID) => {
+    // return <EditOrderPage orderID={orderID} />;
+  // Передаем orderID в компонент EditOrderPage
+  setOrderId(orderID)
+
+  // Переходим на страницу /editorder
+  navigate(`/editorder`); 
+};
 
   const fetchData = async () => {
     try {
@@ -634,8 +650,8 @@ export const OrdersPage = ({language}) => {
                   else if (key === 'active') handleStatusClick(record.id, 'Active');
                   else if (key === 'paid') handleStatusClick(record.id, 'Paid');
                   else if (key === 'closed') handleStatusClick(record.id, 'Closed');
-                  // else if (key === 'deleteOrder') deleteOrder(record.id);
                   else if (key === 'deleteOrder') setDeleteOrderId(record.id);
+                  else if (key === 'editOrder') handleEditOrder(record.id);
               }
           }
           } trigger={['click']} >

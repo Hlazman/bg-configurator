@@ -3,12 +3,14 @@ import { Form, Input, InputNumber, Button, Card, Radio, Select, Divider, Spin, S
 import axios from 'axios';
 import { useOrder } from '../../Context/OrderContext';
 
-const CanvasStep = ({ formData, handleNext, orderID }) => {
-  const { order } = useOrder();
-  const { addSuborder } = useOrder();
-  const doorSuborder = order.suborders.find(suborder => suborder.name === 'doorSub');
-  const orderId = order.id;
-  const orderIdToUse = orderID || orderId;
+// const CanvasStep = ({ formData, handleNext, orderID }) => {
+const CanvasStep = ({ formData, handleNext}) => {
+  const { orderId, dorSuborderId } = useOrder();
+  // const { addSuborder } = useOrder();
+  // const doorSuborder = order.suborders.find(suborder => suborder.name === 'doorSub');
+  // const orderId = order.id;
+  // const orderIdToUse = orderID || orderId;
+  const orderIdToUse = orderId;
   const jwtToken = localStorage.getItem('token');
 
   const [doorData, setDoorData] = useState([]);
@@ -86,11 +88,13 @@ const CanvasStep = ({ formData, handleNext, orderID }) => {
     };
   
     fetchOrderData();
-  }, [orderID, jwtToken, form, orderIdToUse]);
+  // }, [orderID, jwtToken, form, orderIdToUse]);
+  }, [orderId, jwtToken, form, orderIdToUse]);
 
   const onFinish = async (values) => {
     const { width, height, thickness } = values; // Извлекаем значения из формы
-    const updateDoorSuborderId = doorSuborder.data.id; // Получаем id субордера
+    // const updateDoorSuborderId = doorSuborder.data.id; // Получаем id субордера
+    const updateDoorSuborderId = dorSuborderId; // Получаем id субордера
 
     const data = {
       // decor: null,

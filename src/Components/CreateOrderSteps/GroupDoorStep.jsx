@@ -4,7 +4,7 @@ import CanvasStep from './CanvasStep';
 import StartDataStep from './StartDataStep';
 // import FrameStep from './FrameStep';
 
-const GroupDoorStep = ({ formData, handleCardClick, handleNext }) => {
+const GroupDoorStep = ({ formData, handleCardClick, handleNext, editOrderId }) => {
   const [activeTab, setActiveTab] = useState('startdata');
 
   const handleTabChange = tabKey => {
@@ -20,7 +20,7 @@ const GroupDoorStep = ({ formData, handleCardClick, handleNext }) => {
         {
           label: 'Start Data',
           key: 'startdata',
-          children: <StartDataStep formData={formData} handleCardClick={handleCardClick} handleNext={handleNext} />,
+          children: <StartDataStep formData={formData} handleCardClick={handleCardClick} handleNext={handleNext} orderID={editOrderId}/>,
         },
         {
           label: 'Canvas',

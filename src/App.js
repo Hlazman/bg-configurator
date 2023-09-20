@@ -19,6 +19,8 @@ import languageMap from './Languages/language';
 import logo from './logo.svg';
 import './App.css';
 import { EditClientPage } from './Pages/EditClientPage';
+import { EditOrderPage } from './Pages/EditOrderPage';
+import { OrderDetailsPage } from './Pages/OrderDetailsPage';
 
 const options = [
   {
@@ -82,6 +84,10 @@ const App = () => {
 
 const getHeaderTitle = (location, Id) => {
   if (location.pathname.startsWith('/createorder/')) {
+    return `${language.order} #${Id}`;
+  }
+
+  if (location.pathname.startsWith('/editorder/')) {
     return `${language.order} #${Id}`;
   }
 
@@ -173,7 +179,10 @@ const getHeaderTitle = (location, Id) => {
                   <Route path="/editclient/:clientId" element={<EditClientPage language={language} />} />
                   <Route path="/createorder" element={<CreateOrderPage />} />
                   <Route path="/createorder/:orderId" element={<CreateOrderPage language={language}/>} />
+                  <Route path="/editorder" element={<EditOrderPage orderID={orderId} language={language}/>} />
+                  <Route path="/editorder/:orderId" element={<EditOrderPage language={language}/>} />
                   <Route path="/files" element={<FilesPage />} />
+                  <Route path="/order" element={<OrderDetailsPage />} />
                   <Route path="/resetpassword" element={<ResetPasswordPage language={language} />} />
                   <Route path="/savepassword" element={<SavePasswordPage language={language} />} />
                   <Route path="*" element={<NotFoundPage language={language} />} />
