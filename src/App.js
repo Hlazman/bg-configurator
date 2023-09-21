@@ -1,6 +1,7 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { Route, Routes, Navigate, useNavigate, useLocation } from 'react-router-dom';
 import { AuthContext } from './Context/AuthContext';
+import { useLanguage } from './Context/LanguageContext';
 
 import { NotFoundPage } from './Pages/NotFoundPage';
 import { AuthPage } from './Pages/AuthPage';
@@ -38,9 +39,6 @@ const { Header, Content, Footer, Sider } = Layout;
 const App = () => {
   const { isAuthenticated, user, logout } = useContext(AuthContext);
   const [collapsed, setCollapsed] = useState(false);
-  const [selectedLanguage, setSelectedLanguage] = useState(
-    localStorage.getItem('selectedLanguage') || 'en'
-  );
   const [loading, setLoading] = useState(true);
 
   const handleLogout = () => {
@@ -68,16 +66,12 @@ const App = () => {
     },
   ];
 
-  const handleLanguageChange = (language) => {
-    localStorage.setItem('selectedLanguage', language);
-    setSelectedLanguage(language);
-  };
+  const { selectedLanguage } = useLanguage();
+  const language = languageMap[selectedLanguage];
 
   const handleChange = (value) => {
     console.log(`Selected: ${value}`);
   };
-
-  const language = languageMap[selectedLanguage];
 
   const location = useLocation();
   const orderId = location.pathname.split('/').pop();
@@ -108,6 +102,9 @@ const getHeaderTitle = (location, Id) => {
         return language.resetPass;
     case '/savepassword':
       return language.savePass;
+    case '/order':
+      // USE LANGUAGE
+      return 'Order Details';
     default:
       return language.notFound;
   }
@@ -141,7 +138,7 @@ const getHeaderTitle = (location, Id) => {
               <div style={{ textAlign: 'center', margin: '15px 0' }}>
                 <img src={logo} alt="Logo" style={{ width: '40%' }} />{' '}
               </div>
-              <Navigation language={language} handleLanguageChange={handleLanguageChange} />
+              <Navigation/>
           </Sider>
           
           <Layout>
@@ -197,7 +194,7 @@ const getHeaderTitle = (location, Id) => {
         </Layout>
       ) : (
         <Routes>
-          <Route path="/auth" element={<AuthPage language={language} handleLanguageChange={handleLanguageChange}/>} />
+          <Route path="/auth" element={<AuthPage />} />
           <Route path="*" element={<Navigate to="/auth" replace />} />
           <Route path="/resetpassword" element={<ResetPasswordPage />} />
           <Route path="/savepassword" element={<SavePasswordPage />} />

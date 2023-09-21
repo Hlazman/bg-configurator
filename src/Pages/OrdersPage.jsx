@@ -26,16 +26,16 @@ export const OrdersPage = ({language}) => {
   };
 
   const navigate = useNavigate();
-  // const { editOrderId, setEditOrderId } = useOrder();
   const { setOrderId } = useOrder();
 
   const handleEditOrder = (orderID) => {
-    // return <EditOrderPage orderID={orderID} />;
-  // Передаем orderID в компонент EditOrderPage
   setOrderId(orderID)
-
-  // Переходим на страницу /editorder
   navigate(`/editorder`); 
+};
+
+const handleOpenOrder = (orderID) => {
+  setOrderId(orderID)
+  navigate(`/order`);
 };
 
   const fetchData = async () => {
@@ -211,7 +211,7 @@ export const OrdersPage = ({language}) => {
 
     const items = [
     {
-      key: 'openeOrder',
+      key: 'openOrder',
       label: `${language.open}`,
       icon: <FolderOpenOutlined />,
     },
@@ -652,6 +652,7 @@ export const OrdersPage = ({language}) => {
                   else if (key === 'closed') handleStatusClick(record.id, 'Closed');
                   else if (key === 'deleteOrder') setDeleteOrderId(record.id);
                   else if (key === 'editOrder') handleEditOrder(record.id);
+                  else if (key === 'openOrder') handleOpenOrder(record.id);
               }
           }
           } trigger={['click']} >

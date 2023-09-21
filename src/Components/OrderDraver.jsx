@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { Button, Drawer, Space } from 'antd';
+import { OrderDetailsPage } from '../Pages/OrderDetailsPage';
 
-export const OrderDetails = () => {
+export const OrderDrawer = () => {
   const [open, setOpen] = useState(false);
   const [size, setSize] = useState();
   
@@ -35,9 +36,7 @@ export const OrderDetails = () => {
           </Space>
         }
       >
-        <p>Some contents...</p>
-        <p>Some contents...</p>
-        <p>Some contents...</p>
+        <OrderDetailsPage />
       </Drawer>
     </>
   );

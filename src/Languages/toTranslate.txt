@@ -1,4 +1,0 @@
-All files in CreateOrderSteps
-OrderDetails
-CreateOrderPage
-FilesPage

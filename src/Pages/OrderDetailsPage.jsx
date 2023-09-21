@@ -1,55 +1,538 @@
 import logo from '../logo.svg';
-import React, { useRef } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import { Button } from 'antd';
 import html2pdf from 'html2pdf.js';
+import axios from 'axios';
+import { useOrder } from '../Context/OrderContext';
+import { OrderDescription } from '../Components/OrderDescription';
+
 
 export const OrderDetailsPage = () => {
-  const orderFileNameRef = useRef(null);
+  const jwtToken = localStorage.getItem('token');
+  const { orderId } = useOrder();
+  const [orderData, setOrderData] = useState(null);
+  const [subordersId, setSubordersId] = useState(null);
 
-  const handlePdfExport = () => {
+  const [doorData, setDoorData] = useState(null);
+  const [frameData, setFrameData] = useState(null);
+  const [elementData, setElementData] = useState(null);
+  const [lockData, setLockData] = useState(null);
+  const [hingeData, setHingeData] = useState(null);
+  const [knobeData, setKnobeData] = useState(null);
+  const [optionsData, setOptionsData] = useState(null);
+
+  const embedImages = async () => {
+    const images = document.querySelectorAll('img');
+    const promises = Array.from(images).map(async (img) => {
+      const src = img.src;
+      const response = await fetch(src);
+      const blob = await response.blob();
+      const dataUrl = await new Promise((resolve) => {
+        const reader = new FileReader();
+        reader.onloadend = () => resolve(reader.result);
+        reader.readAsDataURL(blob);
+      });
+      img.src = dataUrl;
+    });
+
+    await Promise.all(promises);
+  };
+
+  const handlePdfExport = async () => {
     const element = document.getElementById('pdf-content');
-    const orderFileName = orderFileNameRef.current.innerText;
-
-    html2pdf()
+    await embedImages();
+  
+    await html2pdf()
       .from(element)
       .set({
-        filename: `${orderFileName}.pdf`,
+        filename: `Order ${orderId}.pdf`,
+        image: { type: 'jpeg', quality: 0.98 },
+        html2canvas: { scale: 2 },
+        jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
+        pagebreak: { mode: 'avoid-all' } // Добавляем настройку для избежания переносов
       })
       .save();
   };
-
-  const handleOpenPdf = () => {
+  
+  const handleOpenPdf = async () => {
     const element = document.getElementById('pdf-content');
-    const orderFileName = orderFileNameRef.current.innerText;
-
-    html2pdf()
+    await embedImages();
+  
+    await html2pdf()
       .from(element)
       .set({
-        filename: `${orderFileName}.pdf`,
+        filename: `Order ${orderId}.pdf`,
+        image: { type: 'jpeg', quality: 0.98 },
+        html2canvas: { scale: 2 },
+        jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
+        pagebreak: { mode: 'avoid-all' }
       })
       .outputPdf('dataurlnewwindow');
   };
 
-  return (
-    <>
-      <h1>Order page</h1>
-      {/* Дополнительные элементы страницы */}
-      <p ref={orderFileNameRef} id="orderFileName">Order № 10230</p>
+  
 
-      <div id="pdf-content">
-        {/* Контент, который будет экспортирован в PDF */}
-        <img src={logo} alt="Logo" />
-        <p>some paragraph</p>
-        <p>some paragraph</p>
-        <p>some paragraph</p>
-        <p>some paragraph</p>
-        <p>some paragraph</p>
-        <p>some paragraph</p>
-        <p>some paragraph</p>
+  const fetchData = async () => {
+    try {
+      const response = await axios.post(
+        'https://api.boki.fortesting.com.ua/graphql',
+        {
+          query: `
+            query Order($orderId: ID) {
+              order(id: $orderId) {
+                data {
+                  attributes {
+                    double_door
+                    discount
+                    deliveryAt
+                    currency
+                    hidden
+                    opening
+                    shippingAddress {
+                      address
+                      city
+                      country
+                      zipCode
+                    }
+                    shippingCost
+                    side
+                    tax
+                    totalCost
+                    door_suborder {
+                      data {
+                        id
+                      }
+                    }
+                    element_suborders {
+                      data {
+                        id
+                      }
+                    }
+                    fitting_suborders {
+                      data {
+                        id
+                        attributes {
+                          type
+                        }
+                      }
+                    }
+                    option_suborders {
+                      data {
+                        id
+                      }
+                    }
+                    frame_suborder {
+                      data {
+                        id
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          `,
+          variables: {
+            orderId: orderId,
+          },
+        },
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${jwtToken}`,
+          },
+        }
+      );
+
+      const orderData = response?.data?.data?.order?.data?.attributes;
+      setOrderData(orderData);
+
+      const subordersId = {
+        door: orderData?.door_suborder?.data?.id,
+        elements: orderData?.element_suborders?.data.map(suborder => suborder.id),
+        fittings: orderData?.fitting_suborders?.data.reduce((acc, suborder) => {
+          acc[suborder.attributes.type] = suborder.id;
+          return acc;
+        }, {}),
+        options: orderData?.option_suborders?.data.map(suborder => suborder.id),
+        frame: orderData?.frame_suborder?.data?.id,
+      };
+      setSubordersId(subordersId);
+        
+      if (subordersId.frame) {
+        fetchFrameData(subordersId.frame);
+      }
+
+      if (subordersId.door) {
+        fetchDoorData(subordersId.door);
+      }
+
+      if (subordersId.elements) {
+        fetchElementsData(subordersId.elements)
+      }
+
+      if (subordersId.fittings) {
+        fetchLockData(subordersId.fittings.lock);
+        fetchHingeData(subordersId.fittings.hinge);
+        fetchKnobeData(subordersId.fittings.knobe);
+      }
+
+    } catch (error) {
+      console.error('Error while fetching order data:', error);
+    }
+  };
+
+const fetchFrameData = async (frameId) => {
+  try {
+      const frameSuborderResponse = await axios.post(
+        'https://api.boki.fortesting.com.ua/graphql',
+        {
+          query: `
+            query Query($frameSuborderId: ID) {
+              frameSuborder(id: $frameSuborderId) {
+                data {
+                  attributes {
+                    frame {
+                      data {
+                        attributes {
+                          title
+                          type
+                        }
+                      }
+                    }
+                    price
+                  }
+                }
+              }
+            }
+          `,
+          variables: {
+            frameSuborderId: frameId,
+          },
+        },
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${jwtToken}`,
+          },
+        }
+      );
+  
+      const frameSuborderData = frameSuborderResponse?.data?.data?.frameSuborder?.data?.attributes;
+      setFrameData(frameSuborderData);
+    
+  } catch (error) {
+    console.error('Error while fetching frame suborder data:', error);
+  }
+}
+
+const fetchDoorData = async (doorId) => {
+  try {
+    const doorSuborderResponse = await axios.post(
+      'https://api.boki.fortesting.com.ua/graphql',
+      {
+        query: `
+          query DoorSuborder($doorSuborderId: ID) {
+            doorSuborder(id: $doorSuborderId) {
+              data {
+                attributes {
+                  price
+                  sizes {
+                    height
+                    thickness
+                    width
+                  }
+                  door {
+                    data {
+                      attributes {
+                        collection
+                        product_properties {
+                          title
+                          image {
+                            data {
+                              attributes {
+                                url
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                  decor {
+                    data {
+                      attributes {
+                        title
+                        type
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        `,
+        variables: {
+          doorSuborderId: doorId,
+        },
+      },
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${jwtToken}`,
+        },
+      }
+    );
+
+    const doorSuborderData = doorSuborderResponse?.data?.data?.doorSuborder?.data?.attributes;
+    setDoorData(doorSuborderData);
+  } catch (error) {
+    console.error('Error while fetching door suborder data:', error);
+  }
+}
+
+const fetchElementsData = async (elementIds) => {
+  const elementDataArray = [];
+
+  for (const elementId of elementIds) {
+    try {
+      const elementSuborderResponse = await axios.post(
+        'https://api.boki.fortesting.com.ua/graphql',
+        {
+          query: `
+            query ElementSuborders($elementSuborderId: ID) {
+              elementSuborder(id: $elementSuborderId) {
+                data {
+                  attributes {
+                    amount
+                    price
+                    sizes {
+                      height
+                      thickness
+                      width
+                    }
+                    element {
+                      data {
+                        attributes {
+                          title
+                        }
+                      }
+                    }
+                    decor {
+                      data {
+                        attributes {
+                          title
+                          type
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          `,
+          variables: {
+            elementSuborderId: elementId,
+          },
+        },
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${jwtToken}`,
+          },
+        }
+      );
+
+      const elementSuborderData = elementSuborderResponse?.data?.data?.elementSuborder?.data?.attributes;
+      elementDataArray.push(elementSuborderData);
+    } catch (error) {
+      console.error('Error while fetching element suborder data:', error);
+    }
+  }
+
+  setElementData(elementDataArray);
+}
+
+const fetchHingeData = async (hingeId) => {
+  try {
+    const hingeFittingResponse = await axios.post(
+      'https://api.boki.fortesting.com.ua/graphql',
+      {
+        query: `
+          query Query($frameFittingId: ID) {
+            frameFitting(id: $frameFittingId) {
+              data {
+                attributes {
+                  title
+                  price
+                  type
+                  hinge {
+                    data {
+                      attributes {
+                        brand
+                        image {
+                          data {
+                            attributes {
+                              url
+                            }
+                          }
+                        }
+                        title
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        `,
+        variables: {
+          frameFittingId: hingeId,
+        },
+      },
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${jwtToken}`,
+        },
+      }
+    );
+
+    const hingeFittingData = hingeFittingResponse?.data?.data?.frameFitting?.data?.attributes;
+    setHingeData(hingeFittingData);
+  } catch (error) {
+    console.error('Error while fetching hinge fitting data:', error);
+  }
+}
+
+const fetchKnobeData = async (knobeid) => {
+  try {
+    const knobeFittingResponse = await axios.post(
+      'https://api.boki.fortesting.com.ua/graphql',
+      {
+        query: `
+          query Query($frameFittingId: ID) {
+            frameFitting(id: $frameFittingId) {
+              data {
+                attributes {
+                  title
+                  price
+                  type
+                  knobe {
+                    data {
+                      attributes {
+                        brand
+                        image {
+                          data {
+                            attributes {
+                              url
+                            }
+                          }
+                        }
+                        title
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        `,
+        variables: {
+          frameFittingId: knobeid,
+        },
+      },
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${jwtToken}`,
+        },
+      }
+    );
+
+    const knobeFittingData = knobeFittingResponse?.data?.data?.frameFitting?.data?.attributes;
+    setKnobeData(knobeFittingData);
+  } catch (error) {
+    console.error('Error while fetching knobe fitting data:', error);
+  }
+}
+
+const fetchLockData = async (lockId) => {
+  try {
+    const lockFittingResponse = await axios.post(
+      'https://api.boki.fortesting.com.ua/graphql',
+      {
+        query: `
+          query Query($frameFittingId: ID) {
+            frameFitting(id: $frameFittingId) {
+              data {
+                attributes {
+                  title
+                  price
+                  type
+                  lock {
+                    data {
+                      attributes {
+                        brand
+                        image {
+                          data {
+                            attributes {
+                              url
+                            }
+                          }
+                        }
+                        title
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        `,
+        variables: {
+          frameFittingId: lockId,
+        },
+      },
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${jwtToken}`,
+        },
+      }
+    );
+
+    const lockFittingData = lockFittingResponse?.data?.data?.frameFitting?.data?.attributes;
+    setLockData(lockFittingData);
+  } catch (error) {
+    console.error('Error while fetching lock fitting data:', error);
+  }
+}
+
+useEffect(() => {
+  fetchData();
+
+}, [jwtToken, orderId]);
+
+
+  return (
+    <div >
+      <div style={{margin: '20px'}}>
+        <Button onClick={handlePdfExport}>Сохранить в PDF</Button>
+        <Button onClick={handleOpenPdf}>Открыть PDF</Button>
       </div>
 
-      <Button onClick={handlePdfExport}>Сохранить в PDF</Button>
-      <Button onClick={handleOpenPdf}>Открыть PDF</Button>
-    </>
+      <div id="pdf-content">
+        <OrderDescription
+          orderData={orderData} 
+          orderId={orderId} 
+          frameData={frameData}
+          doorData={doorData}
+          elementData={elementData}
+          hingeData={hingeData}
+          knobeData={knobeData}
+          lockData={lockData}
+        />
+      </div>
+    </div>
   );
 };

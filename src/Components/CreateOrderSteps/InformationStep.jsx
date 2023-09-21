@@ -12,12 +12,12 @@ const { TextArea } = Input;
 const InformationStep = ({ formData, language }) => {
   const dateFormat = 'YYYY-MM-DD HH:mm';
   const { user } = useContext(AuthContext);
+  const { orderId } = useOrder();
+
   const jwtToken = localStorage.getItem('token');
   const locale = localStorage.getItem('selectedLanguage') || 'en'
   const navigate = useNavigate()
   
-  const { orderId } = useOrder();
-
   const [clients, setClients] = useState([]);
   const [form] = Form.useForm();
 

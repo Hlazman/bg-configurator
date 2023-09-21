@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Steps, Form, Input, Button, Divider} from 'antd';
-import { OrderDetails } from '../Components/OrderDetails';
+import { OrderDrawer } from '../Components/OrderDraver';
 import GroupDoorStep from '../Components/CreateOrderSteps/GroupDoorStep';
 import GroupDecorStep from '../Components/CreateOrderSteps/GroupDecorStep';
 import GroupAccessoriesStep from '../Components/CreateOrderSteps/GroupAccessoriesStep';
@@ -456,7 +456,7 @@ export const CreateOrderPage = ({language}) => {
     <div>
       
       <div style={{textAlign: 'left', margin: '10px 0'}}>
-        <OrderDetails/>
+        <OrderDrawer/>
       </div>
       
       <Divider/>

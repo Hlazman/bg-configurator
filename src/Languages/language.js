@@ -8,7 +8,7 @@ import de from './de';
 const languageMap = {
   en: en,
   ua: ua,
-  pl: pl,
+  pl: pl, 
   cs: cs,
   es: es,
   de: de

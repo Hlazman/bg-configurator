@@ -3,14 +3,20 @@ import { NavLink } from 'react-router-dom';
 import { Card, Form, Input, Checkbox, Button, Typography, notification } from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
 import { AuthContext } from '../Context/AuthContext';
+import { useLanguage } from '../Context/LanguageContext';
+import languageMap from '../Languages/language';
 import { Select } from 'antd';
 
 const { Option } = Select;
 const { Title } = Typography;
 
-export const AuthPage = ({language, handleLanguageChange}) => {
+export const AuthPage = () => {
   const { loginUserWithApi } = useContext(AuthContext);
   const [api, contextHolder] = notification.useNotification();
+
+  const { handleLanguageChange, selectedLanguage } = useLanguage();
+  const language = languageMap[selectedLanguage];
+
 
   const onFinish = async (values) => {
     const { email, password, remember } = values;
