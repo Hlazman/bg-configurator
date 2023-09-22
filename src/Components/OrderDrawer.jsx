@@ -13,6 +13,7 @@ export const OrderDrawer = () => {
   const onClose = () => {
     setOpen(false);
   };
+
   return (
     <>
       <Space>
@@ -30,9 +31,7 @@ export const OrderDrawer = () => {
         extra={
           <Space>
             <Button onClick={onClose}>Cancel</Button>
-            <Button type="primary" onClick={onClose}>
-              OK
-            </Button>
+            <Button type="primary" onClick={onClose}>OK</Button>
           </Space>
         }
       >

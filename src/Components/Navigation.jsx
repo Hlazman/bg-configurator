@@ -1,5 +1,5 @@
 import React from 'react';
-import { NavLink} from 'react-router-dom';
+import { NavLink, useLocation} from 'react-router-dom';
 import { Menu } from 'antd';
 import { 
   DatabaseOutlined, UserOutlined, FormOutlined, UsergroupAddOutlined, FileOutlined, TranslationOutlined, SettingOutlined,
@@ -11,13 +11,19 @@ import languageMap from '../Languages/language';
 export const Navigation = () => {
   const { handleLanguageChange, selectedLanguage } = useLanguage();
   const language = languageMap[selectedLanguage];
+  
+  const location = useLocation();
+  const isCreateOrderDisabled = location.pathname.startsWith('/createorder/');
+  const createOrderContent = isCreateOrderDisabled ? 'Create Order' : <NavLink to="/createorder">{language.createOrder}</NavLink>;
 
   const menuItems = [
     { type: "divider" },
     {
       'key': "createorder", 
       'icon': <FormOutlined />,
-      'label': ( <NavLink to="/createorder">{language.createOrder}</NavLink>),
+      // 'label': ( <NavLink to="/createorder">{language.createOrder}</NavLink>),
+      'label': createOrderContent,
+      'disabled': isCreateOrderDisabled,
     },
     {
       'key': "createclient", 

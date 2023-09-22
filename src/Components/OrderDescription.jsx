@@ -140,6 +140,14 @@ export const OrderDescription = (
             <Descriptions.Item label="Decor Type">
               {doorData.decor?.data?.attributes?.type}
             </Descriptions.Item>
+
+            <Descriptions.Item label="Decor Image">
+              <img 
+                src={`https://api.boki.fortesting.com.ua${doorData?.decor?.img}`} 
+                alt="Decor"
+                height={100}
+              />
+            </Descriptions.Item>
           </>
         )}
       </Descriptions>
@@ -173,6 +181,16 @@ export const OrderDescription = (
             <Descriptions.Item label="Decor Type">
               {element.decor?.data?.attributes?.type}
             </Descriptions.Item>
+
+
+            <Descriptions.Item label="Decor Image">
+              <img 
+                src={`https://api.boki.fortesting.com.ua${element?.decor?.img}`} 
+                alt="Decor"
+                height={100}
+              />
+            </Descriptions.Item>
+
           </>
         </Descriptions>
       ))}

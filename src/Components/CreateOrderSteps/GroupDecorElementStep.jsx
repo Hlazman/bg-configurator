@@ -6,6 +6,7 @@ import StoneStep from './StoneStep';
 import MirrorStep from './MirrorStep';
 import HPLStep from './HPLStep';
 import axios from 'axios';
+import PrimerStep from './PrimerStep';
 
 const GroupDecorElementStep = (elementID) => {
   const [activeTab, setActiveTab] = useState('veneer');
@@ -119,6 +120,7 @@ const GroupDecorElementStep = (elementID) => {
             data: {
               title: data.title,
               type: data.type,
+              [data.type]: data.productId,
             }
           }
         },
@@ -137,7 +139,7 @@ const GroupDecorElementStep = (elementID) => {
     }
   };
 
-  const checkDecor = async (type, title, decorData, setSelectedDecorId) => {
+  const checkDecor = async (type, title, decorData, setSelectedDecorId, productId) => {
     const foundDecor = decorData.find(decor =>
       decor.attributes.type === type && decor.attributes.title.toLowerCase() === title.toLowerCase()
     );
@@ -150,7 +152,7 @@ const GroupDecorElementStep = (elementID) => {
       console.log(`Декор с типом ${type} и названием ${title} не найден. Создаем новый...`);
   
       try {
-        const newDecorId = await createDecor({ title, type });
+        const newDecorId = await createDecor({ title, type, productId});
         fetchDecorData();
         setSelectedDecorId(newDecorId);
         console.log(`Декор успешно создан с id: ${newDecorId}`);
@@ -252,6 +254,17 @@ const GroupDecorElementStep = (elementID) => {
           key: 'hpl',
           children: 
             <HPLStep 
+            fetchDecorData={fetchDecorData}
+            fetchOrderData={fetchOrderData}
+            checkDecor={checkDecor}
+            sendDecorForm={sendDecorForm} 
+            />,
+        },
+        {
+          label: 'Primers',
+          key: 'primer',
+          children: 
+            <PrimerStep 
             fetchDecorData={fetchDecorData}
             fetchOrderData={fetchOrderData}
             checkDecor={checkDecor}

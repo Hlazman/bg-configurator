@@ -49,7 +49,7 @@ export const OrderDetailsPage = () => {
         image: { type: 'jpeg', quality: 0.98 },
         html2canvas: { scale: 2 },
         jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
-        pagebreak: { mode: 'avoid-all' } // Добавляем настройку для избежания переносов
+        pagebreak: { mode: 'avoid-all' }
       })
       .save();
   };
@@ -225,6 +225,71 @@ const fetchFrameData = async (frameId) => {
   }
 }
 
+// const fetchDoorData = async (doorId) => {
+//   try {
+//     const doorSuborderResponse = await axios.post(
+//       'https://api.boki.fortesting.com.ua/graphql',
+//       {
+//         query: `
+//           query DoorSuborder($doorSuborderId: ID) {
+//             doorSuborder(id: $doorSuborderId) {
+//               data {
+//                 attributes {
+//                   price
+//                   sizes {
+//                     height
+//                     thickness
+//                     width
+//                   }
+//                   door {
+//                     data {
+//                       attributes {
+//                         collection
+//                         product_properties {
+//                           title
+//                           image {
+//                             data {
+//                               attributes {
+//                                 url
+//                               }
+//                             }
+//                           }
+//                         }
+//                       }
+//                     }
+//                   }
+//                   decor {
+//                     data {
+//                       attributes {
+//                         title
+//                         type
+//                       }
+//                     }
+//                   }
+//                 }
+//               }
+//             }
+//           }
+//         `,
+//         variables: {
+//           doorSuborderId: doorId,
+//         },
+//       },
+//       {
+//         headers: {
+//           'Content-Type': 'application/json',
+//           Authorization: `Bearer ${jwtToken}`,
+//         },
+//       }
+//     );
+
+//     const doorSuborderData = doorSuborderResponse?.data?.data?.doorSuborder?.data?.attributes;
+//     setDoorData(doorSuborderData);
+//   } catch (error) {
+//     console.error('Error while fetching door suborder data:', error);
+//   }
+// }
+
 const fetchDoorData = async (doorId) => {
   try {
     const doorSuborderResponse = await axios.post(
@@ -263,6 +328,88 @@ const fetchDoorData = async (doorId) => {
                       attributes {
                         title
                         type
+                        veneer {
+                          data {
+                            attributes {
+                              main_properties {
+                                image {
+                                  data {
+                                    attributes {
+                                      url
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                        ceramogranite {
+                          data {
+                            attributes {
+                              image {
+                                data {
+                                  attributes {
+                                    url
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                        paint {
+                          data {
+                            attributes {
+                              main_properties {
+                                image {
+                                  data {
+                                    attributes {
+                                      url
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                        mirror {
+                          data {
+                            attributes {
+                              image {
+                                data {
+                                  attributes {
+                                    url
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                        HPL {
+                          data {
+                            attributes {
+                              image {
+                                data {
+                                  attributes {
+                                    url
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                        primer {
+                          data {
+                            attributes {
+                              image {
+                                data {
+                                  attributes {
+                                    url
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
                       }
                     }
                   }
@@ -284,11 +431,91 @@ const fetchDoorData = async (doorId) => {
     );
 
     const doorSuborderData = doorSuborderResponse?.data?.data?.doorSuborder?.data?.attributes;
+
+    let decorImg = null;
+
+    if (doorSuborderData.decor?.data?.attributes?.veneer?.data?.attributes?.main_properties?.image?.data?.attributes?.url) {
+      decorImg = doorSuborderData.decor.data.attributes.veneer.data.attributes.main_properties.image.data.attributes.url;
+    } else if (doorSuborderData.decor?.data?.attributes?.ceramogranite?.data?.attributes?.image?.data?.attributes?.url) {
+      decorImg = doorSuborderData.decor.data.attributes.ceramogranite.data.attributes.image.data.attributes.url;
+    } else if (doorSuborderData.decor?.data?.attributes?.paint?.data?.attributes?.main_properties?.image?.data?.attributes?.url) {
+      decorImg = doorSuborderData.decor.data.attributes.paint.data.attributes.main_properties.image.data.attributes.url;
+    } else if (doorSuborderData.decor?.data?.attributes?.mirror?.data?.attributes?.image?.data?.attributes?.url) {
+      decorImg = doorSuborderData.decor.data.attributes.mirror.data.attributes.image.data.attributes.url;
+    } else if (doorSuborderData.decor?.data?.attributes?.HPL?.data?.attributes?.image?.data?.attributes?.url) {
+      decorImg = doorSuborderData.decor.data.attributes.HPL.data.attributes.image.data.attributes.url;
+    } else if (doorSuborderData.decor?.data?.attributes?.primer?.data?.attributes?.image?.data?.attributes?.url) {
+      decorImg = doorSuborderData.decor.data.attributes.primer.data.attributes.image.data.attributes.url;
+    }
+
+    doorSuborderData.decor.img = decorImg;
+
     setDoorData(doorSuborderData);
   } catch (error) {
     console.error('Error while fetching door suborder data:', error);
   }
 }
+
+// const fetchElementsData = async (elementIds) => {
+//   const elementDataArray = [];
+
+//   for (const elementId of elementIds) {
+//     try {
+//       const elementSuborderResponse = await axios.post(
+//         'https://api.boki.fortesting.com.ua/graphql',
+//         {
+//           query: `
+//             query ElementSuborders($elementSuborderId: ID) {
+//               elementSuborder(id: $elementSuborderId) {
+//                 data {
+//                   attributes {
+//                     amount
+//                     price
+//                     sizes {
+//                       height
+//                       thickness
+//                       width
+//                     }
+//                     element {
+//                       data {
+//                         attributes {
+//                           title
+//                         }
+//                       }
+//                     }
+//                     decor {
+//                       data {
+//                         attributes {
+//                           title
+//                           type
+//                         }
+//                       }
+//                     }
+//                   }
+//                 }
+//               }
+//             }
+//           `,
+//           variables: {
+//             elementSuborderId: elementId,
+//           },
+//         },
+//         {
+//           headers: {
+//             'Content-Type': 'application/json',
+//             Authorization: `Bearer ${jwtToken}`,
+//           },
+//         }
+//       );
+
+//       const elementSuborderData = elementSuborderResponse?.data?.data?.elementSuborder?.data?.attributes;
+//       elementDataArray.push(elementSuborderData);
+//     } catch (error) {
+//       console.error('Error while fetching element suborder data:', error);
+//     }
+//   }
+//   setElementData(elementDataArray);
+// }
 
 const fetchElementsData = async (elementIds) => {
   const elementDataArray = [];
@@ -322,6 +549,88 @@ const fetchElementsData = async (elementIds) => {
                         attributes {
                           title
                           type
+                          veneer {
+                            data {
+                              attributes {
+                                main_properties {
+                                  image {
+                                    data {
+                                      attributes {
+                                        url
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                          ceramogranite {
+                            data {
+                              attributes {
+                                image {
+                                  data {
+                                    attributes {
+                                      url
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                          paint {
+                            data {
+                              attributes {
+                                main_properties {
+                                  image {
+                                    data {
+                                      attributes {
+                                        url
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                          mirror {
+                            data {
+                              attributes {
+                                image {
+                                  data {
+                                    attributes {
+                                      url
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                          HPL {
+                            data {
+                              attributes {
+                                image {
+                                  data {
+                                    attributes {
+                                      url
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                          primer {
+                            data {
+                              attributes {
+                                image {
+                                  data {
+                                    attributes {
+                                      url
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
                         }
                       }
                     }
@@ -343,6 +652,25 @@ const fetchElementsData = async (elementIds) => {
       );
 
       const elementSuborderData = elementSuborderResponse?.data?.data?.elementSuborder?.data?.attributes;
+
+      let decorImg = null;
+
+      if (elementSuborderData.decor?.data?.attributes?.veneer?.data?.attributes?.main_properties?.image?.data?.attributes?.url) {
+        decorImg = elementSuborderData.decor.data.attributes.veneer.data.attributes.main_properties.image.data.attributes.url;
+      } else if (elementSuborderData.decor?.data?.attributes?.ceramogranite?.data?.attributes?.image?.data?.attributes?.url) {
+        decorImg = elementSuborderData.decor.data.attributes.ceramogranite.data.attributes.image.data.attributes.url;
+      } else if (elementSuborderData.decor?.data?.attributes?.paint?.data?.attributes?.main_properties?.image?.data?.attributes?.url) {
+        decorImg = elementSuborderData.decor.data.attributes.paint.data.attributes.main_properties.image.data.attributes.url;
+      } else if (elementSuborderData.decor?.data?.attributes?.mirror?.data?.attributes?.image?.data?.attributes?.url) {
+        decorImg = elementSuborderData.decor.data.attributes.mirror.data.attributes.image.data.attributes.url;
+      } else if (elementSuborderData.decor?.data?.attributes?.HPL?.data?.attributes?.image?.data?.attributes?.url) {
+        decorImg = elementSuborderData.decor.data.attributes.HPL.data.attributes.image.data.attributes.url;
+      } else if (elementSuborderData.decor?.data?.attributes?.primer?.data?.attributes?.image?.data?.attributes?.url) {
+        decorImg = elementSuborderData.decor.data.attributes.primer.data.attributes.image.data.attributes.url;
+      }
+
+      elementSuborderData.decor.img = decorImg;
+
       elementDataArray.push(elementSuborderData);
     } catch (error) {
       console.error('Error while fetching element suborder data:', error);
@@ -510,7 +838,6 @@ const fetchLockData = async (lockId) => {
 
 useEffect(() => {
   fetchData();
-
 }, [jwtToken, orderId]);
 
 

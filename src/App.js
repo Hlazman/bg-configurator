@@ -39,7 +39,7 @@ const { Header, Content, Footer, Sider } = Layout;
 const App = () => {
   const { isAuthenticated, user, logout } = useContext(AuthContext);
   const [collapsed, setCollapsed] = useState(false);
-  const [loading, setLoading] = useState(true);
+  // const [loading, setLoading] = useState(true);
 
   const handleLogout = () => {
     logout();
@@ -47,6 +47,7 @@ const App = () => {
   };
 
   const navigate = useNavigate()
+
   const handleResetPassword = () => {
     return navigate('/resetpassword');
   };
@@ -113,10 +114,19 @@ const getHeaderTitle = (location, Id) => {
   const headerTitle = getHeaderTitle(location, orderId);
 
   useEffect(() => {
-    setLoading(false);
+    localStorage.setItem('savedPath', location.pathname);
+
+  }, [location.pathname]);
+
+  useEffect(() => {
+    const savedPath = localStorage.getItem('savedPath');
+    if (savedPath) {
+      navigate(savedPath);
+    } else {
+      navigate('/');
+    }
   }, []);
   
-
   return (
     <ConfigProvider
       theme={{

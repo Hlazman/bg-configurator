@@ -18,7 +18,7 @@ const VeneerStep = ({ orderID, fetchOrderData, fetchDecorData, checkDecor, sendD
   // const orderId = order.id;
   // const orderIdToUse = orderID || orderId;
   // const doorSuborder = order.suborders.find(suborder => suborder.name === 'doorSub');
-  const { orderId, dorSuborderId } = useOrder();
+  const { orderId, dorSuborderId} = useOrder();
   const orderIdToUse = orderId;
 
   const onFinish = async () => {
@@ -51,6 +51,7 @@ const VeneerStep = ({ orderID, fetchOrderData, fetchDecorData, checkDecor, sendD
       title: veneer.attributes.main_properties.title,
       description: veneer.attributes.code,
       id: veneer.id,
+      productId: veneer.producId, // new
     }));
 
   useEffect(() => {
@@ -79,6 +80,7 @@ const VeneerStep = ({ orderID, fetchOrderData, fetchDecorData, checkDecor, sendD
                         }
                       }
                     }
+                    id
                   }
                 }
               }
@@ -100,6 +102,7 @@ const VeneerStep = ({ orderID, fetchOrderData, fetchDecorData, checkDecor, sendD
         const veneers = response.data.data.veneers.data.map(veneer => ({
           ...veneer,
           id: veneer.attributes.main_properties.id,
+          producId: veneer.id,
         }));
         setVeneerData(veneers);
         setIsLoading(false);
@@ -170,9 +173,9 @@ const VeneerStep = ({ orderID, fetchOrderData, fetchDecorData, checkDecor, sendD
                         ? '7px solid #f06d20'
                         : 'none',
                     }}
-                    onClick={() => {
-                      checkDecor('veneer', veneer.title, decorData, setSelectedDecorId);
-                      setPreviousVeneerTitle(veneer.title);
+                    onClick={async () => {
+                      await checkDecor('veneer', veneer.title, decorData, setSelectedDecorId, veneer.productId);
+                      await setPreviousVeneerTitle(veneer.title);
                     }}
                   >
                     <div style={{ overflow: 'hidden', height: 220 }}>

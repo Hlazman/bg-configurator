@@ -3,12 +3,12 @@ import { Form, Input, Button, Card, Radio, Divider, Spin } from 'antd';
 import axios from 'axios';
 import { useOrder } from '../../Context/OrderContext';
 
-const HPLStep = ({ orderID, fetchOrderData, fetchDecorData, checkDecor, sendDecorForm }) => {
-  const [HPLData, setHPLData] = useState([]);
+const PrimerStep = ({orderID, fetchOrderData, fetchDecorData, checkDecor, sendDecorForm }) => {
+  const [primerData, setPrimerData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [previousPrimerTitle, setPreviousPrimerTitle] = useState(null);
   const [searchQuery, setSearchQuery] = useState('');
   const jwtToken = localStorage.getItem('token');
-  const [previousHPLTitle, setPreviousHPLTitle] = useState(null);
   const [decorData, setDecorData] = useState([]);
   const [selectedDecorId, setSelectedDecorId] = useState(null);
   
@@ -18,6 +18,10 @@ const HPLStep = ({ orderID, fetchOrderData, fetchDecorData, checkDecor, sendDeco
   // const doorSuborder = order.suborders.find(suborder => suborder.name === 'doorSub');
   const { orderId, dorSuborderId } = useOrder();
   const orderIdToUse = orderId;
+
+  const filteredPrimerData = primerData.filter(primer =>
+    primer.attributes.title.toLowerCase().includes(searchQuery.toLowerCase())
+  );
 
   const onFinish = async () => {
     // sendDecorForm(orderIdToUse, doorSuborder, selectedDecorId);
@@ -32,24 +36,23 @@ const HPLStep = ({ orderID, fetchOrderData, fetchDecorData, checkDecor, sendDeco
           'https://api.boki.fortesting.com.ua/graphql',
           {
             query: `
-            query Query {
-              hplPanels {
-                data {
-                  id
-                  attributes {
-                    brand
-                    image {
-                      data {
-                        attributes {
-                          url
+              query Primers {
+                primers {
+                  data {
+                    id
+                    attributes {
+                      image {
+                        data {
+                          attributes {
+                            url
+                          }
                         }
                       }
+                      title
                     }
-                    title
                   }
                 }
               }
-            }
             `,
           },
           {
@@ -60,8 +63,8 @@ const HPLStep = ({ orderID, fetchOrderData, fetchDecorData, checkDecor, sendDeco
           }
         );
 
-        const hpls = response.data.data.hplPanels.data;
-        setHPLData(hpls);
+        const primers = response.data.data.primers.data;
+        setPrimerData(primers);
       } catch (error) {
         console.error('Error fetching data:', error);
       }
@@ -70,17 +73,13 @@ const HPLStep = ({ orderID, fetchOrderData, fetchDecorData, checkDecor, sendDeco
 
     fetchData();
     fetchDecorData(setDecorData);
-    fetchOrderData(orderIdToUse, setPreviousHPLTitle, 'HPL');
+    fetchOrderData(orderIdToUse, setPreviousPrimerTitle, 'primer');
   }, [jwtToken, orderIdToUse, fetchDecorData, fetchOrderData]);
-
-  const filteredHplData = HPLData.filter(hpl =>
-    hpl.attributes.title.toLowerCase().includes(searchQuery.toLowerCase())
-  );
 
   return (
     <Form onFinish={onFinish}>
 
-        <Form.Item wrapperCol={{ offset: 4, span: 16 }}>
+      <Form.Item wrapperCol={{ offset: 4, span: 16 }}>
         <Button type="primary" htmlType="submit">
           Submit
         </Button>
@@ -104,29 +103,29 @@ const HPLStep = ({ orderID, fetchOrderData, fetchDecorData, checkDecor, sendDeco
         <Form.Item>
           <Radio.Group>
             <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}>
-              {filteredHplData.map(hpl => (
-                <div key={hpl.id} style={{ width: 220, margin: '20px 10px' }}>
+              {filteredPrimerData.map(primer => (
+                <div key={primer.id} style={{ width: 220, margin: '20px 10px' }}>
                   <Card
                     className="custom-card"
                     hoverable
                     style={{
                       border:
-                        previousHPLTitle === hpl.attributes.title ? '7px solid #f06d20' : 'none',
+                        previousPrimerTitle === primer.attributes.title ? '7px solid #f06d20' : 'none',
                     }}
                     onClick={() => {
-                      checkDecor('HPL', hpl.attributes.title, decorData, setSelectedDecorId, hpl.id);
-                      setPreviousHPLTitle(hpl.attributes.title);
+                      checkDecor('primer', primer.attributes.title, decorData, setSelectedDecorId, primer.id);
+                      setPreviousPrimerTitle(primer.attributes.title);
                     }}
                   >
                     <div style={{ overflow: 'hidden', height: 220 }}>
                       <img
-                        src={`https://api.boki.fortesting.com.ua${hpl.attributes.image.data.attributes.url}`}
-                        alt={hpl.attributes.title}
+                        src={`https://api.boki.fortesting.com.ua${primer.attributes.image.data.attributes.url}`}
+                        alt={primer.attributes.title}
                         style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                       />
                     </div>
-                    <Card.Meta title={hpl.attributes.title} style={{ paddingTop: '10px' }} />
-                    <Radio value={hpl.id} style={{ display: 'none' }} />
+                    <Card.Meta title={primer.attributes.title} style={{ paddingTop: '10px' }} />
+                    <Radio value={primer.id} style={{ display: 'none' }} />
                   </Card>
                 </div>
               ))}
@@ -138,4 +137,4 @@ const HPLStep = ({ orderID, fetchOrderData, fetchDecorData, checkDecor, sendDeco
   );
 };
 
-export default HPLStep;
+export default PrimerStep;

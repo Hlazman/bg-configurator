@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Form, Input, Button, Card, Radio, Select, Divider, Spin } from 'antd';
 import axios from 'axios';
 import { useOrder } from '../../Context/OrderContext';
+import { CreateColorDrawer } from '../CreateColorDrawer';
 
 const PaintStep = ({ orderID, fetchOrderData, fetchDecorData, checkDecor, sendDecorForm }) => {
   const [paintData, setPaintData] = useState([]);
@@ -28,9 +29,8 @@ const PaintStep = ({ orderID, fetchOrderData, fetchDecorData, checkDecor, sendDe
     sendDecorForm(orderIdToUse, dorSuborderId, selectedDecorId);
   };
 
-  // const colorGroupOptions = ['ALL', ...new Set(paintData.map(paint => paint.attributes.color_group))];
-  const colorGroupOptions = [...new Set(paintData.map(paint => paint.attributes.color_group)), 'ALL'];
-  const colorRangeOptions = [...new Set(paintData.map(paint => paint.attributes.color_range))];
+  const colorGroupOptions = [...new Set(paintData.map(paint => paint.attributes?.color_group)), 'ALL'];
+  const colorRangeOptions = [...new Set(paintData.map(paint => paint.attributes?.color_range))];
 
   const handleColorGroupChange = value => {
     localStorage.setItem('selectedColorGroup', value);
@@ -107,12 +107,12 @@ const PaintStep = ({ orderID, fetchOrderData, fetchDecorData, checkDecor, sendDe
         const paints = response.data.data.paints.data;
         setPaintData(paints);
         setIsLoading(false);
+        console.log(paintData)
       } catch (error) {
         console.error('Error fetching data:', error);
       }
     };
 
-    // const storedColorGroup = localStorage.getItem('selectedColorGroup') || 'ALL';
     const storedColorGroup = localStorage.getItem('selectedColorGroup') || 'black_white_9';
     const storedSearchQuery = localStorage.getItem('searchQuery') || '';
 
@@ -125,9 +125,22 @@ const PaintStep = ({ orderID, fetchOrderData, fetchDecorData, checkDecor, sendDe
   }, [jwtToken, orderIdToUse, fetchDecorData, fetchOrderData, selectedPaintFor]);
 
   return (
-    <Form onFinish={onFinish}>
+    <>
+      <div style={{display: 'flex', gap: '20px', margin: '10px 0'}}>
+        <CreateColorDrawer/>
 
-<Form.Item wrapperCol={{ offset: 4, span: 16 }}>
+        <Button type="dashed" href="https://ant.design/index-cn" target="_blank">
+          Find RAL colors
+        </Button>
+
+        <Button type="dashed" href="https://ant.design/index-cn" target="_blank">
+          Find NSC colors
+        </Button>
+      </div>
+
+      <Form onFinish={onFinish}>
+
+      <Form.Item wrapperCol={{ offset: 4, span: 16 }}>
         <Button type="primary" htmlType="submit">
           Submit
         </Button>
@@ -209,7 +222,7 @@ const PaintStep = ({ orderID, fetchOrderData, fetchDecorData, checkDecor, sendDe
                             : 'none',
                       }}
                       onClick={() => {
-                        checkDecor(selectedPaintFor, paint.attributes.color_code, decorData, setSelectedDecorId);
+                        checkDecor(selectedPaintFor, paint.attributes.color_code, decorData, setSelectedDecorId, paint.id);
                         setPreviousColorTitle(paint.attributes.color_code);
                       }}
                     >
@@ -234,6 +247,8 @@ const PaintStep = ({ orderID, fetchOrderData, fetchDecorData, checkDecor, sendDe
         </Form.Item>
       )}
     </Form>
+    </>
+
   );
 };
 

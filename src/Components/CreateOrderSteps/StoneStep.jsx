@@ -113,7 +113,7 @@ const StoneStep = ({ orderID, fetchOrderData, fetchDecorData, checkDecor, sendDe
                         previousStoneTitle === stone.attributes.title ? '7px solid #f06d20' : 'none',
                     }}
                     onClick={() => {
-                      checkDecor('ceramogranite', stone.attributes.title, decorData, setSelectedDecorId);
+                      checkDecor('ceramogranite', stone.attributes.title, decorData, setSelectedDecorId, stone.id);
                       setPreviousStoneTitle(stone.attributes.title);
                     }}
                   >

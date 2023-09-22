@@ -48,17 +48,11 @@ const OrderContext = createContext();
 
 export const OrderProvider = ({ children }) => {
   
-  // const [order, setOrder] = useState('');
-  const [orderId, setOrderId] = useState('');
-
+const [orderId, setOrderId] = useState('');
 const [dorSuborderId, setDoorSuborderId] = useState('');;
-
 const [frameSuborderId, setFrameSuborderId] = useState('');
-
 const [hingeSuborderId, sethiHgeSuborderId] = useState('');
-
 const [knobeSuborderId, setKnobeSuborderId] = useState('');
-
 const [lockSuborderId, setLockSuborderId] = useState('');
 
 

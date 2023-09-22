@@ -6,6 +6,8 @@ import StoneStep from './StoneStep';
 import MirrorStep from './MirrorStep';
 import HPLStep from './HPLStep';
 import axios from 'axios';
+import PrimerStep from './PrimerStep';
+// import { useOrder } from '../../Context/OrderContext';
 
 const GroupDecorStep = () => {
   const [activeTab, setActiveTab] = useState('veneer');
@@ -62,7 +64,7 @@ const GroupDecorStep = () => {
 
       if (decorData && decorData.attributes && decorData.attributes.type === type) {
         setPreviousTitle(decorData.attributes.title);
-
+        console.log(decorData.attributes.title)
       }
     } catch (error) {
       console.error('Error fetching door suborder data:', error);
@@ -127,6 +129,7 @@ const GroupDecorStep = () => {
             data: {
               title: data.title,
               type: data.type,
+              [data.type]: data.productId,
             }
           }
         },
@@ -137,15 +140,14 @@ const GroupDecorStep = () => {
           },
         }
       );
-  
+
       return response.data.data.createDecor.data.id;
     } catch (error) {
       console.error('Error creating decor:', error);
       throw error;
     }
   };
-
-  const checkDecor = async (type, title, decorData, setSelectedDecorId) => {
+    const checkDecor = async (type, title, decorData, setSelectedDecorId, productId) => {
     const foundDecor = decorData.find(decor =>
       decor.attributes.type === type && decor.attributes.title.toLowerCase() === title.toLowerCase()
     );
@@ -157,8 +159,8 @@ const GroupDecorStep = () => {
     } else {
       console.log(`Декор c типом ${type} и названием ${title} не найден. Cоздаем новый...`);
   
-      try {
-        const newDecorId = await createDecor({ title, type });
+      try { 
+        const newDecorId = await createDecor({ title, type, productId});
         fetchDecorData();
         setSelectedDecorId(newDecorId);
         console.log(`Декор успешно создан c id: ${newDecorId}`);
@@ -223,7 +225,7 @@ const GroupDecorStep = () => {
               fetchDecorData={fetchDecorData}
               fetchOrderData={fetchOrderData}
               checkDecor={checkDecor}
-              sendDecorForm={sendDecorForm} 
+              sendDecorForm={sendDecorForm}
             />,
         },
         {
@@ -264,6 +266,17 @@ const GroupDecorStep = () => {
           key: 'hpl',
           children: 
             <HPLStep 
+            fetchDecorData={fetchDecorData}
+            fetchOrderData={fetchOrderData}
+            checkDecor={checkDecor}
+            sendDecorForm={sendDecorForm} 
+            />,
+        },
+        {
+          label: 'Primers',
+          key: 'primer',
+          children: 
+            <PrimerStep 
             fetchDecorData={fetchDecorData}
             fetchOrderData={fetchOrderData}
             checkDecor={checkDecor}

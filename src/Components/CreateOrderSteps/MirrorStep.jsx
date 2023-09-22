@@ -113,7 +113,7 @@ const MirrorStep = ({orderID, fetchOrderData, fetchDecorData, checkDecor, sendDe
                         previousMirrorTitle === mirror.attributes.title ? '7px solid #f06d20' : 'none',
                     }}
                     onClick={() => {
-                      checkDecor('mirror', mirror.attributes.title, decorData, setSelectedDecorId);
+                      checkDecor('mirror', mirror.attributes.title, decorData, setSelectedDecorId, mirror.id);
                       setPreviousMirrorTitle(mirror.attributes.title);
                     }}
                   >
