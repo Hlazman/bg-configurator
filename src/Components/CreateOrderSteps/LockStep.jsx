@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { Form, Input, Button, Card, Radio, Select, Divider, Spin } from 'antd';
+import { Form, Input, Button, Card, Radio, Select, Divider, Spin, message } from 'antd';
 import axios from 'axios';
 import { useOrder } from '../../Context/OrderContext';
 
 const LockStep = ({ orderID }) => {
   const [lockData, setLockData] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
-  const [selectedBrand, setSelectedBrand] = useState('ALL');
+  // const [selectedBrand, setSelectedBrand] = useState('ALL');
+  const [selectedBrand, setSelectedBrand] = useState('Polaris');
   const [isLoading, setIsLoading] = useState(true);
   const [previousLockId, setPreviousLockId] = useState(null); 
 
@@ -72,7 +73,8 @@ const LockStep = ({ orderID }) => {
       }
     };
 
-    const storedBrand = localStorage.getItem('selectedBrandLock') || 'ALL';
+    // const storedBrand = localStorage.getItem('selectedBrandLock') || 'ALL';
+    const storedBrand = localStorage.getItem('selectedBrandLock') || 'Polaris';
     const storedSearchQuery = localStorage.getItem('searchQuery') || '';
 
     setSelectedBrand(storedBrand);
@@ -81,7 +83,8 @@ const LockStep = ({ orderID }) => {
     fetchData();
   }, [jwtToken]);
 
-  const brandOptions = ['ALL', ...new Set(lockData.map(lock => lock.attributes.brand))];
+  // const brandOptions = ['ALL', ...new Set(lockData.map(lock => lock.attributes.brand))];
+  const brandOptions = [...new Set(lockData.map(lock => lock.attributes.brand)), 'ALL',];
 
   const handleBrandChange = value => {
     localStorage.setItem('selectedBrandLock', value);
@@ -105,7 +108,8 @@ const LockStep = ({ orderID }) => {
       id: lock.id,
     }));
 
-  const handleSbmitForm = async () => {    
+  const [form] = Form.useForm();
+  const handleSbmitForm = async () => {
     const variables = {
       // "updateFrameFittingId": lockSuborder.data.id,
       "updateFrameFittingId": lockSuborderId,
@@ -137,9 +141,11 @@ const LockStep = ({ orderID }) => {
     )
     .then((response) => {
       console.log('Успешный ответ:', response.data);
+      message.success('Lock added successfully!');
     })
     .catch((error) => {
       console.error('Ошибка:', error);
+      message.error('Error to add Lock');
     });
   }
 
@@ -191,15 +197,17 @@ const LockStep = ({ orderID }) => {
   }, [jwtToken, lockSuborderId]);
 
   return (
-    <Form onFinish={handleSbmitForm}>
+    <Form onFinish={handleSbmitForm} form={form}>
 
-<Form.Item wrapperCol={{ offset: 4, span: 16 }}>
-        <Button type="primary" htmlType="submit">
-          Submit
-        </Button>
-      </Form.Item>
-
-      <div style={{ display: 'flex', gap: '30px' }}>
+      <Input
+        placeholder="Search"
+        addonBefore="Search by lock name"
+        value={searchQuery}
+        onChange={e => handleSearchQueryChange(e.target.value)}
+        style={{ marginBottom: '10px' }}
+        />
+      
+      <Form.Item label="Sorting by brands">
         <Select
           value={selectedBrand}
           onChange={handleBrandChange}
@@ -211,29 +219,22 @@ const LockStep = ({ orderID }) => {
             </Select.Option>
           ))}
         </Select>
-
-        <Input
-          placeholder="Search"
-          value={searchQuery}
-          onChange={e => handleSearchQueryChange(e.target.value)}
-          style={{ marginBottom: '10px' }}
-        />
-      </div>
-
-      <Divider />
+      </Form.Item>
 
       {isLoading ? (
         <Spin size="large" />
       ) : (
-        <Form.Item name="lockStep">
+        <Form.Item name="lockStep" rules={[{ required: true, message: "Please choose Lock" }]}>
           <Radio.Group >
             <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}>
               {filteredLocks.map((lock) => (
-                <div key={lock.id} style={{ width: 220, margin: '20px 10px' }}>
+                <Radio key={lock.id} value={lock.id}>
                   <Card
                     className="custom-card"
                     hoverable
                     style={{
+                      width: '220px', 
+                      margin: '20px 10px',
                       border:
                       previousLockId === lock.id
                         ? '7px solid #f06d20'
@@ -252,14 +253,20 @@ const LockStep = ({ orderID }) => {
                       title={lock.title}
                       style={{ paddingTop: '10px' }}
                     />
-                    <Radio value={lock.id} style={{ display: 'none' }} />
                   </Card>
-                </div>
+                </Radio>
               ))}
             </div>
           </Radio.Group>
         </Form.Item>
       )}
+
+      <Form.Item wrapperCol={{ offset: 4, span: 16 }}>
+        <Button type="primary" htmlType="submit">
+          Submit
+        </Button>
+      </Form.Item>
+      
     </Form>
   );
 };

@@ -23,6 +23,7 @@ const MirrorStep = ({orderID, fetchOrderData, fetchDecorData, checkDecor, sendDe
     mirror.attributes.title.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
+  const [form] = Form.useForm();
   const onFinish = async () => {
     // sendDecorForm(orderIdToUse, doorSuborder, selectedDecorId);
     sendDecorForm(orderIdToUse, dorSuborderId, selectedDecorId);
@@ -77,38 +78,33 @@ const MirrorStep = ({orderID, fetchOrderData, fetchDecorData, checkDecor, sendDe
   }, [jwtToken, orderIdToUse, fetchDecorData, fetchOrderData]);
 
   return (
-    <Form onFinish={onFinish}>
+    <Form onFinish={onFinish} form={form}>
 
-      <Form.Item wrapperCol={{ offset: 4, span: 16 }}>
-        <Button type="primary" htmlType="submit">
-          Submit
-        </Button>
-      </Form.Item>
-
-      <div style={{ display: 'flex', gap: '30px' }}>
         <Input
           placeholder="Search"
+          addonBefore="Search by mirror name"
           value={searchQuery}
           onChange={e => setSearchQuery(e.target.value)}
           style={{ marginBottom: '10px' }}
         />
-      </div>
-      <Divider />
+
 
       {isLoading ? (
         <div style={{ textAlign: 'center', marginTop: '20px' }}>
           <Spin size="large" />
         </div>
       ) : (
-        <Form.Item>
+        <Form.Item name="mirrorRadio" rules={[{ required: true, message: "Please choose Mirror" }]}>
           <Radio.Group>
             <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}>
               {filteredMirrorData.map(mirror => (
-                <div key={mirror.id} style={{ width: 220, margin: '20px 10px' }}>
+                <Radio key={mirror.id} value={mirror.id}>
                   <Card
                     className="custom-card"
                     hoverable
                     style={{
+                      width: '220px', 
+                      margin: '20px 10px',
                       border:
                         previousMirrorTitle === mirror.attributes.title ? '7px solid #f06d20' : 'none',
                     }}
@@ -125,14 +121,20 @@ const MirrorStep = ({orderID, fetchOrderData, fetchDecorData, checkDecor, sendDe
                       />
                     </div>
                     <Card.Meta title={mirror.attributes.title} style={{ paddingTop: '10px' }} />
-                    <Radio value={mirror.id} style={{ display: 'none' }} />
                   </Card>
-                </div>
+                </Radio>
               ))}
             </div>
           </Radio.Group>
         </Form.Item>
       )}
+
+        <Form.Item wrapperCol={{ offset: 4, span: 16 }}>
+          <Button type="primary" htmlType="submit">
+            Submit
+          </Button>
+        </Form.Item>
+
     </Form>
   );
 };

@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { Form, Input, InputNumber, Button, Card, Radio, Select, Divider, Spin, Space } from 'antd';
+import { Form, Input, InputNumber, Button, Card, Radio, Select, Spin, Space, message } from 'antd';
 import axios from 'axios';
 import { useOrder } from '../../Context/OrderContext';
 
 // const CanvasStep = ({ formData, handleNext, orderID }) => {
 const CanvasStep = ({ formData, handleNext}) => {
+  
   const { orderId, dorSuborderId } = useOrder();
   // const { addSuborder } = useOrder();
   // const doorSuborder = order.suborders.find(suborder => suborder.name === 'doorSub');
@@ -134,8 +135,10 @@ const CanvasStep = ({ formData, handleNext}) => {
       );
 
       console.log('Data sent successfully:', response.data);
+      message.success('Door added successfully');
     } catch (error) {
       console.error('Error sending data:', error);
+      message.error('Error to add Decor');
     }
   };
   
@@ -223,20 +226,40 @@ const CanvasStep = ({ formData, handleNext}) => {
       form={form}
       onFinish={onFinish}
       style={{ padding: '0 25px'}}
-      // initialValues={doorSuborderData}
     >
-      <Divider/>
 
-      <Space direction="hirizontal" size="large">
-      <Form.Item
-       name="width"
-       rules={[
-        {
-          required: true,
-          message: 'Please enter the width!',
-        },
-      ]}
-       >
+      <Form.Item style={{width: '100%'}}>
+        <Input
+          addonBefore="Search by door name"
+          placeholder="Search"
+          value={searchQuery}
+          onChange={e => handleSearchQueryChange(e.target.value)}   
+        />
+      </Form.Item>
+
+      <Form.Item label="Sorting by models">
+          <Select
+              value={selectedCollection}
+              onChange={handleCollectionChange}
+            >
+              {collectionOptions.map((collection, index) => (
+                <Select.Option key={index} value={collection}>
+                  {collection}
+                </Select.Option>
+              ))}
+            </Select>
+          </Form.Item>
+ 
+      <Space wrap={true} direction="hirizontal" size="large" align='left'>
+        <Form.Item
+        name="width"
+        rules={[
+          {
+            required: true,
+            message: 'Please enter the width!',
+          },
+        ]}
+        >
           <InputNumber addonBefore="Width" addonAfter="mm"/>
         </Form.Item>
         
@@ -263,35 +286,7 @@ const CanvasStep = ({ formData, handleNext}) => {
         >
           <InputNumber addonBefore="Thickness" addonAfter="mm"/>
         </Form.Item>
-        
       </Space>
-
-      <Divider />
-      
-      <Space.Compact direction="horizontal" size="large">
-      {/* <Form.Item label="Sorting by Models"> */}
-      <Form.Item>
-          <Select
-              value={selectedCollection}
-              onChange={handleCollectionChange}
-            >
-              {collectionOptions.map((collection, index) => (
-                <Select.Option key={index} value={collection}>
-                  {collection}
-                </Select.Option>
-              ))}
-            </Select>
-          </Form.Item>
-        
-        <Form.Item style={{width: '100%'}}>
-          <Input
-            addonBefore="Search by door name"
-            placeholder="Search"
-            value={searchQuery}
-            onChange={e => handleSearchQueryChange(e.target.value)}   
-          />
-        </Form.Item>
-        </Space.Compact>
 
       {isLoading ? (
         <div style={{ textAlign: 'center', marginTop: '20px' }}>
@@ -300,11 +295,12 @@ const CanvasStep = ({ formData, handleNext}) => {
       ) : (
         <Form.Item 
           name="doorStep"
+          rules={[{ required: true, message: "Please choose the door model" }]}
         >
-          <Radio.Group 
-            // value={formData.doorStep}>
-            value={form.door}>
-            
+          <Radio.Group
+            value={form.door}
+            >
+
             <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}>
               {filteredImgS.map((imgSrc) => {
                 const door = doorData.find(
@@ -312,44 +308,73 @@ const CanvasStep = ({ formData, handleNext}) => {
                     door.attributes.product_properties.image.data.attributes.url === imgSrc
                 );
                 return (
-                  <div key={door.id} style={{ width: 220, margin: '20px 10px' }}>
-                    <Card
-                      className="custom-card"
-                      hoverable
-                      style={{
-                        border:
-                          previousDoorId === door.id
-                            ? '7px solid #f06d20'
-                            : 'none',
-                      }}
-                      // onClick={() => handleDoorClick('doorStep', door.id)}
-                      onClick={() => setPreviousDoorId(door.id)}
-                    >
-                      <div style={{ overflow: 'hidden', height: 220 }}>
-                        <img
-                          src={`https://api.boki.fortesting.com.ua${imgSrc}`}
-                          alt={door.attributes.product_properties.title}
-                          style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                  // <div key={door.id} style={{ width: 220, margin: '20px 10px' }}>
+                  //   <Card
+                  //     className="custom-card"
+                  //     hoverable
+                  //     style={{
+                  //       border:
+                  //         previousDoorId === door.id
+                  //           ? '7px solid #f06d20'
+                  //           : 'none',
+                  //     }}
+                  //     onClick={() => { 
+                  //       setPreviousDoorId(door.id);
+                  //     }}
+                  //   >
+                  //     <div style={{ overflow: 'hidden', height: 220 }}>
+                  //       <img
+                  //         src={`https://api.boki.fortesting.com.ua${imgSrc}`}
+                  //         alt={door.attributes.product_properties.title}
+                  //         style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                  //       />
+                  //     </div>
+                  //     <Card.Meta
+                  //       title={door.attributes.product_properties.title}
+                  //       style={{ paddingTop: '10px' }}
+                  //     />
+                  //     {/* <Radio value={door.id} style={{ display: 'none' }} /> */}
+                  //     <Radio value={door.id} />
+                  //   </Card>
+                  // </div>
+
+
+                    <Radio value={door.id} >
+                      <Card
+                        className="custom-card"
+                        hoverable
+                        style={{
+                          width: '200px', 
+                          margin: '20px 10px',
+                          border:
+                            previousDoorId === door.id
+                              ? '7px solid #f06d20'
+                              : 'none',
+                        }}
+                        onClick={() => { 
+                          setPreviousDoorId(door.id);
+                        }}
+                      >
+                        <div style={{ overflow: 'hidden', height: 220 }}>
+                          <img
+                            src={`https://api.boki.fortesting.com.ua${imgSrc}`}
+                            alt={door.attributes.product_properties.title}
+                            style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                          />
+                        </div>
+                        <Card.Meta
+                          title={door.attributes.product_properties.title}
+                          style={{ paddingTop: '10px' }}
                         />
-                      </div>
-                      <Card.Meta
-                        title={door.attributes.product_properties.title}
-                        style={{ paddingTop: '10px' }}
-                      />
-                      <Radio value={door.id} style={{ display: 'none' }} />
-                    </Card>
-                  </div>
+    
+                      </Card>
+                    </Radio>
                 );
               })}
             </div>
           </Radio.Group>
         </Form.Item>
       )}
-
-      {/* <Button type="primary" onClick={handleNext}>
-        Далее
-      </Button> */}
-
           <Form.Item>
           <Button type="primary" htmlType="submit">
             Submit

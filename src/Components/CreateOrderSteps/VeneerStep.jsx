@@ -21,8 +21,8 @@ const VeneerStep = ({ orderID, fetchOrderData, fetchDecorData, checkDecor, sendD
   const { orderId, dorSuborderId} = useOrder();
   const orderIdToUse = orderId;
 
+  const [form] = Form.useForm();
   const onFinish = async () => {
-    // sendDecorForm(orderIdToUse, doorSuborder, selectedDecorId);
     sendDecorForm(orderIdToUse, dorSuborderId, selectedDecorId);
   };
 
@@ -55,7 +55,6 @@ const VeneerStep = ({ orderID, fetchOrderData, fetchDecorData, checkDecor, sendD
     }));
 
   useEffect(() => {
-
     const fetchData = async () => {
       try {
         const response = await axios.post(
@@ -125,15 +124,18 @@ const VeneerStep = ({ orderID, fetchOrderData, fetchDecorData, checkDecor, sendD
   }, [jwtToken, orderIdToUse, fetchDecorData, fetchOrderData]);
 
   return (
-    <Form onFinish={onFinish} > 
+    <Form onFinish={onFinish} form={form}> 
 
-<Form.Item wrapperCol={{ offset: 4, span: 16 }}>
-        <Button type="primary" htmlType="submit">
-          Submit
-        </Button>
-      </Form.Item>
+      <Input
+        placeholder="Search"
+        addonBefore="Search by veener name"
+        value={searchQuery}
+        onChange={e => handleSearchQueryChange(e.target.value)}
+        style={{ marginBottom: '10px' }}
+      />
 
-      <div style={{ display: 'flex', gap: '30px' }}>
+      {/* <div style={{ display: 'flex', gap: '30px' }}> */}
+      <Form.Item label="Sorting by Category">
         <Select
           value={selectedCategory}
           onChange={handleCategoryChange}
@@ -145,29 +147,27 @@ const VeneerStep = ({ orderID, fetchOrderData, fetchDecorData, checkDecor, sendD
             </Select.Option>
           ))}
         </Select>
+        </Form.Item>
 
-        <Input
-          placeholder="Search"
-          value={searchQuery}
-          onChange={e => handleSearchQueryChange(e.target.value)}
-          style={{ marginBottom: '10px' }}
-        />
-      </div>
+      {/* </div> */}
 
-      <Divider />
+      {/* <Divider /> */}
 
       {isloading ? (
         <Spin size="large" />
       ) : (
-        <Form.Item>
-          <Radio.Group>
+        <Form.Item name="veneerRadio" rules={[{ required: true, message: "Please choose decor" }]}>
+          <Radio.Group >
             <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}>
               {filteredImgs.map((veneer) => (
-                <div key={veneer.id} style={{ width: 220, margin: '20px 10px' }}>
+                // <div key={veneer.id} style={{ width: 220, margin: '20px 10px' }}>
+                <Radio key={veneer.id} value={veneer.id}>
                   <Card
                     className="custom-card"
                     hoverable
                     style={{
+                      width: '200px', 
+                      margin: '20px 10px',
                       border:
                         previousVeneerTitle === veneer.title
                         ? '7px solid #f06d20'
@@ -190,14 +190,21 @@ const VeneerStep = ({ orderID, fetchOrderData, fetchDecorData, checkDecor, sendD
                       description={veneer.description}
                       style={{ paddingTop: '10px' }}
                     />
-                    <Radio value={veneer.id} style={{ display: 'none' }} />
+                    {/* <Radio value={veneer.id} style={{ display: 'none' }} /> */}
                   </Card>
-                </div>
+                </Radio>
               ))}
             </div>
           </Radio.Group>
         </Form.Item>
       )}
+
+      <Form.Item wrapperCol={{ offset: 4, span: 16 }}>
+        <Button type="primary" htmlType="submit">
+          Submit
+        </Button>
+      </Form.Item>
+
     </Form>
   );
 };

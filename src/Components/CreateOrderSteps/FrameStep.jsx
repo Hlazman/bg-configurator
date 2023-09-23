@@ -1,4 +1,4 @@
-import { Form, Button, Card, Spin, Select } from 'antd';
+import { Form, Button, Card, Spin, Select, message } from 'antd';
 import axios from 'axios';
 import { useOrder } from '../../Context/OrderContext';
 import { useEffect, useState } from 'react';
@@ -169,7 +169,6 @@ const FrameStep = () => {
           }
         `,
         variables: {
-          // updateFrameSuborderId: frameSuborder.data.id,
           updateFrameSuborderId: frameSuborderId,
           data: dataToUpdate
         }
@@ -182,27 +181,27 @@ const FrameStep = () => {
       }
     ).then(response => {
       console.log('Data updated:', response.data);
+      message.success('Frame added successfully');
     }).catch(error => {
       console.error('Error updating data:', error);
+      message.error('Error add frame');
     });
   };
 
   return (
-    <Card>
+    <Card style={{background: '#F8F8F8', borderColor: '#DCDCDC'}}>
      {/* <Spin spinning={isloading}> */}
       <Form form={form} onFinish={handleFormSubmit}> 
-
-        <div style={{ display: 'flex', gap: '30px', padding: '10px 25px' }}>
           
         <Form.Item
+          label="Choose frame"
           name="name"
-          style={{ width: '100%' }}
-          rules={[{ required: true, message: 'Please select an element!' }]}
+          style={{ marginTop: '20px' }}
+          rules={[{ required: true, message: 'Please select a frame!' }]}
         >
           <Select
             placeholder="Select an frame"
             allowClear
-            // defaultValue={undefined}
           >
             {frames.map(frame => (
               <Option key={frame.id} value={frame.id}>{frame.attributes.title}</Option>
@@ -216,7 +215,6 @@ const FrameStep = () => {
           </Button>
         </Form.Item>
 
-        </div>
       </Form>
 
     {/* </Spin> */}

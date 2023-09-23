@@ -3,6 +3,7 @@ import { Form, Input, Button, Card, Radio, Divider, Spin } from 'antd';
 import axios from 'axios';
 import { useOrder } from '../../Context/OrderContext';
 
+
 const HPLStep = ({ orderID, fetchOrderData, fetchDecorData, checkDecor, sendDecorForm }) => {
   const [HPLData, setHPLData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -19,6 +20,7 @@ const HPLStep = ({ orderID, fetchOrderData, fetchDecorData, checkDecor, sendDeco
   const { orderId, dorSuborderId } = useOrder();
   const orderIdToUse = orderId;
 
+  const [form] = Form.useForm();
   const onFinish = async () => {
     // sendDecorForm(orderIdToUse, doorSuborder, selectedDecorId);
     sendDecorForm(orderIdToUse, dorSuborderId, selectedDecorId);
@@ -78,38 +80,33 @@ const HPLStep = ({ orderID, fetchOrderData, fetchDecorData, checkDecor, sendDeco
   );
 
   return (
-    <Form onFinish={onFinish}>
+    <Form onFinish={onFinish} form={form}>
 
-        <Form.Item wrapperCol={{ offset: 4, span: 16 }}>
-        <Button type="primary" htmlType="submit">
-          Submit
-        </Button>
-      </Form.Item>
-
-      <div style={{ display: 'flex', gap: '30px' }}>
         <Input
           placeholder="Search"
+          addonBefore="Search by HPL name"
           value={searchQuery}
           onChange={e => setSearchQuery(e.target.value)}
           style={{ marginBottom: '10px' }}
         />
-      </div>
-      <Divider />
+ 
 
       {isLoading ? (
         <div style={{ textAlign: 'center', marginTop: '20px' }}>
           <Spin size="large" />
         </div>
       ) : (
-        <Form.Item>
+        <Form.Item name="HPLRadio" rules={[{ required: true, message: "Please choose HPL" }]}>
           <Radio.Group>
             <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}>
               {filteredHplData.map(hpl => (
-                <div key={hpl.id} style={{ width: 220, margin: '20px 10px' }}>
+                <Radio key={hpl.id} value={hpl.id}>
                   <Card
                     className="custom-card"
                     hoverable
                     style={{
+                      width: 220, 
+                      margin: '20px 10px',
                       border:
                         previousHPLTitle === hpl.attributes.title ? '7px solid #f06d20' : 'none',
                     }}
@@ -126,14 +123,19 @@ const HPLStep = ({ orderID, fetchOrderData, fetchDecorData, checkDecor, sendDeco
                       />
                     </div>
                     <Card.Meta title={hpl.attributes.title} style={{ paddingTop: '10px' }} />
-                    <Radio value={hpl.id} style={{ display: 'none' }} />
                   </Card>
-                </div>
+                </Radio>
               ))}
             </div>
           </Radio.Group>
         </Form.Item>
       )}
+
+        <Form.Item wrapperCol={{ offset: 4, span: 16 }}>
+          <Button type="primary" htmlType="submit">
+            Submit
+          </Button>
+        </Form.Item>
     </Form>
   );
 };

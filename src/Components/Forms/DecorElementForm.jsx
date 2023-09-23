@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Form, Button, Select, InputNumber, Spin, Radio } from 'antd';
+import { Form, Button, Select, InputNumber, Spin, Radio, Space } from 'antd';
 import axios from 'axios';
 import { useOrder } from '../../Context/OrderContext';
 import GroupDecorElementStep from '../CreateOrderSteps/GroupDecorElementStep';
@@ -263,17 +263,10 @@ const DecorElementForm = ({ orderID, elementID, language}) => {
   return (
     <Spin spinning={isloading}>
       <Form form={form} onFinish={handleFormSubmit} > 
-        
-        <Form.Item wrapperCol={{ offset: 4, span: 16 }}>
-          <Button type="primary" htmlType="submit">
-            Submit
-          </Button>
-        </Form.Item>
 
-        <div style={{ display: 'flex', gap: '30px', padding: '10px 25px' }}>
-          
         <Form.Item
           name="name"
+          label="Choose element for Decor"
           style={{ width: '100%' }}
           rules={[{ required: true, message: 'Please select an element!' }]}
         >
@@ -288,33 +281,53 @@ const DecorElementForm = ({ orderID, elementID, language}) => {
           </Select>
         </Form.Item>
 
-          <Form.Item name="width" style={{ width: '100%' }} >
-            <InputNumber addonBefore="Width"/>
+        <Space wrap={true} direction="hirizontal" size="large">
+          <Form.Item 
+            name="width" 
+            rules={[{ required: true, message: 'Please select a height!' }]}
+          >
+            <InputNumber addonBefore="Width" addonAfter="mm"/>
           </Form.Item>
           
-          <Form.Item name="height" style={{ width: '100%' }} >
-            <InputNumber addonBefore="Height"/>
+          <Form.Item 
+            name="height" 
+            rules={[{ required: true, message: 'Please select a height!' }]} 
+          >
+            <InputNumber addonBefore="Height" addonAfter="mm"/>
           </Form.Item>
 
-          <Form.Item name="thickness" style={{ width: '100%' }} >
+          <Form.Item 
+            name="thickness"
+            rules={[{ required: true, message: 'Please select a thickness!' }]} 
+          >
             <InputNumber addonBefore="Thickness" addonAfter="mm"/>
           </Form.Item>
 
-          <Form.Item name="amount" style={{ width: '100%' }} >
+          <Form.Item 
+            name="amount"
+            rules={[{ required: true, message: 'Please select an amount!' }]}
+          >
             <InputNumber addonBefore="Amount" addonAfter="count"/>
           </Form.Item>
+        </Space>
 
-        </div>
-
+      
         <Form.Item
+          style={{textAlign: 'left'}}
           name="radioOption"
           label="Choose Decor Option"
           rules={[{ required: true, message: 'Please select an option!' }]}
         >
-          <Radio.Group buttonStyle="solid" onChange={handleRadioChange}>
+          <Radio.Group type="dashed" buttonStyle="solid" onChange={handleRadioChange}>
             <Radio.Button value="choose">Choose Decor for element</Radio.Button>
             <Radio.Button value="get">Get Decor from door</Radio.Button>
           </Radio.Group>
+        </Form.Item>
+
+        <Form.Item wrapperCol={{ offset: 4, span: 16 }}>
+          <Button type="primary" htmlType="submit">
+            Submit
+          </Button>
         </Form.Item>
 
       </Form>

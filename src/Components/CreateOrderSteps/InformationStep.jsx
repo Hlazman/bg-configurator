@@ -184,7 +184,7 @@ const InformationStep = ({ formData, language }) => {
   }, [jwtToken, orderId, form]);
 
   return (
-    <Card style={{ marginTop: '20px' }}>
+    <Card style={{background: '#F8F8F8', borderColor: '#DCDCDC', marginTop: '20px'}}>
       <Form form={form} onFinish={onFinish} initialValues={{ currency: 'EUR' }} >
       
         <div style={{ display: 'flex', gap: '30px' }}>

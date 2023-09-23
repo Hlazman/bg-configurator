@@ -113,19 +113,23 @@ const getHeaderTitle = (location, Id) => {
 
   const headerTitle = getHeaderTitle(location, orderId);
 
-  useEffect(() => {
-    localStorage.setItem('savedPath', location.pathname);
+  // useEffect(() => {
+  //   localStorage.setItem('savedPath', location.pathname);
 
-  }, [location.pathname]);
+  // }, [location.pathname]);
 
-  useEffect(() => {
-    const savedPath = localStorage.getItem('savedPath');
-    if (savedPath) {
-      navigate(savedPath);
-    } else {
-      navigate('/');
-    }
-  }, []);
+  // useEffect(() => {
+  //   if (!location.pathname.startsWith('/createorder/')) {
+  //     localStorage.removeItem('currentOrder');
+  //   }
+
+  //   const savedPath = localStorage.getItem('savedPath');
+  //   if (savedPath) {
+  //     navigate(savedPath);
+  //   } else {
+  //     navigate('/');
+  //   }
+  // }, [location.pathname]);
   
   return (
     <ConfigProvider

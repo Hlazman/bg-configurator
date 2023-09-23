@@ -5,52 +5,28 @@ import GroupDoorStep from '../Components/CreateOrderSteps/GroupDoorStep';
 import GroupDecorStep from '../Components/CreateOrderSteps/GroupDecorStep';
 import GroupAccessoriesStep from '../Components/CreateOrderSteps/GroupAccessoriesStep';
 import ElementsStep from '../Components/CreateOrderSteps/ElementsStep';
-import { useParams } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import InformationStep from '../Components/CreateOrderSteps/InformationStep';
 import FrameStep from '../Components/CreateOrderSteps/FrameStep';
-
 import axios from 'axios';
 import { useOrder } from '../Context/OrderContext';
-import { useNavigate  } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 export const CreateOrderPage = ({language}) => {
 
   const jwtToken = localStorage.getItem('token');  
-  // const { addOrder, addSuborder } = useOrder();
   const { 
     orderId, setOrderId, 
-    dorSuborderId, setDoorSuborderId, 
-    frameSuborderId, setFrameSuborderId, 
-    hingeSuborderId, sethiHgeSuborderId,
-    knobeSuborderId, setKnobeSuborderId,
-    lockSuborderId, setLockSuborderId,
+    setDoorSuborderId, 
+    setFrameSuborderId, 
+    sethiHgeSuborderId,
+    setKnobeSuborderId,
+    setLockSuborderId,
    } = useOrder();
+  
   const navigate = useNavigate();
-
-  // const { orderId } = useParams();
+  const location = useLocation();
   const [currentStep, setCurrentStep] = useState(0);
-  // const [formData, setFormData] = useState({
-  //   doorStep: null,
-  //   veenerStep: null,
-  //   step2Field: null,
-  //   step3Field: null,
-  //   step4Field: null,
-  //   step5Field: null,
-  //   step6Field: null,
-  //   step7Field: null,
-  //   hingesStep: null,
-  //   knobeStep: null,
-  //   lockStep: null,
-  //   skirtingStep: null,
-  // });
-
-  // const handleFormSubmit = (values) => {
-  //   setFormData({ ...formData, ...values });
-  // };
-
-  // const handleNext = () => {
-  //   setCurrentStep(currentStep + 1);
-  // };
 
   const handlePrev = () => {
     setCurrentStep(currentStep - 1);
@@ -59,160 +35,6 @@ export const CreateOrderPage = ({language}) => {
   const handleStepClick = (step) => {
     setCurrentStep(step);
   };
-
-  // const handleFormValuesChange = (changedValues) => {
-  //   setFormData((prevFormData) => ({ ...prevFormData, ...changedValues }));
-  // };
-
-  // const handleCardClick = (step, value) => {
-  //   setFormData((prevFormData) => ({
-  //     ...prevFormData,
-  //     [step]: prevFormData[step] === value ? null : value,
-  //   }));
-  //   console.log(formData)
-  // };
-   
-  // TOSAVE !!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-  // const handleCreateOrder = async () => {
-  //   try {
-  //     const response = await axios.post(
-  //       'https://api.boki.fortesting.com.ua/graphql',
-  //       {
-  //         query: `
-  //           mutation CreateOrder($data: OrderInput!) {
-  //             createOrder(data: $data) {
-  //               data {
-  //                 id
-  //               }
-  //             }
-  //           }
-  //         `,
-  //         variables: {
-  //           data: {}
-  //         },
-  //       },
-  //       {
-  //         headers: {
-  //           'Content-Type': 'application/json',
-  //           Authorization: `Bearer ${jwtToken}`,
-  //         },
-  //       }
-  //     );
-  
-  //     const createdOrderId = response.data.data.createOrder.data.id;  
-  //     addOrder({ id: createdOrderId });
-  
-  //     const doorSuborderData = {
-  //       data: {
-  //         door: null,
-  //         sizes: {
-  //           height: null,
-  //           thickness: null,
-  //           width: null
-  //         },
-  //         decor: null,
-  //         order: createdOrderId
-  //       }
-  //     };
-
-  //     const doorSuborderResponse = await axios.post(
-  //       'https://api.boki.fortesting.com.ua/graphql',
-  //       {
-  //         query: `
-  //           mutation CreateDoorSuborder($data: DoorSuborderInput!) {
-  //             createDoorSuborder(data: $data) {
-  //               data {
-  //                 id
-  //               }
-  //             }
-  //           }
-  //         `,
-  //         variables: doorSuborderData,
-  //       },
-  //       {
-  //         headers: {
-  //           'Content-Type': 'application/json',
-  //           Authorization: `Bearer ${jwtToken}`,
-  //         },
-  //       }
-  //     );
-  
-  //     const newDoorSuborderId = doorSuborderResponse.data.data.createDoorSuborder.data.id;
-  //     addSuborder('doorSub', newDoorSuborderId);
-
-  //     const frameSuborderData = {
-  //       data: {
-  //         order: createdOrderId
-  //       }
-  //     };
-  
-  //     const frameSuborderResponse = await axios.post(
-  //       'https://api.boki.fortesting.com.ua/graphql',
-  //       {
-  //         query: `
-  //           mutation CreateFrameSuborder($data: FrameSuborderInput!) {
-  //             createFrameSuborder(data: $data) {
-  //               data {
-  //                 id
-  //               }
-  //             }
-  //           }
-  //         `,
-  //         variables: frameSuborderData,
-  //       },
-  //       {
-  //         headers: {
-  //           'Content-Type': 'application/json',
-  //           Authorization: `Bearer ${jwtToken}`,
-  //         },
-  //       }
-  //     );
-  
-  //     const newFrameSuborderId = frameSuborderResponse.data.data.createFrameSuborder.data.id;
-  //     addSuborder('frameSub', newFrameSuborderId);
-
-  //     const fittingTypes = ['hinge', 'knobe', 'lock'];
-
-  //     for (const fittingType of fittingTypes) {
-  //       const fittingSuborderData = {
-  //         data: {
-  //           type: fittingType,
-  //           title: fittingType,
-  //           order: createdOrderId
-  //         }
-  //       };
-  
-  //       const fittingSuborderResponse = await axios.post(
-  //         'https://api.boki.fortesting.com.ua/graphql',
-  //         {
-  //           query: `
-  //             mutation CreateFrameFitting($data: FrameFittingInput!) {
-  //               createFrameFitting(data: $data) {
-  //                 data {
-  //                   id
-  //                 }
-  //               }
-  //             }
-  //           `,
-  //           variables: fittingSuborderData,
-  //         },
-  //         {
-  //           headers: {
-  //             'Content-Type': 'application/json',
-  //             Authorization: `Bearer ${jwtToken}`,
-  //           },
-  //         }
-  //       );
-  
-  //       const newFittingSuborderId = fittingSuborderResponse.data.data.createFrameFitting.data.id;
-  //       addSuborder(`${fittingType}Sub`, newFittingSuborderId);
-  //     }
-
-  //     navigate(`/createorder/${createdOrderId}`);
-  //   } catch (error) {
-  //     console.error('Error creating order:', error);
-  //   }
-  // };
 
   const handleCreateOrder = async () => {
     try {
@@ -241,7 +63,6 @@ export const CreateOrderPage = ({language}) => {
       );
   
       const createdOrderId = response.data.data.createOrder.data.id;  
-      // addOrder({ id: createdOrderId });
       setOrderId(createdOrderId);
   
       const doorSuborderData = {
@@ -280,7 +101,6 @@ export const CreateOrderPage = ({language}) => {
       );
   
       const newDoorSuborderId = doorSuborderResponse.data.data.createDoorSuborder.data.id;
-      // addSuborder('doorSub', newDoorSuborderId);
       setDoorSuborderId(newDoorSuborderId);
 
       const frameSuborderData = {
@@ -312,7 +132,6 @@ export const CreateOrderPage = ({language}) => {
       );
   
       const newFrameSuborderId = frameSuborderResponse.data.data.createFrameSuborder.data.id;
-      // addSuborder('frameSub', newFrameSuborderId);
       setFrameSuborderId(newFrameSuborderId);
 
       const fittingTypes = ['hinge', 'knobe', 'lock'];
@@ -368,61 +187,46 @@ export const CreateOrderPage = ({language}) => {
     handleCreateOrder();
   },[])
 
+  // const savedCurrentOrderPage = localStorage.getItem('currentOrder');
+  // localStorage.setItem('currentOrder', location.pathname);
+  
   // useEffect(() => {
-  //   const savedFormData = localStorage.getItem(`orderFormData_${orderId}`);
-  //   if (savedFormData) {
-  //     setFormData(JSON.parse(savedFormData));
+  //   if (savedCurrentOrderPage) {
+  //     setOrderId(savedCurrentOrderPage);
+  //   } else {
+  //     handleCreateOrder();
   //   }
-  // }, [orderId]);
-
-  // useEffect(() => {
-  //   localStorage.setItem(`orderFormData_${orderId}`, JSON.stringify(formData));
-  // }, [formData, orderId]);
+  // }, [setOrderId, savedCurrentOrderPage]);
 
   const renderFormStep = () => {
     switch (currentStep) {
       case 0:
         return (
           <GroupDoorStep
-            // formData={formData}
-            // handleCardClick={handleCardClick}
-            // handleNext={handleNext}
             language={language}
           />
         );
       case 1:
         return (
           <GroupDecorStep
-            // formData={formData}
-            // handleCardClick={handleCardClick}
-            // handleNext={handleNext}
             language={language}
         />
         );
         case 2:
         return (
           <FrameStep
-            // formData={formData}
-            // handleCardClick={handleCardClick}
-            // handleNext={handleNext}
             language={language}
           />
         );
       case 3:
         return (
           <ElementsStep
-            // formData={formData}
-            // handleCardClick={handleCardClick}
-            // handleNext={handleNext}
             language={language}
           />
         );
       case 4:
         return (
           <GroupAccessoriesStep
-            // formData={formData}
-            // handleCardClick={handleCardClick}
-            // handleNext={handleNext}
             language={language}
         />
         );
@@ -439,7 +243,6 @@ export const CreateOrderPage = ({language}) => {
         case 6:
         return (
           <InformationStep
-            // formData={formData}
             language={language}
         />
         );
@@ -451,19 +254,21 @@ export const CreateOrderPage = ({language}) => {
   return (
     <div>
       
-      <div style={{textAlign: 'left', margin: '10px 0'}}>
+      <div style={{display: 'flex', margin: '25px 0'}}>
         <OrderDrawer/>
       </div>
       
-      <Divider/>
+      {/* <Divider/> */}
+
 
       <Steps
+        style={{background: '#F8F8F8', border: '1px solid #DCDCDC', margin: '30px 0', borderRadius: '10px'}}
         current={currentStep} 
         type='navigation'
         onChange={handleStepClick}
         items={[
           {
-            title: 'Canvas',
+            title: 'Door',
             // status: (currentStep === 0 ? 'process' : formData.doorStep ? 'finish' : 'error'),
           },
           {
@@ -511,7 +316,7 @@ export const CreateOrderPage = ({language}) => {
       >
 
       </Steps>
-      <Divider />
+      {/* <Divider /> */}
       {renderFormStep()}
     </div>
   );

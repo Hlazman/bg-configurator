@@ -11,7 +11,7 @@ export const CreateColorDrawer = () => {
   const jwtToken = localStorage.getItem('token');
   const [form] = Form.useForm();
   const [loading, setLoading] = useState(false);
-  const [colorGroupDisabled, setColorGroupDisabled] = useState(false); // Добавлено состояние
+  const [colorGroupDisabled, setColorGroupDisabled] = useState(false);
 
   const handleColorRangeChange = (value) => {
     if (value === 'NCS') {
@@ -109,11 +109,11 @@ export const CreateColorDrawer = () => {
       );
   
       console.log('Response:', response.data);
-      message.success('Paint created successfully!');
+      message.success('Color added successfully!');
       form.resetFields();
     } catch (error) {
       console.error('Error:', error);
-      message.error('Error creating paint');
+      message.error('Error to add Color');
     } finally {
       setLoading(false);
     }

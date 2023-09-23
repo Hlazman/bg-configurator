@@ -26,3 +26,7 @@
 .headerTitle {
   font-size: 25px;
 }
+
+.ant-radio {
+  display: none!important;
+}

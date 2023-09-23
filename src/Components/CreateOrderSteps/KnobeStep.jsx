@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { Form, Input, Button, Card, Radio, Select, Divider, Spin } from 'antd';
+import { Form, Input, Button, Card, Radio, Select, Divider, Spin, message } from 'antd';
 import axios from 'axios';
 import { useOrder } from '../../Context/OrderContext';
 
 const KnobesStep = ({ orderID }) => {
   const [knobesData, setKnobesData] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
-  const [selectedBrand, setSelectedBrand] = useState('ALL');
+  // const [selectedBrand, setSelectedBrand] = useState('ALL');
+  const [selectedBrand, setSelectedBrand] = useState('Airone');
   const [isLoading, setIsLoading] = useState(true);
   const [previousKnobeId, setPreviousKnobeId] = useState(null);
 
@@ -68,7 +69,8 @@ const KnobesStep = ({ orderID }) => {
       }
     };
 
-    const storedBrand = localStorage.getItem('selectedBrandKnobe') || 'ALL';
+    // const storedBrand = localStorage.getItem('selectedBrandKnobe') || 'ALL';
+    const storedBrand = localStorage.getItem('selectedBrandKnobe') || 'Airone';
     const storedSearchQuery = localStorage.getItem('searchQuery') || '';
 
     setSelectedBrand(storedBrand);
@@ -77,7 +79,7 @@ const KnobesStep = ({ orderID }) => {
     fetchData();
   }, [jwtToken]);
 
-  const brandOptions = ['ALL', ...new Set(knobesData.map(knob => knob.attributes.brand))];
+  const brandOptions = [...new Set(knobesData.map(knob => knob.attributes.brand)), 'ALL'];
 
   const handleBrandChange = value => {
     localStorage.setItem('selectedBrandKnobe', value);
@@ -101,7 +103,8 @@ const KnobesStep = ({ orderID }) => {
       id: knob.id,
     }));
 
-    const handleSbmitForm = async () => {    
+    const [form] = Form.useForm();
+    const handleSbmitForm = async () => {
       const variables = {
         // "updateFrameFittingId": knobeSuborder.data.id,
         "updateFrameFittingId": knobeSuborderId,
@@ -133,9 +136,11 @@ const KnobesStep = ({ orderID }) => {
       )
       .then((response) => {
         console.log('Успешный ответ:', response.data);
+        message.success('Knobe added successfully!');
       })
       .catch((error) => {
         console.error('Ошибка:', error);
+        message.error('Error to add Knobe');
       });
     }
   
@@ -187,16 +192,17 @@ const KnobesStep = ({ orderID }) => {
     }, [jwtToken, knobeSuborderId]);
 
   return (
-    <Form onFinish={handleSbmitForm} >
+    <Form onFinish={handleSbmitForm} form={form}>
 
-<Form.Item wrapperCol={{ offset: 4, span: 16 }}>
-        <Button type="primary" htmlType="submit">
-          Submit
-        </Button>
-      </Form.Item>
+        <Input
+          placeholder="Search"
+          addonBefore="Search by knobe name"
+          value={searchQuery}
+          onChange={e => handleSearchQueryChange(e.target.value)}
+          style={{ marginBottom: '10px' }}
+        />
 
-
-      <div style={{ display: 'flex', gap: '30px' }}>
+      <Form.Item label="Sorting by brands">
         <Select
           value={selectedBrand}
           onChange={handleBrandChange}
@@ -208,29 +214,22 @@ const KnobesStep = ({ orderID }) => {
             </Select.Option>
           ))}
         </Select>
-
-        <Input
-          placeholder="Search"
-          value={searchQuery}
-          onChange={e => handleSearchQueryChange(e.target.value)}
-          style={{ marginBottom: '10px' }}
-        />
-      </div>
-
-      <Divider />
+        </Form.Item>
 
       {isLoading ? (
         <Spin size="large" />
       ) : (
-        <Form.Item name="knobeStep">
+        <Form.Item name="knobeStep" rules={[{ required: true, message: "Please choose Knobe" }]}>
           <Radio.Group>
             <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}>
               {filteredImgs.map((knob) => (
-                <div key={knob.id} style={{ width: 220, margin: '20px 10px' }}>
+                <Radio key={knob.id} value={knob.id}>
                   <Card
                     className="custom-card"
                     hoverable
                     style={{
+                      width: '220px', 
+                      margin: '20px 10px',
                       border:
                       previousKnobeId === knob.id
                         ? '7px solid #f06d20'
@@ -249,14 +248,20 @@ const KnobesStep = ({ orderID }) => {
                       title={knob.title}
                       style={{ paddingTop: '10px' }}
                     />
-                    <Radio value={knob.id} style={{ display: 'none' }} />
                   </Card>
-                </div>
+                </Radio>
               ))}
             </div>
           </Radio.Group>
         </Form.Item>
       )}
+
+      <Form.Item wrapperCol={{ offset: 4, span: 16 }}>
+        <Button type="primary" htmlType="submit">
+          Submit
+        </Button>
+      </Form.Item>
+
     </Form>
   );
 };

@@ -23,6 +23,7 @@ const PrimerStep = ({orderID, fetchOrderData, fetchDecorData, checkDecor, sendDe
     primer.attributes.title.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
+  const [form] = Form.useForm();
   const onFinish = async () => {
     // sendDecorForm(orderIdToUse, doorSuborder, selectedDecorId);
     sendDecorForm(orderIdToUse, dorSuborderId, selectedDecorId);
@@ -77,38 +78,33 @@ const PrimerStep = ({orderID, fetchOrderData, fetchDecorData, checkDecor, sendDe
   }, [jwtToken, orderIdToUse, fetchDecorData, fetchOrderData]);
 
   return (
-    <Form onFinish={onFinish}>
+    <Form onFinish={onFinish} form={form}>
 
-      <Form.Item wrapperCol={{ offset: 4, span: 16 }}>
-        <Button type="primary" htmlType="submit">
-          Submit
-        </Button>
-      </Form.Item>
-
-      <div style={{ display: 'flex', gap: '30px' }}>
         <Input
           placeholder="Search"
+          addonBefore="Search by primer name"
           value={searchQuery}
           onChange={e => setSearchQuery(e.target.value)}
           style={{ marginBottom: '10px' }}
         />
-      </div>
-      <Divider />
+
 
       {isLoading ? (
         <div style={{ textAlign: 'center', marginTop: '20px' }}>
           <Spin size="large" />
         </div>
       ) : (
-        <Form.Item>
+        <Form.Item name="primerRadio" rules={[{ required: true, message: "Please choose Primer" }]}>
           <Radio.Group>
             <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}>
               {filteredPrimerData.map(primer => (
-                <div key={primer.id} style={{ width: 220, margin: '20px 10px' }}>
+                <Radio key={primer.id} value={primer.id}>
                   <Card
                     className="custom-card"
                     hoverable
                     style={{
+                      width: 220, 
+                      margin: '20px 10px',
                       border:
                         previousPrimerTitle === primer.attributes.title ? '7px solid #f06d20' : 'none',
                     }}
@@ -127,12 +123,19 @@ const PrimerStep = ({orderID, fetchOrderData, fetchDecorData, checkDecor, sendDe
                     <Card.Meta title={primer.attributes.title} style={{ paddingTop: '10px' }} />
                     <Radio value={primer.id} style={{ display: 'none' }} />
                   </Card>
-                </div>
+                </Radio>
               ))}
             </div>
           </Radio.Group>
         </Form.Item>
       )}
+
+        <Form.Item wrapperCol={{ offset: 4, span: 16 }}>
+          <Button type="primary" htmlType="submit">
+            Submit
+          </Button>
+        </Form.Item>
+
     </Form>
   );
 };

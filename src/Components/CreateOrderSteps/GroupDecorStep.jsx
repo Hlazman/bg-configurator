@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Tabs } from 'antd';
+import { Tabs, message } from 'antd';
 import VeneerStep from './VeneerStep';
 import PaintStep from './PaintStep';
 import StoneStep from './StoneStep';
@@ -205,8 +205,10 @@ const GroupDecorStep = () => {
         }
       );
       console.log('Data sent successfully:', response.data);
+      message.success('Decor add successfully');
     } catch (error) {
       console.error('Error sending data:', error);
+      message.error('Error to add Decor');
     }
   };
 

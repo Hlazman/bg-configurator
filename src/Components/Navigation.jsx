@@ -50,7 +50,7 @@ export const Navigation = () => {
     {
       'key': "adminPanel", 
       'icon': <SettingOutlined />,
-      'label': (<a href="https://www.google.com" target="_blank" rel="noopener noreferrer"> {language.AdminPanel} </a>),
+      'label': (<a href="https://api.boki.fortesting.com.ua/admin" target="_blank" rel="noopener noreferrer"> {language.AdminPanel} </a>),
     }, 
     { type: "divider" },
     {

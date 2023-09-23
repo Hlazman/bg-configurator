@@ -24,6 +24,7 @@ const PaintStep = ({ orderID, fetchOrderData, fetchDecorData, checkDecor, sendDe
   const { orderId, dorSuborderId } = useOrder();
   const orderIdToUse = orderId;
 
+  const [form] = Form.useForm();
   const onFinish = async () => {
     // sendDecorForm(orderIdToUse, doorSuborder, selectedDecorId);
     sendDecorForm(orderIdToUse, dorSuborderId, selectedDecorId);
@@ -107,7 +108,6 @@ const PaintStep = ({ orderID, fetchOrderData, fetchDecorData, checkDecor, sendDe
         const paints = response.data.data.paints.data;
         setPaintData(paints);
         setIsLoading(false);
-        console.log(paintData)
       } catch (error) {
         console.error('Error fetching data:', error);
       }
@@ -126,7 +126,7 @@ const PaintStep = ({ orderID, fetchOrderData, fetchDecorData, checkDecor, sendDe
 
   return (
     <>
-      <div style={{display: 'flex', gap: '20px', margin: '10px 0'}}>
+      <div style={{display: 'flex', gap: '20px', margin: '10px'}}>
         <CreateColorDrawer/>
 
         <Button type="dashed" href="https://ant.design/index-cn" target="_blank">
@@ -138,16 +138,31 @@ const PaintStep = ({ orderID, fetchOrderData, fetchDecorData, checkDecor, sendDe
         </Button>
       </div>
 
-      <Form onFinish={onFinish}>
+      <Form onFinish={onFinish} form={form} style={{marginTop: '20px'}}>
 
-      <Form.Item wrapperCol={{ offset: 4, span: 16 }}>
-        <Button type="primary" htmlType="submit">
-          Submit
-        </Button>
-      </Form.Item>
+      <Input
+          placeholder="Search"
+          addonBefore="Search by color code"
+          value={searchQuery}
+          onChange={e => handleSearchQueryChange(e.target.value)}
+          style={{ marginBottom: '10px' }}
+        />
+        
+        <Form.Item label="Choose type o color" style={{margin: '10px 0'}}>
+          <Select
+            value={selectedColorRange}
+            onChange={handleColorRangeChange}
+            style={{ marginBottom: '10px', width: '100%' }}
+          >
+            {colorRangeOptions.map((colorRange, index) => (
+              <Select.Option key={index} value={colorRange}>
+                {colorRange}
+              </Select.Option>
+            ))}
+          </Select>
+        </Form.Item>
 
-
-      <div style={{ display: 'flex', gap: '30px' }}>
+        <Form.Item label="Sorting by group" style={{margin: '10px 0'}} >
         <Select
           value={selectedColorGroup}
           onChange={handleColorGroupChange}
@@ -159,25 +174,14 @@ const PaintStep = ({ orderID, fetchOrderData, fetchDecorData, checkDecor, sendDe
             </Select.Option>
           ))}
         </Select>
+        </Form.Item>
 
-        <Select
-          value={selectedColorRange}
-          onChange={handleColorRangeChange}
+      <Form.Item
+          label="Paint for"
+          name="selectedPaintFor"
+          initialValue={selectedPaintFor}
+          rules={[{ required: true, message: 'Please select a paint type' }]}
           style={{ marginBottom: '10px', width: '100%' }}
-        >
-          {colorRangeOptions.map((colorRange, index) => (
-            <Select.Option key={index} value={colorRange}>
-              {colorRange}
-            </Select.Option>
-          ))}
-        </Select>
-
-        <Form.Item
-        label="Paint for"
-        name="selectedPaintFor" // Add a name to the Form.Item
-        initialValue={selectedPaintFor} // Set initial value
-        rules={[{ required: true, message: 'Please select a paint type' }]} // Add validation rule
-        style={{ marginBottom: '10px', width: '100%' }}
       >
         <Select
           value={selectedPaintFor}
@@ -189,20 +193,10 @@ const PaintStep = ({ orderID, fetchOrderData, fetchDecorData, checkDecor, sendDe
         </Select>
       </Form.Item>
 
-        <Input
-          placeholder="Search"
-          value={searchQuery}
-          onChange={e => handleSearchQueryChange(e.target.value)}
-          style={{ marginBottom: '10px' }}
-        />
-      </div>
-
-      <Divider />
-
       {isLoading ? (
         <Spin size="large" />
       ) : (
-        <Form.Item>
+        <Form.Item name="paintRadio" rules={[{ required: true, message: "Please choose Paint" }]}>
           <Radio.Group>
             <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}>
               {filteredImages.map((imgSrc) => {
@@ -211,11 +205,14 @@ const PaintStep = ({ orderID, fetchOrderData, fetchDecorData, checkDecor, sendDe
                     paint.attributes.main_properties.image.data.attributes.url === imgSrc
                 );
                 return (
-                  <div key={paint.id} style={{ width: 220, margin: '20px 10px' }}>
+                  // <div key={paint.id} style={{ width: 220, margin: '20px 10px' }}>
+                  <Radio key={paint.id} value={paint.id}>
                     <Card
                       className="custom-card"
                       hoverable
                       style={{
+                        width: 220, 
+                        margin: '20px 10px', 
                         border:
                           previousColorTittle === paint.attributes.color_code
                             ? '7px solid #f06d20'
@@ -237,15 +234,22 @@ const PaintStep = ({ orderID, fetchOrderData, fetchDecorData, checkDecor, sendDe
                         title={paint.attributes.color_code}
                         style={{ paddingTop: '10px' }}
                       />
-                      <Radio value={paint.id} style={{ display: 'none' }} />
+                      {/* <Radio value={paint.id} style={{ display: 'none' }} /> */}
                     </Card>
-                  </div>
+                  </Radio>
                 );
               })}
             </div>
           </Radio.Group>
         </Form.Item>
       )}
+
+      <Form.Item wrapperCol={{ offset: 4, span: 16 }}>
+        <Button type="primary" htmlType="submit">
+          Submit
+        </Button>
+      </Form.Item>
+      
     </Form>
     </>
 

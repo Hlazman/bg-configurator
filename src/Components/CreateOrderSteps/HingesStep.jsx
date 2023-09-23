@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { Form, Input, Button, Card, Radio, Select, Divider, Spin } from 'antd';
+import { Form, Input, Button, Card, Radio, Select, Divider, Spin, message } from 'antd';
 import axios from 'axios';
 import { useOrder } from '../../Context/OrderContext';
 
 const HingeStep = ({ orderID }) => {
   const [hingeData, setHingeData] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
-  const [selectedBrand, setSelectedBrand] = useState('ALL');
+  // const [selectedBrand, setSelectedBrand] = useState('ALL');
+  const [selectedBrand, setSelectedBrand] = useState('Anselmi');
   const [isLoading, setIsLoading] = useState(true);
   const [previousHingeId, setPreviousHingeId] = useState(null); 
 
@@ -73,7 +74,8 @@ const HingeStep = ({ orderID }) => {
       }
     };
 
-    const storedBrand = localStorage.getItem('selectedBrandHinge') || 'ALL';
+    // const storedBrand = localStorage.getItem('selectedBrandHinge') || 'ALL';
+    const storedBrand = localStorage.getItem('selectedBrandHinge') || 'Anselmi';
     const storedSearchQuery = localStorage.getItem('searchQuery') || '';
 
     setSelectedBrand(storedBrand);
@@ -82,7 +84,7 @@ const HingeStep = ({ orderID }) => {
     fetchData();
   }, [jwtToken, hingeSuborderId]);
 
-  const brandOptions = ['ALL', ...new Set(hingeData.map(hinge => hinge.attributes.brand))];
+  const brandOptions = [...new Set(hingeData.map(hinge => hinge.attributes.brand)), 'ALL'];
 
   const handleBrandChange = value => {
     localStorage.setItem('selectedBrandHinge', value);
@@ -107,7 +109,8 @@ const HingeStep = ({ orderID }) => {
       id: hinge.id,
     }));
 
-    const handleSbmitForm = async () => {    
+    const [form] = Form.useForm();
+    const handleSbmitForm = async () => {
       const variables = {
         // "updateFrameFittingId": hingeSuborder.data.id,
         "updateFrameFittingId": hingeSuborderId,
@@ -139,9 +142,11 @@ const HingeStep = ({ orderID }) => {
       )
       .then((response) => {
         console.log('Успешный ответ:', response.data);
+        message.success('Hinge added successfully!');
       })
       .catch((error) => {
         console.error('Ошибка:', error);
+        message.error('Error to add Hinge');
       });
     }
   
@@ -193,15 +198,17 @@ const HingeStep = ({ orderID }) => {
     }, [jwtToken, hingeSuborderId]);
 
   return (
-    <Form onFinish={handleSbmitForm}>
+    <Form onFinish={handleSbmitForm} form={form}>
 
-<Form.Item wrapperCol={{ offset: 4, span: 16 }}>
-        <Button type="primary" htmlType="submit">
-          Submit
-        </Button>
-      </Form.Item>
+      <Input
+        placeholder="Search"
+        addonBefore="Search by hinge name"
+        value={searchQuery}
+        onChange={e => handleSearchQueryChange(e.target.value)}
+        style={{ marginBottom: '10px' }}
+      />
 
-      <div style={{ display: 'flex', gap: '30px' }}>
+      <Form.Item label="Sorting by brands">
         <Select
           value={selectedBrand}
           onChange={handleBrandChange}
@@ -213,29 +220,22 @@ const HingeStep = ({ orderID }) => {
             </Select.Option>
           ))}
         </Select>
-
-        <Input
-          placeholder="Search"
-          value={searchQuery}
-          onChange={e => handleSearchQueryChange(e.target.value)}
-          style={{ marginBottom: '10px' }}
-        />
-      </div>
-
-      <Divider />
+        </Form.Item>
 
       {isLoading ? (
         <Spin size="large" />
       ) : (
-        <Form.Item name="hingesStep">
+        <Form.Item name="hingesStep" rules={[{ required: true, message: "Please choose Hinge" }]}>
           <Radio.Group >
             <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}>
               {filteredImgs.map((hinge) => (
-                <div key={hinge.id} style={{ width: 220, margin: '20px 10px' }}>
+                <Radio key={hinge.id} value={hinge.id}>
                   <Card
                     className="custom-card"
                     hoverable
                     style={{
+                      width: '220px', 
+                      margin: '20px 10px',
                       border:
                         previousHingeId === hinge.id
                           ? '7px solid #f06d20'
@@ -255,14 +255,20 @@ const HingeStep = ({ orderID }) => {
                       description={hinge.brand}
                       style={{ paddingTop: '10px' }}
                     />
-                    <Radio value={hinge.id} style={{ display: 'none' }} />
                   </Card>
-                </div>
+                </Radio>
               ))}
             </div>
           </Radio.Group>
         </Form.Item>
       )}
+
+      <Form.Item wrapperCol={{ offset: 4, span: 16 }}>
+        <Button type="primary" htmlType="submit">
+          Submit
+        </Button>
+      </Form.Item>
+      
     </Form>
   );
 };

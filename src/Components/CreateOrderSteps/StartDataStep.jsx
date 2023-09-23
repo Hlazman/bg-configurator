@@ -97,7 +97,7 @@ const StartDataStep = ({ handleNext }) => {
   };
 
   return (
-    <Card>
+    <Card style={{background: '#F8F8F8', borderColor: '#DCDCDC'}}>
       <Form form={form} onFinish={handleFormSubmit}>
       <div style={{ display: 'flex', gap: '30px' }}>
           <Form.Item

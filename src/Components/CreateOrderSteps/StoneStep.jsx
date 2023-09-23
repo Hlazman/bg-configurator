@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Form, Input, Button, Card, Radio, Divider, Spin } from 'antd';
+import { Form, Input, Button, Card, Radio, Divider, Spin, message } from 'antd';
 import axios from 'axios';
 import { useOrder } from '../../Context/OrderContext';
 
@@ -19,6 +19,7 @@ const StoneStep = ({ orderID, fetchOrderData, fetchDecorData, checkDecor, sendDe
   const { orderId, dorSuborderId } = useOrder();
   const orderIdToUse = orderId;
   
+  const [form] = Form.useForm();
   const onFinish = async () => {
     // sendDecorForm(orderIdToUse, doorSuborder, selectedDecorId);
     sendDecorForm(orderIdToUse, dorSuborderId, selectedDecorId);
@@ -77,38 +78,33 @@ const StoneStep = ({ orderID, fetchOrderData, fetchDecorData, checkDecor, sendDe
   );
 
   return (
-    <Form onFinish={onFinish}>
+    <Form onFinish={onFinish} form={form}>
 
-        <Form.Item wrapperCol={{ offset: 4, span: 16 }}>
-        <Button type="primary" htmlType="submit">
-          Submit
-        </Button>
-      </Form.Item>
-
-      <div style={{ display: 'flex', gap: '30px' }}>
         <Input
           placeholder="Search"
+          addonBefore="Search by ceramogranite name"
           value={searchQuery}
           onChange={e => setSearchQuery(e.target.value)}
           style={{ marginBottom: '10px' }}
         />
-      </div>
-      <Divider />
+
 
       {isLoading ? (
         <div style={{ textAlign: 'center', marginTop: '20px' }}>
           <Spin size="large" />
         </div>
       ) : (
-        <Form.Item>
+        <Form.Item name="ceramograniteRadio" rules={[{ required: true, message: "Please choose Ceramogranite" }]}>
           <Radio.Group>
             <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}>
               {filteredStoneData.map(stone => (
-                <div key={stone.id} style={{ width: 220, margin: '20px 10px' }}>
+                <Radio key={stone.id} value={stone.id}>
                   <Card
                     className="custom-card"
                     hoverable
                     style={{
+                      width: 220, 
+                      margin: '20px 10px',
                       border:
                         previousStoneTitle === stone.attributes.title ? '7px solid #f06d20' : 'none',
                     }}
@@ -125,14 +121,20 @@ const StoneStep = ({ orderID, fetchOrderData, fetchDecorData, checkDecor, sendDe
                       />
                     </div>
                     <Card.Meta title={stone.attributes.title} style={{ paddingTop: '10px' }} />
-                    <Radio value={stone.id} style={{ display: 'none' }} />
                   </Card>
-                </div>
+                </Radio>
               ))}
             </div>
           </Radio.Group>
         </Form.Item>
       )}
+
+        <Form.Item wrapperCol={{ offset: 4, span: 16 }}>
+          <Button type="primary" htmlType="submit">
+            Submit
+          </Button>
+        </Form.Item>
+
     </Form>
   );
 };
