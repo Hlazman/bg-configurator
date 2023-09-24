@@ -111,7 +111,8 @@ const HPLStep = ({ orderID, fetchOrderData, fetchDecorData, checkDecor, sendDeco
                         previousHPLTitle === hpl.attributes.title ? '7px solid #f06d20' : 'none',
                     }}
                     onClick={() => {
-                      checkDecor('HPL', hpl.attributes.title, decorData, setSelectedDecorId, hpl.id);
+                      // checkDecor('HPL', hpl.attributes.title, decorData, setSelectedDecorId, hpl.id);
+                      checkDecor('HPL', hpl.attributes.title, decorData, setSelectedDecorId, hpl.id, setDecorData);
                       setPreviousHPLTitle(hpl.attributes.title);
                     }}
                   >

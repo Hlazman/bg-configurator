@@ -200,19 +200,22 @@ const HingeStep = ({ orderID }) => {
   return (
     <Form onFinish={handleSbmitForm} form={form}>
 
+    <div style={{display: 'flex', gap: '20px', flexWrap: 'wrap'}}>
       <Input
         placeholder="Search"
         addonBefore="Search by hinge name"
         value={searchQuery}
         onChange={e => handleSearchQueryChange(e.target.value)}
-        style={{ marginBottom: '10px' }}
+        style={{margin: '10px 0', flex: '1', 'min-width': "300px"}}
       />
 
-      <Form.Item label="Sorting by brands">
+      <Form.Item 
+        label="Sorting by brands"
+        style={{margin: '10px 0', flex: '1', 'min-width': "300px"}}  
+      >
         <Select
           value={selectedBrand}
           onChange={handleBrandChange}
-          style={{ marginBottom: '10px', width: '100%' }}
         >
           {brandOptions.map((brand, index) => (
             <Select.Option key={index} value={brand}>
@@ -221,6 +224,7 @@ const HingeStep = ({ orderID }) => {
           ))}
         </Select>
         </Form.Item>
+      </div>
 
       {isLoading ? (
         <Spin size="large" />

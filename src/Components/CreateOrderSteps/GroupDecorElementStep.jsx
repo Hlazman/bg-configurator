@@ -16,7 +16,7 @@ const GroupDecorElementStep = (elementID) => {
     setActiveTab(tabKey);
   };
   
-  const fetchOrderData = async (orderIdToUse, setPreviousTitle, type) => {
+  const fetchOrderData = async (orderIdToUse, setPreviousTitle, type, setSelectedPaintFor, isPaintType) => {
     try {
       const response = await axios.post(
         'https://api.boki.fortesting.com.ua/graphql',
@@ -58,6 +58,17 @@ const GroupDecorElementStep = (elementID) => {
       const title = decorData.attributes.title;
       setPreviousTitle(title);
       }
+
+      if (setSelectedPaintFor && decorData?.attributes?.type) {
+        if (isPaintType) {
+          if (decorData.attributes.type === 'paint' 
+          || decorData.attributes.type === 'painted_glass' 
+          || decorData.attributes.type === 'painted_veneer') {
+            setSelectedPaintFor(decorData.attributes.type);
+          }
+        }
+      }
+
     } catch (error) {
       console.error('Error fetching door suborder data:', error);
     }
@@ -103,6 +114,14 @@ const GroupDecorElementStep = (elementID) => {
   };
 
   const createDecor = async (data) => {
+    let dataType = '';
+    
+    if (data.type === 'painted_glass' || data.type === 'painted_veneer') {
+      dataType = 'paint';
+    } else {
+      dataType = data.type;
+    }
+
     try {
       const response = await axios.post(
         'https://api.boki.fortesting.com.ua/graphql',
@@ -120,7 +139,8 @@ const GroupDecorElementStep = (elementID) => {
             data: {
               title: data.title,
               type: data.type,
-              [data.type]: data.productId,
+              // [data.type]: data.productId,
+              [dataType]: data.productId,
             }
           }
         },
@@ -139,7 +159,8 @@ const GroupDecorElementStep = (elementID) => {
     }
   };
 
-  const checkDecor = async (type, title, decorData, setSelectedDecorId, productId) => {
+  // const checkDecor = async (type, title, decorData, setSelectedDecorId, productId) => {
+  const checkDecor = async (type, title, decorData, setSelectedDecorId, productId, setDecorData) => {
     const foundDecor = decorData.find(decor =>
       decor.attributes.type === type && decor.attributes.title.toLowerCase() === title.toLowerCase()
     );
@@ -153,7 +174,8 @@ const GroupDecorElementStep = (elementID) => {
   
       try {
         const newDecorId = await createDecor({ title, type, productId});
-        fetchDecorData();
+        // fetchDecorData();
+        fetchDecorData(setDecorData);
         setSelectedDecorId(newDecorId);
         console.log(`Декор успешно создан с id: ${newDecorId}`);
       } catch (error) {

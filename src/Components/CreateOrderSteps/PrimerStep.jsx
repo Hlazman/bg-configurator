@@ -109,7 +109,8 @@ const PrimerStep = ({orderID, fetchOrderData, fetchDecorData, checkDecor, sendDe
                         previousPrimerTitle === primer.attributes.title ? '7px solid #f06d20' : 'none',
                     }}
                     onClick={() => {
-                      checkDecor('primer', primer.attributes.title, decorData, setSelectedDecorId, primer.id);
+                      // checkDecor('primer', primer.attributes.title, decorData, setSelectedDecorId, primer.id);
+                      checkDecor('primer', primer.attributes.title, decorData, setSelectedDecorId, primer.id, setDecorData);
                       setPreviousPrimerTitle(primer.attributes.title);
                     }}
                   >

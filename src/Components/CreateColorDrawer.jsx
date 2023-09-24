@@ -23,7 +23,7 @@ export const CreateColorDrawer = () => {
   };
   
   const showLargeDrawer = () => {
-    setSize('large');
+    setSize('default');
     setOpen(true);
   };
   const onClose = () => {
@@ -144,9 +144,6 @@ export const CreateColorDrawer = () => {
       <Form
         form={form}
         onFinish={onFinish}
-        labelCol={{ span: 8 }}
-        wrapperCol={{ span: 16 }}
-        initialValues={{ standard: 'yes' }}
     >
       <Form.Item
         label="Color Code (Title)"
@@ -154,17 +151,6 @@ export const CreateColorDrawer = () => {
         rules={[{ required: true, message: 'Please input color code!' }]}
       >
         <Input />
-      </Form.Item>
-
-      <Form.Item
-        label="Standard"
-        name="standard"
-        rules={[{ required: true, message: 'Please select standard!' }]}
-      >
-        <Radio.Group>
-          <Radio value={true}>Yes</Radio>
-          <Radio value={false}>No</Radio>
-        </Radio.Group>
       </Form.Item>
 
       <Form.Item
@@ -195,6 +181,17 @@ export const CreateColorDrawer = () => {
           <Option value="black_white_9">Black/White 9</Option>
           <Option value="no_group">No Group</Option>
         </Select>
+      </Form.Item>
+
+      <Form.Item
+        label="Standard"
+        name="standard"
+        rules={[{ required: true, message: 'Please select standard!' }]}
+      >
+        <Radio.Group>
+          <Radio.Button value={true}>Yes</Radio.Button>
+          <Radio.Button value={false}>No</Radio.Button>
+        </Radio.Group>
       </Form.Item>
       
       <Form.Item

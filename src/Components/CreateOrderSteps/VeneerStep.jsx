@@ -126,20 +126,22 @@ const VeneerStep = ({ orderID, fetchOrderData, fetchDecorData, checkDecor, sendD
   return (
     <Form onFinish={onFinish} form={form}> 
 
+    <div style={{display: 'flex', gap: '20px', flexWrap: 'wrap'}}>
       <Input
         placeholder="Search"
         addonBefore="Search by veener name"
         value={searchQuery}
         onChange={e => handleSearchQueryChange(e.target.value)}
-        style={{ marginBottom: '10px' }}
+        style={{margin: '10px 0', flex: '1', 'min-width': "300px"}}
       />
 
-      {/* <div style={{ display: 'flex', gap: '30px' }}> */}
-      <Form.Item label="Sorting by Category">
+      <Form.Item 
+        label="Sorting by Category"
+        style={{margin: '10px 0', flex: '1', 'min-width': "300px"}}
+      >
         <Select
           value={selectedCategory}
           onChange={handleCategoryChange}
-          style={{ marginBottom: '10px', width: '100%' }}
         >
           {categoryOptions.map((category, index) => (
             <Select.Option key={index} value={category}>
@@ -148,10 +150,7 @@ const VeneerStep = ({ orderID, fetchOrderData, fetchDecorData, checkDecor, sendD
           ))}
         </Select>
         </Form.Item>
-
-      {/* </div> */}
-
-      {/* <Divider /> */}
+      </div>
 
       {isloading ? (
         <Spin size="large" />
@@ -174,7 +173,8 @@ const VeneerStep = ({ orderID, fetchOrderData, fetchDecorData, checkDecor, sendD
                         : 'none',
                     }}
                     onClick={async () => {
-                      await checkDecor('veneer', veneer.title, decorData, setSelectedDecorId, veneer.productId);
+                      // await checkDecor('veneer', veneer.title, decorData, setSelectedDecorId, veneer.productId);
+                      await checkDecor('veneer', veneer.title, decorData, setSelectedDecorId, veneer.productId, setDecorData);
                       await setPreviousVeneerTitle(veneer.title);
                     }}
                   >

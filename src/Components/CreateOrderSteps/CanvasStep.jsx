@@ -227,8 +227,9 @@ const CanvasStep = ({ formData, handleNext}) => {
       onFinish={onFinish}
       style={{ padding: '0 25px'}}
     >
-
-      <Form.Item style={{width: '100%'}}>
+    
+    <div style={{display: 'flex', gap: '20px', flexWrap: 'wrap'}}>
+      <Form.Item style={{margin: '10px 0', flex: '1', 'min-width': "300px"}}>
         <Input
           addonBefore="Search by door name"
           placeholder="Search"
@@ -237,7 +238,7 @@ const CanvasStep = ({ formData, handleNext}) => {
         />
       </Form.Item>
 
-      <Form.Item label="Sorting by models">
+      <Form.Item label="Sorting by models" style={{margin: '10px 0', flex: '1', 'min-width': "300px"}}>
           <Select
               value={selectedCollection}
               onChange={handleCollectionChange}
@@ -249,10 +250,12 @@ const CanvasStep = ({ formData, handleNext}) => {
               ))}
             </Select>
           </Form.Item>
- 
-      <Space wrap={true} direction="hirizontal" size="large" align='left'>
+          </div>
+
+      <Space wrap={true} direction="hirizontal" size="large" align='left' style={{marginTop: '20px'}}>
         <Form.Item
         name="width"
+        style={{margin: '10px 0', flex: '1'}}
         rules={[
           {
             required: true,
@@ -265,6 +268,7 @@ const CanvasStep = ({ formData, handleNext}) => {
         
         <Form.Item
          name="height"
+         style={{margin: '10px 0', flex: '1'}}
          rules={[
           {
             required: true,
@@ -275,8 +279,9 @@ const CanvasStep = ({ formData, handleNext}) => {
           <InputNumber addonBefore="Height" addonAfter="mm"/>
         </Form.Item>
 
-        <Form.Item 
-          name="thickness" 
+        <Form.Item
+          name="thickness"
+          style={{margin: '10px 0', flex: '1'}} 
           rules={[
             {
               required: true,

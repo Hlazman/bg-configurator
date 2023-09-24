@@ -11,6 +11,7 @@ import FrameStep from '../Components/CreateOrderSteps/FrameStep';
 import axios from 'axios';
 import { useOrder } from '../Context/OrderContext';
 import { useNavigate } from 'react-router-dom';
+import { CreateColorDrawer } from '../Components/CreateColorDrawer';
 
 export const CreateOrderPage = ({language}) => {
 
@@ -254,12 +255,23 @@ export const CreateOrderPage = ({language}) => {
   return (
     <div>
       
-      <div style={{display: 'flex', margin: '25px 0'}}>
-        <OrderDrawer/>
-      </div>
-      
-      {/* <Divider/> */}
+      <div style={{display: 'flex', margin: '25px 0', gap: '20px', flexWrap: 'wrap' }}>
+        <div style={{display: 'flex', flexBasis: '50%' }}>
+          <OrderDrawer/>
+        </div>
+        
+        <div style={{display: 'flex', gap: '20px' }}>
+          <CreateColorDrawer/>
 
+          <Button type="dashed" href="https://ant.design/index-cn" target="_blank">
+            Find RAL colors
+          </Button>
+
+          <Button type="dashed" href="https://ant.design/index-cn" target="_blank">
+            Find NSC colors
+          </Button>
+        </div>
+      </div>
 
       <Steps
         style={{background: '#F8F8F8', border: '1px solid #DCDCDC', margin: '30px 0', borderRadius: '10px'}}
@@ -316,7 +328,7 @@ export const CreateOrderPage = ({language}) => {
       >
 
       </Steps>
-      {/* <Divider /> */}
+
       {renderFormStep()}
     </div>
   );

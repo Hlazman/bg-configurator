@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Form, Input, Button, Card, Radio, Select, Divider, Spin } from 'antd';
+import { Form, Input, Button, Card, Radio, Select, Spin, message } from 'antd';
 import axios from 'axios';
 import { useOrder } from '../../Context/OrderContext';
 import { CreateColorDrawer } from '../CreateColorDrawer';
@@ -10,12 +10,18 @@ const PaintStep = ({ orderID, fetchOrderData, fetchDecorData, checkDecor, sendDe
   // const [selectedColorGroup, setSelectedColorGroup] = useState('ALL');
   const [selectedColorGroup, setSelectedColorGroup] = useState('');
   const [selectedColorRange, setSelectedColorRange] = useState('RAL');
-  const [selectedPaintFor, setSelectedPaintFor] = useState('paint');
+
+  // const [selectedPaintFor, setSelectedPaintFor] = useState('');
+  const [selectedPaintFor, setSelectedPaintFor] = useState('');
+  const [isPaintType, setIsPaintType] = useState(true);
+
   const [isLoading, setIsLoading] = useState(true);
   const jwtToken = localStorage.getItem('token');
   const [previousColorTittle, setPreviousColorTitle] = useState(null);
   const [decorData, setDecorData] = useState([]);
   const [selectedDecorId, setSelectedDecorId] = useState(null);
+
+  const [isDisabledGroup, setIsDisabledGroup] = useState(false);
   
   const { order } = useOrder();
   // const orderId = order.id;
@@ -25,8 +31,8 @@ const PaintStep = ({ orderID, fetchOrderData, fetchDecorData, checkDecor, sendDe
   const orderIdToUse = orderId;
 
   const [form] = Form.useForm();
+
   const onFinish = async () => {
-    // sendDecorForm(orderIdToUse, doorSuborder, selectedDecorId);
     sendDecorForm(orderIdToUse, dorSuborderId, selectedDecorId);
   };
 
@@ -34,20 +40,30 @@ const PaintStep = ({ orderID, fetchOrderData, fetchDecorData, checkDecor, sendDe
   const colorRangeOptions = [...new Set(paintData.map(paint => paint.attributes?.color_range))];
 
   const handleColorGroupChange = value => {
-    localStorage.setItem('selectedColorGroup', value);
+    // localStorage.setItem('selectedColorGroup', value);
     setSelectedColorGroup(value);
     setSearchQuery('');
   };
 
+
   const handleColorRangeChange = value => {
     setSelectedColorRange(value);
     setSearchQuery('');
+  
+    if (value === 'NCS') {
+      setSelectedColorGroup('no_group');
+      setIsDisabledGroup(true)
+    } else {
+      setIsDisabledGroup(false)
+      setSelectedColorGroup('black_white_9')
+    }
+  };
+ 
+    const handlePaintForChange = value => {
+    setIsPaintType(false)
+    setSelectedPaintFor(value);
   };
 
-    const handlePaintForChange = value => {
-    setSelectedPaintFor(value);
-    console.log(selectedPaintFor)
-  };
 
   const handleSearchQueryChange = value => {
     localStorage.setItem('searchQuery', value);
@@ -121,38 +137,43 @@ const PaintStep = ({ orderID, fetchOrderData, fetchDecorData, checkDecor, sendDe
 
     fetchData();
     fetchDecorData(setDecorData);
-    fetchOrderData(orderIdToUse, setPreviousColorTitle, selectedPaintFor);
-  }, [jwtToken, orderIdToUse, fetchDecorData, fetchOrderData, selectedPaintFor]);
+    fetchOrderData(orderIdToUse, setPreviousColorTitle, selectedPaintFor, setSelectedPaintFor, isPaintType);
+  }, [jwtToken, orderIdToUse, fetchDecorData, fetchOrderData, selectedPaintFor, isPaintType]);
+
 
   return (
-    <>
-      <div style={{display: 'flex', gap: '20px', margin: '10px'}}>
-        <CreateColorDrawer/>
+    <Form onFinish={onFinish} form={form} style={{marginTop: '20px'}}>
+        
+        <div style={{display: 'flex', gap: '20px', flexWrap: 'wrap'}}>
 
-        <Button type="dashed" href="https://ant.design/index-cn" target="_blank">
-          Find RAL colors
-        </Button>
-
-        <Button type="dashed" href="https://ant.design/index-cn" target="_blank">
-          Find NSC colors
-        </Button>
-      </div>
-
-      <Form onFinish={onFinish} form={form} style={{marginTop: '20px'}}>
-
-      <Input
+        <Input
           placeholder="Search"
           addonBefore="Search by color code"
           value={searchQuery}
           onChange={e => handleSearchQueryChange(e.target.value)}
-          style={{ marginBottom: '10px' }}
+          style={{margin: '10px 0', flex: '1', 'min-width': "300px"}}
         />
-        
-        <Form.Item label="Choose type o color" style={{margin: '10px 0'}}>
+          
+        <Form.Item 
+          label="Paint for" 
+          rules={[{ required: true, message: 'Please select a paint type' }]}
+          style={{margin: '10px 0', flex: '1', 'min-width': "300px"}}
+        >
+          <Select
+            name="selectedPaintFor"
+            value={selectedPaintFor}
+            onChange={handlePaintForChange}
+          >
+            <Select.Option value="paint">Paint</Select.Option>
+            <Select.Option value="painted_glass">Glass</Select.Option>
+            <Select.Option value="painted_veneer">Veneer</Select.Option>
+          </Select>
+        </Form.Item>
+
+        <Form.Item label="Choose type o color" style={{margin: '10px 0', flex: '1', 'min-width': "300px"}}>
           <Select
             value={selectedColorRange}
             onChange={handleColorRangeChange}
-            style={{ marginBottom: '10px', width: '100%' }}
           >
             {colorRangeOptions.map((colorRange, index) => (
               <Select.Option key={index} value={colorRange}>
@@ -162,11 +183,11 @@ const PaintStep = ({ orderID, fetchOrderData, fetchDecorData, checkDecor, sendDe
           </Select>
         </Form.Item>
 
-        <Form.Item label="Sorting by group" style={{margin: '10px 0'}} >
+        <Form.Item label="Sorting by group" style={{margin: '10px 0', flex: '1', 'min-width': "300px"}} >
         <Select
           value={selectedColorGroup}
           onChange={handleColorGroupChange}
-          style={{ marginBottom: '10px', width: '100%' }}
+          disabled={isDisabledGroup}
         >
           {colorGroupOptions.map((colorGroup, index) => (
             <Select.Option key={index} value={colorGroup}>
@@ -176,27 +197,12 @@ const PaintStep = ({ orderID, fetchOrderData, fetchDecorData, checkDecor, sendDe
         </Select>
         </Form.Item>
 
-      <Form.Item
-          label="Paint for"
-          name="selectedPaintFor"
-          initialValue={selectedPaintFor}
-          rules={[{ required: true, message: 'Please select a paint type' }]}
-          style={{ marginBottom: '10px', width: '100%' }}
-      >
-        <Select
-          value={selectedPaintFor}
-          onChange={handlePaintForChange}
-        >
-          <Select.Option value="paint">Paint</Select.Option>
-          <Select.Option value="painted_glass">Glass</Select.Option>
-          <Select.Option value="painted_veneer">Veneer</Select.Option>
-        </Select>
-      </Form.Item>
+        </div>
 
       {isLoading ? (
         <Spin size="large" />
       ) : (
-        <Form.Item name="paintRadio" rules={[{ required: true, message: "Please choose Paint" }]}>
+        <Form.Item name="paintRadio" rules={[{ required: true, message: "Please choose Color" }]}>
           <Radio.Group>
             <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}>
               {filteredImages.map((imgSrc) => {
@@ -205,7 +211,6 @@ const PaintStep = ({ orderID, fetchOrderData, fetchDecorData, checkDecor, sendDe
                     paint.attributes.main_properties.image.data.attributes.url === imgSrc
                 );
                 return (
-                  // <div key={paint.id} style={{ width: 220, margin: '20px 10px' }}>
                   <Radio key={paint.id} value={paint.id}>
                     <Card
                       className="custom-card"
@@ -219,8 +224,12 @@ const PaintStep = ({ orderID, fetchOrderData, fetchDecorData, checkDecor, sendDe
                             : 'none',
                       }}
                       onClick={() => {
-                        checkDecor(selectedPaintFor, paint.attributes.color_code, decorData, setSelectedDecorId, paint.id);
-                        setPreviousColorTitle(paint.attributes.color_code);
+                        if (selectedPaintFor) {
+                          checkDecor(selectedPaintFor, paint.attributes.color_code, decorData, setSelectedDecorId, paint.id, setDecorData);
+                          setPreviousColorTitle(paint.attributes.color_code);
+                        } else {
+                          message.error('First you need to choose "Pait for" ')
+                        }
                       }}
                     >
                       <div style={{ overflow: 'hidden', height: 120 }}>
@@ -234,7 +243,6 @@ const PaintStep = ({ orderID, fetchOrderData, fetchDecorData, checkDecor, sendDe
                         title={paint.attributes.color_code}
                         style={{ paddingTop: '10px' }}
                       />
-                      {/* <Radio value={paint.id} style={{ display: 'none' }} /> */}
                     </Card>
                   </Radio>
                 );
@@ -251,7 +259,7 @@ const PaintStep = ({ orderID, fetchOrderData, fetchDecorData, checkDecor, sendDe
       </Form.Item>
       
     </Form>
-    </>
+
 
   );
 };

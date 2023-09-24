@@ -264,10 +264,11 @@ const DecorElementForm = ({ orderID, elementID, language}) => {
     <Spin spinning={isloading}>
       <Form form={form} onFinish={handleFormSubmit} > 
 
+      <div style={{display: 'flex', gap: '20px', flexWrap: 'wrap', marginBottom: "30px"}}>
         <Form.Item
           name="name"
           label="Choose element for Decor"
-          style={{ width: '100%' }}
+          style={{margin: '10px 0', flex: '1', 'min-width': "300px"}}
           rules={[{ required: true, message: 'Please select an element!' }]}
         >
           <Select
@@ -280,6 +281,19 @@ const DecorElementForm = ({ orderID, elementID, language}) => {
             ))}
           </Select>
         </Form.Item>
+
+        <Form.Item
+          style={{margin: '10px 0', flex: '1', 'min-width': "300px", textAlign: 'left'}}
+          name="radioOption"
+          label="Choose Element Decor"
+          rules={[{ required: true, message: 'Please select an option!' }]}
+        >
+          <Radio.Group type="dashed" buttonStyle="solid" onChange={handleRadioChange}>
+            <Radio.Button value="choose">Choose Decor for element</Radio.Button>
+            <Radio.Button value="get">Get Decor from door</Radio.Button>
+          </Radio.Group>
+        </Form.Item>
+      </div>
 
         <Space wrap={true} direction="hirizontal" size="large">
           <Form.Item 
@@ -312,8 +326,8 @@ const DecorElementForm = ({ orderID, elementID, language}) => {
         </Space>
 
       
-        <Form.Item
-          style={{textAlign: 'left'}}
+        {/* <Form.Item
+          // style={{textAlign: 'left'}}
           name="radioOption"
           label="Choose Decor Option"
           rules={[{ required: true, message: 'Please select an option!' }]}
@@ -322,7 +336,7 @@ const DecorElementForm = ({ orderID, elementID, language}) => {
             <Radio.Button value="choose">Choose Decor for element</Radio.Button>
             <Radio.Button value="get">Get Decor from door</Radio.Button>
           </Radio.Group>
-        </Form.Item>
+        </Form.Item> */}
 
         <Form.Item wrapperCol={{ offset: 4, span: 16 }}>
           <Button type="primary" htmlType="submit">

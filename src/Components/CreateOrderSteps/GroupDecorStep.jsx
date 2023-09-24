@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Tabs, message } from 'antd';
 import VeneerStep from './VeneerStep';
 import PaintStep from './PaintStep';
@@ -16,8 +16,8 @@ const GroupDecorStep = () => {
   const handleTabChange = tabKey => {
     setActiveTab(tabKey);
   };
-
-  const fetchOrderData = async (orderIdToUse, setPreviousTitle, type) => {
+  
+  const fetchOrderData = async (orderIdToUse, setPreviousTitle, type, setSelectedPaintFor, isFetch) => {
     try {
       const response = await axios.post(
         'https://api.boki.fortesting.com.ua/graphql',
@@ -64,13 +64,22 @@ const GroupDecorStep = () => {
 
       if (decorData && decorData.attributes && decorData.attributes.type === type) {
         setPreviousTitle(decorData.attributes.title);
-        console.log(decorData.attributes.title)
       }
+
+      if (setSelectedPaintFor && decorData?.attributes?.type) {
+        if (isFetch) {
+          if (decorData.attributes.type === 'paint' 
+          || decorData.attributes.type === 'painted_glass' 
+          || decorData.attributes.type === 'painted_veneer') {
+            setSelectedPaintFor(decorData.attributes.type);
+          }
+        }
+      }
+
     } catch (error) {
       console.error('Error fetching door suborder data:', error);
     }
   };
-
 
   const fetchDecorData = async (setDecorData) => {
     try {
@@ -112,6 +121,14 @@ const GroupDecorStep = () => {
   };
 
   const createDecor = async (data) => {
+    let dataType = '';
+    
+    if (data.type === 'painted_glass' || data.type === 'painted_veneer') {
+      dataType = 'paint';
+    } else {
+      dataType = data.type;
+    }
+
     try {
       const response = await axios.post(
         'https://api.boki.fortesting.com.ua/graphql',
@@ -129,7 +146,8 @@ const GroupDecorStep = () => {
             data: {
               title: data.title,
               type: data.type,
-              [data.type]: data.productId,
+              // [data.type]: data.productId,
+              [dataType]: data.productId,
             }
           }
         },
@@ -147,7 +165,8 @@ const GroupDecorStep = () => {
       throw error;
     }
   };
-    const checkDecor = async (type, title, decorData, setSelectedDecorId, productId) => {
+    // const checkDecor = async (type, title, decorData, setSelectedDecorId, productId,) => {
+    const checkDecor = async (type, title, decorData, setSelectedDecorId, productId, setDecorData) => {
     const foundDecor = decorData.find(decor =>
       decor.attributes.type === type && decor.attributes.title.toLowerCase() === title.toLowerCase()
     );
@@ -155,13 +174,12 @@ const GroupDecorStep = () => {
     if (foundDecor) {
       setSelectedDecorId(foundDecor.id);
       console.log(`Найден декор c типом ${type} и названием ${title}`);
-      console.log(foundDecor.id);
     } else {
       console.log(`Декор c типом ${type} и названием ${title} не найден. Cоздаем новый...`);
   
-      try { 
+      try {
         const newDecorId = await createDecor({ title, type, productId});
-        fetchDecorData();
+        fetchDecorData(setDecorData);
         setSelectedDecorId(newDecorId);
         console.log(`Декор успешно создан c id: ${newDecorId}`);
       } catch (error) {
@@ -171,8 +189,7 @@ const GroupDecorStep = () => {
   };
 
   const sendDecorForm = async (orderIdToUse, doorSuborder, selectedDecorId) => {
-    // const updateDoorSuborderId = doorSuborder.data.id; // Получаем id субордера
-    const updateDoorSuborderId = doorSuborder; // Получаем id субордера
+    const updateDoorSuborderId = doorSuborder; 
 
     const data = {
       decor: selectedDecorId,
@@ -238,7 +255,7 @@ const GroupDecorStep = () => {
             fetchDecorData={fetchDecorData}
             fetchOrderData={fetchOrderData}
             checkDecor={checkDecor}
-            sendDecorForm={sendDecorForm}  
+            sendDecorForm={sendDecorForm}
             />,
         },
         {
