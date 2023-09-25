@@ -9,7 +9,7 @@ import axios from 'axios';
 import PrimerStep from './PrimerStep';
 // import { useOrder } from '../../Context/OrderContext';
 
-const GroupDecorStep = () => {
+const GroupDecorStep = ({ setCurrentStepSend }) => {
   const [activeTab, setActiveTab] = useState('veneer');
   const jwtToken = localStorage.getItem('token');
 
@@ -223,6 +223,12 @@ const GroupDecorStep = () => {
       );
       console.log('Data sent successfully:', response.data);
       message.success('Decor add successfully');
+      setCurrentStepSend(prevState => {
+        return {
+          ...prevState,
+          decorSend: true
+        };
+      });
     } catch (error) {
       console.error('Error sending data:', error);
       message.error('Error to add Decor');

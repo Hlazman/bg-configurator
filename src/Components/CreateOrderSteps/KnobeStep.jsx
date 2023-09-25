@@ -3,7 +3,7 @@ import { Form, Input, Button, Card, Radio, Select, Divider, Spin, message } from
 import axios from 'axios';
 import { useOrder } from '../../Context/OrderContext';
 
-const KnobesStep = ({ orderID }) => {
+const KnobesStep = ({ setCurrentStepSend }) => {
   const [knobesData, setKnobesData] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
   // const [selectedBrand, setSelectedBrand] = useState('ALL');
@@ -104,6 +104,7 @@ const KnobesStep = ({ orderID }) => {
     }));
 
     const [form] = Form.useForm();
+
     const handleSbmitForm = async () => {
       const variables = {
         // "updateFrameFittingId": knobeSuborder.data.id,
@@ -137,6 +138,12 @@ const KnobesStep = ({ orderID }) => {
       .then((response) => {
         console.log('Успешный ответ:', response.data);
         message.success('Knobe added successfully!');
+        setCurrentStepSend(prevState => {
+          return {
+            ...prevState,
+            fittingKnobeSend: true
+          };
+        });
       })
       .catch((error) => {
         console.error('Ошибка:', error);

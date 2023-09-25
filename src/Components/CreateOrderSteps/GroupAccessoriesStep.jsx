@@ -5,7 +5,7 @@ import KnobeStep from './KnobeStep';
 // import SkirtingStep from './SkirtingStep';
 import LockStep from './LockStep';
 
-const GroupAccessoriesStep = ({ formData, handleCardClick, handleNext }) => {
+const GroupAccessoriesStep = ({ setCurrentStepSend }) => {
   const [activeTab, setActiveTab] = useState('hinges');
 
   const handleTabChange = tabKey => {
@@ -21,17 +21,20 @@ const GroupAccessoriesStep = ({ formData, handleCardClick, handleNext }) => {
       {
         label: 'Knobe',
         key: 'knobe',
-        children: <KnobeStep formData={formData} handleCardClick={handleCardClick} handleNext={handleNext} />,
+        // children: <KnobeStep formData={formData} handleCardClick={handleCardClick} handleNext={handleNext} />,
+        children: <KnobeStep setCurrentStepSend={setCurrentStepSend} />,
       },
       {
         label: 'Hinges',
         key: 'hinges',
-        children: <HingesStep formData={formData} handleCardClick={handleCardClick} handleNext={handleNext} />,
+        // children: <HingesStep formData={formData} handleCardClick={handleCardClick} handleNext={handleNext} />,
+        children: <HingesStep setCurrentStepSend={setCurrentStepSend} />,
       },
       {
         label: 'Lock',
         key: 'lock',
-        children: <LockStep formData={formData} handleCardClick={handleCardClick} handleNext={handleNext} />,
+        // children: <LockStep formData={formData} handleCardClick={handleCardClick} handleNext={handleNext} />,
+        children: <LockStep setCurrentStepSend={setCurrentStepSend} />,
       },
       // {
       //   label: 'Skirting',

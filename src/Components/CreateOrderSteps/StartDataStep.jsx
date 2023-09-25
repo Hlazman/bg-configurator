@@ -4,7 +4,7 @@ import { useOrder } from '../../Context/OrderContext';
 import { useEffect, useState } from 'react';
 
 // const StartDataStep = ({ handleNext, orderID }) => {
-const StartDataStep = ({ handleNext }) => {
+const StartDataStep = ({ setCurrentStepSend }) => {
   // const { order } = useOrder();
   const { orderId } = useOrder();
   // const updateOrderId = order?.id;
@@ -88,8 +88,14 @@ const StartDataStep = ({ handleNext }) => {
           },
         }
       );
-
       message.success('Order updated successfully');
+      setCurrentStepSend(prevState => {
+        return {
+          ...prevState,
+          startDataSend: true
+        };
+      });
+      
     } catch (error) {
       console.error('Error updating order:', error);
       message.error('Error updating order');

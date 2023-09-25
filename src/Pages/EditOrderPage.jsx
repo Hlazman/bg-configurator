@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Steps, Form, Input, Button, Divider} from 'antd';
+import { SearchOutlined } from '@ant-design/icons';
 import { OrderDrawer } from '../Components/OrderDrawer';
 import GroupDoorStep from '../Components/CreateOrderSteps/GroupDoorStep';
 import GroupDecorStep from '../Components/CreateOrderSteps/GroupDecorStep';
@@ -206,12 +207,12 @@ export const EditOrderPage = ({language, }) => {
         <div style={{display: 'flex', gap: '20px' }}>
           <CreateColorDrawer/>
 
-          <Button type="dashed" href="https://ant.design/index-cn" target="_blank">
-            Find RAL colors
+          <Button type="dashed" icon={<SearchOutlined />} href="https://www.ralcolorchart.com/" target="_blank">
+            RAL colors
           </Button>
 
-          <Button type="dashed" href="https://ant.design/index-cn" target="_blank">
-            Find NSC colors
+          <Button type="dashed" icon={<SearchOutlined />} href="https://www.ncscolorguide.com/" target="_blank">
+            NSC colors
           </Button>
         </div>
       </div>
@@ -224,48 +225,31 @@ export const EditOrderPage = ({language, }) => {
         items={[
           {
             title: 'Canvas',
-            // status: (currentStep === 0 ? 'process' : formData.doorStep ? 'finish' : 'error'),
+            status: (currentStep === 0 ? 'process' : 'finish'),
           },
           {
             title: 'Decor',
-            // status: (currentStep === 1 ? 'process' : formData.step2Field ? 'finish' : 'error'),
+            status: (currentStep === 1 ? 'process' : 'finish'),
           },
-          // {
-          //   title: 'Decor',
-            // status: (
-            //   currentStep === 1
-            //     ? 'process'
-            //     : (formData.step2Field || formData.step3Field)
-            //       ? 'finish'
-            //       : 'error'
-            // ),
-          // },
           {
             title: 'Frame',
-            // status: (currentStep === 2 ? 'process' : formData.step4Field ? 'finish' : 'error'),
+            status: (currentStep === 2 ? 'process' : 'finish'),
           },
           {
             title: 'Elements',
-            // status: (currentStep === 2 ? 'process' : formData.step4Field ? 'finish' : 'error'),
+            status: (currentStep === 3 ? 'process' : 'finish'),
           },
           {
             title: 'Fitting',
-            // status: (currentStep === 4 ? 'process' : formData.step5Field ? 'finish' : 'error'),
-            // status: (
-            //   currentStep === 4
-            //     ? 'process'
-            //     : (formData.hingesStep || formData.knobeStep || formData.lockStep || formData.skirtingStep)
-            //       ? 'finish'
-            //       : 'error'
-            // ),
+            status: (currentStep === 4 ? 'process' : 'finish'),
           },
           {
             title: 'Options',
-            // status: (currentStep === 5 ? 'process' : formData.step6Field ? 'finish' : 'error'),
+            status: (currentStep === 5 ? 'process' : 'finish'),
           },
           {
             title: 'Information',
-            // status: (currentStep === 6 ? 'process' : formData.step7Field ? 'finish' : 'error'),
+            status: (currentStep === 6 ? 'process' : 'finish'),
           },
         ]}
       >

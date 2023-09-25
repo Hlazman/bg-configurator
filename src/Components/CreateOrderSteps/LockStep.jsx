@@ -3,7 +3,7 @@ import { Form, Input, Button, Card, Radio, Select, Divider, Spin, message } from
 import axios from 'axios';
 import { useOrder } from '../../Context/OrderContext';
 
-const LockStep = ({ orderID }) => {
+const LockStep = ({ setCurrentStepSend }) => {
   const [lockData, setLockData] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
   // const [selectedBrand, setSelectedBrand] = useState('ALL');
@@ -109,6 +109,7 @@ const LockStep = ({ orderID }) => {
     }));
 
   const [form] = Form.useForm();
+
   const handleSbmitForm = async () => {
     const variables = {
       // "updateFrameFittingId": lockSuborder.data.id,
@@ -142,6 +143,12 @@ const LockStep = ({ orderID }) => {
     .then((response) => {
       console.log('Успешный ответ:', response.data);
       message.success('Lock added successfully!');
+      setCurrentStepSend(prevState => {
+        return {
+          ...prevState,
+          fittingLockSend: true
+        };
+      });
     })
     .catch((error) => {
       console.error('Ошибка:', error);

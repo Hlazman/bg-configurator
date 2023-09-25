@@ -4,7 +4,7 @@ import axios from 'axios';
 import { useOrder } from '../../Context/OrderContext';
 
 // const CanvasStep = ({ formData, handleNext, orderID }) => {
-const CanvasStep = ({ formData, handleNext}) => {
+const CanvasStep = ({ setCurrentStepSend}) => {
   
   const { orderId, dorSuborderId } = useOrder();
   // const { addSuborder } = useOrder();
@@ -136,6 +136,12 @@ const CanvasStep = ({ formData, handleNext}) => {
 
       console.log('Data sent successfully:', response.data);
       message.success('Door added successfully');
+      setCurrentStepSend(prevState => {
+        return {
+          ...prevState,
+          canvasSend: true
+        };
+      });
     } catch (error) {
       console.error('Error sending data:', error);
       message.error('Error to add Decor');

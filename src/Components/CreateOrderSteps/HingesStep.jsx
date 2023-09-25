@@ -3,7 +3,7 @@ import { Form, Input, Button, Card, Radio, Select, Divider, Spin, message } from
 import axios from 'axios';
 import { useOrder } from '../../Context/OrderContext';
 
-const HingeStep = ({ orderID }) => {
+const HingeStep = ({ setCurrentStepSend }) => {
   const [hingeData, setHingeData] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
   // const [selectedBrand, setSelectedBrand] = useState('ALL');
@@ -12,7 +12,6 @@ const HingeStep = ({ orderID }) => {
   const [previousHingeId, setPreviousHingeId] = useState(null); 
 
   const [selectedHingeId, setSelectedHingeId] = useState(null);
-
   
   // const { order } = useOrder();
   // const orderId = order.id;
@@ -110,6 +109,7 @@ const HingeStep = ({ orderID }) => {
     }));
 
     const [form] = Form.useForm();
+
     const handleSbmitForm = async () => {
       const variables = {
         // "updateFrameFittingId": hingeSuborder.data.id,
@@ -143,6 +143,12 @@ const HingeStep = ({ orderID }) => {
       .then((response) => {
         console.log('Успешный ответ:', response.data);
         message.success('Hinge added successfully!');
+        setCurrentStepSend(prevState => {
+          return {
+            ...prevState,
+            fittingHingeSend: true
+          };
+        });
       })
       .catch((error) => {
         console.error('Ошибка:', error);

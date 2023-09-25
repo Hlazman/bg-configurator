@@ -6,7 +6,7 @@ import { useEffect, useState } from 'react';
 const { Option } = Select;
 
 // const FrameStep = ({ orderID }) => {
-const FrameStep = () => {
+const FrameStep = ({ setCurrentStepSend }) => {
   const jwtToken = localStorage.getItem('token');
   
   // const { order } = useOrder();
@@ -182,6 +182,12 @@ const FrameStep = () => {
     ).then(response => {
       console.log('Data updated:', response.data);
       message.success('Frame added successfully');
+      setCurrentStepSend(prevState => {
+        return {
+          ...prevState,
+          frameSend: true
+        };
+      });
     }).catch(error => {
       console.error('Error updating data:', error);
       message.error('Error add frame');

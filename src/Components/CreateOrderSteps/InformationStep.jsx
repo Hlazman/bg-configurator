@@ -9,7 +9,7 @@ import dayjs from 'dayjs';
 const { Option } = Select;
 const { TextArea } = Input;
 
-const InformationStep = ({ formData, language }) => {
+const InformationStep = ({ setCurrentStepSend }) => {
   const dateFormat = 'YYYY-MM-DD HH:mm';
   const { user } = useContext(AuthContext);
   const { orderId } = useOrder();
@@ -103,6 +103,12 @@ const InformationStep = ({ formData, language }) => {
       )
       .then((response) => {
         message.success('The order has been successfully created!');
+        setCurrentStepSend(prevState => {
+          return {
+            ...prevState,
+            informationSend: true
+          };
+        });
       }).then(() => {
         localStorage.clear();
         localStorage.setItem('user', JSON.stringify(user));

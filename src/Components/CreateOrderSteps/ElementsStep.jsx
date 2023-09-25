@@ -4,7 +4,7 @@ import axios from 'axios';
 import { useOrder } from '../../Context/OrderContext';
 import DecorElementForm from '../Forms/DecorElementForm';
 
-const ElementsStep = ({language, orderID}) => {
+const ElementsStep = ({ setCurrentStepSend }) => {
   const jwtToken = localStorage.getItem('token');
   
   // const { order } = useOrder();
@@ -64,7 +64,7 @@ const ElementsStep = ({language, orderID}) => {
               return {
                 label: newActiveKey,
                 elemID: data.id,
-                children: (<DecorElementForm elementID={data.id}/>),
+                children: (<DecorElementForm elementID={data.id} setCurrentStepSend={setCurrentStepSend}/>),
                 key: newActiveKey,
               };
             });
@@ -181,7 +181,7 @@ const ElementsStep = ({language, orderID}) => {
     newPanes.push({
       label: newActiveKey,
       elemID: suborderId,
-      children: (<DecorElementForm elementID={suborderId}/>),
+      children: (<DecorElementForm elementID={suborderId} setCurrentStepSend={setCurrentStepSend}/>),
       key: newActiveKey,
       closable: false,
     });

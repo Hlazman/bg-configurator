@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Steps, Form, Input, Button} from 'antd';
+import { Steps, Form, Input, Button, Dropdown} from 'antd';
+import { SearchOutlined } from '@ant-design/icons';
 import { OrderDrawer } from '../Components/OrderDrawer';
 import GroupDoorStep from '../Components/CreateOrderSteps/GroupDoorStep';
 import GroupDecorStep from '../Components/CreateOrderSteps/GroupDecorStep';
@@ -11,6 +12,7 @@ import axios from 'axios';
 import { useOrder } from '../Context/OrderContext';
 import { useNavigate, useParams } from 'react-router-dom';
 import { CreateColorDrawer } from '../Components/CreateColorDrawer';
+
 
 export const CreateOrderPage = ({language}) => {
 
@@ -26,6 +28,20 @@ export const CreateOrderPage = ({language}) => {
   
   const navigate = useNavigate();
   const [currentStep, setCurrentStep] = useState(0);
+  
+  const [currentStepSend, setCurrentStepSend] = useState({
+    startDataSend: false,
+    canvasSend: false,
+    decorSend: false,
+    frameSend: false,
+    elementSend: false,
+    fittingLockSend: false,
+    fittingKnobeSend: false,
+    fittingHingeSend: false,
+    optionsSend: false,
+    informationSend: false,
+  });
+
 
   const handlePrev = () => {
     setCurrentStep(currentStep - 1);
@@ -203,30 +219,35 @@ export const CreateOrderPage = ({language}) => {
         return (
           <GroupDoorStep
             language={language}
+            setCurrentStepSend={setCurrentStepSend}
           />
         );
       case 1:
         return (
           <GroupDecorStep
             language={language}
+            setCurrentStepSend={setCurrentStepSend}
         />
         );
         case 2:
         return (
           <FrameStep
             language={language}
+            setCurrentStepSend={setCurrentStepSend}
           />
         );
       case 3:
         return (
           <ElementsStep
             language={language}
+            setCurrentStepSend={setCurrentStepSend}
           />
         );
       case 4:
         return (
           <GroupAccessoriesStep
             language={language}
+            setCurrentStepSend={setCurrentStepSend}
         />
         );
         case 5:
@@ -243,6 +264,7 @@ export const CreateOrderPage = ({language}) => {
         return (
           <InformationStep
             language={language}
+            setCurrentStepSend={setCurrentStepSend}
         />
         );
       default:
@@ -261,12 +283,12 @@ export const CreateOrderPage = ({language}) => {
         <div style={{display: 'flex', gap: '20px' }}>
           <CreateColorDrawer/>
 
-          <Button type="dashed" href="https://ant.design/index-cn" target="_blank">
-            Find RAL colors
+          <Button type="dashed" icon={<SearchOutlined />} href="https://www.ralcolorchart.com/" target="_blank">
+            RAL colors
           </Button>
 
-          <Button type="dashed" href="https://ant.design/index-cn" target="_blank">
-            Find NSC colors
+          <Button type="dashed" icon={<SearchOutlined />} href="https://www.ncscolorguide.com/" target="_blank">
+            NSC colors
           </Button>
         </div>
       </div>
@@ -279,48 +301,37 @@ export const CreateOrderPage = ({language}) => {
         items={[
           {
             title: 'Door',
-            // status: (currentStep === 0 ? 'process' : formData.doorStep ? 'finish' : 'error'),
+            status: (currentStep === 0 ? 'process' : currentStepSend.startDataSend && currentStepSend.canvasSend ? 'finish' : 'error'),
           },
           {
             title: 'Decor',
-            // status: (currentStep === 1 ? 'process' : formData.step2Field ? 'finish' : 'error'),
+            status: (currentStep === 1 ? 'process' : currentStepSend.decorSend ? 'finish' : 'error'),
           },
-          // {
-          //   title: 'Decor',
-            // status: (
-            //   currentStep === 1
-            //     ? 'process'
-            //     : (formData.step2Field || formData.step3Field)
-            //       ? 'finish'
-            //       : 'error'
-            // ),
-          // },
           {
             title: 'Frame',
-            // status: (currentStep === 2 ? 'process' : formData.step4Field ? 'finish' : 'error'),
+            status: (currentStep === 2 ? 'process' : currentStepSend.frameSend ? 'finish' : 'error'),
           },
           {
             title: 'Elements',
-            // status: (currentStep === 2 ? 'process' : formData.step4Field ? 'finish' : 'error'),
+            status: (currentStep === 3 ? 'process' : currentStepSend.elementSend ? 'finish' : 'error'),
           },
           {
             title: 'Fitting',
-            // status: (currentStep === 4 ? 'process' : formData.step5Field ? 'finish' : 'error'),
-            // status: (
-            //   currentStep === 4
-            //     ? 'process'
-            //     : (formData.hingesStep || formData.knobeStep || formData.lockStep || formData.skirtingStep)
-            //       ? 'finish'
-            //       : 'error'
-            // ),
+            status: (
+              currentStep === 4
+                ? 'process'
+                : (currentStepSend.fittingLockSend && currentStepSend.fittingHingeSend && currentStepSend.fittingKnobeSend )
+                  ? 'finish'
+                  : 'error'
+            ),
           },
           {
             title: 'Options',
-            // status: (currentStep === 5 ? 'process' : formData.step6Field ? 'finish' : 'error'),
+            status: (currentStep === 5 ? 'process' : currentStepSend.optionsSend ? 'finish' : 'error'),
           },
           {
             title: 'Information',
-            // status: (currentStep === 6 ? 'process' : formData.step7Field ? 'finish' : 'error'),
+            status: (currentStep === 6 ? 'process' : currentStepSend.informationSend ? 'finish' : 'error'),
           },
         ]}
       >

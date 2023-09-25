@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { Form, Button, Select, InputNumber, Spin, Radio, Space } from 'antd';
+import { Form, Button, Select, InputNumber, Spin, Radio, Space, message } from 'antd';
 import axios from 'axios';
 import { useOrder } from '../../Context/OrderContext';
 import GroupDecorElementStep from '../CreateOrderSteps/GroupDecorElementStep';
 
 const { Option } = Select;
 
-const DecorElementForm = ({ orderID, elementID, language}) => {
+const DecorElementForm = ({setCurrentStepSend, elementID, language}) => {
   const [elementOptions, setElementOptions] = useState([]);
   const [isloading, setIsLoading] = useState(true);
   const jwtToken = localStorage.getItem('token');
@@ -161,9 +161,17 @@ const DecorElementForm = ({ orderID, elementID, language}) => {
       )
       .then(response => {
         console.log('Data updated successfully:', response);
+        message.success('Element added successfully');
+        setCurrentStepSend(prevState => {
+          return {
+            ...prevState,
+            elementSend: true
+          };
+        });
       })
       .catch(error => {
         console.error('Error updating data:', error);
+        message.error('Error to add element');
       });
     }
   };
