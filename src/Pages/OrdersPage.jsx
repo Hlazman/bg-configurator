@@ -35,7 +35,8 @@ export const OrdersPage = ({language}) => {
 
 const handleOpenOrder = (orderID) => {
   setOrderId(orderID)
-  navigate(`/order`);
+  // navigate(`/order`);
+  navigate(`/order/${orderID}`);
 };
 
   const fetchData = async () => {

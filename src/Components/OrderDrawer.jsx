@@ -23,6 +23,7 @@ export const OrderDrawer = () => {
       </Space>
       
       <Drawer
+        destroyOnClose={true}
         title="Order details"
         placement="right"
         size={size}

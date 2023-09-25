@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useState, useContext } from 'react';
 import {Descriptions, Card, Image} from 'antd';
 import dayjs from 'dayjs';
 import { AuthContext } from '../Context/AuthContext';

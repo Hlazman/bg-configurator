@@ -268,7 +268,7 @@ const DecorElementForm = ({ orderID, elementID, language}) => {
         <Form.Item
           name="name"
           label="Choose element for Decor"
-          style={{margin: '10px 0', flex: '1', 'min-width': "300px"}}
+          style={{margin: '10px 0', flex: '1', 'minWidth': "300px"}}
           rules={[{ required: true, message: 'Please select an element!' }]}
         >
           <Select
@@ -283,7 +283,7 @@ const DecorElementForm = ({ orderID, elementID, language}) => {
         </Form.Item>
 
         <Form.Item
-          style={{margin: '10px 0', flex: '1', 'min-width': "300px", textAlign: 'left'}}
+          style={{margin: '10px 0', flex: '1', 'minWidth': "300px", textAlign: 'left'}}
           name="radioOption"
           label="Choose Element Decor"
           rules={[{ required: true, message: 'Please select an option!' }]}

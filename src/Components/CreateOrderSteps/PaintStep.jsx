@@ -40,7 +40,7 @@ const PaintStep = ({ orderID, fetchOrderData, fetchDecorData, checkDecor, sendDe
   const colorRangeOptions = [...new Set(paintData.map(paint => paint.attributes?.color_range))];
 
   const handleColorGroupChange = value => {
-    // localStorage.setItem('selectedColorGroup', value);
+    localStorage.setItem('selectedColorGroup', value);
     setSelectedColorGroup(value);
     setSearchQuery('');
   };
@@ -151,13 +151,13 @@ const PaintStep = ({ orderID, fetchOrderData, fetchDecorData, checkDecor, sendDe
           addonBefore="Search by color code"
           value={searchQuery}
           onChange={e => handleSearchQueryChange(e.target.value)}
-          style={{margin: '10px 0', flex: '1', 'min-width': "300px"}}
+          style={{margin: '10px 0', flex: '1', 'minWidth': "300px"}}
         />
           
         <Form.Item 
           label="Paint for" 
           rules={[{ required: true, message: 'Please select a paint type' }]}
-          style={{margin: '10px 0', flex: '1', 'min-width': "300px"}}
+          style={{margin: '10px 0', flex: '1', 'minWidth': "300px"}}
         >
           <Select
             name="selectedPaintFor"
@@ -170,7 +170,7 @@ const PaintStep = ({ orderID, fetchOrderData, fetchDecorData, checkDecor, sendDe
           </Select>
         </Form.Item>
 
-        <Form.Item label="Choose type o color" style={{margin: '10px 0', flex: '1', 'min-width': "300px"}}>
+        <Form.Item label="Choose type o color" style={{margin: '10px 0', flex: '1', 'minWidth': "300px"}}>
           <Select
             value={selectedColorRange}
             onChange={handleColorRangeChange}
@@ -183,7 +183,7 @@ const PaintStep = ({ orderID, fetchOrderData, fetchDecorData, checkDecor, sendDe
           </Select>
         </Form.Item>
 
-        <Form.Item label="Sorting by group" style={{margin: '10px 0', flex: '1', 'min-width': "300px"}} >
+        <Form.Item label="Sorting by group" style={{margin: '10px 0', flex: '1', 'minWidth': "300px"}} >
         <Select
           value={selectedColorGroup}
           onChange={handleColorGroupChange}

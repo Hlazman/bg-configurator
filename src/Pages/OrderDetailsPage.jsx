@@ -5,11 +5,12 @@ import html2pdf from 'html2pdf.js';
 import axios from 'axios';
 import { useOrder } from '../Context/OrderContext';
 import { OrderDescription } from '../Components/OrderDescription';
+import { useParams } from 'react-router-dom';
 
 
 export const OrderDetailsPage = () => {
   const jwtToken = localStorage.getItem('token');
-  const { orderId } = useOrder();
+  const { orderId, setOrderId } = useOrder();
   const [orderData, setOrderData] = useState(null);
   const [subordersId, setSubordersId] = useState(null);
 
@@ -225,71 +226,6 @@ const fetchFrameData = async (frameId) => {
   }
 }
 
-// const fetchDoorData = async (doorId) => {
-//   try {
-//     const doorSuborderResponse = await axios.post(
-//       'https://api.boki.fortesting.com.ua/graphql',
-//       {
-//         query: `
-//           query DoorSuborder($doorSuborderId: ID) {
-//             doorSuborder(id: $doorSuborderId) {
-//               data {
-//                 attributes {
-//                   price
-//                   sizes {
-//                     height
-//                     thickness
-//                     width
-//                   }
-//                   door {
-//                     data {
-//                       attributes {
-//                         collection
-//                         product_properties {
-//                           title
-//                           image {
-//                             data {
-//                               attributes {
-//                                 url
-//                               }
-//                             }
-//                           }
-//                         }
-//                       }
-//                     }
-//                   }
-//                   decor {
-//                     data {
-//                       attributes {
-//                         title
-//                         type
-//                       }
-//                     }
-//                   }
-//                 }
-//               }
-//             }
-//           }
-//         `,
-//         variables: {
-//           doorSuborderId: doorId,
-//         },
-//       },
-//       {
-//         headers: {
-//           'Content-Type': 'application/json',
-//           Authorization: `Bearer ${jwtToken}`,
-//         },
-//       }
-//     );
-
-//     const doorSuborderData = doorSuborderResponse?.data?.data?.doorSuborder?.data?.attributes;
-//     setDoorData(doorSuborderData);
-//   } catch (error) {
-//     console.error('Error while fetching door suborder data:', error);
-//   }
-// }
-
 const fetchDoorData = async (doorId) => {
   try {
     const doorSuborderResponse = await axios.post(
@@ -455,67 +391,6 @@ const fetchDoorData = async (doorId) => {
     console.error('Error while fetching door suborder data:', error);
   }
 }
-
-// const fetchElementsData = async (elementIds) => {
-//   const elementDataArray = [];
-
-//   for (const elementId of elementIds) {
-//     try {
-//       const elementSuborderResponse = await axios.post(
-//         'https://api.boki.fortesting.com.ua/graphql',
-//         {
-//           query: `
-//             query ElementSuborders($elementSuborderId: ID) {
-//               elementSuborder(id: $elementSuborderId) {
-//                 data {
-//                   attributes {
-//                     amount
-//                     price
-//                     sizes {
-//                       height
-//                       thickness
-//                       width
-//                     }
-//                     element {
-//                       data {
-//                         attributes {
-//                           title
-//                         }
-//                       }
-//                     }
-//                     decor {
-//                       data {
-//                         attributes {
-//                           title
-//                           type
-//                         }
-//                       }
-//                     }
-//                   }
-//                 }
-//               }
-//             }
-//           `,
-//           variables: {
-//             elementSuborderId: elementId,
-//           },
-//         },
-//         {
-//           headers: {
-//             'Content-Type': 'application/json',
-//             Authorization: `Bearer ${jwtToken}`,
-//           },
-//         }
-//       );
-
-//       const elementSuborderData = elementSuborderResponse?.data?.data?.elementSuborder?.data?.attributes;
-//       elementDataArray.push(elementSuborderData);
-//     } catch (error) {
-//       console.error('Error while fetching element suborder data:', error);
-//     }
-//   }
-//   setElementData(elementDataArray);
-// }
 
 const fetchElementsData = async (elementIds) => {
   const elementDataArray = [];
@@ -836,9 +711,16 @@ const fetchLockData = async (lockId) => {
   }
 }
 
+const { orderId: urlOrderId } = useParams();
+
 useEffect(() => {
-  fetchData();
-}, [jwtToken, orderId]);
+  if (!orderId) {
+    setOrderId(urlOrderId);
+    fetchData();
+  } else {
+    fetchData();
+  }
+}, [jwtToken, orderId, urlOrderId]);
 
 
   return (
@@ -850,8 +732,8 @@ useEffect(() => {
 
       <div id="pdf-content">
         <OrderDescription
-          orderData={orderData} 
           orderId={orderId} 
+          orderData={orderData} 
           frameData={frameData}
           doorData={doorData}
           elementData={elementData}

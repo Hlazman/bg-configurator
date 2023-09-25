@@ -1,16 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import { Steps, Form, Input, Button, Divider} from 'antd';
+import { Steps, Form, Input, Button} from 'antd';
 import { OrderDrawer } from '../Components/OrderDrawer';
 import GroupDoorStep from '../Components/CreateOrderSteps/GroupDoorStep';
 import GroupDecorStep from '../Components/CreateOrderSteps/GroupDecorStep';
 import GroupAccessoriesStep from '../Components/CreateOrderSteps/GroupAccessoriesStep';
 import ElementsStep from '../Components/CreateOrderSteps/ElementsStep';
-import { useLocation } from 'react-router-dom';
 import InformationStep from '../Components/CreateOrderSteps/InformationStep';
 import FrameStep from '../Components/CreateOrderSteps/FrameStep';
 import axios from 'axios';
 import { useOrder } from '../Context/OrderContext';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { CreateColorDrawer } from '../Components/CreateColorDrawer';
 
 export const CreateOrderPage = ({language}) => {
@@ -26,7 +25,6 @@ export const CreateOrderPage = ({language}) => {
    } = useOrder();
   
   const navigate = useNavigate();
-  const location = useLocation();
   const [currentStep, setCurrentStep] = useState(0);
 
   const handlePrev = () => {
@@ -184,20 +182,20 @@ export const CreateOrderPage = ({language}) => {
     }
   };
 
-  useEffect(() => {
-    handleCreateOrder();
-  },[])
-
-  // const savedCurrentOrderPage = localStorage.getItem('currentOrder');
-  // localStorage.setItem('currentOrder', location.pathname);
-  
   // useEffect(() => {
-  //   if (savedCurrentOrderPage) {
-  //     setOrderId(savedCurrentOrderPage);
-  //   } else {
-  //     handleCreateOrder();
-  //   }
-  // }, [setOrderId, savedCurrentOrderPage]);
+  //   handleCreateOrder();
+  // },[])
+
+  const { orderId: urlOrderId } = useParams();
+
+  useEffect(() => {
+    if (urlOrderId) {
+      setOrderId(urlOrderId);
+      navigate(`/editorder/`);
+    } else {
+      handleCreateOrder()
+    }
+  }, []);
 
   const renderFormStep = () => {
     switch (currentStep) {
@@ -275,7 +273,7 @@ export const CreateOrderPage = ({language}) => {
 
       <Steps
         style={{background: '#F8F8F8', border: '1px solid #DCDCDC', margin: '30px 0', borderRadius: '10px'}}
-        current={currentStep} 
+        current={currentStep}
         type='navigation'
         onChange={handleStepClick}
         items={[

@@ -90,6 +90,10 @@ const getHeaderTitle = (location, Id) => {
     return `${language.client} #${Id}`;
   }
 
+  if (location.pathname.startsWith('/order/')) {
+    return `Order Details #${Id}`;
+  }
+
   switch (location.pathname) {
     case '/':
       return language.orders;
@@ -103,9 +107,6 @@ const getHeaderTitle = (location, Id) => {
         return language.resetPass;
     case '/savepassword':
       return language.savePass;
-    case '/order':
-      // USE LANGUAGE
-      return 'Order Details';
     default:
       return language.notFound;
   }
@@ -113,23 +114,22 @@ const getHeaderTitle = (location, Id) => {
 
   const headerTitle = getHeaderTitle(location, orderId);
 
-  // useEffect(() => {
-  //   localStorage.setItem('savedPath', location.pathname);
+  useEffect(() => {
+    localStorage.setItem('savedPath', location.pathname);
+  }, [location.pathname]);
 
-  // }, [location.pathname]);
+  useEffect(() => {
+    if (!location.pathname.startsWith('/createorder/')) {
+      localStorage.removeItem('currentOrder');
+    }
 
-  // useEffect(() => {
-  //   if (!location.pathname.startsWith('/createorder/')) {
-  //     localStorage.removeItem('currentOrder');
-  //   }
-
-  //   const savedPath = localStorage.getItem('savedPath');
-  //   if (savedPath) {
-  //     navigate(savedPath);
-  //   } else {
-  //     navigate('/');
-  //   }
-  // }, [location.pathname]);
+    const savedPath = localStorage.getItem('savedPath');
+    if (savedPath) {
+      navigate(savedPath);
+    } else {
+      navigate('/');
+    }
+  }, [location.pathname, navigate]);
   
   return (
     <ConfigProvider
@@ -190,10 +190,11 @@ const getHeaderTitle = (location, Id) => {
                   <Route path="/editclient/:clientId" element={<EditClientPage language={language} />} />
                   <Route path="/createorder" element={<CreateOrderPage />} />
                   <Route path="/createorder/:orderId" element={<CreateOrderPage language={language}/>} />
-                  <Route path="/editorder" element={<EditOrderPage orderID={orderId} language={language}/>} />
+                  <Route path="/editorder" element={<EditOrderPage language={language}/>} />
                   <Route path="/editorder/:orderId" element={<EditOrderPage language={language}/>} />
                   <Route path="/files" element={<FilesPage />} />
-                  <Route path="/order" element={<OrderDetailsPage />} />
+                  {/* <Route path="/order" element={<OrderDetailsPage />} /> */}
+                  <Route path="/order/:orderId" element={<OrderDetailsPage />} />
                   <Route path="/resetpassword" element={<ResetPasswordPage language={language} />} />
                   <Route path="/savepassword" element={<SavePasswordPage language={language} />} />
                   <Route path="*" element={<NotFoundPage language={language} />} />

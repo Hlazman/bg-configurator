@@ -206,12 +206,12 @@ const HingeStep = ({ orderID }) => {
         addonBefore="Search by hinge name"
         value={searchQuery}
         onChange={e => handleSearchQueryChange(e.target.value)}
-        style={{margin: '10px 0', flex: '1', 'min-width': "300px"}}
+        style={{margin: '10px 0', flex: '1', 'minWidth': "300px"}}
       />
 
       <Form.Item 
         label="Sorting by brands"
-        style={{margin: '10px 0', flex: '1', 'min-width': "300px"}}  
+        style={{margin: '10px 0', flex: '1', 'minWidth': "300px"}}  
       >
         <Select
           value={selectedBrand}

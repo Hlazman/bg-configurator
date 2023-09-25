@@ -229,7 +229,7 @@ const CanvasStep = ({ formData, handleNext}) => {
     >
     
     <div style={{display: 'flex', gap: '20px', flexWrap: 'wrap'}}>
-      <Form.Item style={{margin: '10px 0', flex: '1', 'min-width': "300px"}}>
+      <Form.Item style={{margin: '10px 0', flex: '1', 'minWidth': "300px"}}>
         <Input
           addonBefore="Search by door name"
           placeholder="Search"
@@ -238,7 +238,7 @@ const CanvasStep = ({ formData, handleNext}) => {
         />
       </Form.Item>
 
-      <Form.Item label="Sorting by models" style={{margin: '10px 0', flex: '1', 'min-width': "300px"}}>
+      <Form.Item label="Sorting by models" style={{margin: '10px 0', flex: '1', 'minWidth': "300px"}}>
           <Select
               value={selectedCollection}
               onChange={handleCollectionChange}

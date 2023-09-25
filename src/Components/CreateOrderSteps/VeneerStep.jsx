@@ -132,12 +132,12 @@ const VeneerStep = ({ orderID, fetchOrderData, fetchDecorData, checkDecor, sendD
         addonBefore="Search by veener name"
         value={searchQuery}
         onChange={e => handleSearchQueryChange(e.target.value)}
-        style={{margin: '10px 0', flex: '1', 'min-width': "300px"}}
+        style={{margin: '10px 0', flex: '1', 'minWidth': "300px"}}
       />
 
       <Form.Item 
         label="Sorting by Category"
-        style={{margin: '10px 0', flex: '1', 'min-width': "300px"}}
+        style={{margin: '10px 0', flex: '1', 'minWidth': "300px"}}
       >
         <Select
           value={selectedCategory}
