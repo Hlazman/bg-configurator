@@ -7,9 +7,13 @@ import MirrorStep from './MirrorStep';
 import HPLStep from './HPLStep';
 import axios from 'axios';
 import PrimerStep from './PrimerStep';
+import { useLanguage } from '../../Context/LanguageContext';
+import languageMap from '../../Languages/language';
 
 const GroupDecorElementStep = (elementID) => {
   const [activeTab, setActiveTab] = useState('veneer');
+  const { selectedLanguage } = useLanguage();
+  const language = languageMap[selectedLanguage];
   const jwtToken = localStorage.getItem('token');
 
   const handleTabChange = tabKey => {
@@ -139,7 +143,6 @@ const GroupDecorElementStep = (elementID) => {
             data: {
               title: data.title,
               type: data.type,
-              // [data.type]: data.productId,
               [dataType]: data.productId,
             }
           }
@@ -167,19 +170,18 @@ const GroupDecorElementStep = (elementID) => {
   
     if (foundDecor) {
       setSelectedDecorId(foundDecor.id);
-      console.log(`Найден декор с типом ${type} и названием ${title}`);
-      console.log(foundDecor.id);
+      console.log(`Found ${type} ${title}`);
     } else {
-      console.log(`Декор с типом ${type} и названием ${title} не найден. Создаем новый...`);
+      console.log(`Not Found ${type} ${title} Creating...`);
   
       try {
         const newDecorId = await createDecor({ title, type, productId});
         // fetchDecorData();
         fetchDecorData(setDecorData);
         setSelectedDecorId(newDecorId);
-        console.log(`Декор успешно создан с id: ${newDecorId}`);
+        console.log(`Created: ${newDecorId}`);
       } catch (error) {
-        console.error('Ошибка при создании декора:', error);
+        console.error('Error creating:', error);
       }
     }
   };
@@ -215,10 +217,10 @@ const GroupDecorElementStep = (elementID) => {
         }
       );
       console.log('Data sent successfully:');
-      message.success('Decor add successfully');
+      message.success(language.successQuery);
     } catch (error) {
       console.error('Error sending data:', error);
-      message.error('Error to add Decor');
+      message.error(language.errorQuery);
     }
   };
 
@@ -230,7 +232,7 @@ const GroupDecorElementStep = (elementID) => {
       destroyInactiveTabPane={true}
       items={[
         {
-          label: 'Veneer',
+          label: language.veneer,
           key: 'veneer',
           children: 
             <VeneerStep 
@@ -241,7 +243,7 @@ const GroupDecorElementStep = (elementID) => {
             />,
         },
         {
-          label: 'Paint',
+          label: language.paint,
           key: 'paint',
           children: 
             <PaintStep 
@@ -252,7 +254,7 @@ const GroupDecorElementStep = (elementID) => {
             />,
         },
         {
-          label: 'Stoneware',
+          label: language.stoneware,
           key: 'stoneware',
           children: 
             <StoneStep 
@@ -263,7 +265,7 @@ const GroupDecorElementStep = (elementID) => {
           />,
         },
         {
-          label: 'Mirror',
+          label: language.mirror,
           key: 'mirror',
           children: 
             <MirrorStep 
@@ -274,7 +276,7 @@ const GroupDecorElementStep = (elementID) => {
           />,
         },
         {
-          label: 'HPL Panels',
+          label: language.hpl,
           key: 'hpl',
           children: 
             <HPLStep 
@@ -285,7 +287,7 @@ const GroupDecorElementStep = (elementID) => {
             />,
         },
         {
-          label: 'Primers',
+          label: language.primer,
           key: 'primer',
           children: 
             <PrimerStep 

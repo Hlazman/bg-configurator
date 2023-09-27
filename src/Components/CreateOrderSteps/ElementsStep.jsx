@@ -3,9 +3,13 @@ import { Tabs, Spin } from 'antd';
 import axios from 'axios';
 import { useOrder } from '../../Context/OrderContext';
 import DecorElementForm from '../Forms/DecorElementForm';
+import { useLanguage } from '../../Context/LanguageContext';
+import languageMap from '../../Languages/language';
 
 const ElementsStep = ({ setCurrentStepSend }) => {
   const jwtToken = localStorage.getItem('token');
+  const { selectedLanguage } = useLanguage();
+  const language = languageMap[selectedLanguage];
   
   // const { order } = useOrder();
   // const orderId = order.id;
@@ -59,7 +63,8 @@ const ElementsStep = ({ setCurrentStepSend }) => {
           const orderData = response.data.data.order.data.attributes.element_suborders.data;
           if (orderData && orderData.length > 0) {
             const newItems = orderData.map((data, index) => {
-              const newActiveKey = `Element ${1 + newTabIndex.current++}`;
+              // const newActiveKey = `Element ${1 + newTabIndex.current++}`;
+              const newActiveKey = `${language.element} ${1 + newTabIndex.current++}`;
 
               return {
                 label: newActiveKey,
@@ -156,9 +161,9 @@ const ElementsStep = ({ setCurrentStepSend }) => {
         },
       });
   
-      console.log('Успешно удалено', response.data);
+      console.log('Deleted success', response.data);
     } catch (error) {
-      console.error('Ошибка при удалении', error);
+      console.error('Delete Error', error);
     }
   }
 
@@ -176,7 +181,8 @@ const ElementsStep = ({ setCurrentStepSend }) => {
   const add = async () => {
     setIsLoading(true);
     const suborderId = await createElementSuborder();
-    const newActiveKey = `Element ${1 + newTabIndex.current++}`;
+    // const newActiveKey = `Element ${1 + newTabIndex.current++}`;
+    const newActiveKey = `${language.element} ${1 + newTabIndex.current++}`;
     const newPanes = [...items];
     newPanes.push({
       label: newActiveKey,

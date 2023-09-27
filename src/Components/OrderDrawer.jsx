@@ -1,10 +1,16 @@
 import React, { useState } from 'react';
 import { Button, Drawer, Space } from 'antd';
 import { OrderDetailsPage } from '../Pages/OrderDetailsPage';
+import { useLanguage } from '../Context/LanguageContext';
+import languageMap from '../Languages/language';
+
 
 export const OrderDrawer = () => {
+  const { selectedLanguage } = useLanguage();
+  const language = languageMap[selectedLanguage];
   const [open, setOpen] = useState(false);
   const [size, setSize] = useState();
+  
   
   const showLargeDrawer = () => {
     setSize('large');
@@ -18,21 +24,21 @@ export const OrderDrawer = () => {
     <>
       <Space>
         <Button type="primary" onClick={showLargeDrawer}>
-          Order Details
+          {language.orderDetails}
         </Button>
       </Space>
       
       <Drawer
         destroyOnClose={true}
-        title="Order details"
+        title={language.orderDetails}
         placement="right"
         size={size}
         onClose={onClose}
         open={open}
         extra={
           <Space>
-            <Button onClick={onClose}>Cancel</Button>
-            <Button type="primary" onClick={onClose}>OK</Button>
+            <Button onClick={onClose}>{language.cancel}</Button>
+            <Button type="primary" onClick={onClose}>{language.ok}</Button>
           </Space>
         }
       >

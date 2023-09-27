@@ -4,8 +4,10 @@ import { Table, Dropdown, Space, Button, Input, Spin, Modal, message } from 'ant
 import { DownOutlined, SearchOutlined } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../Context/AuthContext';
+import { useLanguage } from '../Context/LanguageContext';
+import languageMap from '../Languages/language';
 
-export const ClientsPage = ({language}) => {
+export const ClientsPage = () => {
   const [loading, setLoading] = useState(true);
   const [clients, setClients] = useState([]);
   const [selectedFilters, setSelectedFilters] = useState([]);
@@ -16,6 +18,8 @@ export const ClientsPage = ({language}) => {
   });
   const [deleteClientId, setDeleteClientId] = useState(null);
   const { user } = useContext(AuthContext);
+  const { selectedLanguage } = useLanguage();
+  const language = languageMap[selectedLanguage];
 
   const jwtToken = localStorage.getItem('token');
 
@@ -46,11 +50,11 @@ export const ClientsPage = ({language}) => {
       );
   
       if (response.data.data.deleteClient) {
-        message.success(`${language.clientSuccsesRemove}`);
+        message.success(`${language.successDelete}`);
         fetchData();
       }
     } catch (error) {
-      message.error(`${language.clientError}`);
+      message.error(`${language.errorDelete}`);
     } finally {
       setDeleteClientId(null);
     }
@@ -365,7 +369,7 @@ export const ClientsPage = ({language}) => {
       </Spin>
 
       <Modal
-        title={`${language.removeClient} ${user.username}?`}
+        title={`${language.removeData} ${user.username}?`}
         open={deleteClientId !== null}
         onOk={handleDeleteClient}
         onCancel={() => setDeleteClientId(null)}

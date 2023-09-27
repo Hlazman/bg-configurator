@@ -2,12 +2,16 @@ import { Form, Button, Card, Spin, Select, message } from 'antd';
 import axios from 'axios';
 import { useOrder } from '../../Context/OrderContext';
 import { useEffect, useState } from 'react';
+import { useLanguage } from '../../Context/LanguageContext';
+import languageMap from '../../Languages/language';
 
 const { Option } = Select;
 
 // const FrameStep = ({ orderID }) => {
 const FrameStep = ({ setCurrentStepSend }) => {
   const jwtToken = localStorage.getItem('token');
+  const { selectedLanguage } = useLanguage();
+  const language = languageMap[selectedLanguage];
   
   // const { order } = useOrder();
   // const updateOrderId = order?.id;
@@ -95,7 +99,6 @@ const FrameStep = ({ setCurrentStepSend }) => {
         }
     });
   
-    // query for frames
     axios.post(
       'https://api.boki.fortesting.com.ua/graphql',
       {
@@ -117,11 +120,9 @@ const FrameStep = ({ setCurrentStepSend }) => {
           },
           filters: {
             hidden: {
-              // eq: orderData?.hidden || true
               eq: orderData?.hidden || null
             },
             opening: {
-              // eq: orderData?.opening || "inside"
               eq: orderData?.opening || null
             },
           }
@@ -143,7 +144,6 @@ const FrameStep = ({ setCurrentStepSend }) => {
   
   const handleFormSubmit = () => {
     const selectedFrameId = form.getFieldValue('name');
-    // Подготавливаем данные для отправки
     const dataToUpdate = {
       decor: orderData?.door_suborder?.data?.attributes?.decor?.data?.id,
       frame: selectedFrameId,
@@ -155,7 +155,6 @@ const FrameStep = ({ setCurrentStepSend }) => {
       }
     };
 
-    // query update frame
     axios.post(
       'https://api.boki.fortesting.com.ua/graphql',
       {
@@ -181,7 +180,7 @@ const FrameStep = ({ setCurrentStepSend }) => {
       }
     ).then(response => {
       console.log('Data updated:', response.data);
-      message.success('Frame added successfully');
+      message.success(language.successQuery);
       setCurrentStepSend(prevState => {
         return {
           ...prevState,
@@ -190,7 +189,7 @@ const FrameStep = ({ setCurrentStepSend }) => {
       });
     }).catch(error => {
       console.error('Error updating data:', error);
-      message.error('Error add frame');
+      message.error(language.errorQuery);
     });
   };
 
@@ -200,13 +199,13 @@ const FrameStep = ({ setCurrentStepSend }) => {
       <Form form={form} onFinish={handleFormSubmit}> 
           
         <Form.Item
-          label="Choose frame"
+          label={language.frame}
           name="name"
           style={{ marginTop: '20px' }}
-          rules={[{ required: true, message: 'Please select a frame!' }]}
+          rules={[{ required: true, message: language.requiredField }]}
         >
           <Select
-            placeholder="Select an frame"
+            placeholder={language.frame}
             allowClear
           >
             {frames.map(frame => (
@@ -217,7 +216,7 @@ const FrameStep = ({ setCurrentStepSend }) => {
 
         <Form.Item wrapperCol={{ offset: 4, span: 16 }}>
           <Button type="primary" htmlType="submit">
-            Submit
+            {language.submit}
           </Button>
         </Form.Item>
 

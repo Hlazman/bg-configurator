@@ -1,23 +1,23 @@
 import React, { useState, useEffect } from 'react';
-import { Steps, Form, Input, Button, Divider} from 'antd';
+import { Steps, Form, Input, Button} from 'antd';
 import { SearchOutlined } from '@ant-design/icons';
 import { OrderDrawer } from '../Components/OrderDrawer';
 import GroupDoorStep from '../Components/CreateOrderSteps/GroupDoorStep';
 import GroupDecorStep from '../Components/CreateOrderSteps/GroupDecorStep';
 import GroupAccessoriesStep from '../Components/CreateOrderSteps/GroupAccessoriesStep';
 import ElementsStep from '../Components/CreateOrderSteps/ElementsStep';
-// import { useParams } from 'react-router-dom';
 import InformationStep from '../Components/CreateOrderSteps/InformationStep';
 import FrameStep from '../Components/CreateOrderSteps/FrameStep';
-
 import axios from 'axios';
 import { useOrder } from '../Context/OrderContext';
 import { useNavigate, useParams } from 'react-router-dom';
 import { CreateColorDrawer } from '../Components/CreateColorDrawer';
+import { useLanguage } from '../Context/LanguageContext';
+import languageMap from '../Languages/language';
 
-// export const EditOrderPage = ({language, orderID}) => {
-export const EditOrderPage = ({language, }) => {
-
+export const EditOrderPage = () => {
+  const { selectedLanguage } = useLanguage();
+  const language = languageMap[selectedLanguage];
   const jwtToken = localStorage.getItem('token');  
   // const { addOrder, addSuborder, editOrderId } = useOrder();
   const { 
@@ -27,7 +27,6 @@ export const EditOrderPage = ({language, }) => {
     hingeSuborderId, sethiHgeSuborderId,
     knobeSuborderId, setKnobeSuborderId,
     lockSuborderId, setLockSuborderId,
-    // editOrderId,
    } = useOrder();
   const navigate = useNavigate();
 
@@ -130,49 +129,23 @@ export const EditOrderPage = ({language, }) => {
     switch (currentStep) {
       case 0:
         return (
-          <GroupDoorStep
-            // formData={formData}
-            // handleCardClick={handleCardClick}
-            // handleNext={handleNext}
-            // orderId={editOrderId}
-            language={language}
-          />
+          <GroupDoorStep />
         );
       case 1:
         return (
-          <GroupDecorStep
-            // formData={formData}
-            // handleCardClick={handleCardClick}
-            // handleNext={handleNext}
-            language={language}
-        />
+          <GroupDecorStep />
         );
         case 2:
         return (
-          <FrameStep
-            // formData={formData}
-            // handleCardClick={handleCardClick}
-            // handleNext={handleNext}
-            language={language}
-          />
+          <FrameStep />
         );
       case 3:
         return (
-          <ElementsStep
-            // formData={formData}
-            // handleCardClick={handleCardClick}
-            // handleNext={handleNext}
-            language={language}
-          />
+          <ElementsStep />
         );
       case 4:
         return (
-          <GroupAccessoriesStep
-            // formData={formData}
-            // handleCardClick={handleCardClick}
-            // handleNext={handleNext}
-            language={language}
-        />
+          <GroupAccessoriesStep />
         );
         case 5:
         return (
@@ -181,15 +154,11 @@ export const EditOrderPage = ({language, }) => {
               <Input />
             </Form.Item>
             <Button onClick={handlePrev}>Назад</Button>
-            <Button type="primary" htmlType="submit"> Отправить </Button>
           </Form>
         );
         case 6:
         return (
-          <InformationStep
-            // formData={formData}
-            language={language}
-        />
+          <InformationStep />
         );
       default:
         return null;
@@ -208,11 +177,11 @@ export const EditOrderPage = ({language, }) => {
           <CreateColorDrawer/>
 
           <Button type="dashed" icon={<SearchOutlined />} href="https://www.ralcolorchart.com/" target="_blank">
-            RAL colors
+            RAL {language.colors}
           </Button>
 
           <Button type="dashed" icon={<SearchOutlined />} href="https://www.ncscolorguide.com/" target="_blank">
-            NSC colors
+            NSC {language.colors}
           </Button>
         </div>
       </div>

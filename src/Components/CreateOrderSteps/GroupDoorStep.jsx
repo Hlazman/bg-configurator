@@ -2,11 +2,13 @@ import React, { useState } from 'react';
 import { Tabs } from 'antd';
 import CanvasStep from './CanvasStep';
 import StartDataStep from './StartDataStep';
-// import FrameStep from './FrameStep';
+import { useLanguage } from '../../Context/LanguageContext';
+import languageMap from '../../Languages/language';
 
-// const GroupDoorStep = ({ formData, handleCardClick, handleNext, editOrderId }) => {
 const GroupDoorStep = ({ setCurrentStepSend }) => {
   const [activeTab, setActiveTab] = useState('startdata');
+  const { selectedLanguage } = useLanguage();
+  const language = languageMap[selectedLanguage];
 
   const handleTabChange = tabKey => {
     setActiveTab(tabKey);
@@ -19,22 +21,16 @@ const GroupDoorStep = ({ setCurrentStepSend }) => {
       onChange={handleTabChange} 
       items={[
         {
-          label: 'Start Data',
+          label: language.startData,
           key: 'startdata',
-          // children: <StartDataStep formData={formData} handleCardClick={handleCardClick} handleNext={handleNext} orderID={editOrderId}/>,
           children: <StartDataStep setCurrentStepSend={setCurrentStepSend}/>,
         },
         {
-          label: 'Canvas',
+          label: language.canvas,
           key: 'canvas',
           // children: <CanvasStep formData={formData} handleCardClick={handleCardClick} handleNext={handleNext} />,
           children: <CanvasStep setCurrentStepSend={setCurrentStepSend} />,
         },
-        // {
-        //   label: 'Frame',
-        //   key: 'frame',
-        //   children: <FrameStep formData={formData} handleCardClick={handleCardClick} handleNext={handleNext} />,
-        // },
       ]}
     />
   );

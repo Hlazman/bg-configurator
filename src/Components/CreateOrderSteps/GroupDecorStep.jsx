@@ -7,11 +7,14 @@ import MirrorStep from './MirrorStep';
 import HPLStep from './HPLStep';
 import axios from 'axios';
 import PrimerStep from './PrimerStep';
-// import { useOrder } from '../../Context/OrderContext';
+import { useLanguage } from '../../Context/LanguageContext';
+import languageMap from '../../Languages/language';
 
 const GroupDecorStep = ({ setCurrentStepSend }) => {
   const [activeTab, setActiveTab] = useState('veneer');
   const jwtToken = localStorage.getItem('token');
+  const { selectedLanguage } = useLanguage();
+  const language = languageMap[selectedLanguage];
 
   const handleTabChange = tabKey => {
     setActiveTab(tabKey);
@@ -173,17 +176,17 @@ const GroupDecorStep = ({ setCurrentStepSend }) => {
   
     if (foundDecor) {
       setSelectedDecorId(foundDecor.id);
-      console.log(`Найден декор c типом ${type} и названием ${title}`);
+      console.log(`Found ${type}  ${title}`);
     } else {
-      console.log(`Декор c типом ${type} и названием ${title} не найден. Cоздаем новый...`);
+      console.log(`Not found ${type}  ${title} . Creating...`);
   
       try {
         const newDecorId = await createDecor({ title, type, productId});
         fetchDecorData(setDecorData);
         setSelectedDecorId(newDecorId);
-        console.log(`Декор успешно создан c id: ${newDecorId}`);
+        console.log(`Created: ${newDecorId}`);
       } catch (error) {
-        console.error('Ошибка при создании декора:', error);
+        console.error('Error creating:', error);
       }
     }
   };
@@ -222,7 +225,7 @@ const GroupDecorStep = ({ setCurrentStepSend }) => {
         }
       );
       console.log('Data sent successfully:', response.data);
-      message.success('Decor add successfully');
+      message.success(language.successQuery);
       setCurrentStepSend(prevState => {
         return {
           ...prevState,
@@ -231,7 +234,7 @@ const GroupDecorStep = ({ setCurrentStepSend }) => {
       });
     } catch (error) {
       console.error('Error sending data:', error);
-      message.error('Error to add Decor');
+      message.error(language.errorQuery);
     }
   };
 
@@ -243,7 +246,7 @@ const GroupDecorStep = ({ setCurrentStepSend }) => {
       destroyInactiveTabPane={true}
       items={[
         {
-          label: 'Veneer',
+          label: language.veneer,
           key: 'veneer',
           children: 
             <VeneerStep 
@@ -254,7 +257,7 @@ const GroupDecorStep = ({ setCurrentStepSend }) => {
             />,
         },
         {
-          label: 'Paint',
+          label: language.paint,
           key: 'paint',
           children: 
             <PaintStep 
@@ -265,7 +268,7 @@ const GroupDecorStep = ({ setCurrentStepSend }) => {
             />,
         },
         {
-          label: 'Stoneware',
+          label: language.stoneware,
           key: 'stoneware',
           children: 
             <StoneStep 
@@ -276,7 +279,7 @@ const GroupDecorStep = ({ setCurrentStepSend }) => {
           />,
         },
         {
-          label: 'Mirror',
+          label: language.mirror,
           key: 'mirror',
           children: 
             <MirrorStep 
@@ -287,7 +290,7 @@ const GroupDecorStep = ({ setCurrentStepSend }) => {
           />,
         },
         {
-          label: 'HPL Panels',
+          label: language.hpl,
           key: 'hpl',
           children: 
             <HPLStep 
@@ -298,7 +301,7 @@ const GroupDecorStep = ({ setCurrentStepSend }) => {
             />,
         },
         {
-          label: 'Primers',
+          label: language.primer,
           key: 'primer',
           children: 
             <PrimerStep 

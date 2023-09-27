@@ -2,8 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { Form, Input, Button, Card, Radio, Divider, Spin } from 'antd';
 import axios from 'axios';
 import { useOrder } from '../../Context/OrderContext';
+import { useLanguage } from '../../Context/LanguageContext';
+import languageMap from '../../Languages/language';
 
-const MirrorStep = ({orderID, fetchOrderData, fetchDecorData, checkDecor, sendDecorForm }) => {
+const MirrorStep = ({fetchOrderData, fetchDecorData, checkDecor, sendDecorForm }) => {
   const [mirrorData, setMirrorData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [previousMirrorTitle, setPreviousMirrorTitle] = useState(null);
@@ -11,6 +13,8 @@ const MirrorStep = ({orderID, fetchOrderData, fetchDecorData, checkDecor, sendDe
   const jwtToken = localStorage.getItem('token');
   const [decorData, setDecorData] = useState([]);
   const [selectedDecorId, setSelectedDecorId] = useState(null);
+  const { selectedLanguage } = useLanguage();
+  const language = languageMap[selectedLanguage];
   
   // const { order } = useOrder();
   // const orderId = order.id;
@@ -79,10 +83,9 @@ const MirrorStep = ({orderID, fetchOrderData, fetchDecorData, checkDecor, sendDe
 
   return (
     <Form onFinish={onFinish} form={form}>
-
         <Input
-          placeholder="Search"
-          addonBefore="Search by mirror name"
+          placeholder={language.search}
+          addonBefore={language.searchBy}
           value={searchQuery}
           onChange={e => setSearchQuery(e.target.value)}
           style={{ marginBottom: '10px' }}
@@ -94,7 +97,7 @@ const MirrorStep = ({orderID, fetchOrderData, fetchDecorData, checkDecor, sendDe
           <Spin size="large" />
         </div>
       ) : (
-        <Form.Item name="mirrorRadio" rules={[{ required: true, message: "Please choose Mirror" }]}>
+        <Form.Item name="mirrorRadio" rules={[{ required: true, message: language.requiredField }]}>
           <Radio.Group>
             <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}>
               {filteredMirrorData.map(mirror => (
@@ -132,7 +135,7 @@ const MirrorStep = ({orderID, fetchOrderData, fetchDecorData, checkDecor, sendDe
 
         <Form.Item wrapperCol={{ offset: 4, span: 16 }}>
           <Button type="primary" htmlType="submit">
-            Submit
+            {language.submit}
           </Button>
         </Form.Item>
 

@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { Form, Input, Button, Card, Radio, Divider, Spin, message } from 'antd';
 import axios from 'axios';
 import { useOrder } from '../../Context/OrderContext';
+import { useLanguage } from '../../Context/LanguageContext';
+import languageMap from '../../Languages/language';
 
 const StoneStep = ({ orderID, fetchOrderData, fetchDecorData, checkDecor, sendDecorForm }) => {
   const [stoneData, setStoneData] = useState([]);
@@ -11,6 +13,8 @@ const StoneStep = ({ orderID, fetchOrderData, fetchDecorData, checkDecor, sendDe
   const [previousStoneTitle, setPreviousStoneTitle] = useState(null);
   const [decorData, setDecorData] = useState([]);
   const [selectedDecorId, setSelectedDecorId] = useState(null);
+  const { selectedLanguage } = useLanguage();
+  const language = languageMap[selectedLanguage];
   
   // const { order } = useOrder();
   // const orderId = order.id;
@@ -81,8 +85,8 @@ const StoneStep = ({ orderID, fetchOrderData, fetchDecorData, checkDecor, sendDe
     <Form onFinish={onFinish} form={form}>
 
         <Input
-          placeholder="Search"
-          addonBefore="Search by ceramogranite name"
+        placeholder={language.search}
+        addonBefore={language.searchBy}
           value={searchQuery}
           onChange={e => setSearchQuery(e.target.value)}
           style={{ marginBottom: '10px' }}
@@ -94,7 +98,7 @@ const StoneStep = ({ orderID, fetchOrderData, fetchDecorData, checkDecor, sendDe
           <Spin size="large" />
         </div>
       ) : (
-        <Form.Item name="ceramograniteRadio" rules={[{ required: true, message: "Please choose Ceramogranite" }]}>
+        <Form.Item name="ceramograniteRadio" rules={[{ required: true, message: language.requiredField }]}>
           <Radio.Group>
             <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}>
               {filteredStoneData.map(stone => (
@@ -132,7 +136,7 @@ const StoneStep = ({ orderID, fetchOrderData, fetchDecorData, checkDecor, sendDe
 
         <Form.Item wrapperCol={{ offset: 4, span: 16 }}>
           <Button type="primary" htmlType="submit">
-            Submit
+            {language.submit}
           </Button>
         </Form.Item>
 

@@ -3,13 +3,17 @@ import { useParams } from 'react-router-dom';
 import { Form, Input, Button, Card, Space, Spin, message } from 'antd';
 import { UserOutlined, PlusOutlined, MinusCircleOutlined } from '@ant-design/icons';
 import axios from 'axios';
+import { useLanguage } from '../Context/LanguageContext';
+import languageMap from '../Languages/language';
 
-export const EditClientPage = ({language}) => {
+export const EditClientPage = () => {
   const jwtToken = localStorage.getItem('token');
   const { clientId } = useParams();
   const [form] = Form.useForm();
   const [addresses, setAddresses] = useState([{ id: 0, country: null, city: null, address: null, zipCode: null }]);
   const [loading, setLoading] = useState(false);
+  const { selectedLanguage } = useLanguage();
+  const language = languageMap[selectedLanguage];
 
   useEffect(() => {
     axios
@@ -68,7 +72,7 @@ export const EditClientPage = ({language}) => {
       })
       .catch((error) => {
         console.error(error);
-        message.error(language.clientGetError);
+        message.error(language.errorGet);
       });
   }, [clientId, jwtToken, form, language]);
 
@@ -127,12 +131,12 @@ export const EditClientPage = ({language}) => {
       )
       .then((response) => {
         setLoading(false);
-        message.success(language.clientEditSuccses);
+        message.success(language.successQuery);
       })
       .catch((error) => {
         setLoading(false);
         console.error(error);
-        message.error(language.clientEditError);
+        message.error(language.errorQuery);
       });
   };
 
@@ -146,7 +150,7 @@ export const EditClientPage = ({language}) => {
             rules={[
               {
                 required: true,
-                message: `${language.clientNameRequred}`,
+                message: `${language.requiredField}`,
               },
               {
                 min: 2,
@@ -154,7 +158,7 @@ export const EditClientPage = ({language}) => {
               },
             ]}
           >
-            <Input prefix={<UserOutlined />} placeholder={language.clientName} addonBefore={language.clientName} />
+            <Input prefix={<UserOutlined />} placeholder={language.name} addonBefore={language.name} />
           </Form.Item>
 
           <Form.Item name="client_company">
@@ -241,7 +245,7 @@ export const EditClientPage = ({language}) => {
 
           <Form.Item>
             <Button type="primary" htmlType="submit">
-              {language.saveChanges}
+              {language.submit}
             </Button>
           </Form.Item>
         </Form>

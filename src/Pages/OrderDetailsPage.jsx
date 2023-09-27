@@ -6,6 +6,8 @@ import axios from 'axios';
 import { useOrder } from '../Context/OrderContext';
 import { OrderDescription } from '../Components/OrderDescription';
 import { useParams } from 'react-router-dom';
+import { useLanguage } from '../Context/LanguageContext';
+import languageMap from '../Languages/language';
 
 
 export const OrderDetailsPage = () => {
@@ -13,6 +15,8 @@ export const OrderDetailsPage = () => {
   const { orderId, setOrderId } = useOrder();
   const [orderData, setOrderData] = useState(null);
   const [subordersId, setSubordersId] = useState(null);
+  const { selectedLanguage } = useLanguage();
+  const language = languageMap[selectedLanguage];
 
   const [doorData, setDoorData] = useState(null);
   const [frameData, setFrameData] = useState(null);
@@ -726,8 +730,8 @@ useEffect(() => {
   return (
     <div >
       <div style={{margin: '20px'}}>
-        <Button onClick={handlePdfExport}>Сохранить в PDF</Button>
-        <Button onClick={handleOpenPdf}>Открыть PDF</Button>
+        <Button onClick={handlePdfExport}>{language.save} PDF</Button>
+        <Button onClick={handleOpenPdf}>{language.open} PDF</Button>
       </div>
 
       <div id="pdf-content">

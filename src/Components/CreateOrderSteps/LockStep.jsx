@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { Form, Input, Button, Card, Radio, Select, Divider, Spin, message } from 'antd';
 import axios from 'axios';
 import { useOrder } from '../../Context/OrderContext';
+import { useLanguage } from '../../Context/LanguageContext';
+import languageMap from '../../Languages/language';
 
 const LockStep = ({ setCurrentStepSend }) => {
   const [lockData, setLockData] = useState([]);
@@ -9,7 +11,9 @@ const LockStep = ({ setCurrentStepSend }) => {
   // const [selectedBrand, setSelectedBrand] = useState('ALL');
   const [selectedBrand, setSelectedBrand] = useState('Polaris');
   const [isLoading, setIsLoading] = useState(true);
-  const [previousLockId, setPreviousLockId] = useState(null); 
+  const [previousLockId, setPreviousLockId] = useState(null);
+  const { selectedLanguage } = useLanguage();
+  const language = languageMap[selectedLanguage];
 
   
   // const { order } = useOrder();
@@ -142,7 +146,7 @@ const LockStep = ({ setCurrentStepSend }) => {
     )
     .then((response) => {
       console.log('Успешный ответ:', response.data);
-      message.success('Lock added successfully!');
+      message.success(language.successQuery);
       setCurrentStepSend(prevState => {
         return {
           ...prevState,
@@ -152,7 +156,7 @@ const LockStep = ({ setCurrentStepSend }) => {
     })
     .catch((error) => {
       console.error('Ошибка:', error);
-      message.error('Error to add Lock');
+      message.error(language.errorQuery);
     });
   }
 
@@ -208,15 +212,15 @@ const LockStep = ({ setCurrentStepSend }) => {
 
     <div style={{display: 'flex', gap: '20px', flexWrap: 'wrap'}}>
       <Input
-        placeholder="Search"
-        addonBefore="Search by lock name"
+        placeholder={language.search}
+        addonBefore={language.searchBy}
         value={searchQuery}
         onChange={e => handleSearchQueryChange(e.target.value)}
         style={{margin: '10px 0', flex: '1', 'minWidth': "300px"}}
         />
       
       <Form.Item 
-        label="Sorting by brands"
+        label={language.sorting}
         style={{margin: '10px 0', flex: '1', 'minWidth': "300px"}}
       >
         <Select
@@ -235,7 +239,7 @@ const LockStep = ({ setCurrentStepSend }) => {
       {isLoading ? (
         <Spin size="large" />
       ) : (
-        <Form.Item name="lockStep" rules={[{ required: true, message: "Please choose Lock" }]}>
+        <Form.Item name="lockStep" rules={[{ required: true, message: language.requiredField }]}>
           <Radio.Group >
             <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}>
               {filteredLocks.map((lock) => (
@@ -274,7 +278,7 @@ const LockStep = ({ setCurrentStepSend }) => {
 
       <Form.Item wrapperCol={{ offset: 4, span: 16 }}>
         <Button type="primary" htmlType="submit">
-          Submit
+          {language.submit}
         </Button>
       </Form.Item>
       

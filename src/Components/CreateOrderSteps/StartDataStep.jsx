@@ -2,18 +2,18 @@ import { Form, Button, Card, Radio, message } from 'antd';
 import axios from 'axios';
 import { useOrder } from '../../Context/OrderContext';
 import { useEffect, useState } from 'react';
+import { useLanguage } from '../../Context/LanguageContext';
+import languageMap from '../../Languages/language';
 
-// const StartDataStep = ({ handleNext, orderID }) => {
 const StartDataStep = ({ setCurrentStepSend }) => {
-  // const { order } = useOrder();
   const { orderId } = useOrder();
-  // const updateOrderId = order?.id;
   const jwtToken = localStorage.getItem('token');
-  // const orderIdToUse = orderID || updateOrderId;
   const orderIdToUse = orderId;
 
   const [form] = Form.useForm();
   const [orderData, setOrderData] = useState(null);
+  const { selectedLanguage } = useLanguage();
+  const language = languageMap[selectedLanguage];
 
   const fetchOrderData = async () => {
     try {
@@ -88,7 +88,7 @@ const StartDataStep = ({ setCurrentStepSend }) => {
           },
         }
       );
-      message.success('Order updated successfully');
+      message.success(language.successQuery);
       setCurrentStepSend(prevState => {
         return {
           ...prevState,
@@ -98,7 +98,7 @@ const StartDataStep = ({ setCurrentStepSend }) => {
       
     } catch (error) {
       console.error('Error updating order:', error);
-      message.error('Error updating order');
+      message.error(language.errorQuery);
     }
   };
 
@@ -110,11 +110,11 @@ const StartDataStep = ({ setCurrentStepSend }) => {
             label="Double Door"
             name="double_door"
             // initialValue={orderData ? orderData.double_door : null}
-            rules={[{ required: true, message: 'Please select Double Door option!' }]}
+            rules={[{ required: true, message: language.requiredField }]}
           >
             <Radio.Group buttonStyle="solid">
-              <Radio.Button value={true}>Yes</Radio.Button>
-              <Radio.Button value={false}>No</Radio.Button>
+              <Radio.Button value={true}>{language.yes}</Radio.Button>
+              <Radio.Button value={false}>{language.no}</Radio.Button>
             </Radio.Group>
           </Form.Item>
         </div>
@@ -124,11 +124,11 @@ const StartDataStep = ({ setCurrentStepSend }) => {
             label="Hidden"
             name="hidden"
             // initialValue={orderData?.hidden ?? null} 
-            rules={[{ required: true, message: 'Please select Hidden option!' }]}
+            rules={[{ required: true, message: language.requiredField }]}
           >
             <Radio.Group buttonStyle="solid">
-              <Radio.Button value={true}>Yes</Radio.Button>
-              <Radio.Button value={false}>No</Radio.Button>
+              <Radio.Button value={true}>{language.yes}</Radio.Button>
+              <Radio.Button value={false}>{language.no}</Radio.Button>
             </Radio.Group>
           </Form.Item>
         </div>
@@ -138,11 +138,11 @@ const StartDataStep = ({ setCurrentStepSend }) => {
             label="Side"
             name="side"
             // initialValue={orderData?.side ?? null} 
-            rules={[{ required: true, message: 'Please select Side option!' }]}
+            rules={[{ required: true, message: language.requiredField }]}
           >
             <Radio.Group buttonStyle="solid">
-              <Radio.Button value="left">Left</Radio.Button>
-              <Radio.Button value="right">Right</Radio.Button>
+              <Radio.Button value="left">{language.left}</Radio.Button>
+              <Radio.Button value="right">{language.right}</Radio.Button>
             </Radio.Group>
           </Form.Item>
         </div>
@@ -152,19 +152,19 @@ const StartDataStep = ({ setCurrentStepSend }) => {
             label="Opening"
             name="opening"
             // initialValue={orderData?.opening ?? null}
-            rules={[{ required: true, message: 'Please select Opening option!' }]}
+            rules={[{ required: true, message: language.requiredField }]}
           >
             <Radio.Group buttonStyle="solid">
-              <Radio.Button value="inside">Inside</Radio.Button>
-              <Radio.Button value="outside">Outside</Radio.Button>
-              <Radio.Button value="universal">Universal</Radio.Button>
+              <Radio.Button value="inside">{language.inside}</Radio.Button>
+              <Radio.Button value="outside">{language.outside}</Radio.Button>
+              <Radio.Button value="universal">{language.universal}</Radio.Button>
             </Radio.Group>
           </Form.Item>
         </div>
         
         <Form.Item>
           <Button type="primary" htmlType="submit">
-            Submit
+            {language.submit}
           </Button>
         </Form.Item>
       </Form>

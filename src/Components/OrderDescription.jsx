@@ -4,11 +4,15 @@ import dayjs from 'dayjs';
 import { AuthContext } from '../Context/AuthContext';
 import logo from '../logo.svg';
 import bg from '../bg.svg';
+import { useLanguage } from '../Context/LanguageContext';
+import languageMap from '../Languages/language';
 
 export const OrderDescription = (
   {orderData, orderId, frameData, doorData, elementData, lockData, hingeData, knobeData}
   ) => {
   const { user } = useContext(AuthContext);
+  const { selectedLanguage } = useLanguage();
+  const language = languageMap[selectedLanguage];
 
     if (!orderData) {
     return null;

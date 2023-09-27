@@ -14,14 +14,13 @@ export const Navigation = () => {
   
   const location = useLocation();
   const isCreateOrderDisabled = location.pathname.startsWith('/createorder/');
-  const createOrderContent = isCreateOrderDisabled ? 'Create Order' : <NavLink to="/createorder">{language.createOrder}</NavLink>;
+  const createOrderContent = isCreateOrderDisabled ? language.createOrder : <NavLink to="/createorder">{language.createOrder}</NavLink>;
 
   const menuItems = [
     { type: "divider" },
     {
       'key': "createorder", 
       'icon': <FormOutlined />,
-      // 'label': ( <NavLink to="/createorder">{language.createOrder}</NavLink>),
       'label': createOrderContent,
       'disabled': isCreateOrderDisabled,
     },

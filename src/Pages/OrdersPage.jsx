@@ -6,9 +6,12 @@ import { AuthContext } from '../Context/AuthContext';
 import { useOrder } from '../Context/OrderContext';
 import { EditOrderPage } from './EditOrderPage';
 import { useNavigate } from 'react-router-dom';
+import { useLanguage } from '../Context/LanguageContext';
+import languageMap from '../Languages/language';
 
-export const OrdersPage = ({language}) => {
-
+export const OrdersPage = () => {
+  const { selectedLanguage } = useLanguage();
+  const language = languageMap[selectedLanguage];
   const [selectedFilters, setSelectedFilters] = useState();
   const [data, setData] = useState([]);
     const [pagination, setPagination] = useState({
@@ -141,13 +144,11 @@ const handleOpenOrder = (orderID) => {
       );
 
       if (response.data.data.deleteOrder) {
-        // message.success(`${language.clientSuccsesRemove}`); ++++++++++++++++++++
-        message.success(`${language.clientSuccsesRemove}`);
+        message.success(`${language.successDelete}`);
         fetchData();
       }
     } catch (error) {
-      // message.error(`${language.clientError}`); ++++++++++++++++++++
-      message.error(`${language.clientError}`);
+      message.error(`${language.errorDelete}`);
       console.log(error)
     } finally {
       setDeleteOrderId(null);
@@ -694,7 +695,7 @@ const handleOpenOrder = (orderID) => {
       </Spin>
 
       <Modal
-        title={`${language.removeClient} ${user.username}?`}
+        title={`${language.removeData} ${user.username}?`}
         open={deleteOrderId !== null}
         onOk={() => deleteOrder(deleteOrderId)}
         onCancel={() => setDeleteOrderId(null)}

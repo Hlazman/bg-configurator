@@ -2,8 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { Form, Input, Button, Card, Radio, Select, Divider, Spin } from 'antd';
 import axios from 'axios';
 import { useOrder } from '../../Context/OrderContext';
+import { useLanguage } from '../../Context/LanguageContext';
+import languageMap from '../../Languages/language';
 
-const VeneerStep = ({ orderID, fetchOrderData, fetchDecorData, checkDecor, sendDecorForm }) => {
+const VeneerStep = ({ fetchOrderData, fetchDecorData, checkDecor, sendDecorForm }) => {
   const [veneerData, setVeneerData] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
   // const [selectedCategory, setSelectedCategory] = useState('ALL');
@@ -13,6 +15,8 @@ const VeneerStep = ({ orderID, fetchOrderData, fetchDecorData, checkDecor, sendD
   const [previousVeneerTitle, setPreviousVeneerTitle] = useState(null);
   const [decorData, setDecorData] = useState([]);
   const [selectedDecorId, setSelectedDecorId] = useState(null);
+  const { selectedLanguage } = useLanguage();
+  const language = languageMap[selectedLanguage];
   
   // const { order } = useOrder();
   // const orderId = order.id;
@@ -26,8 +30,7 @@ const VeneerStep = ({ orderID, fetchOrderData, fetchDecorData, checkDecor, sendD
     sendDecorForm(orderIdToUse, dorSuborderId, selectedDecorId);
   };
 
-  // const categoryOptions = ['ALL', ...new Set(veneerData.map(veneer => veneer.attributes.category))];
-  const categoryOptions = [...new Set(veneerData.map(veneer => veneer.attributes.category)), 'ALL'];
+  const categoryOptions = [...new Set(veneerData.map(veneer => veneer.attributes.category)), language.all];
 
   const handleCategoryChange = value => {
     localStorage.setItem('selectedCategory', value);
@@ -42,7 +45,7 @@ const VeneerStep = ({ orderID, fetchOrderData, fetchDecorData, checkDecor, sendD
 
   const filteredImgs = veneerData
     .filter(veneer =>
-      (selectedCategory === 'ALL' || veneer.attributes.category === selectedCategory) &&
+      (selectedCategory === language.all || veneer.attributes.category === selectedCategory) &&
       (veneer.attributes.main_properties.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
        veneer.attributes.code.toLowerCase().includes(searchQuery.toLowerCase()))
     )
@@ -51,7 +54,7 @@ const VeneerStep = ({ orderID, fetchOrderData, fetchDecorData, checkDecor, sendD
       title: veneer.attributes.main_properties.title,
       description: veneer.attributes.code,
       id: veneer.id,
-      productId: veneer.producId, // new
+      productId: veneer.producId,
     }));
 
   useEffect(() => {
@@ -111,7 +114,6 @@ const VeneerStep = ({ orderID, fetchOrderData, fetchDecorData, checkDecor, sendD
       }
     };
 
-    // const storedCategory = localStorage.getItem('selectedCategory') || 'ALL';
     const storedCategory = localStorage.getItem('selectedCategory') || 'lacquer_1';
     const storedSearchQuery = localStorage.getItem('searchQuery') || '';
 
@@ -128,15 +130,15 @@ const VeneerStep = ({ orderID, fetchOrderData, fetchDecorData, checkDecor, sendD
 
     <div style={{display: 'flex', gap: '20px', flexWrap: 'wrap'}}>
       <Input
-        placeholder="Search"
-        addonBefore="Search by veener name"
+        placeholder={language.search}
+        addonBefore={language.searchBy}
         value={searchQuery}
         onChange={e => handleSearchQueryChange(e.target.value)}
         style={{margin: '10px 0', flex: '1', 'minWidth': "300px"}}
       />
 
       <Form.Item 
-        label="Sorting by Category"
+        label={language.sorting}
         style={{margin: '10px 0', flex: '1', 'minWidth': "300px"}}
       >
         <Select
@@ -155,11 +157,10 @@ const VeneerStep = ({ orderID, fetchOrderData, fetchDecorData, checkDecor, sendD
       {isloading ? (
         <Spin size="large" />
       ) : (
-        <Form.Item name="veneerRadio" rules={[{ required: true, message: "Please choose decor" }]}>
+        <Form.Item name="veneerRadio" rules={[{ required: true, message: language.requiredField }]}>
           <Radio.Group >
             <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}>
               {filteredImgs.map((veneer) => (
-                // <div key={veneer.id} style={{ width: 220, margin: '20px 10px' }}>
                 <Radio key={veneer.id} value={veneer.id}>
                   <Card
                     className="custom-card"
@@ -172,10 +173,11 @@ const VeneerStep = ({ orderID, fetchOrderData, fetchDecorData, checkDecor, sendD
                         ? '7px solid #f06d20'
                         : 'none',
                     }}
-                    onClick={async () => {
-                      // await checkDecor('veneer', veneer.title, decorData, setSelectedDecorId, veneer.productId);
-                      await checkDecor('veneer', veneer.title, decorData, setSelectedDecorId, veneer.productId, setDecorData);
-                      await setPreviousVeneerTitle(veneer.title);
+                    onClick={() => {
+                      // await checkDecor('veneer', veneer.title, decorData, setSelectedDecorId, veneer.productId, setDecorData);
+                      // await setPreviousVeneerTitle(veneer.title);
+                      checkDecor('veneer', veneer.title, decorData, setSelectedDecorId, veneer.productId, setDecorData);
+                      setPreviousVeneerTitle(veneer.title);
                     }}
                   >
                     <div style={{ overflow: 'hidden', height: 220 }}>
@@ -201,7 +203,7 @@ const VeneerStep = ({ orderID, fetchOrderData, fetchDecorData, checkDecor, sendD
 
       <Form.Item wrapperCol={{ offset: 4, span: 16 }}>
         <Button type="primary" htmlType="submit">
-          Submit
+        {language.submit}
         </Button>
       </Form.Item>
 

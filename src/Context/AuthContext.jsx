@@ -62,7 +62,6 @@ export const AuthProvider = ({ children }) => {
 
       const { data } = response.data;
       if (data && data.login && data.login.jwt && data.login.user) {
-        // Successful login, set user data and token
         const { user, jwt } = data.login;
         setUser(user);
         if (rememberMe) {
@@ -70,11 +69,9 @@ export const AuthProvider = ({ children }) => {
         }
         localStorage.setItem('token', jwt);
       } else {
-        // Handle login error here if needed
         console.error('Login failed');
       }
     } catch (error) {
-      // Handle error here if needed
       console.error('Error occurred during login:', error);
     }
   };

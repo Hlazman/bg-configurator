@@ -2,11 +2,14 @@ import React, { useState } from 'react';
 import { Tabs } from 'antd';
 import HingesStep from './HingesStep';
 import KnobeStep from './KnobeStep';
-// import SkirtingStep from './SkirtingStep';
 import LockStep from './LockStep';
+import { useLanguage } from '../../Context/LanguageContext';
+import languageMap from '../../Languages/language';
 
 const GroupAccessoriesStep = ({ setCurrentStepSend }) => {
   const [activeTab, setActiveTab] = useState('hinges');
+  const { selectedLanguage } = useLanguage();
+  const language = languageMap[selectedLanguage];
 
   const handleTabChange = tabKey => {
     setActiveTab(tabKey);
@@ -19,28 +22,20 @@ const GroupAccessoriesStep = ({ setCurrentStepSend }) => {
     onChange={handleTabChange} 
     items={[
       {
-        label: 'Knobe',
+        label: language.knobe,
         key: 'knobe',
-        // children: <KnobeStep formData={formData} handleCardClick={handleCardClick} handleNext={handleNext} />,
         children: <KnobeStep setCurrentStepSend={setCurrentStepSend} />,
       },
       {
-        label: 'Hinges',
+        label: language.hinges,
         key: 'hinges',
-        // children: <HingesStep formData={formData} handleCardClick={handleCardClick} handleNext={handleNext} />,
         children: <HingesStep setCurrentStepSend={setCurrentStepSend} />,
       },
       {
-        label: 'Lock',
+        label: language.lock,
         key: 'lock',
-        // children: <LockStep formData={formData} handleCardClick={handleCardClick} handleNext={handleNext} />,
         children: <LockStep setCurrentStepSend={setCurrentStepSend} />,
       },
-      // {
-      //   label: 'Skirting',
-      //   key: 'skirting',
-      //   children: <SkirtingStep formData={formData} handleCardClick={handleCardClick} handleNext={handleNext} />,
-      // },
     ]}
   />
   );

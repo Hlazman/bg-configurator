@@ -12,10 +12,13 @@ import axios from 'axios';
 import { useOrder } from '../Context/OrderContext';
 import { useNavigate, useParams } from 'react-router-dom';
 import { CreateColorDrawer } from '../Components/CreateColorDrawer';
+import { useLanguage } from '../Context/LanguageContext';
+import languageMap from '../Languages/language';
 
 
-export const CreateOrderPage = ({language}) => {
-
+export const CreateOrderPage = () => {
+  const { selectedLanguage } = useLanguage();
+  const language = languageMap[selectedLanguage];
   const jwtToken = localStorage.getItem('token');  
   const { 
     orderId, setOrderId, 
@@ -218,35 +221,30 @@ export const CreateOrderPage = ({language}) => {
       case 0:
         return (
           <GroupDoorStep
-            language={language}
             setCurrentStepSend={setCurrentStepSend}
           />
         );
       case 1:
         return (
           <GroupDecorStep
-            language={language}
             setCurrentStepSend={setCurrentStepSend}
         />
         );
         case 2:
         return (
           <FrameStep
-            language={language}
             setCurrentStepSend={setCurrentStepSend}
           />
         );
       case 3:
         return (
           <ElementsStep
-            language={language}
             setCurrentStepSend={setCurrentStepSend}
           />
         );
       case 4:
         return (
           <GroupAccessoriesStep
-            language={language}
             setCurrentStepSend={setCurrentStepSend}
         />
         );
@@ -257,13 +255,11 @@ export const CreateOrderPage = ({language}) => {
               <Input />
             </Form.Item>
             <Button onClick={handlePrev}>Назад</Button>
-            <Button type="primary" htmlType="submit"> Отправить </Button>
           </Form>
         );
         case 6:
         return (
           <InformationStep
-            language={language}
             setCurrentStepSend={setCurrentStepSend}
         />
         );
@@ -284,11 +280,11 @@ export const CreateOrderPage = ({language}) => {
           <CreateColorDrawer/>
 
           <Button type="dashed" icon={<SearchOutlined />} href="https://www.ralcolorchart.com/" target="_blank">
-            RAL colors
+            RAL {language.colors}
           </Button>
 
           <Button type="dashed" icon={<SearchOutlined />} href="https://www.ncscolorguide.com/" target="_blank">
-            NSC colors
+            NSC {language.colors}
           </Button>
         </div>
       </div>

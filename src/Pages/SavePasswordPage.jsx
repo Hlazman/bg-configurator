@@ -1,10 +1,14 @@
 import React from 'react';
 import { Card, Form, Input, Button, Typography } from 'antd';
 import { LockOutlined } from '@ant-design/icons';
+import { useLanguage } from '../Context/LanguageContext';
+import languageMap from '../Languages/language';
 
 const { Title } = Typography;
 
-export const SavePasswordPage = ({language}) => {
+export const SavePasswordPage = () => {
+  const { selectedLanguage } = useLanguage();
+  const language = languageMap[selectedLanguage];
   const onFinish = (values) => {
     console.log('Received values:', values);
   };
@@ -32,13 +36,13 @@ export const SavePasswordPage = ({language}) => {
             name="confirmPassword"
             dependencies={['password']}
             rules={[
-              { required: true, message: `${language.confirmPassMes}` },
+              { required: true, message: `${language.confirmPass}` },
               ({ getFieldValue }) => ({
                 validator(_, value) {
                   if (!value || getFieldValue('password') === value) {
                     return Promise.resolve();
                   }
-                  return Promise.reject(new Error(`${language.passMatch}`));
+                  return Promise.reject(new Error(`${language.passMatchError}`));
                 },
               }),
             ]}

@@ -5,6 +5,8 @@ import axios from 'axios';
 import { Form, Input, Select, Radio, DatePicker, Button, message, InputNumber, Card } from 'antd';
 import { useOrder } from '../../Context/OrderContext';
 import dayjs from 'dayjs';
+import { useLanguage } from '../../Context/LanguageContext';
+import languageMap from '../../Languages/language';
 
 const { Option } = Select;
 const { TextArea } = Input;
@@ -17,6 +19,8 @@ const InformationStep = ({ setCurrentStepSend }) => {
   const jwtToken = localStorage.getItem('token');
   const locale = localStorage.getItem('selectedLanguage') || 'en'
   const navigate = useNavigate()
+  const { selectedLanguage } = useLanguage();
+  const language = languageMap[selectedLanguage];
   
   const [clients, setClients] = useState([]);
   const [form] = Form.useForm();
@@ -102,7 +106,7 @@ const InformationStep = ({ setCurrentStepSend }) => {
         }
       )
       .then((response) => {
-        message.success('The order has been successfully created!');
+        message.success(language.successQuery);
         setCurrentStepSend(prevState => {
           return {
             ...prevState,
@@ -117,12 +121,11 @@ const InformationStep = ({ setCurrentStepSend }) => {
       })
       // .then(()=> navigate('/'))
       .catch((error) => {
-        message.error('An error has occurred!');
+        message.error(language.errorQuery);
       });
   };
 
   useEffect(() => {
-    // Fetch order data when component mounts
     axios
       .post(
         'https://api.boki.fortesting.com.ua/graphql',
@@ -195,15 +198,15 @@ const InformationStep = ({ setCurrentStepSend }) => {
       
         <div style={{ display: 'flex', gap: '30px' }}>
           <Form.Item name="address" style={{ width: '100%' }} >
-            <Input addonBefore="Address"/>
+            <Input addonBefore={language.address}/>
           </Form.Item>
 
           <Form.Item name="city" style={{ width: '100%' }} >
-            <Input addonBefore="City"/>
+            <Input addonBefore={language.city}/>
           </Form.Item>
           
           <Form.Item name="country" style={{ width: '100%' }} >
-            <Input addonBefore="Country"/>
+            <Input addonBefore={language.country}/>
           </Form.Item>
           
           <Form.Item 
@@ -212,19 +215,19 @@ const InformationStep = ({ setCurrentStepSend }) => {
             rules={[
               {
                 pattern: /^[0-9]+$/,
-                message: 'Zip Code must be a number.',
+                message: language.zipCodeNumber,
               },
               ({ getFieldValue }) => ({
                 validator(_, value) {
                   if (!getFieldValue('zipCode') || value.length >= 5) {
                     return Promise.resolve();
                   }
-                  return Promise.reject('Zip Code must be at least 5 characters long.');
+                  return Promise.reject(language.zipCodeValid);
                 },
               }),
             ]}
           >
-            <Input addonBefore="Zip Code"/>
+            <Input addonBefore={language.zipCode}/>
           </Form.Item>
         </div>
 
@@ -234,17 +237,17 @@ const InformationStep = ({ setCurrentStepSend }) => {
             <DatePicker
               format={dateFormat}
               showTime 
-              addonBefore="deliveryAt" />
+              addonBefore={language.deliveryAt} />
           </Form.Item>
 
           <Form.Item 
             name="discount" 
             style={{ width: '100%' }}
           >
-            <InputNumber addonBefore="Discount"/>
+            <InputNumber addonBefore={language.discount}/>
           </Form.Item>
 
-          <Form.Item label="Currency" name="currency" style={{ width: '100%' }}>
+          <Form.Item label={language.currency} name="currency" style={{ width: '100%' }}>
             <Select>
               <Option value="EUR">EUR €</Option>
               <Option value="PLN">PLN zł</Option>
@@ -253,7 +256,7 @@ const InformationStep = ({ setCurrentStepSend }) => {
             </Select>
           </Form.Item>
 
-          <Form.Item label="Client" name="client" style={{ width: '100%' }}>
+          <Form.Item label={language.client} name="client" style={{ width: '100%' }}>
             <Select >
               {clients.map((client) => (
                 <Option key={client.id} value={client.id}>
@@ -265,7 +268,7 @@ const InformationStep = ({ setCurrentStepSend }) => {
         </div>
 
         <div style={{ display: 'flex', gap: '30px' }}>
-        <Form.Item label="Status" name="status">
+        <Form.Item label={language.status} name="status">
             <Radio.Group buttonStyle="solid">
               <Radio.Button value="Draft">Draft</Radio.Button>
               <Radio.Button value="Active">Active</Radio.Button>
@@ -273,13 +276,13 @@ const InformationStep = ({ setCurrentStepSend }) => {
           </Form.Item>
         </div>
 
-        <Form.Item label="Comment" name="comment">
+        <Form.Item label={language.comment} name="comment">
           <TextArea />
         </Form.Item>
 
         <Form.Item wrapperCol={{ offset: 4, span: 16 }}>
           <Button type="primary" htmlType="submit">
-            Submit
+            {language.submit}
           </Button>
         </Form.Item>
       </Form>

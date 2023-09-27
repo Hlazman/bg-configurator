@@ -2,10 +2,14 @@ import React, { useState } from 'react';
 import { Form, Input, Radio, Select, Button, Upload, message, Drawer, Space } from 'antd';
 import { UploadOutlined } from '@ant-design/icons';
 import axios from 'axios';
+import { useLanguage } from '../Context/LanguageContext';
+import languageMap from '../Languages/language';
 
 const { Option } = Select;
 
 export const CreateColorDrawer = () => {
+  const { selectedLanguage } = useLanguage();
+  const language = languageMap[selectedLanguage];
   const [open, setOpen] = useState(false);
   const [size, setSize] = useState();
   const jwtToken = localStorage.getItem('token');
@@ -63,7 +67,7 @@ export const CreateColorDrawer = () => {
       formData.append('0', values.image[0].originFileObj);
   
       const uploadResponse = await axios.post(
-        'https://api.boki.fortesting.com.ua/graphql', // Use the appropriate endpoint for file upload
+        'https://api.boki.fortesting.com.ua/graphql', 
         formData,
         {
           headers: {
@@ -74,9 +78,8 @@ export const CreateColorDrawer = () => {
   
       const imageId = uploadResponse.data.data.upload.data.id;
   
-      // Create paint with the uploaded image ID
       const response = await axios.post(
-        'https://api.boki.fortesting.com.ua/graphql', // Use the appropriate endpoint for creating paint
+        'https://api.boki.fortesting.com.ua/graphql',
         {
           query: `
             mutation CreatePaint($data: PaintInput!) {
@@ -109,11 +112,11 @@ export const CreateColorDrawer = () => {
       );
   
       console.log('Response:', response.data);
-      message.success('Color added successfully!');
+      message.success(language.successQuery);
       form.resetFields();
     } catch (error) {
       console.error('Error:', error);
-      message.error('Error to add Color');
+      message.error(language.errorQuery);
     } finally {
       setLoading(false);
     }
@@ -124,19 +127,19 @@ export const CreateColorDrawer = () => {
     <>
       <Space>
         <Button type="primary" onClick={showLargeDrawer}>
-          Create color
+          {language.createColor}
         </Button>
       </Space>
       
       <Drawer
-        title="Create color"
+        title={language.createColor}
         placement="right"
         size={size}
         onClose={onClose}
         open={open}
         extra={
           <Space>
-            <Button onClick={onClose}>Cancel</Button>
+            <Button onClick={onClose}>{language.cancel}</Button>
           </Space>
         }
       >
@@ -146,17 +149,17 @@ export const CreateColorDrawer = () => {
         onFinish={onFinish}
     >
       <Form.Item
-        label="Color Code (Title)"
+        label={language.colorCode}
         name="color_code"
-        rules={[{ required: true, message: 'Please input color code!' }]}
+        rules={[{ required: true, message: language.requiredField }]}
       >
         <Input />
       </Form.Item>
 
       <Form.Item
-        label="Color Range"
+        label={language.colorRange}
         name="color_range"
-        rules={[{ required: true, message: 'Please select color range!' }]}
+        rules={[{ required: true, message: language.requiredField }]}
       >
         <Select onChange={handleColorRangeChange}>
           <Option value="RAL">RAL</Option>
@@ -165,9 +168,9 @@ export const CreateColorDrawer = () => {
       </Form.Item>
 
       <Form.Item
-        label="Color Group"
+        label={language.colorGroup}
         name="color_group"
-        rules={[{ required: true, message: 'Please select color group!' }]}
+        rules={[{ required: true, message: language.requiredField }]}
       >
         <Select disabled={colorGroupDisabled}>
           <Option value="yellow_1">Yellow 1</Option>
@@ -184,22 +187,22 @@ export const CreateColorDrawer = () => {
       </Form.Item>
 
       <Form.Item
-        label="Standard"
+        label={language.standard}
         name="standard"
-        rules={[{ required: true, message: 'Please select standard!' }]}
+        rules={[{ required: true, message: language.requiredField }]}
       >
         <Radio.Group>
-          <Radio.Button value={true}>Yes</Radio.Button>
-          <Radio.Button value={false}>No</Radio.Button>
+          <Radio.Button value={true}>{language.yes}</Radio.Button>
+          <Radio.Button value={false}>{language.no}</Radio.Button>
         </Radio.Group>
       </Form.Item>
       
       <Form.Item
-        label="Image"
+        label={language.image}
         name="image"
         valuePropName="fileList"
         getValueFromEvent={normFile}
-        rules={[{ required: true, message: 'Please upload Image!' }]}
+        rules={[{ required: true, message: language.requiredField }]}
       >
         <Upload
           action="https://api.boki.fortesting.com.ua/"
@@ -207,14 +210,14 @@ export const CreateColorDrawer = () => {
           maxCount={1}
           listType="picture"
         >
-          <Button icon={<UploadOutlined />}>Click to upload</Button>
+          <Button icon={<UploadOutlined />}>{language.upload}</Button>
         </Upload>
        
       </Form.Item>
 
       <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
         <Button type="primary" htmlType="submit" loading={loading}>
-          Submit
+          {language.submit}
         </Button>
       </Form.Item>
     </Form>

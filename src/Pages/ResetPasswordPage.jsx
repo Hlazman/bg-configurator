@@ -1,10 +1,14 @@
 import React from 'react';
 import { Card, Form, Input, Button, Typography } from 'antd';
 import { UserOutlined } from '@ant-design/icons';
+import { useLanguage } from '../Context/LanguageContext';
+import languageMap from '../Languages/language';
 
 const { Title } = Typography;
 
-export const ResetPasswordPage = ({language}) => {
+export const ResetPasswordPage = () => {
+  const { selectedLanguage } = useLanguage();
+  const language = languageMap[selectedLanguage];
   const onFinish = (values) => {
     console.log('Received values:', values);
   };

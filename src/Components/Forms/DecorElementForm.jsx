@@ -3,13 +3,17 @@ import { Form, Button, Select, InputNumber, Spin, Radio, Space, message } from '
 import axios from 'axios';
 import { useOrder } from '../../Context/OrderContext';
 import GroupDecorElementStep from '../CreateOrderSteps/GroupDecorElementStep';
+import { useLanguage } from '../../Context/LanguageContext';
+import languageMap from '../../Languages/language';
 
 const { Option } = Select;
 
-const DecorElementForm = ({setCurrentStepSend, elementID, language}) => {
+const DecorElementForm = ({setCurrentStepSend, elementID}) => {
   const [elementOptions, setElementOptions] = useState([]);
   const [isloading, setIsLoading] = useState(true);
   const jwtToken = localStorage.getItem('token');
+  const { selectedLanguage } = useLanguage();
+  const language = languageMap[selectedLanguage];
 
   // const { order } = useOrder();
   // const orderId = order.id;
@@ -161,7 +165,7 @@ const DecorElementForm = ({setCurrentStepSend, elementID, language}) => {
       )
       .then(response => {
         console.log('Data updated successfully:', response);
-        message.success('Element added successfully');
+        message.success(language.successQuery);
         setCurrentStepSend(prevState => {
           return {
             ...prevState,
@@ -171,13 +175,12 @@ const DecorElementForm = ({setCurrentStepSend, elementID, language}) => {
       })
       .catch(error => {
         console.error('Error updating data:', error);
-        message.error('Error to add element');
+        message.error(language.errorQuery);
       });
     }
   };
 
   const getDecorFromSuborder = () => {
-    // if (doorSuborder) {
     if (dorSuborderId) {
       axios.post(
         'https://api.boki.fortesting.com.ua/graphql',
@@ -198,7 +201,6 @@ const DecorElementForm = ({setCurrentStepSend, elementID, language}) => {
             }
           `,
           variables: {
-            // doorSuborderId: doorSuborder.data.id,
             doorSuborderId: dorSuborderId,
           },
         },
@@ -241,7 +243,6 @@ const DecorElementForm = ({setCurrentStepSend, elementID, language}) => {
             )
               .then((response) => {
                 console.log('Update successful:', response);
-                console.log('decorDataId', decorDataId);
               })
               .catch((error) => {
                 console.error('Error updating element suborder:', error);
@@ -275,12 +276,12 @@ const DecorElementForm = ({setCurrentStepSend, elementID, language}) => {
       <div style={{display: 'flex', gap: '20px', flexWrap: 'wrap', marginBottom: "30px"}}>
         <Form.Item
           name="name"
-          label="Choose element for Decor"
+          label={language.elementFor}
           style={{margin: '10px 0', flex: '1', 'minWidth': "300px"}}
-          rules={[{ required: true, message: 'Please select an element!' }]}
+          rules={[{ required: true, message: language.requiredField }]}
         >
           <Select
-            placeholder="Select an element"
+            placeholder={language.element}
             allowClear
             defaultValue={undefined}
           >
@@ -293,12 +294,12 @@ const DecorElementForm = ({setCurrentStepSend, elementID, language}) => {
         <Form.Item
           style={{margin: '10px 0', flex: '1', 'minWidth': "300px", textAlign: 'left'}}
           name="radioOption"
-          label="Choose Element Decor"
-          rules={[{ required: true, message: 'Please select an option!' }]}
+          label={language.elementDecor}
+          rules={[{ required: true, message: language.requiredField }]}
         >
           <Radio.Group type="dashed" buttonStyle="solid" onChange={handleRadioChange}>
-            <Radio.Button value="choose">Choose Decor for element</Radio.Button>
-            <Radio.Button value="get">Get Decor from door</Radio.Button>
+            <Radio.Button value="choose">{language.elementGetDecor}</Radio.Button>
+            <Radio.Button value="get">{language.elementGetDoor}</Radio.Button>
           </Radio.Group>
         </Form.Item>
       </div>
@@ -306,56 +307,43 @@ const DecorElementForm = ({setCurrentStepSend, elementID, language}) => {
         <Space wrap={true} direction="hirizontal" size="large">
           <Form.Item 
             name="width" 
-            rules={[{ required: true, message: 'Please select a height!' }]}
+            rules={[{ required: true, message: language.requiredField }]}
           >
-            <InputNumber addonBefore="Width" addonAfter="mm"/>
+            <InputNumber addonBefore={language.width} addonAfter="mm"/>
           </Form.Item>
           
           <Form.Item 
             name="height" 
-            rules={[{ required: true, message: 'Please select a height!' }]} 
+            rules={[{ required: true, message: language.requiredField }]} 
           >
-            <InputNumber addonBefore="Height" addonAfter="mm"/>
+            <InputNumber addonBefore={language.height} addonAfter="mm"/>
           </Form.Item>
 
           <Form.Item 
             name="thickness"
-            rules={[{ required: true, message: 'Please select a thickness!' }]} 
+            rules={[{ required: true, message: language.requiredField }]} 
           >
-            <InputNumber addonBefore="Thickness" addonAfter="mm"/>
+            <InputNumber addonBefore={language.thickness} addonAfter="mm"/>
           </Form.Item>
 
           <Form.Item 
             name="amount"
-            rules={[{ required: true, message: 'Please select an amount!' }]}
+            rules={[{ required: true, message: language.requiredField }]}
           >
-            <InputNumber addonBefore="Amount" addonAfter="count"/>
+            <InputNumber addonBefore={language.amount} addonAfter={language.count}/>
           </Form.Item>
         </Space>
 
-      
-        {/* <Form.Item
-          // style={{textAlign: 'left'}}
-          name="radioOption"
-          label="Choose Decor Option"
-          rules={[{ required: true, message: 'Please select an option!' }]}
-        >
-          <Radio.Group type="dashed" buttonStyle="solid" onChange={handleRadioChange}>
-            <Radio.Button value="choose">Choose Decor for element</Radio.Button>
-            <Radio.Button value="get">Get Decor from door</Radio.Button>
-          </Radio.Group>
-        </Form.Item> */}
-
         <Form.Item wrapperCol={{ offset: 4, span: 16 }}>
           <Button type="primary" htmlType="submit">
-            Submit
+            {language.submit}
           </Button>
         </Form.Item>
 
       </Form>
 
         <div style={{padding: '0 25px' }}>
-          {showDecor && <GroupDecorElementStep elementID={elementID} language={language} />}
+          {showDecor && <GroupDecorElementStep elementID={elementID} />}
         </div>
     </Spin>
   );

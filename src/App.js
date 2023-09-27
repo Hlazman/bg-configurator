@@ -2,7 +2,7 @@ import React, { useState, useContext, useEffect } from 'react';
 import { Route, Routes, Navigate, useNavigate, useLocation } from 'react-router-dom';
 import { AuthContext } from './Context/AuthContext';
 import { useLanguage } from './Context/LanguageContext';
-
+import languageMap from './Languages/language';
 import { NotFoundPage } from './Pages/NotFoundPage';
 import { AuthPage } from './Pages/AuthPage';
 import { OrdersPage } from './Pages/OrdersPage';
@@ -15,14 +15,13 @@ import { CreateOrderPage } from './Pages/CreateOrderPage';
 import { ConfigProvider, Layout, Select, Dropdown, Spin} from 'antd';
 import { UserOutlined } from '@ant-design/icons';
 import { Navigation } from './Components/Navigation';
-import languageMap from './Languages/language';
-
 import logo from './logo.svg';
 import './App.css';
 import { EditClientPage } from './Pages/EditClientPage';
 import { EditOrderPage } from './Pages/EditOrderPage';
 import { OrderDetailsPage } from './Pages/OrderDetailsPage';
 
+// TEMP
 const options = [
   {
     value: 'boki-poland',
@@ -39,6 +38,8 @@ const { Header, Content, Footer, Sider } = Layout;
 const App = () => {
   const { isAuthenticated, user, logout } = useContext(AuthContext);
   const [collapsed, setCollapsed] = useState(false);
+  const { selectedLanguage } = useLanguage();
+  const language = languageMap[selectedLanguage];
   // const [loading, setLoading] = useState(true);
 
   const handleLogout = () => {
@@ -54,21 +55,18 @@ const App = () => {
 
   const items = [
     {
-      label: 'Reset password',
+      label: language.resetPass,
       key: 'resetPass',
       icon: <UserOutlined />,
       onClick: handleResetPassword
     },
     {
-      label: 'Logout',
+      label: language.Logout,
       key: 'Logout',
       icon: <UserOutlined />,
       onClick: handleLogout
     },
   ];
-
-  const { selectedLanguage } = useLanguage();
-  const language = languageMap[selectedLanguage];
 
   const handleChange = (value) => {
     console.log(`Selected: ${value}`);
@@ -91,7 +89,7 @@ const getHeaderTitle = (location, Id) => {
   }
 
   if (location.pathname.startsWith('/order/')) {
-    return `Order Details #${Id}`;
+    return `${language.orderDetails} #${Id}`;
   }
 
   switch (location.pathname) {
@@ -161,7 +159,6 @@ const getHeaderTitle = (location, Id) => {
               <h1 className='headerTitle'>{headerTitle}</h1>
 
               <div style={{ display: 'flex', gap: '10px', margin: '15px 0' }}>
-
                 <Dropdown.Button size="large" menu={{ items }} placement="bottom" icon={<UserOutlined />}>
                   {user.username}
                 </Dropdown.Button>
@@ -170,9 +167,9 @@ const getHeaderTitle = (location, Id) => {
                   <Select
                     key="Company"
                     size="large"
-                    defaultValue="boki-poland"
+                    defaultValue="boki-poland" // TEMP
                     onChange={handleChange}
-                    options={options}
+                    options={options} // TEMP
                   />
                 {/* )} */}
                 
@@ -182,28 +179,28 @@ const getHeaderTitle = (location, Id) => {
             <Content style={{ margin: '0 16px' }}>
               <div className="App">
                 <Routes>
-                  <Route path="/" element={<OrdersPage language={language} />} />
+                  <Route path="/" element={<OrdersPage />} />
                   <Route path="/auth" element={<Navigate to="/" replace />} />
                   <Route path="/orders" element={<Navigate to="/" replace />} />
-                  <Route path="/clients" element={<ClientsPage language={language}/>} />
-                  <Route path="/createclient" element={<CreateClientPage language={language} />} />
-                  <Route path="/editclient/:clientId" element={<EditClientPage language={language} />} />
+                  <Route path="/clients" element={<ClientsPage />} />
+                  <Route path="/createclient" element={<CreateClientPage />} />
+                  <Route path="/editclient/:clientId" element={<EditClientPage />} />
                   <Route path="/createorder" element={<CreateOrderPage />} />
-                  <Route path="/createorder/:orderId" element={<CreateOrderPage language={language}/>} />
-                  <Route path="/editorder" element={<EditOrderPage language={language}/>} />
-                  <Route path="/editorder/:orderId" element={<EditOrderPage language={language}/>} />
+                  <Route path="/createorder/:orderId" element={<CreateOrderPage />} />
+                  <Route path="/editorder" element={<EditOrderPage />} />
+                  <Route path="/editorder/:orderId" element={<EditOrderPage />} />
                   <Route path="/files" element={<FilesPage />} />
                   {/* <Route path="/order" element={<OrderDetailsPage />} /> */}
                   <Route path="/order/:orderId" element={<OrderDetailsPage />} />
-                  <Route path="/resetpassword" element={<ResetPasswordPage language={language} />} />
-                  <Route path="/savepassword" element={<SavePasswordPage language={language} />} />
-                  <Route path="*" element={<NotFoundPage language={language} />} />
+                  <Route path="/resetpassword" element={<ResetPasswordPage />} />
+                  <Route path="/savepassword" element={<SavePasswordPage />} />
+                  <Route path="*" element={<NotFoundPage />} />
                 </Routes>
               </div>
             </Content>
 
             <Footer style={{ textAlign: 'center', backgroundColor: 'white', marginTop:'30px' }}>
-              Ant Design ©2023 Created by Ant UED
+              ©2023 Created by
             </Footer>
           </Layout>
         </Layout>

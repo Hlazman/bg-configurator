@@ -3,6 +3,8 @@ import { Form, Input, Button, Card, Radio, Select, Spin, message } from 'antd';
 import axios from 'axios';
 import { useOrder } from '../../Context/OrderContext';
 import { CreateColorDrawer } from '../CreateColorDrawer';
+import { useLanguage } from '../../Context/LanguageContext';
+import languageMap from '../../Languages/language';
 
 const PaintStep = ({ orderID, fetchOrderData, fetchDecorData, checkDecor, sendDecorForm }) => {
   const [paintData, setPaintData] = useState([]);
@@ -10,6 +12,8 @@ const PaintStep = ({ orderID, fetchOrderData, fetchDecorData, checkDecor, sendDe
   // const [selectedColorGroup, setSelectedColorGroup] = useState('ALL');
   const [selectedColorGroup, setSelectedColorGroup] = useState('');
   const [selectedColorRange, setSelectedColorRange] = useState('RAL');
+  const { selectedLanguage } = useLanguage();
+  const language = languageMap[selectedLanguage];
 
   // const [selectedPaintFor, setSelectedPaintFor] = useState('');
   const [selectedPaintFor, setSelectedPaintFor] = useState('');
@@ -36,7 +40,7 @@ const PaintStep = ({ orderID, fetchOrderData, fetchDecorData, checkDecor, sendDe
     sendDecorForm(orderIdToUse, dorSuborderId, selectedDecorId);
   };
 
-  const colorGroupOptions = [...new Set(paintData.map(paint => paint.attributes?.color_group)), 'ALL'];
+  const colorGroupOptions = [...new Set(paintData.map(paint => paint.attributes?.color_group)), language.all];
   const colorRangeOptions = [...new Set(paintData.map(paint => paint.attributes?.color_range))];
 
   const handleColorGroupChange = value => {
@@ -72,7 +76,7 @@ const PaintStep = ({ orderID, fetchOrderData, fetchDecorData, checkDecor, sendDe
 
   const filteredImages = paintData
     .filter(paint =>
-      (selectedColorGroup === 'ALL' || paint.attributes.color_group === selectedColorGroup) &&
+      (selectedColorGroup === language.all || paint.attributes.color_group === selectedColorGroup) &&
       paint.attributes.color_range === selectedColorRange &&
       paint.attributes.color_code.toLowerCase().includes(searchQuery.toLowerCase())
     )
@@ -147,8 +151,8 @@ const PaintStep = ({ orderID, fetchOrderData, fetchDecorData, checkDecor, sendDe
         <div style={{display: 'flex', gap: '20px', flexWrap: 'wrap'}}>
 
         <Input
-          placeholder="Search"
-          addonBefore="Search by color code"
+          placeholder={language.search}
+          addonBefore={language.searchBy}
           value={searchQuery}
           onChange={e => handleSearchQueryChange(e.target.value)}
           style={{margin: '10px 0', flex: '1', 'minWidth': "300px"}}
@@ -156,7 +160,7 @@ const PaintStep = ({ orderID, fetchOrderData, fetchDecorData, checkDecor, sendDe
           
         <Form.Item 
           label="Paint for" 
-          rules={[{ required: true, message: 'Please select a paint type' }]}
+          rules={[{ required: true, message: language.requiredField }]}
           style={{margin: '10px 0', flex: '1', 'minWidth': "300px"}}
         >
           <Select
@@ -164,9 +168,9 @@ const PaintStep = ({ orderID, fetchOrderData, fetchDecorData, checkDecor, sendDe
             value={selectedPaintFor}
             onChange={handlePaintForChange}
           >
-            <Select.Option value="paint">Paint</Select.Option>
-            <Select.Option value="painted_glass">Glass</Select.Option>
-            <Select.Option value="painted_veneer">Veneer</Select.Option>
+            <Select.Option value="paint">{language.paint}</Select.Option>
+            <Select.Option value="painted_glass">{language.glass}Glass</Select.Option>
+            <Select.Option value="painted_veneer">{language.veneer}</Select.Option>
           </Select>
         </Form.Item>
 
@@ -183,7 +187,7 @@ const PaintStep = ({ orderID, fetchOrderData, fetchDecorData, checkDecor, sendDe
           </Select>
         </Form.Item>
 
-        <Form.Item label="Sorting by group" style={{margin: '10px 0', flex: '1', 'minWidth': "300px"}} >
+        <Form.Item label={language.sorting} style={{margin: '10px 0', flex: '1', 'minWidth': "300px"}} >
         <Select
           value={selectedColorGroup}
           onChange={handleColorGroupChange}
@@ -202,7 +206,7 @@ const PaintStep = ({ orderID, fetchOrderData, fetchDecorData, checkDecor, sendDe
       {isLoading ? (
         <Spin size="large" />
       ) : (
-        <Form.Item name="paintRadio" rules={[{ required: true, message: "Please choose Color" }]}>
+        <Form.Item name="paintRadio" rules={[{ required: true, message: language.requiredField }]}>
           <Radio.Group>
             <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}>
               {filteredImages.map((imgSrc) => {
@@ -254,7 +258,7 @@ const PaintStep = ({ orderID, fetchOrderData, fetchDecorData, checkDecor, sendDe
 
       <Form.Item wrapperCol={{ offset: 4, span: 16 }}>
         <Button type="primary" htmlType="submit">
-          Submit
+          {language.submit}
         </Button>
       </Form.Item>
       

@@ -2,9 +2,11 @@ import React, { useState, useEffect } from 'react';
 import { Form, Input, Button, Card, Radio, Divider, Spin } from 'antd';
 import axios from 'axios';
 import { useOrder } from '../../Context/OrderContext';
+import { useLanguage } from '../../Context/LanguageContext';
+import languageMap from '../../Languages/language';
 
 
-const HPLStep = ({ orderID, fetchOrderData, fetchDecorData, checkDecor, sendDecorForm }) => {
+const HPLStep = ({ fetchOrderData, fetchDecorData, checkDecor, sendDecorForm }) => {
   const [HPLData, setHPLData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
@@ -12,6 +14,8 @@ const HPLStep = ({ orderID, fetchOrderData, fetchDecorData, checkDecor, sendDeco
   const [previousHPLTitle, setPreviousHPLTitle] = useState(null);
   const [decorData, setDecorData] = useState([]);
   const [selectedDecorId, setSelectedDecorId] = useState(null);
+  const { selectedLanguage } = useLanguage();
+  const language = languageMap[selectedLanguage];
   
   // const { order } = useOrder();
   // const orderId = order.id;
@@ -83,8 +87,8 @@ const HPLStep = ({ orderID, fetchOrderData, fetchDecorData, checkDecor, sendDeco
     <Form onFinish={onFinish} form={form}>
 
         <Input
-          placeholder="Search"
-          addonBefore="Search by HPL name"
+          placeholder={language.search}
+          addonBefore={language.searchBy}
           value={searchQuery}
           onChange={e => setSearchQuery(e.target.value)}
           style={{ marginBottom: '10px' }}
@@ -96,7 +100,7 @@ const HPLStep = ({ orderID, fetchOrderData, fetchDecorData, checkDecor, sendDeco
           <Spin size="large" />
         </div>
       ) : (
-        <Form.Item name="HPLRadio" rules={[{ required: true, message: "Please choose HPL" }]}>
+        <Form.Item name="HPLRadio" rules={[{ required: true, message: language.requiredField }]}>
           <Radio.Group>
             <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}>
               {filteredHplData.map(hpl => (
@@ -134,7 +138,7 @@ const HPLStep = ({ orderID, fetchOrderData, fetchDecorData, checkDecor, sendDeco
 
         <Form.Item wrapperCol={{ offset: 4, span: 16 }}>
           <Button type="primary" htmlType="submit">
-            Submit
+            {language.submit}
           </Button>
         </Form.Item>
     </Form>

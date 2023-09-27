@@ -3,13 +3,17 @@ import { Form, Input, Button, Card, Space, Spin, message } from 'antd';
 import { UserOutlined, PlusOutlined, MinusCircleOutlined } from '@ant-design/icons';
 import axios from 'axios';
 import { AuthContext } from '../Context/AuthContext';
+import { useLanguage } from '../Context/LanguageContext';
+import languageMap from '../Languages/language';
 
-export const CreateClientPage = ({language}) => {
+export const CreateClientPage = () => {
   const { user } = useContext(AuthContext);
   const jwtToken = localStorage.getItem('token');
   const [form] = Form.useForm();
   const [addresses, setAddresses] = useState([{ id: 0, country: null, city: null, address: null, zipCode: null }]);
   const [loading, setLoading] = useState(false);
+  const { selectedLanguage } = useLanguage();
+  const language = languageMap[selectedLanguage];
 
   const handleAddAddress = () => {
     const newId = addresses.length;
@@ -48,12 +52,12 @@ export const CreateClientPage = ({language}) => {
       .then((response) => {
         setLoading(false);
         form.resetFields();
-        message.success(language.clientAddSuccses);
+        message.success(language.successQuery);
       })
       .catch((error) => {
         setLoading(false);
         console.error(error);
-        message.error(language.clientAddError);
+        message.error(language.errorQuery);
       })
       // .finally(() => setAddresses([{ id: null, country: null, city: null, address: null, zipCode: null }]));
   };
@@ -71,7 +75,7 @@ export const CreateClientPage = ({language}) => {
             rules={[
               {
                 required: true,
-                message: `${language.clientNameRequred}`,
+                message: `${language.requiredField}`,
               },
               {
                 min: 2,
@@ -79,7 +83,7 @@ export const CreateClientPage = ({language}) => {
               },
             ]}
           >
-            <Input prefix={<UserOutlined />} placeholder={language.clientName} addonBefore={language.clientName} />
+            <Input prefix={<UserOutlined />} placeholder={language.name} addonBefore={language.name} />
           </Form.Item>
 
           <Form.Item
@@ -176,7 +180,7 @@ export const CreateClientPage = ({language}) => {
 
           <Form.Item>
             <Button type="primary" htmlType="submit">
-              {language.addclient}
+              {language.submit}
             </Button>
           </Form.Item>
 

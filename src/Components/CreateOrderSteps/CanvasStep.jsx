@@ -2,9 +2,13 @@ import React, { useState, useEffect } from 'react';
 import { Form, Input, InputNumber, Button, Card, Radio, Select, Spin, Space, message } from 'antd';
 import axios from 'axios';
 import { useOrder } from '../../Context/OrderContext';
+import { useLanguage } from '../../Context/LanguageContext';
+import languageMap from '../../Languages/language';
 
 // const CanvasStep = ({ formData, handleNext, orderID }) => {
 const CanvasStep = ({ setCurrentStepSend}) => {
+  const { selectedLanguage } = useLanguage();
+  const language = languageMap[selectedLanguage];
   
   const { orderId, dorSuborderId } = useOrder();
   // const { addSuborder } = useOrder();
@@ -89,16 +93,13 @@ const CanvasStep = ({ setCurrentStepSend}) => {
     };
   
     fetchOrderData();
-  // }, [orderID, jwtToken, form, orderIdToUse]);
   }, [orderId, jwtToken, form, orderIdToUse]);
 
   const onFinish = async (values) => {
-    const { width, height, thickness } = values; // Извлекаем значения из формы
-    // const updateDoorSuborderId = doorSuborder.data.id; // Получаем id субордера
-    const updateDoorSuborderId = dorSuborderId; // Получаем id субордера
+    const { width, height, thickness } = values;
+    const updateDoorSuborderId = dorSuborderId; 
 
     const data = {
-      // decor: null,
       door: previousDoorId.toString(),
       order: orderIdToUse,
       sizes: {
@@ -133,9 +134,8 @@ const CanvasStep = ({ setCurrentStepSend}) => {
           },
         }
       );
-
-      console.log('Data sent successfully:', response.data);
-      message.success('Door added successfully');
+      console.error(response);
+      message.success(language.successQuery); 
       setCurrentStepSend(prevState => {
         return {
           ...prevState,
@@ -143,8 +143,8 @@ const CanvasStep = ({ setCurrentStepSend}) => {
         };
       });
     } catch (error) {
-      console.error('Error sending data:', error);
-      message.error('Error to add Decor');
+      console.error(error);
+      message.error(language.errorQuery); 
     }
   };
   
@@ -192,12 +192,11 @@ const CanvasStep = ({ setCurrentStepSend}) => {
         const doors = response.data.data.doors.data;
         setDoorData(doors);
       } catch (error) {
-        console.error('Error fetching data:', error);
+        console.error(error);
       }
       setIsLoading(false);
     };
 
-    // const storedCollection = localStorage.getItem('selectedCollection') || 'ALL';
     const storedCollection = localStorage.getItem('selectedCollection') || 'Loft';
     const storedSearchQuery = localStorage.getItem('searchQuery') || '';
 
@@ -207,7 +206,9 @@ const CanvasStep = ({ setCurrentStepSend}) => {
     fetchData();
   }, [jwtToken]);
 
-  const collectionOptions = ['ALL', ...new Set(doorData.map(door => door.attributes.collection))];
+  // here
+  // const collectionOptions = ['ALL', ...new Set(doorData.map(door => door.attributes.collection))]; 
+  const collectionOptions = [language.all, ...new Set(doorData.map(door => door.attributes.collection))]; 
 
   const handleCollectionChange = value => {
     localStorage.setItem('selectedCollection', value);
@@ -222,7 +223,8 @@ const CanvasStep = ({ setCurrentStepSend}) => {
 
   const filteredImgS = doorData
     .filter(door =>
-      (selectedCollection === 'ALL' || door.attributes.collection === selectedCollection) &&
+      // (selectedCollection === 'ALL' || door.attributes.collection === selectedCollection) &&
+      (selectedCollection === language.all || door.attributes.collection === selectedCollection) &&
       door.attributes.product_properties.title.toLowerCase().includes(searchQuery.toLowerCase())
     )
     .map(door => door.attributes.product_properties.image.data.attributes.url);
@@ -237,14 +239,14 @@ const CanvasStep = ({ setCurrentStepSend}) => {
     <div style={{display: 'flex', gap: '20px', flexWrap: 'wrap'}}>
       <Form.Item style={{margin: '10px 0', flex: '1', 'minWidth': "300px"}}>
         <Input
-          addonBefore="Search by door name"
-          placeholder="Search"
+          addonBefore={language.searchBy}
+          placeholder={language.search}
           value={searchQuery}
           onChange={e => handleSearchQueryChange(e.target.value)}   
         />
       </Form.Item>
 
-      <Form.Item label="Sorting by models" style={{margin: '10px 0', flex: '1', 'minWidth': "300px"}}>
+      <Form.Item label={language.sorting} style={{margin: '10px 0', flex: '1', 'minWidth': "300px"}}>
           <Select
               value={selectedCollection}
               onChange={handleCollectionChange}
@@ -265,11 +267,11 @@ const CanvasStep = ({ setCurrentStepSend}) => {
         rules={[
           {
             required: true,
-            message: 'Please enter the width!',
+            message: language.requiredField,
           },
         ]}
         >
-          <InputNumber addonBefore="Width" addonAfter="mm"/>
+          <InputNumber addonBefore={language.width} addonAfter="mm"/>
         </Form.Item>
         
         <Form.Item
@@ -278,11 +280,11 @@ const CanvasStep = ({ setCurrentStepSend}) => {
          rules={[
           {
             required: true,
-            message: 'Please enter the height!',
+            message: language.requiredField,
           },
         ]}
         >
-          <InputNumber addonBefore="Height" addonAfter="mm"/>
+          <InputNumber addonBefore={language.height} addonAfter="mm"/>
         </Form.Item>
 
         <Form.Item
@@ -291,11 +293,11 @@ const CanvasStep = ({ setCurrentStepSend}) => {
           rules={[
             {
               required: true,
-              message: 'Please enter the thickness!',
+              message: language.requiredField,
             },
           ]}
         >
-          <InputNumber addonBefore="Thickness" addonAfter="mm"/>
+          <InputNumber addonBefore={language.thickness} addonAfter="mm"/>
         </Form.Item>
       </Space>
 
@@ -306,7 +308,7 @@ const CanvasStep = ({ setCurrentStepSend}) => {
       ) : (
         <Form.Item 
           name="doorStep"
-          rules={[{ required: true, message: "Please choose the door model" }]}
+          rules={[{ required: true, message: language.requiredField }]}
         >
           <Radio.Group
             value={form.door}
@@ -319,37 +321,6 @@ const CanvasStep = ({ setCurrentStepSend}) => {
                     door.attributes.product_properties.image.data.attributes.url === imgSrc
                 );
                 return (
-                  // <div key={door.id} style={{ width: 220, margin: '20px 10px' }}>
-                  //   <Card
-                  //     className="custom-card"
-                  //     hoverable
-                  //     style={{
-                  //       border:
-                  //         previousDoorId === door.id
-                  //           ? '7px solid #f06d20'
-                  //           : 'none',
-                  //     }}
-                  //     onClick={() => { 
-                  //       setPreviousDoorId(door.id);
-                  //     }}
-                  //   >
-                  //     <div style={{ overflow: 'hidden', height: 220 }}>
-                  //       <img
-                  //         src={`https://api.boki.fortesting.com.ua${imgSrc}`}
-                  //         alt={door.attributes.product_properties.title}
-                  //         style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-                  //       />
-                  //     </div>
-                  //     <Card.Meta
-                  //       title={door.attributes.product_properties.title}
-                  //       style={{ paddingTop: '10px' }}
-                  //     />
-                  //     {/* <Radio value={door.id} style={{ display: 'none' }} /> */}
-                  //     <Radio value={door.id} />
-                  //   </Card>
-                  // </div>
-
-
                     <Radio value={door.id} >
                       <Card
                         className="custom-card"
@@ -388,7 +359,7 @@ const CanvasStep = ({ setCurrentStepSend}) => {
       )}
           <Form.Item>
           <Button type="primary" htmlType="submit">
-            Submit
+            {language.submit}
           </Button>
         </Form.Item>
     </Form>

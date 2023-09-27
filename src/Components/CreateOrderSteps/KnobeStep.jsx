@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { Form, Input, Button, Card, Radio, Select, Divider, Spin, message } from 'antd';
 import axios from 'axios';
 import { useOrder } from '../../Context/OrderContext';
+import { useLanguage } from '../../Context/LanguageContext';
+import languageMap from '../../Languages/language';
 
 const KnobesStep = ({ setCurrentStepSend }) => {
   const [knobesData, setKnobesData] = useState([]);
@@ -10,7 +12,8 @@ const KnobesStep = ({ setCurrentStepSend }) => {
   const [selectedBrand, setSelectedBrand] = useState('Airone');
   const [isLoading, setIsLoading] = useState(true);
   const [previousKnobeId, setPreviousKnobeId] = useState(null);
-
+  const { selectedLanguage } = useLanguage();
+  const language = languageMap[selectedLanguage];
   
   // const { order } = useOrder();
   // const orderId = order.id;
@@ -137,7 +140,7 @@ const KnobesStep = ({ setCurrentStepSend }) => {
       )
       .then((response) => {
         console.log('Успешный ответ:', response.data);
-        message.success('Knobe added successfully!');
+        message.success(language.successQuery);
         setCurrentStepSend(prevState => {
           return {
             ...prevState,
@@ -147,7 +150,7 @@ const KnobesStep = ({ setCurrentStepSend }) => {
       })
       .catch((error) => {
         console.error('Ошибка:', error);
-        message.error('Error to add Knobe');
+        message.error(language.errorQuery);
       });
     }
   
@@ -203,15 +206,15 @@ const KnobesStep = ({ setCurrentStepSend }) => {
 
       <div style={{display: 'flex', gap: '20px', flexWrap: 'wrap'}}>
         <Input
-          placeholder="Search"
-          addonBefore="Search by knobe name"
+          placeholder={language.search}
+          addonBefore={language.searchBY}
           value={searchQuery}
           onChange={e => handleSearchQueryChange(e.target.value)}
           style={{margin: '10px 0', flex: '1', 'minWidth': "300px"}}
         />
 
       <Form.Item 
-        label="Sorting by brands"
+        label={language.sorting}
         style={{margin: '10px 0', flex: '1', 'minWidth': "300px"}}
       >
         <Select
@@ -230,7 +233,7 @@ const KnobesStep = ({ setCurrentStepSend }) => {
       {isLoading ? (
         <Spin size="large" />
       ) : (
-        <Form.Item name="knobeStep" rules={[{ required: true, message: "Please choose Knobe" }]}>
+        <Form.Item name="knobeStep" rules={[{ required: true, message: language.requiredField }]}>
           <Radio.Group>
             <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}>
               {filteredImgs.map((knob) => (
@@ -269,7 +272,7 @@ const KnobesStep = ({ setCurrentStepSend }) => {
 
       <Form.Item wrapperCol={{ offset: 4, span: 16 }}>
         <Button type="primary" htmlType="submit">
-          Submit
+        {language.submit}
         </Button>
       </Form.Item>
 

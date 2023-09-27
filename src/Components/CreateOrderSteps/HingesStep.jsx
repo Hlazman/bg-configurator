@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { Form, Input, Button, Card, Radio, Select, Divider, Spin, message } from 'antd';
 import axios from 'axios';
 import { useOrder } from '../../Context/OrderContext';
+import { useLanguage } from '../../Context/LanguageContext';
+import languageMap from '../../Languages/language';
 
 const HingeStep = ({ setCurrentStepSend }) => {
   const [hingeData, setHingeData] = useState([]);
@@ -12,6 +14,8 @@ const HingeStep = ({ setCurrentStepSend }) => {
   const [previousHingeId, setPreviousHingeId] = useState(null); 
 
   const [selectedHingeId, setSelectedHingeId] = useState(null);
+  const { selectedLanguage } = useLanguage();
+  const language = languageMap[selectedLanguage];
   
   // const { order } = useOrder();
   // const orderId = order.id;
@@ -83,7 +87,7 @@ const HingeStep = ({ setCurrentStepSend }) => {
     fetchData();
   }, [jwtToken, hingeSuborderId]);
 
-  const brandOptions = [...new Set(hingeData.map(hinge => hinge.attributes.brand)), 'ALL'];
+  const brandOptions = [...new Set(hingeData.map(hinge => hinge.attributes.brand)), language.all];
 
   const handleBrandChange = value => {
     localStorage.setItem('selectedBrandHinge', value);
@@ -98,7 +102,7 @@ const HingeStep = ({ setCurrentStepSend }) => {
 
   const filteredImgs = hingeData
     .filter(hinge =>
-      (selectedBrand === 'ALL' || hinge.attributes.brand === selectedBrand) &&
+      (selectedBrand === language.all || hinge.attributes.brand === selectedBrand) &&
       hinge.attributes.title.toLowerCase().includes(searchQuery.toLowerCase())
     )
     .map(hinge => ({
@@ -142,7 +146,7 @@ const HingeStep = ({ setCurrentStepSend }) => {
       )
       .then((response) => {
         console.log('Успешный ответ:', response.data);
-        message.success('Hinge added successfully!');
+        message.success(language.successQuery);
         setCurrentStepSend(prevState => {
           return {
             ...prevState,
@@ -152,7 +156,7 @@ const HingeStep = ({ setCurrentStepSend }) => {
       })
       .catch((error) => {
         console.error('Ошибка:', error);
-        message.error('Error to add Hinge');
+        message.error(language.errorQuery);
       });
     }
   
@@ -208,15 +212,15 @@ const HingeStep = ({ setCurrentStepSend }) => {
 
     <div style={{display: 'flex', gap: '20px', flexWrap: 'wrap'}}>
       <Input
-        placeholder="Search"
-        addonBefore="Search by hinge name"
+        placeholder={language.search}
+        addonBefore={language.searchBy}
         value={searchQuery}
         onChange={e => handleSearchQueryChange(e.target.value)}
         style={{margin: '10px 0', flex: '1', 'minWidth': "300px"}}
       />
 
       <Form.Item 
-        label="Sorting by brands"
+        label={language.sorting}
         style={{margin: '10px 0', flex: '1', 'minWidth': "300px"}}  
       >
         <Select
@@ -235,7 +239,7 @@ const HingeStep = ({ setCurrentStepSend }) => {
       {isLoading ? (
         <Spin size="large" />
       ) : (
-        <Form.Item name="hingesStep" rules={[{ required: true, message: "Please choose Hinge" }]}>
+        <Form.Item name="hingesStep" rules={[{ required: true, message: language.requiredField }]}>
           <Radio.Group >
             <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}>
               {filteredImgs.map((hinge) => (
@@ -275,7 +279,7 @@ const HingeStep = ({ setCurrentStepSend }) => {
 
       <Form.Item wrapperCol={{ offset: 4, span: 16 }}>
         <Button type="primary" htmlType="submit">
-          Submit
+          {language.submit}
         </Button>
       </Form.Item>
       
