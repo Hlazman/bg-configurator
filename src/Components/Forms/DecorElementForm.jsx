@@ -166,12 +166,14 @@ const DecorElementForm = ({setCurrentStepSend, elementID}) => {
       .then(response => {
         console.log('Data updated successfully:', response);
         message.success(language.successQuery);
-        setCurrentStepSend(prevState => {
-          return {
-            ...prevState,
-            elementSend: true
-          };
-        });
+        if (setCurrentStepSend) {
+          setCurrentStepSend(prevState => {
+            return {
+              ...prevState,
+              elementSend: true
+            };
+          });
+        }
       })
       .catch(error => {
         console.error('Error updating data:', error);

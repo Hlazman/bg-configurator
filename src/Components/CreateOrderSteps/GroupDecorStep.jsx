@@ -226,12 +226,14 @@ const GroupDecorStep = ({ setCurrentStepSend }) => {
       );
       console.log('Data sent successfully:', response.data);
       message.success(language.successQuery);
-      setCurrentStepSend(prevState => {
-        return {
-          ...prevState,
-          decorSend: true
-        };
-      });
+      if (setCurrentStepSend) {
+        setCurrentStepSend(prevState => {
+          return {
+            ...prevState,
+            decorSend: true
+          };
+        });
+      }
     } catch (error) {
       console.error('Error sending data:', error);
       message.error(language.errorQuery);

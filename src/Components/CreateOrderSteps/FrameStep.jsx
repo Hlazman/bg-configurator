@@ -181,12 +181,14 @@ const FrameStep = ({ setCurrentStepSend }) => {
     ).then(response => {
       console.log('Data updated:', response.data);
       message.success(language.successQuery);
-      setCurrentStepSend(prevState => {
-        return {
-          ...prevState,
-          frameSend: true
-        };
-      });
+      if (setCurrentStepSend) {
+        setCurrentStepSend(prevState => {
+          return {
+            ...prevState,
+            frameSend: true
+          };
+        });
+      }
     }).catch(error => {
       console.error('Error updating data:', error);
       message.error(language.errorQuery);

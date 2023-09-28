@@ -18,6 +18,8 @@ export const OrderDetailsPage = () => {
   const { selectedLanguage } = useLanguage();
   const language = languageMap[selectedLanguage];
 
+  const [isCreatingPdf, setIsCreatingPdf] = useState(false);
+
   const [doorData, setDoorData] = useState(null);
   const [frameData, setFrameData] = useState(null);
   const [elementData, setElementData] = useState(null);
@@ -44,6 +46,7 @@ export const OrderDetailsPage = () => {
   };
 
   const handlePdfExport = async () => {
+    setIsCreatingPdf(true);
     const element = document.getElementById('pdf-content');
     await embedImages();
   
@@ -57,9 +60,11 @@ export const OrderDetailsPage = () => {
         pagebreak: { mode: 'avoid-all' }
       })
       .save();
+      setIsCreatingPdf(false);
   };
   
   const handleOpenPdf = async () => {
+    setIsCreatingPdf(true);
     const element = document.getElementById('pdf-content');
     await embedImages();
   
@@ -73,6 +78,7 @@ export const OrderDetailsPage = () => {
         pagebreak: { mode: 'avoid-all' }
       })
       .outputPdf('dataurlnewwindow');
+      setIsCreatingPdf(false);
   };
 
   
@@ -729,7 +735,7 @@ useEffect(() => {
 
   return (
     <div >
-      <div style={{margin: '20px'}}>
+      <div style={{margin: '20px', display:'flex', gap: '20px', justifyContent: 'center'}}>
         <Button onClick={handlePdfExport}>{language.save} PDF</Button>
         <Button onClick={handleOpenPdf}>{language.open} PDF</Button>
       </div>
@@ -744,6 +750,7 @@ useEffect(() => {
           hingeData={hingeData}
           knobeData={knobeData}
           lockData={lockData}
+          isCreatingPdf={isCreatingPdf}
         />
       </div>
     </div>

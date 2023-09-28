@@ -134,14 +134,16 @@ const CanvasStep = ({ setCurrentStepSend}) => {
           },
         }
       );
-      console.error(response);
+      console.log(response);
       message.success(language.successQuery); 
-      setCurrentStepSend(prevState => {
-        return {
-          ...prevState,
-          canvasSend: true
-        };
-      });
+      if (setCurrentStepSend) {
+        setCurrentStepSend(prevState => {
+          return {
+            ...prevState,
+            canvasSend: true
+          };
+        });
+      }
     } catch (error) {
       console.error(error);
       message.error(language.errorQuery); 

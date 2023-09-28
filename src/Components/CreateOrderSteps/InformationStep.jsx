@@ -107,12 +107,14 @@ const InformationStep = ({ setCurrentStepSend }) => {
       )
       .then((response) => {
         message.success(language.successQuery);
-        setCurrentStepSend(prevState => {
-          return {
-            ...prevState,
-            informationSend: true
-          };
-        });
+        if (setCurrentStepSend) {
+          setCurrentStepSend(prevState => {
+            return {
+              ...prevState,
+              informationSend: true
+            };
+          });
+        }
       }).then(() => {
         localStorage.clear();
         localStorage.setItem('user', JSON.stringify(user));

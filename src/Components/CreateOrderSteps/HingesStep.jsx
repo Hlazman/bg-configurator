@@ -145,14 +145,17 @@ const HingeStep = ({ setCurrentStepSend }) => {
         }
       )
       .then((response) => {
-        console.log('Успешный ответ:', response.data);
+        console.log('Success:', response.data);
         message.success(language.successQuery);
-        setCurrentStepSend(prevState => {
-          return {
-            ...prevState,
-            fittingHingeSend: true
-          };
-        });
+        if (setCurrentStepSend) {
+          setCurrentStepSend(prevState => {
+            return {
+              ...prevState,
+              fittingHingeSend: true
+            };
+          });
+        }
+
       })
       .catch((error) => {
         console.error('Ошибка:', error);

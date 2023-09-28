@@ -89,13 +89,14 @@ const StartDataStep = ({ setCurrentStepSend }) => {
         }
       );
       message.success(language.successQuery);
-      setCurrentStepSend(prevState => {
-        return {
-          ...prevState,
-          startDataSend: true
-        };
-      });
-      
+      if (setCurrentStepSend) {
+        setCurrentStepSend(prevState => {
+          return {
+            ...prevState,
+            startDataSend: true
+          };
+        });
+      }
     } catch (error) {
       console.error('Error updating order:', error);
       message.error(language.errorQuery);

@@ -139,14 +139,16 @@ const KnobesStep = ({ setCurrentStepSend }) => {
         }
       )
       .then((response) => {
-        console.log('Успешный ответ:', response.data);
+        console.log('Success:', response.data);
         message.success(language.successQuery);
-        setCurrentStepSend(prevState => {
-          return {
-            ...prevState,
-            fittingKnobeSend: true
-          };
-        });
+        if (setCurrentStepSend) {
+          setCurrentStepSend(prevState => {
+            return {
+              ...prevState,
+              fittingKnobeSend: true
+            };
+          });
+        }
       })
       .catch((error) => {
         console.error('Ошибка:', error);
