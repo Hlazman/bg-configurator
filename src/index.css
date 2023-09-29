@@ -42,3 +42,8 @@ background-color: #f06d20;
   margin: 15px auto !important;
 }
 
+th.labelBG {
+  background-color: #f2f3f4!important;
+  /* border-color: #FFF!important; */
+}
+

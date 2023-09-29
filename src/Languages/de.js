@@ -123,6 +123,31 @@ const de = {
   amount: 'Menge',
   count: 'Anzahl',
 
+  company: 'Firma',
+  door: 'Tür',
+  product: 'Produkt',
+  data: 'Daten',
+  decor: 'Dekor',
+  collection: 'Kollektion',
+  title: 'Titel',
+  doubleDoor: 'Doppeltür',
+  hidden: 'Versteckt',
+  opening: 'Öffnung',
+  side: 'Seite',
+  type: 'Typ',
+  fitting: 'Beschläge',
+  brand: 'Marke',
+  additional: 'Zusätzlich',
+  elements: 'Elemente',
+  information: 'Informationen',
+  shippingAddress: 'Lieferadresse',
+  tax: 'Steuer',
+  totalCost: 'Gesamtkosten',
+  colorWarn: 'Bitte beachten Sie, dass die auf dem Bildschirm angezeigten Farben leicht von denen im Druck oder im wirklichen Leben abweichen können. Diese Variation könnte auf Unterschiede in den Monitorfarbwiedergabeeinstellungen und möglichen Abweichungen im Druckprozess zurückzuführen sein. Es ist ratsam, dies bei der Bewertung des Farbschemas der Präsentation zu berücksichtigen',
+
+  options: 'Optionen',
+
+
 
   
 

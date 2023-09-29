@@ -137,8 +137,29 @@ const en = {
   amount: 'Amount',
   count: 'count',
 
-  
+  company: 'Company',
+  door: 'Door',
+  product: 'Product',
+  data: 'Data',
+  decor: 'Decor',
+  collection: 'Collection',
+  title: 'Title',
+  doubleDoor: 'Double door',
+  hidden: 'Hidden',
+  opening: 'Opening',
+  side: 'side',
+  type: 'Type',
+  fitting: 'Fitting',
+  brand: 'Brand',
+  additional: 'Additional',
+  elements: 'Elements',
+  information: 'Information',
+  shippingAddress: 'Shipping Address',
+  tax: 'Tax',
+  totalCost: 'Total Cost',
+  colorWarn: 'Please be aware that the colors displayed on screen may slightly differ from those in print or in real life. This variation could be attributed to differences in monitor color reproduction settings and potential variations in the printing process. It is advisable to take this into consideration when evaluating the color scheme of the presentation',
 
+  options: 'Options',
 
 
 };

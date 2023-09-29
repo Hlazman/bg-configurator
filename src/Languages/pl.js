@@ -123,6 +123,30 @@ const pl = {
   amount: 'Ilość',
   count: 'Liczba',
 
+  company: 'Firma',
+  door: 'Drzwi',
+  product: 'Produkt',
+  data: 'Dane',
+  decor: 'Dekoracja',
+  collection: 'Kolekcja',
+  title: 'Tytuł',
+  doubleDoor: 'Podwójne drzwi',
+  hidden: 'Ukryty',
+  opening: 'Otwieranie',
+  side: 'Strona',
+  type: 'Typ',
+  fitting: 'Okucia',
+  brand: 'Marka',
+  additional: 'Dodatkowe',
+  elements: 'Elementy',
+  information: 'Informacje',
+  shippingAddress: 'Adres dostawy',
+  tax: 'Podatek',
+  totalCost: 'Całkowity koszt',
+  colorWarn: 'Proszę pamiętać, że kolory wyświetlane na ekranie mogą nieco różnić się od tych w druku lub w rzeczywistości. Ta różnica może wynikać z różnic w ustawieniach reprodukcji kolorów monitora oraz potencjalnych różnic w procesie drukowania. Zaleca się uwzględnienie tego przy ocenie schematu kolorów prezentacji',
+
+  options: 'Opcje',
+
 
   
 

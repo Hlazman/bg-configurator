@@ -296,23 +296,23 @@ export const CreateOrderPage = () => {
         onChange={handleStepClick}
         items={[
           {
-            title: 'Door',
+            title: language.door,
             status: (currentStep === 0 ? 'process' : currentStepSend.startDataSend && currentStepSend.canvasSend ? 'finish' : 'error'),
           },
           {
-            title: 'Decor',
+            title: language.decor,
             status: (currentStep === 1 ? 'process' : currentStepSend.decorSend ? 'finish' : 'error'),
           },
           {
-            title: 'Frame',
+            title: language.frame,
             status: (currentStep === 2 ? 'process' : currentStepSend.frameSend ? 'finish' : 'error'),
           },
           {
-            title: 'Elements',
+            title: language.elements,
             status: (currentStep === 3 ? 'process' : currentStepSend.elementSend ? 'finish' : 'error'),
           },
           {
-            title: 'Fitting',
+            title: language.fitting,
             status: (
               currentStep === 4
                 ? 'process'
@@ -322,11 +322,11 @@ export const CreateOrderPage = () => {
             ),
           },
           {
-            title: 'Options',
+            title: language.options,
             status: (currentStep === 5 ? 'process' : currentStepSend.optionsSend ? 'finish' : 'error'),
           },
           {
-            title: 'Information',
+            title: language.information,
             status: (currentStep === 6 ? 'process' : currentStepSend.informationSend ? 'finish' : 'error'),
           },
         ]}

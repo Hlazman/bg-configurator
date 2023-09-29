@@ -193,31 +193,31 @@ export const EditOrderPage = () => {
         onChange={handleStepClick}
         items={[
           {
-            title: 'Canvas',
+            title: language.door,
             status: (currentStep === 0 ? 'process' : 'finish'),
           },
           {
-            title: 'Decor',
+            title: language.decor,
             status: (currentStep === 1 ? 'process' : 'finish'),
           },
           {
-            title: 'Frame',
+            title: language.frame,
             status: (currentStep === 2 ? 'process' : 'finish'),
           },
           {
-            title: 'Elements',
+            title: language.elements,
             status: (currentStep === 3 ? 'process' : 'finish'),
           },
           {
-            title: 'Fitting',
+            title: language.fitting,
             status: (currentStep === 4 ? 'process' : 'finish'),
           },
           {
-            title: 'Options',
+            title: language.options,
             status: (currentStep === 5 ? 'process' : 'finish'),
           },
           {
-            title: 'Information',
+            title: language.information,
             status: (currentStep === 6 ? 'process' : 'finish'),
           },
         ]}

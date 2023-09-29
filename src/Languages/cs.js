@@ -123,6 +123,30 @@ const cs = {
   amount: 'Množství',
   count: 'Počet',
 
+  company: 'Společnost',
+  door: 'Dveře',
+  product: 'Produkt',
+  data: 'Data',
+  decor: 'Dekor',
+  collection: 'Kolekce',
+  title: 'Název',
+  doubleDoor: 'Dvojité dveře',
+  hidden: 'Skryté',
+  opening: 'Otevírání',
+  side: 'Strana',
+  type: 'Typ',
+  fitting: 'Kování',
+  brand: 'Značka',
+  additional: 'Dodatečné',
+  elements: 'Elementy',
+  information: 'Informace',
+  shippingAddress: 'Doručovací adresa',
+  tax: 'Daň',
+  totalCost: 'Celková cena',
+  colorWarn: 'Prosím, uvědomte si, že zobrazené barvy na obrazovce se mohou mírně lišit od těch v tisku nebo v reálném životě. Tato variabilita může být způsobena rozdíly v nastavení reprodukce barev monitoru a potenciálními variacemi v tiskovém procesu. Doporučuje se toto zvážit při hodnocení barevného schématu prezentace',
+
+  options: 'Možnosti',
+
 
 
 

@@ -1,5 +1,4 @@
-import logo from '../logo.svg';
-import React, { useRef, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Button } from 'antd';
 import html2pdf from 'html2pdf.js';
 import axios from 'axios';
@@ -53,11 +52,12 @@ export const OrderDetailsPage = () => {
     await html2pdf()
       .from(element)
       .set({
+        // margin: [5, 0, 5, 0], 
         filename: `Order ${orderId}.pdf`,
         image: { type: 'jpeg', quality: 0.98 },
         html2canvas: { scale: 2 },
         jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
-        pagebreak: { mode: 'avoid-all' }
+        pagebreak: { mode: 'avoid-all', after: '#nextpage' }
       })
       .save();
       setIsCreatingPdf(false);
@@ -71,11 +71,13 @@ export const OrderDetailsPage = () => {
     await html2pdf()
       .from(element)
       .set({
+        // margin: [5, 0, 5, 0], 
         filename: `Order ${orderId}.pdf`,
         image: { type: 'jpeg', quality: 0.98 },
         html2canvas: { scale: 2 },
         jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
-        pagebreak: { mode: 'avoid-all' }
+        // pagebreak: { mode: ['avoid-all', 'css', 'legacy'] }
+        pagebreak: { mode: 'avoid-all', after: '#nextpage' }
       })
       .outputPdf('dataurlnewwindow');
       setIsCreatingPdf(false);
