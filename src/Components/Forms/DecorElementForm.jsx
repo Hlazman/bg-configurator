@@ -25,12 +25,23 @@ const DecorElementForm = ({setCurrentStepSend, elementID}) => {
 
   const [form] = Form.useForm();
 
+  const [isFieldLength, setIsFieldLength] = useState('');
+  const [isOnlyPaintDecor, setIsOnlyPaintDecor] = useState(false);
+  const skirtingValues = ['14', '15', '16', '17', '18']
+  
+  const noDecor = ['16',]
+  const paintDecor = ['16', '17',]
+
   const [showDecor, setShowDecor] = useState(false); 
   const handleShowDecorClick = () => {
+    if (paintDecor.includes(isFieldLength)) {
+      setIsOnlyPaintDecor(true)
+    }
     setShowDecor(true);
   }
 
   useEffect(() => {
+    console.log(form.getFieldValue('name'))
     axios.post(
       'https://api.boki.fortesting.com.ua/graphql',
       {
@@ -50,6 +61,7 @@ const DecorElementForm = ({setCurrentStepSend, elementID}) => {
                     height
                     thickness
                     width
+                    length
                   }
                 }
               }
@@ -76,13 +88,16 @@ const DecorElementForm = ({setCurrentStepSend, elementID}) => {
           height: elementSuborderData?.attributes?.sizes?.height,
           thickness: elementSuborderData?.attributes?.sizes?.thickness,
           amount: elementSuborderData?.attributes?.amount,
+          length: elementSuborderData?.attributes?.sizes?.length, // NEW
         });
       }
+      setIsFieldLength(elementSuborderData?.attributes?.element?.data?.id)
       
     })
     .catch(error => {
       console.error('Error fetching element suborder data:', error);
     });
+  // }, [jwtToken, elementID, form]);
   }, [jwtToken, elementID, form]);
 
   useEffect(() => {
@@ -103,7 +118,7 @@ const DecorElementForm = ({setCurrentStepSend, elementID}) => {
         `,
         variables: {
           pagination: {
-            limit: 10
+            limit: 30
           }
         },
       },
@@ -125,7 +140,8 @@ const DecorElementForm = ({setCurrentStepSend, elementID}) => {
   }, [jwtToken, form]);
 
   const handleFormSubmit = values => {
-    const { name, width, height, thickness, amount } = values;
+    // const { name, width, height, thickness, amount } = values;
+    const { name, width, height, thickness, amount, length } = values;
     const selectedElement = elementOptions.find(option => option.id === name);
 
     if (elementID) {
@@ -136,6 +152,7 @@ const DecorElementForm = ({setCurrentStepSend, elementID}) => {
           height,
           thickness,
           width,
+          length, // NEW
         }
       };
   
@@ -271,6 +288,15 @@ const DecorElementForm = ({setCurrentStepSend, elementID}) => {
     }
   };
 
+  // NEW
+  // const [isFieldLength, setIsFieldLength] = useState('');
+  // const [isOnlyPaintDecor, setIsOnlyPaintDecor] = useState(false);
+  // const skirtingValues = ['14', '15', '16', '17', '18']
+  
+  // const noDecor = ['16',]
+  // const paintDecor = ['16', '17',]
+
+
   return (
     <Spin spinning={isloading}>
       <Form form={form} onFinish={handleFormSubmit} > 
@@ -286,6 +312,16 @@ const DecorElementForm = ({setCurrentStepSend, elementID}) => {
             placeholder={language.element}
             allowClear
             defaultValue={undefined}
+            // NEW
+            onChange={(value) => { 
+              setIsFieldLength(value);
+                
+              if (paintDecor.includes(value)) {
+                  setIsOnlyPaintDecor(true)
+                } else {
+                  setIsOnlyPaintDecor(false)
+                }
+            }}
           >
             {elementOptions.map(option => (
               <Option key={option.id} value={option.id}>{option.attributes.title}</Option>
@@ -297,11 +333,13 @@ const DecorElementForm = ({setCurrentStepSend, elementID}) => {
           style={{margin: '10px 0', flex: '1', 'minWidth': "300px", textAlign: 'left'}}
           name="radioOption"
           label={language.elementDecor}
-          rules={[{ required: true, message: language.requiredField }]}
+          // rules={[{ required: true, message: language.requiredField }]}
+          // rules={[{ required: isFieldLength !== '16', message: language.requiredField }]}
+          rules={[{ required: !noDecor.includes(isFieldLength), message: language.requiredField }]}
         >
           <Radio.Group type="dashed" buttonStyle="solid" onChange={handleRadioChange}>
-            <Radio.Button value="choose">{language.elementGetDecor}</Radio.Button>
-            <Radio.Button value="get">{language.elementGetDoor}</Radio.Button>
+            <Radio.Button disabled={noDecor.includes(isFieldLength)} value="choose">{language.elementGetDecor}</Radio.Button>
+            <Radio.Button disabled={paintDecor.includes(isFieldLength)} value="get">{language.elementGetDoor}</Radio.Button>
           </Radio.Group>
         </Form.Item>
       </div>
@@ -309,31 +347,65 @@ const DecorElementForm = ({setCurrentStepSend, elementID}) => {
         <Space wrap={true} direction="hirizontal" size="large">
           <Form.Item 
             name="width" 
-            rules={[{ required: true, message: language.requiredField }]}
+            // rules={[{ required: true, message: language.requiredField }]}
+            // rules={[{ required: isFieldLength !== '9' && isFieldLength !== '1', message: language.requiredField }]}
+            rules={[{ required: !skirtingValues.includes(isFieldLength), message: language.requiredField }]}
           >
-            <InputNumber addonBefore={language.width} addonAfter="mm"/>
+            <InputNumber
+              addonBefore={language.width} 
+              addonAfter="mm"
+              disabled={skirtingValues.includes(isFieldLength)} // NEW
+            />
           </Form.Item>
           
           <Form.Item 
             name="height" 
-            rules={[{ required: true, message: language.requiredField }]} 
+            // rules={[{ required: true, message: language.requiredField }]} 
+            // rules={[{ required: isFieldLength !== '9' && isFieldLength !== '1', message: language.requiredField }]} 
+            rules={[{ required: !skirtingValues.includes(isFieldLength), message: language.requiredField }]} 
           >
-            <InputNumber addonBefore={language.height} addonAfter="mm"/>
+            <InputNumber
+              addonBefore={language.height} 
+              addonAfter="mm"
+              disabled={skirtingValues.includes(isFieldLength)} // NEW
+              />
           </Form.Item>
 
           <Form.Item 
             name="thickness"
-            rules={[{ required: true, message: language.requiredField }]} 
+            // rules={[{ required: true, message: language.requiredField }]} 
+            // rules={[{ required: isFieldLength !== '9' && isFieldLength !== '1', message: language.requiredField }]} 
+            rules={[{ required: !skirtingValues.includes(isFieldLength), message: language.requiredField }]} 
           >
-            <InputNumber addonBefore={language.thickness} addonAfter="mm"/>
+            <InputNumber 
+              addonBefore={language.thickness} 
+              addonAfter="mm"
+              disabled={skirtingValues.includes(isFieldLength)} // NEW
+            />
           </Form.Item>
 
-          <Form.Item 
+          <Form.Item
             name="amount"
             rules={[{ required: true, message: language.requiredField }]}
           >
             <InputNumber addonBefore={language.amount} addonAfter={language.count}/>
           </Form.Item>
+
+          {/* NEW  ++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/}
+          <Form.Item 
+              name="length"
+              // rules={[{ required: isFieldLength === '9' || isFieldLength === '1', message: language.requiredField }]} 
+              rules={[{ required: skirtingValues.includes(isFieldLength), message: language.requiredField }]} 
+            >
+            {/* addonBefore={language.length} */}
+            <InputNumber 
+              addonBefore='length' 
+              addonAfter="mm" 
+              disabled={!skirtingValues.includes(isFieldLength)} 
+            />
+          </Form.Item>
+          {/* NEW  ++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/}
+
         </Space>
 
         <Form.Item wrapperCol={{ offset: 4, span: 16 }}>
@@ -345,7 +417,8 @@ const DecorElementForm = ({setCurrentStepSend, elementID}) => {
       </Form>
 
         <div style={{padding: '0 25px' }}>
-          {showDecor && <GroupDecorElementStep elementID={elementID} />}
+          {/* {showDecor && <GroupDecorElementStep elementID={elementID} isOnlyPaintDecor={isOnlyPaintDecor}/>} */}
+          {showDecor && !noDecor.includes(isFieldLength) && <GroupDecorElementStep elementID={elementID} isOnlyPaintDecor={isOnlyPaintDecor}/>}
         </div>
     </Spin>
   );

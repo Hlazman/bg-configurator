@@ -52,7 +52,7 @@ export const OrderDetailsPage = () => {
     await html2pdf()
       .from(element)
       .set({
-        // margin: [5, 0, 5, 0], 
+        margin: [5, 0, 5, 0], 
         filename: `Order ${orderId}.pdf`,
         image: { type: 'jpeg', quality: 0.98 },
         html2canvas: { scale: 2 },
@@ -71,7 +71,7 @@ export const OrderDetailsPage = () => {
     await html2pdf()
       .from(element)
       .set({
-        // margin: [5, 0, 5, 0], 
+        margin: [5, 0, 5, 0], 
         filename: `Order ${orderId}.pdf`,
         image: { type: 'jpeg', quality: 0.98 },
         html2canvas: { scale: 2 },
@@ -316,6 +316,7 @@ const fetchDoorData = async (doorId) => {
                                   }
                                 }
                               }
+                              color_range
                             }
                           }
                         }
@@ -423,6 +424,7 @@ const fetchElementsData = async (elementIds) => {
                       height
                       thickness
                       width
+                      length
                     }
                     element {
                       data {
@@ -476,6 +478,7 @@ const fetchElementsData = async (elementIds) => {
                                     }
                                   }
                                 }
+                                color_range
                               }
                             }
                           }

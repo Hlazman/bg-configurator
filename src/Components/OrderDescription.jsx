@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect } from 'react';
-import {Descriptions, Image, Divider} from 'antd';
+import {Descriptions, Image, Divider, Card} from 'antd';
 import dayjs from 'dayjs';
 import { AuthContext } from '../Context/AuthContext';
 import logo from '../logo.svg';
@@ -15,12 +15,21 @@ export const OrderDescription = (
   const { selectedLanguage } = useLanguage();
   const language = languageMap[selectedLanguage];
 
+  // useEffect(() => {
+  //   if (elementData && elementData.length > 0) {
+  //     for(let i = 0; i < elementData.length; i++) {
+  //       console.log(elementData[i]?.decor?.data?.attributes?.paint.data?.attributes?.color_range)
+  //     }
+  //   }
+
+  // }, [elementData])
+
     if (!orderData) {
     return null;
   }
 
   return (
-    <>
+    <div style={{width: isCreatingPdf ? 'auto' : '900px', margin: '0 auto'}}>
       {/* HEADER */}
       <div style={{padding: '15px', backgroundColor: '#FFF', borderRadius: '15px'}}>
         <div style={{display: 'flex', justifyContent: 'space-around', alignItems: 'center', gap: '20px'}}>
@@ -42,7 +51,12 @@ export const OrderDescription = (
         <Divider style={{padding: '0', margin: '0'}}/>
 
       {/* DOOR DETAILS */}
-        <h1 style={{fontSize: '25px', textAlign: 'center', fontWeight: '500', margin: '20px 0'}}> {language.door} </h1>
+        {/* <h1 style={{fontSize: '25px', textAlign: 'center', fontWeight: '500', margin: '20px 0'}}> {language.door} </h1> */}
+        
+        <p style={{fontWeight: '500', padding: '10px', backgroundColor: '#f06d20', color: '#FFF'}}> 
+          {language.door}
+        </p>
+        
         <Descriptions
           column={4}
           layout="vertical"
@@ -58,11 +72,13 @@ export const OrderDescription = (
               labelStyle={{fontWeight: '600', color:'#000'}}
               className='labelBG'
             >
-              <img 
+              {/* <div style={{maxHeight: '580px', maxWidth: '100%', overflow: 'hidden'}}> */}
+                <img 
                 src={`https://api.boki.fortesting.com.ua${doorData.door?.data?.attributes?.product_properties?.image?.data?.attributes?.url}`} 
                 alt="Product"
-                width={'100%'}
+                style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                 />
+              {/* </div> */}
             </Descriptions.Item>
 
             <Descriptions.Item 
@@ -128,7 +144,10 @@ export const OrderDescription = (
             </Descriptions.Item>
 
             <Descriptions.Item className='labelBG' label={`${language.decor} ${language.title}`} labelStyle={{fontWeight: '600', color:'#000'}}>
+              {doorData.decor?.data?.attributes?.paint.data?.attributes?.color_range}
+              <br/>
               {doorData.decor?.data?.attributes?.title}
+
             </Descriptions.Item>
 
             <Descriptions.Item className='labelBG' label={`${language.decor} ${language.type}`}labelStyle={{fontWeight: '600', color:'#000'}} >
@@ -143,10 +162,15 @@ export const OrderDescription = (
         </Descriptions>
       </div>
 
-      <div id='nextpage'></div>
+      {/* <div id='nextpage'></div> */}
       {/* FRAME AND FITTING DETAILS */}
       <div style={{padding: '15px', backgroundColor: '#FFF', borderRadius: '15px'}}>
-        <h1 style={{fontSize: '25px', textAlign: 'center', fontWeight: '500', margin: '20px 0'}}> {language.frame} & {language.fitting} </h1>
+        {/* <h1 style={{fontSize: '25px', textAlign: 'center', fontWeight: '500', margin: '20px 0'}}> {language.frame} & {language.fitting} </h1> */}
+        
+        <p style={{fontWeight: '500', padding: '10px', backgroundColor: '#f06d20', color: '#FFF'}}> 
+          {language.frame} & {language.fitting} 
+        </p>
+
         <Descriptions
           column={3}
           layout="vertical"
@@ -234,68 +258,121 @@ export const OrderDescription = (
           </Descriptions>
       </div>
 
-      <div id='nextpage'></div>
       {/* ELEMENTS */}
+       {elementData && elementData.length > 0 && (
+        <>
+          <div id='nextpage'></div>
+          <div style={{padding: '15px', backgroundColor: '#FFF', borderRadius: '15px'}}>
+            {/* <h1 style={{fontSize: '25px', textAlign: 'center', fontWeight: '500', margin: '20px 0'}}> {language.additional} {language.elements} </h1> */}
+              
+            {elementData && elementData.map((element, index) => (
+              <React.Fragment key={index}>
+
+              <p style={{fontWeight: '500', padding: '10px', backgroundColor: '#f06d20', color: '#FFF'}}> 
+                {`${language.additional} ${language.element} # ${index + 1}`} 
+              </p>
+              
+              <Descriptions
+                key={index}
+                column={5}
+                layout="vertical"
+                bordered
+                style={{margin: '10px 0'}}
+                // size={isCreatingPdf ? 'small' : 'default'}
+                size='middle'
+                // title={`${language.additional} ${language.element} # ${index + 1}`}
+              >
+                <Descriptions.Item className='labelBG' label={`${language.element} ${language.title}`} labelStyle={{fontWeight: '600', color:'#000'}}>
+                  {element.element?.data?.attributes?.title}
+                </Descriptions.Item>
+
+                {element?.sizes?.height && (
+                  <Descriptions.Item className='labelBG' label={language.height} labelStyle={{fontWeight: '600', color:'#000'}}>
+                    {`${element?.sizes?.height} mm`}
+                  </Descriptions.Item>
+                )}
+
+                {element?.sizes?.width && (
+                  <Descriptions.Item className='labelBG' label={language.width} labelStyle={{fontWeight: '600', color:'#000'}}>
+                    {`${element?.sizes?.width} mm`}
+                  </Descriptions.Item>
+                )}
+
+                {element?.sizes?.thickness && (
+                  <Descriptions.Item className='labelBG' label={language.thickness} labelStyle={{fontWeight: '600', color:'#000'}}>
+                    {`${element?.sizes?.thickness} mm`}
+                  </Descriptions.Item>
+                )}
+
+                {/* <Descriptions.Item className='labelBG' label={language.height} labelStyle={{fontWeight: '600', color:'#000'}}>
+                  {`${element?.sizes?.height} mm`}
+                </Descriptions.Item> */}
+
+                {/* <Descriptions.Item className='labelBG' label={language.width} labelStyle={{fontWeight: '600', color:'#000'}}>
+                  {`${element?.sizes?.width} mm`}
+                </Descriptions.Item> */}
+
+                {/* <Descriptions.Item className='labelBG' label={language.thickness} labelStyle={{fontWeight: '600', color:'#000'}}>
+                  {`${element?.sizes?.thickness} mm`}
+                </Descriptions.Item> */}
+
+                {/* NEW */}
+                {element?.sizes?.length && (
+                  <Descriptions.Item span={3} className='labelBG' label="Lenght" labelStyle={{fontWeight: '600', color:'#000'}}>
+                    {`${element?.sizes?.length} mm`}
+                  </Descriptions.Item>
+                )}
+                {/* NEW */}
+
+                <Descriptions.Item className='labelBG' label={language.amount} labelStyle={{fontWeight: '600', color:'#000'}}>
+                  {element?.amount}
+                </Descriptions.Item>
+
+                  {/* NEW */}
+                {element.decor?.data?.attributes && (
+                  <>
+                      <Descriptions.Item className='labelBG' span={2} label={`${language.decor} ${language.image}`} labelStyle={{fontWeight: '600', color:'#000'}}>
+                      <img 
+                        src={`https://api.boki.fortesting.com.ua${element?.decor?.img}`}  
+                        alt="Decor"
+                        // height={240}
+                        height={200}
+                        width={'100%'}
+                        style={{ display: 'block', textAlign: 'center' }}
+                      />
+                    </Descriptions.Item>
+
+                    <Descriptions.Item className='labelBG' label={`${language.decor} ${language.title}`} span={2} labelStyle={{fontWeight: '600', color:'#000'}}>
+                      {element.decor?.data?.attributes?.paint.data?.attributes?.color_range}
+                      <br/> 
+                      {element.decor?.data?.attributes?.title}
+                    </Descriptions.Item>
+
+                    <Descriptions.Item className='labelBG' label={`${language.decor} ${language.type}`} labelStyle={{fontWeight: '600', color:'#000'}} >
+                      {element.decor?.data?.attributes?.type}
+                    </Descriptions.Item>
+                  </>
+                )}
+                {/* NEW */}
+
+                <Descriptions.Item className='labelBG' label={language.price} labelStyle={{fontWeight: '600', color:'#000'}}>
+                  {element?.price} 100$
+                </Descriptions.Item>
+              </Descriptions>
+              </React.Fragment>
+              ))}
+          </div>
+        </>
+       )}
+
+      {/* ORDER INFORMATION */}
       <div style={{padding: '15px', backgroundColor: '#FFF', borderRadius: '15px'}}>
-        <h1 style={{fontSize: '25px', textAlign: 'center', fontWeight: '500', margin: '20px 0'}}> {language.additional} {language.elements} </h1>
-          
-        {elementData && elementData.map((element, index) => (
-          <Descriptions
-            key={index}
-            column={5}
-            layout="vertical"
-            bordered
-            style={{marginBottom: '15px'}}
-            // size={isCreatingPdf ? 'small' : 'default'}
-            size='middle'
-          >
-            <Descriptions.Item className='labelBG' label={`${language.element} ${language.title}`} labelStyle={{fontWeight: '600', color:'#000'}}>
-              {element.element?.data?.attributes?.title}
-            </Descriptions.Item>
+        {/* <h1 style={{fontSize: '25px', textAlign: 'center', fontWeight: '500', margin: '20px 0'}}> {language.Order} {language.information} </h1> */}
+        
+        <p style={{fontWeight: '500', padding: '10px', backgroundColor: '#f06d20', color: '#FFF'}}> 
+          {language.Order} {language.information}
+        </p>
 
-            <Descriptions.Item className='labelBG' label={language.height} labelStyle={{fontWeight: '600', color:'#000'}}>
-              {`${element?.sizes?.height} mm`}
-            </Descriptions.Item>
-
-            <Descriptions.Item className='labelBG' label={language.width} labelStyle={{fontWeight: '600', color:'#000'}}>
-              {`${element?.sizes?.width} mm`}
-            </Descriptions.Item>
-
-            <Descriptions.Item className='labelBG' label={language.thickness} labelStyle={{fontWeight: '600', color:'#000'}}>
-              {`${element?.sizes?.thickness} mm`}
-            </Descriptions.Item>
-
-            <Descriptions.Item className='labelBG' label={language.amount} labelStyle={{fontWeight: '600', color:'#000'}}>
-              {element?.amount}
-            </Descriptions.Item>
-
-            <Descriptions.Item className='labelBG' span={2} label={`${language.decor} ${language.image}`} labelStyle={{fontWeight: '600', color:'#000'}}>
-              <img 
-                src={`https://api.boki.fortesting.com.ua${element?.decor?.img}`}  
-                alt="Decor"
-                height={240}
-                width={'100%'}
-                style={{ display: 'block', textAlign: 'center' }}
-              />
-            </Descriptions.Item>
-
-            <Descriptions.Item className='labelBG' label={`${language.decor} ${language.title}`} span={2} labelStyle={{fontWeight: '600', color:'#000'}}>
-              {element.decor?.data?.attributes?.title}
-            </Descriptions.Item>
-
-            <Descriptions.Item className='labelBG' label={`${language.decor} ${language.type}`} labelStyle={{fontWeight: '600', color:'#000'}} >
-              {element.decor?.data?.attributes?.type}
-            </Descriptions.Item>
-
-            <Descriptions.Item className='labelBG' label={language.price} labelStyle={{fontWeight: '600', color:'#000'}}>
-              {element?.price} 100$
-            </Descriptions.Item>
-          </Descriptions>
-          ))}      
-      </div>
-
-      <div style={{padding: '15px', backgroundColor: '#FFF', borderRadius: '15px'}}>
-        <h1 style={{fontSize: '25px', textAlign: 'center', fontWeight: '500', margin: '20px 0'}}> {language.Order} {language.information} </h1>
         <Descriptions
           column={4}
           layout="vertical"
@@ -332,6 +409,6 @@ export const OrderDescription = (
     <p style={{margin: '30px 15px 15px', textAlign: 'left' }}> 
       <span style={{color: 'red', fontWeight: 'bold'}}> * </span> {language.colorWarn}
     </p>
-  </>
+  </div>
   );
 };

@@ -10,8 +10,9 @@ import PrimerStep from './PrimerStep';
 import { useLanguage } from '../../Context/LanguageContext';
 import languageMap from '../../Languages/language';
 
-const GroupDecorElementStep = (elementID) => {
-  const [activeTab, setActiveTab] = useState('veneer');
+// const GroupDecorElementStep = (elementID) => {
+const GroupDecorElementStep = ({elementID, isOnlyPaintDecor}) => {
+  const [activeTab, setActiveTab] = useState('paint');
   const { selectedLanguage } = useLanguage();
   const language = languageMap[selectedLanguage];
   const jwtToken = localStorage.getItem('token');
@@ -45,7 +46,8 @@ const GroupDecorElementStep = (elementID) => {
           }
           `,
           variables: {
-            elementSuborderId: elementID.elementID.toString(),
+            // elementSuborderId: elementID.elementID.toString(),
+            elementSuborderId: elementID,
           }
         },
         {
@@ -205,7 +207,8 @@ const GroupDecorElementStep = (elementID) => {
             }
           `,
           variables: {
-            updateElementSuborderId: elementID.elementID.toString(),
+            // updateElementSuborderId: elementID.elementID.toString(),
+            updateElementSuborderId: elementID,
             data: data
           }
         },
@@ -220,6 +223,8 @@ const GroupDecorElementStep = (elementID) => {
       message.success(language.successQuery);
     } catch (error) {
       console.error('Error sending data:', error);
+      console.error('elementID', elementID);
+      console.error('elementID.elementID', elementID.elementID);
       message.error(language.errorQuery);
     }
   };
@@ -234,12 +239,13 @@ const GroupDecorElementStep = (elementID) => {
         {
           label: language.veneer,
           key: 'veneer',
+          disabled: isOnlyPaintDecor,
           children: 
             <VeneerStep 
               fetchDecorData={fetchDecorData}
               fetchOrderData={fetchOrderData}
               checkDecor={checkDecor}
-              sendDecorForm={sendDecorForm} 
+              sendDecorForm={sendDecorForm}
             />,
         },
         {
@@ -250,12 +256,14 @@ const GroupDecorElementStep = (elementID) => {
             fetchDecorData={fetchDecorData}
             fetchOrderData={fetchOrderData}
             checkDecor={checkDecor}
-            sendDecorForm={sendDecorForm}  
+            sendDecorForm={sendDecorForm}
+            isOnlyPaintDecor={isOnlyPaintDecor}
             />,
         },
         {
           label: language.stoneware,
           key: 'stoneware',
+          disabled: isOnlyPaintDecor,
           children: 
             <StoneStep 
             fetchDecorData={fetchDecorData}
@@ -267,6 +275,7 @@ const GroupDecorElementStep = (elementID) => {
         {
           label: language.mirror,
           key: 'mirror',
+          disabled: isOnlyPaintDecor,
           children: 
             <MirrorStep 
               fetchDecorData={fetchDecorData}
@@ -278,6 +287,7 @@ const GroupDecorElementStep = (elementID) => {
         {
           label: language.hpl,
           key: 'hpl',
+          disabled: isOnlyPaintDecor,
           children: 
             <HPLStep 
             fetchDecorData={fetchDecorData}
@@ -289,6 +299,7 @@ const GroupDecorElementStep = (elementID) => {
         {
           label: language.primer,
           key: 'primer',
+          disabled: isOnlyPaintDecor,
           children: 
             <PrimerStep 
             fetchDecorData={fetchDecorData}

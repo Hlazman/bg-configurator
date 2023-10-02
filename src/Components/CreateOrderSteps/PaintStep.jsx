@@ -6,7 +6,7 @@ import { CreateColorDrawer } from '../CreateColorDrawer';
 import { useLanguage } from '../../Context/LanguageContext';
 import languageMap from '../../Languages/language';
 
-const PaintStep = ({ orderID, fetchOrderData, fetchDecorData, checkDecor, sendDecorForm }) => {
+const PaintStep = ({ orderID, fetchOrderData, fetchDecorData, checkDecor, sendDecorForm, isOnlyPaintDecor }) => {
   const [paintData, setPaintData] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
   // const [selectedColorGroup, setSelectedColorGroup] = useState('ALL');
@@ -16,7 +16,7 @@ const PaintStep = ({ orderID, fetchOrderData, fetchDecorData, checkDecor, sendDe
   const language = languageMap[selectedLanguage];
 
   // const [selectedPaintFor, setSelectedPaintFor] = useState('');
-  const [selectedPaintFor, setSelectedPaintFor] = useState('');
+  const [selectedPaintFor, setSelectedPaintFor] = useState(isOnlyPaintDecor ? 'paint' : '');
   const [isPaintType, setIsPaintType] = useState(true);
 
   const [isLoading, setIsLoading] = useState(true);
@@ -165,8 +165,10 @@ const PaintStep = ({ orderID, fetchOrderData, fetchDecorData, checkDecor, sendDe
         >
           <Select
             name="selectedPaintFor"
-            value={selectedPaintFor}
+            // value={selectedPaintFor}
+            value={ !isOnlyPaintDecor ? selectedPaintFor : 'paint'}
             onChange={handlePaintForChange}
+            disabled={isOnlyPaintDecor}
           >
             <Select.Option value="paint">{language.paint}</Select.Option>
             <Select.Option value="painted_glass">{language.glass}Glass</Select.Option>
@@ -228,12 +230,23 @@ const PaintStep = ({ orderID, fetchOrderData, fetchDecorData, checkDecor, sendDe
                             : 'none',
                       }}
                       onClick={() => {
+                        // if (isOnlyPaintDecor) {
+                        //   setSelectedPaintFor('paint')
+                        // }
+
                         if (selectedPaintFor) {
                           checkDecor(selectedPaintFor, paint.attributes.color_code, decorData, setSelectedDecorId, paint.id, setDecorData);
                           setPreviousColorTitle(paint.attributes.color_code);
                         } else {
                           message.error('First you need to choose "Pait for" ')
                         }
+
+                        // if (selectedPaintFor) {
+                        //   checkDecor(selectedPaintFor, paint.attributes.color_code, decorData, setSelectedDecorId, paint.id, setDecorData);
+                        //   setPreviousColorTitle(paint.attributes.color_code);
+                        // } else {
+                        //   message.error('First you need to choose "Pait for" ')
+                        // }
                       }}
                     >
                       <div style={{ overflow: 'hidden', height: 120 }}>
