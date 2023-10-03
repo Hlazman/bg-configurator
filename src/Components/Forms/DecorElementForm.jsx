@@ -27,10 +27,11 @@ const DecorElementForm = ({setCurrentStepSend, elementID}) => {
 
   const [isFieldLength, setIsFieldLength] = useState('');
   const [isOnlyPaintDecor, setIsOnlyPaintDecor] = useState(false);
-  const skirtingValues = ['14', '15', '16', '17', '18']
+  const [isMirrorDecor, setIsMirrorDecor] = useState(false);
   
-  const noDecor = ['16',]
-  const paintDecor = ['16', '17',]
+  const skirtingValues = ['14', '15', '16', '17', '18', '20', '21', '22', '23', '24', '25']
+  const noDecor = ['16', '20', '22']
+  const paintDecor = ['16', '17', '20', '21', '22', '23', '24', '25']
 
   const [showDecor, setShowDecor] = useState(false); 
   const handleShowDecorClick = () => {
@@ -288,15 +289,6 @@ const DecorElementForm = ({setCurrentStepSend, elementID}) => {
     }
   };
 
-  // NEW
-  // const [isFieldLength, setIsFieldLength] = useState('');
-  // const [isOnlyPaintDecor, setIsOnlyPaintDecor] = useState(false);
-  // const skirtingValues = ['14', '15', '16', '17', '18']
-  
-  // const noDecor = ['16',]
-  // const paintDecor = ['16', '17',]
-
-
   return (
     <Spin spinning={isloading}>
       <Form form={form} onFinish={handleFormSubmit} > 
@@ -418,7 +410,9 @@ const DecorElementForm = ({setCurrentStepSend, elementID}) => {
 
         <div style={{padding: '0 25px' }}>
           {/* {showDecor && <GroupDecorElementStep elementID={elementID} isOnlyPaintDecor={isOnlyPaintDecor}/>} */}
-          {showDecor && !noDecor.includes(isFieldLength) && <GroupDecorElementStep elementID={elementID} isOnlyPaintDecor={isOnlyPaintDecor}/>}
+          {showDecor && !noDecor.includes(isFieldLength) && 
+            <GroupDecorElementStep elementID={elementID} isOnlyPaintDecor={isOnlyPaintDecor} isMirrorDecor={isMirrorDecor}
+            />}
         </div>
     </Spin>
   );

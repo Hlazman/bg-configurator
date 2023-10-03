@@ -303,7 +303,7 @@ const GroupDecorStep = ({ setCurrentStepSend }) => {
             />,
         },
         {
-          label: language.primer,
+          label: language.primers,
           key: 'primer',
           children: 
             <PrimerStep 

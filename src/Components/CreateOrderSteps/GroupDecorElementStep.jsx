@@ -11,7 +11,7 @@ import { useLanguage } from '../../Context/LanguageContext';
 import languageMap from '../../Languages/language';
 
 // const GroupDecorElementStep = (elementID) => {
-const GroupDecorElementStep = ({elementID, isOnlyPaintDecor}) => {
+const GroupDecorElementStep = ({elementID, isOnlyPaintDecor, isMirrorDecor}) => {
   const [activeTab, setActiveTab] = useState('paint');
   const { selectedLanguage } = useLanguage();
   const language = languageMap[selectedLanguage];
@@ -275,7 +275,8 @@ const GroupDecorElementStep = ({elementID, isOnlyPaintDecor}) => {
         {
           label: language.mirror,
           key: 'mirror',
-          disabled: isOnlyPaintDecor,
+          // disabled: isOnlyPaintDecor,
+          disabled: isMirrorDecor,
           children: 
             <MirrorStep 
               fetchDecorData={fetchDecorData}

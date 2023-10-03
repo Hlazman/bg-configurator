@@ -76,7 +76,8 @@ export const OrderDescription = (
                 <img 
                 src={`https://api.boki.fortesting.com.ua${doorData.door?.data?.attributes?.product_properties?.image?.data?.attributes?.url}`} 
                 alt="Product"
-                style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                // style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                style={{width: '100%'}}
                 />
               {/* </div> */}
             </Descriptions.Item>
