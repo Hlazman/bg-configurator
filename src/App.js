@@ -206,8 +206,10 @@ const getHeaderTitle = (location, Id) => {
         </Layout>
       ) : (
         <Routes>
-          <Route path="/auth" element={<AuthPage />} />
-          <Route path="*" element={<Navigate to="/auth" replace />} />
+          <Route path="/" element={<AuthPage />} />
+          {/* <Route path="/auth" element={<AuthPage />} /> */}
+          {/* <Route path="*" element={<Navigate to="/auth" replace />} /> */}
+          {/* <Route path="*" element={<Navigate to="/" replace />} /> */}
           <Route path="/resetpassword" element={<ResetPasswordPage />} />
           <Route path="/savepassword" element={<SavePasswordPage />} />
         </Routes>

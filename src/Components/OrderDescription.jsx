@@ -67,25 +67,26 @@ export const OrderDescription = (
           <>
             <Descriptions.Item 
               span={2} 
-              style={{ width: isCreatingPdf ? '55%' : '50%'}} 
+              // style={{ width: isCreatingPdf ? '55%' : '50%'}} 
+              style={{ width: isCreatingPdf ? '55%' : '60%'}} 
               label={`${language.product} ${language.image}`}
               labelStyle={{fontWeight: '600', color:'#000'}}
               className='labelBG'
             >
-              {/* <div style={{maxHeight: '580px', maxWidth: '100%', overflow: 'hidden'}}> */}
+              <div style={{height: '400px', textAlign: 'center'}}>
                 <img 
-                src={`https://api.boki.fortesting.com.ua${doorData.door?.data?.attributes?.product_properties?.image?.data?.attributes?.url}`} 
-                alt="Product"
-                // style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-                style={{width: '100%'}}
+                  src={`https://api.boki.fortesting.com.ua${doorData.door?.data?.attributes?.product_properties?.image?.data?.attributes?.url}`} 
+                  alt="Product"
+                  style={{height: '100%'}}
                 />
-              {/* </div> */}
+              </div>
             </Descriptions.Item>
 
             <Descriptions.Item 
               className='labelBG'
               span={2} 
-              style={{ width: isCreatingPdf ? '45%' : '50%'}} 
+              // style={{ width: isCreatingPdf ? '45%' : '50%'}} 
+              style={{ width: isCreatingPdf ? '45%' : '40%'}} 
               label={language.data}
               labelStyle={{fontWeight: '600', color:'#000'}}
             >
@@ -145,8 +146,7 @@ export const OrderDescription = (
             </Descriptions.Item>
 
             <Descriptions.Item className='labelBG' label={`${language.decor} ${language.title}`} labelStyle={{fontWeight: '600', color:'#000'}}>
-              {doorData.decor?.data?.attributes?.paint.data?.attributes?.color_range}
-              <br/>
+              {doorData.decor?.data?.attributes?.paint.data?.attributes?.color_range} &nbsp;
               {doorData.decor?.data?.attributes?.title}
 
             </Descriptions.Item>
@@ -344,8 +344,7 @@ export const OrderDescription = (
                     </Descriptions.Item>
 
                     <Descriptions.Item className='labelBG' label={`${language.decor} ${language.title}`} span={2} labelStyle={{fontWeight: '600', color:'#000'}}>
-                      {element.decor?.data?.attributes?.paint.data?.attributes?.color_range}
-                      <br/> 
+                      {element.decor?.data?.attributes?.paint.data?.attributes?.color_range} &nbsp;
                       {element.decor?.data?.attributes?.title}
                     </Descriptions.Item>
 
