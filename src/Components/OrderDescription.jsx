@@ -29,7 +29,7 @@ export const OrderDescription = (
   }
 
   return (
-    <div style={{width: isCreatingPdf ? 'auto' : '900px', margin: '0 auto'}}>
+    <div style={{maxWidth: isCreatingPdf ? 'auto' : '900px', margin: '0 auto'}}>
       {/* HEADER */}
       <div style={{padding: '15px', backgroundColor: '#FFF', borderRadius: '15px'}}>
         <div style={{display: 'flex', justifyContent: 'space-around', alignItems: 'center', gap: '20px'}}>
@@ -364,6 +364,31 @@ export const OrderDescription = (
           </div>
         </>
        )}
+
+      {/* OPTIONS */}
+      <div style={{padding: '15px', backgroundColor: '#FFF', borderRadius: '15px'}}>
+        
+        <p style={{fontWeight: '500', padding: '10px', backgroundColor: '#f06d20', color: '#FFF'}}> 
+          {language.Order} {language.options}
+        </p>
+
+        <Descriptions
+          column={4}
+          layout="vertical"
+          bordered
+          size='default'
+          >
+            <Descriptions.Item className='labelBG' label={'horizontal_veneer'} labelStyle={{fontWeight: '600', color:'#000'}}>
+              {orderData?.horizontal_veneer ? language.yes : language.no}
+            </Descriptions.Item>
+
+            <Descriptions.Item className='labelBG' label={'super_gloss'} labelStyle={{fontWeight: '600', color:'#000'}}>
+              {orderData?.super_gloss ? language.yes : language.no}
+            </Descriptions.Item>
+
+
+          </Descriptions>
+      </div>
 
       {/* ORDER INFORMATION */}
       <div style={{padding: '15px', backgroundColor: '#FFF', borderRadius: '15px'}}>

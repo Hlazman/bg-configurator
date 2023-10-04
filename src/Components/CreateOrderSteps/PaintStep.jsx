@@ -6,7 +6,7 @@ import { CreateColorDrawer } from '../CreateColorDrawer';
 import { useLanguage } from '../../Context/LanguageContext';
 import languageMap from '../../Languages/language';
 
-const PaintStep = ({ orderID, fetchOrderData, fetchDecorData, checkDecor, sendDecorForm, isOnlyPaintDecor }) => {
+const PaintStep = ({ orderID, fetchOrderData, fetchDecorData, checkDecor, sendDecorForm, isPaintDecor }) => {
   const [paintData, setPaintData] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
   // const [selectedColorGroup, setSelectedColorGroup] = useState('ALL');
@@ -16,7 +16,7 @@ const PaintStep = ({ orderID, fetchOrderData, fetchDecorData, checkDecor, sendDe
   const language = languageMap[selectedLanguage];
 
   // const [selectedPaintFor, setSelectedPaintFor] = useState('');
-  const [selectedPaintFor, setSelectedPaintFor] = useState(isOnlyPaintDecor ? 'paint' : '');
+  const [selectedPaintFor, setSelectedPaintFor] = useState(isPaintDecor ? 'paint' : '');
   const [isPaintType, setIsPaintType] = useState(true);
 
   const [isLoading, setIsLoading] = useState(true);
@@ -166,9 +166,9 @@ const PaintStep = ({ orderID, fetchOrderData, fetchDecorData, checkDecor, sendDe
           <Select
             name="selectedPaintFor"
             // value={selectedPaintFor}
-            value={ !isOnlyPaintDecor ? selectedPaintFor : 'paint'}
+            value={ !isPaintDecor ? selectedPaintFor : 'paint'}
             onChange={handlePaintForChange}
-            disabled={isOnlyPaintDecor}
+            disabled={isPaintDecor}
           >
             <Select.Option value="paint">{language.paint}</Select.Option>
             <Select.Option value="painted_glass">{language.glass}Glass</Select.Option>

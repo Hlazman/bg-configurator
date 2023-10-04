@@ -14,6 +14,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { CreateColorDrawer } from '../Components/CreateColorDrawer';
 import { useLanguage } from '../Context/LanguageContext';
 import languageMap from '../Languages/language';
+import OptionsStep from '../Components/CreateOrderSteps/OptionsStep';
 
 
 export const CreateOrderPage = () => {
@@ -250,12 +251,9 @@ export const CreateOrderPage = () => {
         );
         case 5:
         return (
-          <Form >
-            <Form.Item name="step6Field" label="Шаг 5">
-              <Input />
-            </Form.Item>
-            <Button onClick={handlePrev}>Назад</Button>
-          </Form>
+          <OptionsStep
+            setCurrentStepSend={setCurrentStepSend}
+        />
         );
         case 6:
         return (

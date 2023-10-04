@@ -25,18 +25,23 @@ const DecorElementForm = ({setCurrentStepSend, elementID}) => {
 
   const [form] = Form.useForm();
 
-  const [isFieldLength, setIsFieldLength] = useState('');
-  const [isOnlyPaintDecor, setIsOnlyPaintDecor] = useState(false);
+  const [currentElementField, setCurrentElementField] = useState('');
+  const [isPaintDecor, setIsPaintDecor] = useState(false);
   const [isMirrorDecor, setIsMirrorDecor] = useState(false);
   
-  const skirtingValues = ['14', '15', '16', '17', '18', '20', '21', '22', '23', '24', '25']
+  const noWidthHeightThickness = ['14', '15', '16', '17', '18', '20', '21', '22', '23', '24', '25']
+  // const noLength = ['22', '23', '24', '25']
   const noDecor = ['16', '20', '22']
   const paintDecor = ['16', '17', '20', '21', '22', '23', '24', '25']
+  const mirrorDecor = ['16', '17', '20', '21', '22', '23', '25']
 
   const [showDecor, setShowDecor] = useState(false); 
   const handleShowDecorClick = () => {
-    if (paintDecor.includes(isFieldLength)) {
-      setIsOnlyPaintDecor(true)
+    if (paintDecor.includes(currentElementField)) {
+      setIsPaintDecor(true)
+    }
+    if (mirrorDecor.includes(currentElementField)) {
+      setIsMirrorDecor(true)
     }
     setShowDecor(true);
   }
@@ -92,7 +97,7 @@ const DecorElementForm = ({setCurrentStepSend, elementID}) => {
           length: elementSuborderData?.attributes?.sizes?.length, // NEW
         });
       }
-      setIsFieldLength(elementSuborderData?.attributes?.element?.data?.id)
+      setCurrentElementField(elementSuborderData?.attributes?.element?.data?.id)
       
     })
     .catch(error => {
@@ -306,12 +311,18 @@ const DecorElementForm = ({setCurrentStepSend, elementID}) => {
             defaultValue={undefined}
             // NEW
             onChange={(value) => { 
-              setIsFieldLength(value);
+              setCurrentElementField(value);
                 
               if (paintDecor.includes(value)) {
-                  setIsOnlyPaintDecor(true)
+                  setIsPaintDecor(true)
                 } else {
-                  setIsOnlyPaintDecor(false)
+                  setIsPaintDecor(false)
+                }
+
+                if (mirrorDecor.includes(value)) {
+                  setIsMirrorDecor(true)
+                } else {
+                  setIsMirrorDecor(false)
                 }
             }}
           >
@@ -327,26 +338,27 @@ const DecorElementForm = ({setCurrentStepSend, elementID}) => {
           label={language.elementDecor}
           // rules={[{ required: true, message: language.requiredField }]}
           // rules={[{ required: isFieldLength !== '16', message: language.requiredField }]}
-          rules={[{ required: !noDecor.includes(isFieldLength), message: language.requiredField }]}
+          rules={[{ required: !noDecor.includes(currentElementField), message: language.requiredField }]}
         >
           <Radio.Group type="dashed" buttonStyle="solid" onChange={handleRadioChange}>
-            <Radio.Button disabled={noDecor.includes(isFieldLength)} value="choose">{language.elementGetDecor}</Radio.Button>
-            <Radio.Button disabled={paintDecor.includes(isFieldLength)} value="get">{language.elementGetDoor}</Radio.Button>
+            <Radio.Button disabled={noDecor.includes(currentElementField)} value="choose">{language.elementGetDecor}</Radio.Button>
+            <Radio.Button disabled={paintDecor.includes(currentElementField)} value="get">{language.elementGetDoor}</Radio.Button>
           </Radio.Group>
         </Form.Item>
       </div>
 
-        <Space wrap={true} direction="hirizontal" size="large">
+        <Space.Compact wrap="true" direction="hirizontal" size="middle">
           <Form.Item 
             name="width" 
             // rules={[{ required: true, message: language.requiredField }]}
             // rules={[{ required: isFieldLength !== '9' && isFieldLength !== '1', message: language.requiredField }]}
-            rules={[{ required: !skirtingValues.includes(isFieldLength), message: language.requiredField }]}
+            rules={[{ required: !noWidthHeightThickness.includes(currentElementField), message: language.requiredField }]}
           >
-            <InputNumber
+            <InputNumber 
+              style={{margin: '0 5px'}}
               addonBefore={language.width} 
               addonAfter="mm"
-              disabled={skirtingValues.includes(isFieldLength)} // NEW
+              disabled={noWidthHeightThickness.includes(currentElementField)} // NEW
             />
           </Form.Item>
           
@@ -354,12 +366,13 @@ const DecorElementForm = ({setCurrentStepSend, elementID}) => {
             name="height" 
             // rules={[{ required: true, message: language.requiredField }]} 
             // rules={[{ required: isFieldLength !== '9' && isFieldLength !== '1', message: language.requiredField }]} 
-            rules={[{ required: !skirtingValues.includes(isFieldLength), message: language.requiredField }]} 
+            rules={[{ required: !noWidthHeightThickness.includes(currentElementField), message: language.requiredField }]} 
           >
             <InputNumber
+              style={{margin: '0 5px'}}
               addonBefore={language.height} 
               addonAfter="mm"
-              disabled={skirtingValues.includes(isFieldLength)} // NEW
+              disabled={noWidthHeightThickness.includes(currentElementField)} // NEW
               />
           </Form.Item>
 
@@ -367,38 +380,43 @@ const DecorElementForm = ({setCurrentStepSend, elementID}) => {
             name="thickness"
             // rules={[{ required: true, message: language.requiredField }]} 
             // rules={[{ required: isFieldLength !== '9' && isFieldLength !== '1', message: language.requiredField }]} 
-            rules={[{ required: !skirtingValues.includes(isFieldLength), message: language.requiredField }]} 
+            rules={[{ required: !noWidthHeightThickness.includes(currentElementField), message: language.requiredField }]} 
           >
-            <InputNumber 
+            <InputNumber
+              style={{margin: '0 5px'}}
               addonBefore={language.thickness} 
               addonAfter="mm"
-              disabled={skirtingValues.includes(isFieldLength)} // NEW
+              disabled={noWidthHeightThickness.includes(currentElementField)} // NEW
             />
-          </Form.Item>
-
-          <Form.Item
-            name="amount"
-            rules={[{ required: true, message: language.requiredField }]}
-          >
-            <InputNumber addonBefore={language.amount} addonAfter={language.count}/>
           </Form.Item>
 
           {/* NEW  ++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/}
           <Form.Item 
               name="length"
               // rules={[{ required: isFieldLength === '9' || isFieldLength === '1', message: language.requiredField }]} 
-              rules={[{ required: skirtingValues.includes(isFieldLength), message: language.requiredField }]} 
+              // rules={[{ required: noWidthHeightThickness.includes(currentElementField), message: language.requiredField }]} 
+              rules={[{ required: noWidthHeightThickness.slice(0, -4).includes(currentElementField), message: language.requiredField }]} 
             >
             {/* addonBefore={language.length} */}
-            <InputNumber 
+            <InputNumber
+              style={{margin: '0 5px'}}
               addonBefore='length' 
               addonAfter="mm" 
-              disabled={!skirtingValues.includes(isFieldLength)} 
+              // disabled={!noWidthHeightThickness.includes(currentElementField)} 
+              disabled={!noWidthHeightThickness.slice(0, -4).includes(currentElementField)}
+
             />
           </Form.Item>
           {/* NEW  ++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/}
 
-        </Space>
+          <Form.Item
+            name="amount"
+            rules={[{ required: true, message: language.requiredField }]}
+          >
+            <InputNumber style={{margin: '0 5px'}} addonBefore={language.amount} addonAfter={language.count}/>
+          </Form.Item>
+
+        </Space.Compact>
 
         <Form.Item wrapperCol={{ offset: 4, span: 16 }}>
           <Button type="primary" htmlType="submit">
@@ -410,8 +428,8 @@ const DecorElementForm = ({setCurrentStepSend, elementID}) => {
 
         <div style={{padding: '0 25px' }}>
           {/* {showDecor && <GroupDecorElementStep elementID={elementID} isOnlyPaintDecor={isOnlyPaintDecor}/>} */}
-          {showDecor && !noDecor.includes(isFieldLength) && 
-            <GroupDecorElementStep elementID={elementID} isOnlyPaintDecor={isOnlyPaintDecor} isMirrorDecor={isMirrorDecor}
+          {showDecor && !noDecor.includes(currentElementField) && 
+            <GroupDecorElementStep elementID={elementID} isPaintDecor={isPaintDecor} isMirrorDecor={isMirrorDecor}
             />}
         </div>
     </Spin>

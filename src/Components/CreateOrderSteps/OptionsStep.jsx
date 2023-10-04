@@ -1,0 +1,144 @@
+import { Form, Button, Card, Radio, message } from 'antd';
+import axios from 'axios';
+import { useOrder } from '../../Context/OrderContext';
+import { useEffect, useState } from 'react';
+import { useLanguage } from '../../Context/LanguageContext';
+import languageMap from '../../Languages/language';
+
+const OptionsStep = ({ setCurrentStepSend }) => {
+  const { orderId } = useOrder();
+  const jwtToken = localStorage.getItem('token');
+  const orderIdToUse = orderId;
+
+  const [form] = Form.useForm();
+  const [orderData, setOrderData] = useState(null);
+  const { selectedLanguage } = useLanguage();
+  const language = languageMap[selectedLanguage];
+
+
+  const fetchOrderData = async () => {
+    try {
+      if (!orderIdToUse) return;
+
+      const response = await axios.post(
+        'https://api.boki.fortesting.com.ua/graphql',
+        {
+          query: `
+            query Query($orderId: ID) {
+              order(id: $orderId) {
+                data {
+                  attributes {
+                    super_gloss
+                    horizontal_veneer
+                  }
+                }
+              }
+            }
+          `,
+          variables: {
+            orderId: orderIdToUse,
+          },
+        },
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${jwtToken}`,
+          },
+        }
+      );
+
+      if (response.data.data && response.data.data.order) {
+        const orderData = response.data.data.order.data.attributes;
+        setOrderData(orderData);
+        form.setFieldsValue(orderData);
+      }
+    } catch (error) {
+      console.error('Error fetching order data:', error);
+    }
+  };
+
+  useEffect(() => {
+    fetchOrderData();
+  }, [orderIdToUse, jwtToken, form]);
+
+
+  const handleFormSubmit = async (values) => {
+    try {
+      const response = await axios.post(
+        'https://api.boki.fortesting.com.ua/graphql',
+        {
+          query: `
+            mutation Mutation($data: OrderInput!, $updateOrderId: ID!) {
+              updateOrder(data: $data, id: $updateOrderId) {
+                data {
+                  id
+                }
+              }
+            }
+          `,
+          variables: {
+            data: values,
+            updateOrderId: orderIdToUse,
+          },
+        },
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${jwtToken}`,
+          },
+        }
+      );
+      message.success(language.successQuery);
+      if (setCurrentStepSend) {
+        setCurrentStepSend(prevState => {
+          return {
+            ...prevState,
+            optionsSend: true
+          };
+        });
+      }
+    } catch (error) {
+      console.error('Error updating order:', error);
+      message.error(language.errorQuery);
+    }
+  };
+
+  return (
+    <Card style={{background: '#F8F8F8', borderColor: '#DCDCDC'}}>
+      <Form form={form} onFinish={handleFormSubmit}>
+      <div style={{ display: 'flex', gap: '30px' }}>
+          <Form.Item
+            label="Horizontal veneer"
+            name="horizontal_veneer"
+          >
+            <Radio.Group buttonStyle="solid">
+              <Radio.Button value={true}>{language.yes}</Radio.Button>
+              <Radio.Button value={false}>{language.no}</Radio.Button>
+            </Radio.Group>
+          </Form.Item>
+        </div>
+
+        <div style={{ display: 'flex', gap: '30px' }}>
+          <Form.Item
+            label="Super gloss"
+            name="super_gloss"
+          >
+            <Radio.Group buttonStyle="solid">
+              <Radio.Button value={true}>{language.yes}</Radio.Button>
+              <Radio.Button value={false}>{language.no}</Radio.Button>
+            </Radio.Group>
+          </Form.Item>
+        </div>
+        
+        <Form.Item>
+          <Button type="primary" htmlType="submit">
+            {language.submit}
+          </Button>
+        </Form.Item>
+      </Form>
+    </Card>
+  );
+};
+
+export default OptionsStep;
+

@@ -11,7 +11,7 @@ import { useLanguage } from '../../Context/LanguageContext';
 import languageMap from '../../Languages/language';
 
 // const GroupDecorElementStep = (elementID) => {
-const GroupDecorElementStep = ({elementID, isOnlyPaintDecor, isMirrorDecor}) => {
+const GroupDecorElementStep = ({elementID, isPaintDecor, isMirrorDecor}) => {
   const [activeTab, setActiveTab] = useState('paint');
   const { selectedLanguage } = useLanguage();
   const language = languageMap[selectedLanguage];
@@ -239,7 +239,7 @@ const GroupDecorElementStep = ({elementID, isOnlyPaintDecor, isMirrorDecor}) => 
         {
           label: language.veneer,
           key: 'veneer',
-          disabled: isOnlyPaintDecor,
+          disabled: isPaintDecor,
           children: 
             <VeneerStep 
               fetchDecorData={fetchDecorData}
@@ -257,13 +257,13 @@ const GroupDecorElementStep = ({elementID, isOnlyPaintDecor, isMirrorDecor}) => 
             fetchOrderData={fetchOrderData}
             checkDecor={checkDecor}
             sendDecorForm={sendDecorForm}
-            isOnlyPaintDecor={isOnlyPaintDecor}
+            isPaintDecor={isPaintDecor}
             />,
         },
         {
           label: language.stoneware,
           key: 'stoneware',
-          disabled: isOnlyPaintDecor,
+          disabled: isPaintDecor,
           children: 
             <StoneStep 
             fetchDecorData={fetchDecorData}
@@ -275,7 +275,6 @@ const GroupDecorElementStep = ({elementID, isOnlyPaintDecor, isMirrorDecor}) => 
         {
           label: language.mirror,
           key: 'mirror',
-          // disabled: isOnlyPaintDecor,
           disabled: isMirrorDecor,
           children: 
             <MirrorStep 
@@ -288,7 +287,7 @@ const GroupDecorElementStep = ({elementID, isOnlyPaintDecor, isMirrorDecor}) => 
         {
           label: language.hpl,
           key: 'hpl',
-          disabled: isOnlyPaintDecor,
+          disabled: isPaintDecor,
           children: 
             <HPLStep 
             fetchDecorData={fetchDecorData}
@@ -300,7 +299,7 @@ const GroupDecorElementStep = ({elementID, isOnlyPaintDecor, isMirrorDecor}) => 
         {
           label: language.primer,
           key: 'primer',
-          disabled: isOnlyPaintDecor,
+          disabled: isPaintDecor,
           children: 
             <PrimerStep 
             fetchDecorData={fetchDecorData}

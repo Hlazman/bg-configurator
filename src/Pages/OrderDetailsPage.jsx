@@ -101,6 +101,8 @@ export const OrderDetailsPage = () => {
                     currency
                     hidden
                     opening
+                    horizontal_veneer
+                    super_gloss
                     shippingAddress {
                       address
                       city
