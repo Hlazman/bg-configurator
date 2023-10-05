@@ -61,7 +61,7 @@ const App = () => {
       onClick: handleResetPassword
     },
     {
-      label: language.Logout,
+      label: language.logout,
       key: 'Logout',
       icon: <UserOutlined />,
       onClick: handleLogout

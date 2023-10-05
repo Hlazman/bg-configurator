@@ -191,6 +191,10 @@ export const OrderDetailsPage = () => {
         fetchKnobeData(subordersId.fittings.knobe);
       }
 
+      if (subordersId.options) {
+        fetchOptionsData(subordersId.options)
+      }
+
     } catch (error) {
       console.error('Error while fetching order data:', error);
     }
@@ -740,6 +744,49 @@ useEffect(() => {
 }, [jwtToken, orderId, urlOrderId]);
 
 
+const fetchOptionsData = async (optionIds) => {
+  const optionsDataArray = [];
+
+  for (const optionId of optionIds) {
+    try {
+      const optionSuborderResponse = await axios.post(
+        'https://api.boki.fortesting.com.ua/graphql',
+        {
+          query: `
+            query Query($optionSuborderId: ID) {
+              optionSuborder(id: $optionSuborderId) {
+                data {
+                  id
+                  attributes {
+                    title
+                    price
+                  }
+                }
+              }
+            }
+          `,
+          variables: {
+            optionSuborderId: optionId,
+          },
+        },
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${jwtToken}`,
+          },
+        }
+      );
+
+      const optionSuborderData = optionSuborderResponse?.data?.data?.optionSuborder?.data?.attributes;
+      optionsDataArray.push(optionSuborderData);
+    } catch (error) {
+      console.error('Error while fetching option suborder data:', error);
+    }
+  }
+
+  setOptionsData(optionsDataArray);
+};
+
   return (
     <div >
       <div style={{margin: '20px', display:'flex', gap: '20px', justifyContent: 'center'}}>
@@ -757,6 +804,7 @@ useEffect(() => {
           hingeData={hingeData}
           knobeData={knobeData}
           lockData={lockData}
+          optionsData={optionsData}
           isCreatingPdf={isCreatingPdf}
         />
       </div>

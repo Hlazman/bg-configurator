@@ -146,6 +146,9 @@ const de = {
   colorWarn: 'Bitte beachten Sie, dass die auf dem Bildschirm angezeigten Farben leicht von denen im Druck oder im wirklichen Leben abweichen können. Diese Variation könnte auf Unterschiede in den Monitorfarbwiedergabeeinstellungen und möglichen Abweichungen im Druckprozess zurückzuführen sein. Es ist ratsam, dies bei der Bewertung des Farbschemas der Präsentation zu berücksichtigen',
 
   options: 'Optionen',
+  horizontalVeneer: 'Horizontale Furnier',
+  superGloss: 'Super Glanz',
+
 
 
 

@@ -146,6 +146,9 @@ const pl = {
   colorWarn: 'Proszę pamiętać, że kolory wyświetlane na ekranie mogą nieco różnić się od tych w druku lub w rzeczywistości. Ta różnica może wynikać z różnic w ustawieniach reprodukcji kolorów monitora oraz potencjalnych różnic w procesie drukowania. Zaleca się uwzględnienie tego przy ocenie schematu kolorów prezentacji',
 
   options: 'Opcje',
+  horizontalVeneer: 'Pozioma okleina',
+  superGloss: 'Super połysk',
+
 
 
   

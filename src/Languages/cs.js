@@ -146,7 +146,9 @@ const cs = {
   colorWarn: 'Prosím, uvědomte si, že zobrazené barvy na obrazovce se mohou mírně lišit od těch v tisku nebo v reálném životě. Tato variabilita může být způsobena rozdíly v nastavení reprodukce barev monitoru a potenciálními variacemi v tiskovém procesu. Doporučuje se toto zvážit při hodnocení barevného schématu prezentace',
 
   options: 'Možnosti',
-
+  horizontalVeneer: 'Horizontální dýha',
+  superGloss: 'Super lesk',
+  
 
 
 

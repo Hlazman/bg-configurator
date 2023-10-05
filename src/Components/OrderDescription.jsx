@@ -9,7 +9,7 @@ import languageMap from '../Languages/language';
 
 
 export const OrderDescription = (
-  {orderData, orderId, frameData, doorData, elementData, lockData, hingeData, knobeData, isCreatingPdf}
+  {orderData, orderId, frameData, doorData, elementData, lockData, hingeData, knobeData, optionsData, isCreatingPdf}
   ) => {
   const { user } = useContext(AuthContext);
   const { selectedLanguage } = useLanguage();
@@ -264,7 +264,6 @@ export const OrderDescription = (
         <>
           <div id='nextpage'></div>
           <div style={{padding: '15px', backgroundColor: '#FFF', borderRadius: '15px'}}>
-            {/* <h1 style={{fontSize: '25px', textAlign: 'center', fontWeight: '500', margin: '20px 0'}}> {language.additional} {language.elements} </h1> */}
               
             {elementData && elementData.map((element, index) => (
               <React.Fragment key={index}>
@@ -279,9 +278,7 @@ export const OrderDescription = (
                 layout="vertical"
                 bordered
                 style={{margin: '10px 0'}}
-                // size={isCreatingPdf ? 'small' : 'default'}
                 size='middle'
-                // title={`${language.additional} ${language.element} # ${index + 1}`}
               >
                 <Descriptions.Item className='labelBG' label={`${language.element} ${language.title}`} labelStyle={{fontWeight: '600', color:'#000'}}>
                   {element.element?.data?.attributes?.title}
@@ -305,31 +302,16 @@ export const OrderDescription = (
                   </Descriptions.Item>
                 )}
 
-                {/* <Descriptions.Item className='labelBG' label={language.height} labelStyle={{fontWeight: '600', color:'#000'}}>
-                  {`${element?.sizes?.height} mm`}
-                </Descriptions.Item> */}
-
-                {/* <Descriptions.Item className='labelBG' label={language.width} labelStyle={{fontWeight: '600', color:'#000'}}>
-                  {`${element?.sizes?.width} mm`}
-                </Descriptions.Item> */}
-
-                {/* <Descriptions.Item className='labelBG' label={language.thickness} labelStyle={{fontWeight: '600', color:'#000'}}>
-                  {`${element?.sizes?.thickness} mm`}
-                </Descriptions.Item> */}
-
-                {/* NEW */}
                 {element?.sizes?.length && (
                   <Descriptions.Item span={3} className='labelBG' label="Lenght" labelStyle={{fontWeight: '600', color:'#000'}}>
                     {`${element?.sizes?.length} mm`}
                   </Descriptions.Item>
                 )}
-                {/* NEW */}
 
                 <Descriptions.Item className='labelBG' label={language.amount} labelStyle={{fontWeight: '600', color:'#000'}}>
                   {element?.amount}
                 </Descriptions.Item>
 
-                  {/* NEW */}
                 {element.decor?.data?.attributes && (
                   <>
                       <Descriptions.Item className='labelBG' span={2} label={`${language.decor} ${language.image}`} labelStyle={{fontWeight: '600', color:'#000'}}>
@@ -353,7 +335,6 @@ export const OrderDescription = (
                     </Descriptions.Item>
                   </>
                 )}
-                {/* NEW */}
 
                 <Descriptions.Item className='labelBG' label={language.price} labelStyle={{fontWeight: '600', color:'#000'}}>
                   {element?.price} 100$
@@ -373,19 +354,37 @@ export const OrderDescription = (
         </p>
 
         <Descriptions
-          column={4}
+          column={2}
           layout="vertical"
           bordered
           size='default'
           >
-            <Descriptions.Item className='labelBG' label={'horizontal_veneer'} labelStyle={{fontWeight: '600', color:'#000'}}>
-              {orderData?.horizontal_veneer ? language.yes : language.no}
-            </Descriptions.Item>
+            {optionsData && optionsData.length > 0 && optionsData.map((option, index) => (
+              <React.Fragment key={index}>
 
-            <Descriptions.Item className='labelBG' label={'super_gloss'} labelStyle={{fontWeight: '600', color:'#000'}}>
-              {orderData?.super_gloss ? language.yes : language.no}
-            </Descriptions.Item>
+                <Descriptions.Item className='labelBG' label={language.title} labelStyle={{fontWeight: '600', color:'#000'}}>
+                  {option.title}
+                </Descriptions.Item>
 
+                <Descriptions.Item className='labelBG' label={language.price} labelStyle={{fontWeight: '600', color:'#000'}}>
+                  {option.price} 100$
+                </Descriptions.Item>
+              </React.Fragment>
+            ))}
+
+              {orderData?.horizontal_veneer && (
+                <Descriptions.Item className='labelBG' label={language.title} labelStyle={{fontWeight: '600', color:'#000'}}>
+                  {/* {orderData?.horizontal_veneer ? language.yes : language.no} */}
+                  {orderData?.horizontal_veneer ? 'horizontal_veneer' : ''}
+                </Descriptions.Item>
+              )}
+
+              {orderData?.super_gloss && (
+                <Descriptions.Item className='labelBG' label={language.title} labelStyle={{fontWeight: '600', color:'#000'}}>
+                  {/* {orderData?.super_gloss ? language.yes : language.no} */}
+                  {orderData?.super_gloss ? 'super_gloss' : ''}
+                </Descriptions.Item>
+              )}
 
           </Descriptions>
       </div>

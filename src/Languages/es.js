@@ -146,9 +146,8 @@ const es = {
   colorWarn: 'Tenga en cuenta que los colores mostrados en pantalla pueden diferir ligeramente de los impresos o los reales. Esta variación podría atribuirse a diferencias en la configuración de reproducción de color del monitor y posibles variaciones en el proceso de impresión. Se recomienda tener esto en cuenta al evaluar el esquema de color de la presentación',
 
   options: 'Opciones',
-
-  
-
+  horizontalVeneer: 'Chapa horizontal',
+  superGloss: 'Súper brillo',
 
 };
 
