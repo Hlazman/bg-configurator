@@ -118,8 +118,6 @@ const de = {
   upload: 'Klicken Sie, um hochzuladen',
   elementFor: 'Wählen Sie das Element',
   elementDecor: 'Wählen Sie Dekor für das Element',
-  elementGetDoor: 'Holen Sie sich Dekor wie an der Tür',
-  elementGetDecor: 'Wählen Sie individuelles Dekor',
   amount: 'Menge',
   count: 'Anzahl',
 
@@ -148,6 +146,12 @@ const de = {
   options: 'Optionen',
   horizontalVeneer: 'Horizontale Furnier',
   superGloss: 'Super Glanz',
+
+  elementGetDoor: 'Dekor wie an der Tür',
+  elementGetDecor: 'Individuelles Dekor',
+  paintFor: "Farbe für",
+  wall: "Wand",
+
 
 
 

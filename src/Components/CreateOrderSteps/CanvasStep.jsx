@@ -299,7 +299,8 @@ const CanvasStep = ({ setCurrentStepSend}) => {
             },
           ]}
         >
-          <InputNumber addonBefore={language.thickness} addonAfter="mm"/>
+          {/* <InputNumber addonBefore={language.thickness} addonAfter="mm"/> */}
+          <InputNumber addonBefore={`${language.thickness} ${language.wall}`} addonAfter="mm"/>
         </Form.Item>
       </Space>
 

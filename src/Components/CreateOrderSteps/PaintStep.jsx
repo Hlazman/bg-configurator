@@ -159,7 +159,8 @@ const PaintStep = ({ orderID, fetchOrderData, fetchDecorData, checkDecor, sendDe
         />
           
         <Form.Item 
-          label="Paint for" 
+          // label="Paint for" 
+          label={language.paintFor} 
           rules={[{ required: true, message: language.requiredField }]}
           style={{margin: '10px 0', flex: '1', 'minWidth': "300px"}}
         >
@@ -176,7 +177,7 @@ const PaintStep = ({ orderID, fetchOrderData, fetchDecorData, checkDecor, sendDe
           </Select>
         </Form.Item>
 
-        <Form.Item label="Choose type o color" style={{margin: '10px 0', flex: '1', 'minWidth': "300px"}}>
+        <Form.Item label={`${language.type} ${language.colors}`} style={{margin: '10px 0', flex: '1', 'minWidth': "300px"}}>
           <Select
             value={selectedColorRange}
             onChange={handleColorRangeChange}

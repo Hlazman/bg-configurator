@@ -118,8 +118,6 @@ const pl = {
   upload: 'Kliknij, aby przesłać',
   elementFor: 'Wybierz element',
   elementDecor: 'Wybierz dekorację dla elementu',
-  elementGetDoor: 'Wybierz dekorację jak na drzwiach',
-  elementGetDecor: 'Wybierz indywidualną dekorację',
   amount: 'Ilość',
   count: 'Liczba',
 
@@ -149,9 +147,11 @@ const pl = {
   horizontalVeneer: 'Pozioma okleina',
   superGloss: 'Super połysk',
 
+  elementGetDoor: 'Dekor jak na drzwiach',
+  elementGetDecor: 'Indywidualna dekoracja',
+  paintFor: "Farba do",
+  wall: "ściana",
 
-
-  
 
 };
 

@@ -132,8 +132,6 @@ const en = {
   upload: 'Click to upload',
   elementFor: 'Choose the element ',
   elementDecor: 'Choose decore for element',
-  elementGetDoor: 'Get decor like in door',
-  elementGetDecor: 'Choose individual decor',
   amount: 'Amount',
   count: 'count',
 
@@ -163,6 +161,16 @@ const en = {
   
   horizontalVeneer: 'Horizontal veneer',
   superGloss: 'Super gloss',
+
+  elementGetDoor: 'Decor like in door',
+  elementGetDecor: 'Individual decor',
+  paintFor: "Pain for",
+  wall: "wall",
+
+  
+
+
+
 
 
 

@@ -234,7 +234,7 @@ const InformationStep = ({ setCurrentStepSend }) => {
         </div>
 
         <div style={{ display: 'flex', gap: '30px' }}>
-          <Form.Item label="Delivery Date" name="deliveryAt" style={{ width: '100%' }}>
+          <Form.Item label={language.deliveryAddress} name="deliveryAt" style={{ width: '100%' }}>
             {/* <DatePicker showTime addonBefore="deliveryAt" /> */}
             <DatePicker
               format={dateFormat}

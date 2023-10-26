@@ -108,7 +108,7 @@ const StartDataStep = ({ setCurrentStepSend }) => {
       <Form form={form} onFinish={handleFormSubmit}>
       <div style={{ display: 'flex', gap: '30px' }}>
           <Form.Item
-            label="Double Door"
+            label={language.doubleDoor}
             name="double_door"
             // initialValue={orderData ? orderData.double_door : null}
             rules={[{ required: true, message: language.requiredField }]}
@@ -122,7 +122,7 @@ const StartDataStep = ({ setCurrentStepSend }) => {
 
         <div style={{ display: 'flex', gap: '30px' }}>
           <Form.Item
-            label="Hidden"
+            label={language.hidden}
             name="hidden"
             // initialValue={orderData?.hidden ?? null} 
             rules={[{ required: true, message: language.requiredField }]}
@@ -136,7 +136,7 @@ const StartDataStep = ({ setCurrentStepSend }) => {
         
         <div style={{ display: 'flex', gap: '30px' }}>
           <Form.Item
-            label="Side"
+            label={language.side}
             name="side"
             // initialValue={orderData?.side ?? null} 
             rules={[{ required: true, message: language.requiredField }]}
@@ -150,7 +150,7 @@ const StartDataStep = ({ setCurrentStepSend }) => {
         
         <div style={{ display: 'flex', gap: '30px' }}>
           <Form.Item
-            label="Opening"
+            label={language.opening}
             name="opening"
             // initialValue={orderData?.opening ?? null}
             rules={[{ required: true, message: language.requiredField }]}

@@ -109,6 +109,7 @@ const OptionsStep = ({ setCurrentStepSend }) => {
       if (response.data?.data?.order) {
         const orderData = response.data.data.order.data.attributes;
         const suborderOptionsData = response.data.data.order.data.attributes.option_suborders.data;
+        
         setOptionsSuborderData(suborderOptionsData)
         form.setFieldsValue(orderData);
 
@@ -117,6 +118,14 @@ const OptionsStep = ({ setCurrentStepSend }) => {
             [`option_${option.attributes.option.data.id}`]: true
           });
         });
+
+        // optionsData.forEach(option => {
+        //   const fieldName = `option_${option.id}`;
+        //   const isSelected = suborderOptionsData.some(suborder => suborder.attributes.option.data.id === option.id);
+        //   form.setFieldsValue({
+        //     [fieldName]: isSelected
+        //   });
+        // });
 
       }
         
@@ -249,7 +258,8 @@ const OptionsStep = ({ setCurrentStepSend }) => {
       <Form form={form} onFinish={handleFormSubmit}>
       <div style={{ display: 'flex', gap: '30px' }}>
           <Form.Item
-            label="Horizontal veneer"
+            // label="Horizontal veneer"
+            label={language.horizontalVeneer}
             name="horizontal_veneer"
           >
             <Radio.Group buttonStyle="solid">
@@ -261,7 +271,8 @@ const OptionsStep = ({ setCurrentStepSend }) => {
 
         <div style={{ display: 'flex', gap: '30px' }}>
           <Form.Item
-            label="Super gloss"
+            // label="Super gloss"
+            label={language.superGloss}
             name="super_gloss"
           >
             <Radio.Group buttonStyle="solid">

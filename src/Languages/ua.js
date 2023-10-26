@@ -118,8 +118,6 @@ const ua = {
   upload: 'Натисніть для завантаження',
   elementFor: 'Виберіть елемент',
   elementDecor: 'Виберіть декор для елементу',
-  elementGetDoor: 'Отримайте декор, як на дверях',
-  elementGetDecor: 'Виберіть індивідуальний декор',
   amount: 'Кількість',
   count: 'шт',
 
@@ -131,9 +129,9 @@ const ua = {
   collection: 'Колекція',
   title: 'Назва',
   doubleDoor: 'Подвійні двері',
-  hidden: 'Прихований',
+  hidden: 'Приховані',
   opening: 'Відкриття',
-  side: 'Бік',
+  side: 'Сторона',
   type: 'Тип',
   fitting: 'Фурнітура',
   brand: 'Бренд',
@@ -148,6 +146,12 @@ const ua = {
   options: 'Опції',
   horizontalVeneer: 'Горизонталий шпон',
   superGloss: 'Супер глянець',
+
+  elementGetDoor: 'Декор, як на дверях',
+  elementGetDecor: 'Індивідуальна декорація',
+  paintFor: "Фарба для",
+  wall: "стіна",
+
 
 
 };

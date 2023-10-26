@@ -118,8 +118,6 @@ const cs = {
   upload: 'Klikněte pro nahrání',
   elementFor: 'Vyberte prvek',
   elementDecor: 'Vyberte dekor pro prvek',
-  elementGetDoor: 'Získejte dekor jako na dveřích',
-  elementGetDecor: 'Vyberte individuální dekor',
   amount: 'Množství',
   count: 'Počet',
 
@@ -149,6 +147,10 @@ const cs = {
   horizontalVeneer: 'Horizontální dýha',
   superGloss: 'Super lesk',
   
+  elementGetDoor: 'Dekor jako na dveřích',
+  elementGetDecor: 'Individuální dekor',
+  paintFor: "Barva pro",
+  wall: "stěna",
 
 
 

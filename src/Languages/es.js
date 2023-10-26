@@ -118,8 +118,6 @@ const es = {
   upload: 'Haga clic para cargar',
   elementFor: 'Elija el elemento',
   elementDecor: 'Elija la decoración para el elemento',
-  elementGetDoor: 'Obtenga la decoración como en la puerta',
-  elementGetDecor: 'Elija una decoración individual',
   amount: 'Cantidad',
   count: 'Contar',
 
@@ -148,6 +146,11 @@ const es = {
   options: 'Opciones',
   horizontalVeneer: 'Chapa horizontal',
   superGloss: 'Súper brillo',
+
+  elementGetDoor: 'Decoración como en la puerta',
+  elementGetDecor: 'Decoración individual',
+  paintFor: "Pintura para",
+  wall: "pared",
 
 };
 
