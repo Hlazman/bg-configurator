@@ -30,3 +30,20 @@
 .ant-radio {
   display: none!important;
 }
+
+.ant-image-preview-img {
+  width: 80%!important;
+  border: 5px solid #f06d20;
+  border-radius: 10px;
+}
+
+.imgInPreview {
+  margin: 10px; 
+  width: 280px!important; 
+  height: 150px!important; 
+  border: 2px solid #f06d20;
+}
+
+aside {
+  z-index: 1000!important;
+}

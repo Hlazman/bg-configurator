@@ -135,6 +135,7 @@ const getHeaderTitle = (location, Id) => {
         token: {
           colorPrimary: '#f06d20',
           colorLink: '#f06d20',
+          colorBgMask: 'rgba(0, 0, 0, 0.85)'
         },
       }}
     >
