@@ -63,27 +63,25 @@ export const OrderDetailsPage = () => {
       setIsCreatingPdf(false);
   };
   
-  const handleOpenPdf = async () => {
-    setIsCreatingPdf(true);
-    const element = document.getElementById('pdf-content');
-    await embedImages();
+  // const handleOpenPdf = async () => {
+  //   setIsCreatingPdf(true);
+  //   const element = document.getElementById('pdf-content');
+  //   await embedImages();
   
-    await html2pdf()
-      .from(element)
-      .set({
-        margin: [5, 0, 5, 0], 
-        filename: `Order ${orderId}.pdf`,
-        image: { type: 'jpeg', quality: 0.98 },
-        html2canvas: { scale: 2 },
-        jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
-        // pagebreak: { mode: ['avoid-all', 'css', 'legacy'] }
-        pagebreak: { mode: 'avoid-all', after: '#nextpage' }
-      })
-      .outputPdf('dataurlnewwindow');
-      setIsCreatingPdf(false);
-  };
-
-  
+  //   await html2pdf()
+  //     .from(element)
+  //     .set({
+  //       margin: [5, 0, 5, 0], 
+  //       filename: `Order ${orderId}.pdf`,
+  //       image: { type: 'jpeg', quality: 0.98 },
+  //       html2canvas: { scale: 2 },
+  //       jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
+  //       // pagebreak: { mode: ['avoid-all', 'css', 'legacy'] }
+  //       pagebreak: { mode: 'avoid-all', after: '#nextpage' }
+  //     })
+  //     .outputPdf('dataurlnewwindow');
+  //     setIsCreatingPdf(false);
+  // };
 
   const fetchData = async () => {
     try {
@@ -790,8 +788,8 @@ const fetchOptionsData = async (optionIds) => {
   return (
     <div >
       <div style={{margin: '20px', display:'flex', gap: '20px', justifyContent: 'center'}}>
-        <Button onClick={handlePdfExport}>{language.save} PDF</Button>
-        <Button onClick={handleOpenPdf}>{language.open} PDF</Button>
+        <Button type="primary" size={'large'} onClick={handlePdfExport}>{language.save} PDF</Button>
+        {/* <Button onClick={handleOpenPdf}>{language.open} PDF</Button> */}
       </div>
 
       <div id="pdf-content">

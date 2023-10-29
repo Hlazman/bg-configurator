@@ -9,11 +9,11 @@ export const OrderDrawer = () => {
   const { selectedLanguage } = useLanguage();
   const language = languageMap[selectedLanguage];
   const [open, setOpen] = useState(false);
-  const [size, setSize] = useState();
+  // const [size, setSize] = useState();
   
   
   const showLargeDrawer = () => {
-    setSize('large');
+    // setSize('large');
     setOpen(true);
   };
   const onClose = () => {
@@ -32,7 +32,8 @@ export const OrderDrawer = () => {
         destroyOnClose={true}
         title={language.orderDetails}
         placement="right"
-        size={size}
+        // size={size}
+        width="870px"
         onClose={onClose}
         open={open}
         extra={

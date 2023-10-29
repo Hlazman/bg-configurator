@@ -172,7 +172,7 @@ const PaintStep = ({ orderID, fetchOrderData, fetchDecorData, checkDecor, sendDe
             disabled={isPaintDecor}
           >
             <Select.Option value="paint">{language.paint}</Select.Option>
-            <Select.Option value="painted_glass">{language.glass}Glass</Select.Option>
+            <Select.Option value="painted_glass">{language.glass}</Select.Option>
             <Select.Option value="painted_veneer">{language.veneer}</Select.Option>
           </Select>
         </Form.Item>
