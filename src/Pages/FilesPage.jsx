@@ -47,7 +47,7 @@ export const FilesPage = () => {
               <Image className='imgInPreview' alt='screenshot' src={createColor} />
             </Image.PreviewGroup>
             <Divider />
-            <p>{language.headerText}</p>
+            {language.InstructionCreateOrderHeader}
             </>
           )
         },
@@ -60,7 +60,7 @@ export const FilesPage = () => {
             <Image className='imgInPreview' alt='screenshot' src={startData} />
             </Image.PreviewGroup>
             <Divider />
-            <p>{language.headerText}</p>
+            <p>{language.InstructionStartData}</p>
             </>
           )
         },
@@ -74,7 +74,7 @@ export const FilesPage = () => {
               <Image className='imgInPreview' alt='screenshot' src={door_2} />
             </Image.PreviewGroup>
             <Divider />
-            <p>{language.headerText}</p>
+            <p>{language.InstructionDoor}</p>
             </>
           )
         },
@@ -89,7 +89,7 @@ export const FilesPage = () => {
               <Image className='imgInPreview' alt='screenshot' src={decor_3} />
             </Image.PreviewGroup>
             <Divider />
-            <p>{language.headerText}</p>
+            <p>{language.InstructionDecor}</p>
             </>
           )
         },
@@ -102,7 +102,7 @@ export const FilesPage = () => {
               <Image className='imgInPreview' alt='screenshot' src={frame} />
             </Image.PreviewGroup>
             <Divider />
-            <p>{language.headerText}</p>
+            <p>{language.InstructionFrame}</p>
             </>
           )
         },
@@ -118,7 +118,7 @@ export const FilesPage = () => {
               <Image className='imgInPreview' alt='screenshot' src={elements_4} />
             </Image.PreviewGroup>
             <Divider />
-            <p>{language.headerText}</p>
+            <p>{language.InstructionElements}</p>
             </>
           )
         },
@@ -131,7 +131,7 @@ export const FilesPage = () => {
             <Image className='imgInPreview' alt='screenshot' src={fittings} />
             </Image.PreviewGroup>
             <Divider />
-            <p>{language.headerText}</p>
+            <p>{language.InstructionFitting}</p>
             </>
           )
         },
@@ -145,7 +145,7 @@ export const FilesPage = () => {
               <Image className='imgInPreview' alt='screenshot' src={options_2} />
             </Image.PreviewGroup>
             <Divider />
-            <p>{language.headerText}</p>
+            <p>{language.InstructionOptions}</p>
             </>
           )
         },
@@ -158,7 +158,7 @@ export const FilesPage = () => {
             <Image className='imgInPreview' alt='screenshot' src={information} />
             </Image.PreviewGroup>
             <Divider />
-            <p>{language.headerText}</p>
+            <p>{language.InstructionInformation}</p>
             </>
           )
         },
@@ -171,7 +171,7 @@ export const FilesPage = () => {
               <Image className='imgInPreview' alt='screenshot' src={createClient} />
             </Image.PreviewGroup>
             <Divider />
-            <p>{language.headerText}</p>
+            <p>{language.InstructionCreateClient}</p>
             </>
           )
         },
@@ -185,7 +185,7 @@ export const FilesPage = () => {
               <Image className='imgInPreview' alt='screenshot' src={orders_2} />
             </Image.PreviewGroup>
             <Divider />
-            <p>{language.headerText}</p>
+            <p>{language.InstructionOrders}</p>
             </>
           )
         },
@@ -199,7 +199,7 @@ export const FilesPage = () => {
             <Image className='imgInPreview' alt='screenshot' src={clients_2} />
             </Image.PreviewGroup>
             <Divider />
-            <p>{language.headerText}</p>
+            <p>{language.InstructionClients}</p>
             </>
           )
         },

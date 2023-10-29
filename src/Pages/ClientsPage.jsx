@@ -307,7 +307,7 @@ export const ClientsPage = () => {
       key: 'attributes.manager.data.attributes.username',
     },
     {
-      title: `${language.companBy}`,
+      title: `${language.companyBy}`,
       dataIndex: ['attributes', 'company', 'data', 'attributes', 'name'],
       key: 'attributes.company.data.attributes.name',
     },

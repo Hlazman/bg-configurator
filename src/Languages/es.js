@@ -120,7 +120,6 @@ const es = {
   elementDecor: 'Elija la decoración para el elemento',
   amount: 'Cantidad',
   count: 'Contar',
-
   company: 'Empresa',
   door: 'Puerta',
   product: 'Producto',
@@ -142,16 +141,236 @@ const es = {
   tax: 'Impuesto',
   totalCost: 'Costo total',
   colorWarn: 'Tenga en cuenta que los colores mostrados en pantalla pueden diferir ligeramente de los impresos o los reales. Esta variación podría atribuirse a diferencias en la configuración de reproducción de color del monitor y posibles variaciones en el proceso de impresión. Se recomienda tener esto en cuenta al evaluar el esquema de color de la presentación',
-
   options: 'Opciones',
   horizontalVeneer: 'Chapa horizontal',
   superGloss: 'Súper brillo',
-
   elementGetDoor: 'Decoración como en la puerta',
   elementGetDecor: 'Decoración individual',
   paintFor: "Pintura para",
   wall: "pared",
 
+  // Instructions
+  InstructionCreateOrderHeader: (
+    <div style={{fontSize: '15px'}}>
+      <p> 
+        Antes de los pasos, en la parte superior de la página hay <strong>4 botones</strong> <span className="instructionSpan">(imagen 1)</span> 
+      </p>
+      <p> 
+        Al hacer clic en el botón <strong>Detalles del pedido</strong>, se abre un bloque que muestra todos los datos que están en el pedido <span className="instructionSpan">(imagen 2)</span> 
+      </p>
+      <p>
+        Si el color deseado no está en la base de datos, puede agregarlo allí. <br/>
+        Al hacer clic en el botón <strong>Crear color</strong>, se abre un bloque en el que debe completar los datos <span className="instructionSpan">(imagen 3)</span>:
+      </p>
+      <ul>
+        <li>Código de color, también conocido como título,</li>
+        <li>Gama de colores <i>(RAL o NCS)</i></li>
+        <li>Grupo <i>(solo para colores RAL)</i></li>
+        <li>Elija si es un color estándar <i>(afecta el precio)</i></li>
+        <li>Cargue una imagen del color correspondiente</li>
+        <li>Haga clic en el botón Enviar</li>
+      </ul>
+      <p>Al hacer clic en los botones <strong>Colores RAL</strong> y <strong>Colores NCS</strong>, se abrirá un enlace con todas las luces en el formato correspondiente.</p>
+    </div>
+  ),
+
+  InstructionStartData: (
+    <div style={{fontSize: '15px'}}>
+      <p>
+        Primer paso para crear un pedido <br/>
+        Aquí necesitas seleccionar: <strong>Puerta doble, Instalación oculta, Lado</strong> y <strong>Apertura</strong>. <br/>
+        <span className="instructionSpan">Todos los campos son obligatorios </span> <br/>
+      </p>
+      <p> La opción <strong>Universal</strong> en Apertura solo se puede seleccionar si se elige <strong>Oculto</strong>.</p>
+      <p>Después de eso, haga clic en el botón <strong>Enviar</strong></p>
+    </div>
+  ),
+
+  InstructionDoor: (
+    <div style={{fontSize: '15px'}}>
+      <p>En este paso se selecciona el lienzo <i>(imagen 1)</i></p>
+      <p>
+        Debe completar los campos <strong>Ancho</strong>, <strong>Altura</strong> y <strong>Grosor de la pared</strong>. Los datos se completan en <strong>milímetros</strong> <br/>
+        Y también haga clic en la <strong>imagen deseada</strong> que muestra la hoja de la puerta.<br/>
+        <span className="instructionSpan">Todos los campos son obligatorios y se requiere una imagen de la hoja de la puerta. </span> <br/>
+        Después de eso, haga clic en el botón <strong>Enviar</strong> <i>(imagen 2)</i>
+      </p>
+    </div>
+  ),
+
+  InstructionDecor: (
+    <div style={{fontSize: '15px'}}>
+      <p>
+        En este paso se selecciona el acabado decorativo. <br/>
+        Opciones de acabado: <strong>Chapa, Pintura, Gres, Espejo, Paneles HPL</strong> y <strong>Imprimación</strong> <i>(imagen 1)</i>
+      </p>
+      <p>
+        Para seleccionar <strong>Chapa, Gres, Espejo, Paneles HPL</strong> o <strong>Imprimación</strong>, 
+        debe seleccionar una imagen en la sección correspondiente con el acabado deseado.<br/>
+        <strong>Chapa</strong> tiene la capacidad de ordenar por categoría.
+      </p>
+      <p>
+        Para seleccionar <strong>Pintura</strong> <i>(imagen 2)</i> <br/>
+        Además de seleccionar una imagen con un color, hay un campo obligatorio llamado <strong>Pintura para</strong>, 
+        donde debe seleccionar en la lista desplegable qué se pintará: <strong>Pintura, Chapa</strong> o <strong>Cristal</strong>. <br/>
+        Para mayor comodidad, aquí se implementa la clasificación por tipo de color. <br/>
+        Los colores RAL están divididos en grupos. <br/>
+        También es posible buscar por código de color.
+      </p>
+      <p>
+        Después de seleccionar el acabado deseado, haga clic en el botón <strong>Enviar</strong> <i>(imagen 3)</i>.
+      </p>
+    </div>
+  ),
+
+  InstructionFrame: (
+    <div style={{fontSize: '15px'}}>
+      <p>
+        En este paso se selecciona el <strong>Marco</strong>. <br/>
+        La lista desplegable presentará solo aquellas opciones que coincidan con los parámetros basados en los datos seleccionados en los pasos anteriores
+      </p>
+      <p>Después de eso, haga clic en el botón <strong>Enviar</strong></p>
+    </div>
+  ),
+
+  InstructionElements: (
+    <div style={{fontSize: '15px'}}>
+      <p>In diesem Schritt werden zusätzliche Elemente für die Bestellung ausgewählt. Dieser Schritt ist optional <i>(Bild 1)</i></p>
+      <p>
+        Wenn Sie mehrere Elemente benötigen. Klicken Sie auf die Ansichtsschaltfläche <strong>+</strong> <br/>
+        Jedes Element hat seine eigenen Eigenschaften und Parameter.
+      </p>
+      <ul>
+        <li>Zuerst müssen Sie das Element aus der Dropdown-Liste <strong>Auswählen</strong>.</li>
+        <li>
+          Füllen Sie dann die für das ausgewählte Element verfügbaren Felder aus. 
+          <strong>Breite, Höhe, Dicke, Länge, Menge</strong>.
+          Wenn ein Feld für ein Element nicht verfügbar ist, kann es nicht ausgefüllt werden. 
+          <span className="instructionSpan">Die übrigen Felder sind obligatorisch</span>.
+        </li>
+        <li>Dann müssen Sie den Dekor für das Element auswählen. <i>(Es gibt 2 Optionen)</i></li>
+        <ol>
+          <li>Wählen Sie den gleichen Dekor aus, der für die Leinwand mit der Schaltfläche <strong>Dekor wie an der Tür</strong> ausgewählt wurde.</li>
+          <li>
+            Wählen Sie einen individuellen Dekor mit der Schaltfläche <strong>Individueller Dekor</strong>. <br/>
+            Nach Auswahl dieser Option können Sie den Dekor auswählen <i>(Bild 2)</i>. <br/> 
+            Nach Auswahl Ihres individuellen Dekors klicken Sie auf die Schaltfläche <strong>Senden</strong> (Bild 3) unten auf der Seite.
+          </li>
+        </ol>
+        <li>Klicken Sie dann auf die Schaltfläche <strong>Senden</strong> am Element selbst.</li>
+      </ul>
+      <p>
+        Wenn Sie diesen Schritt erreicht haben, aber die Elemente nicht in Ihrer Bestellung benötigen, klicken Sie auf die Schaltfläche <strong>X</strong> zum Löschen. 
+        Gleiches gilt für erstellte Elemente, die keine Daten enthalten. <i>(Bild 4)</i> <br/>
+        Andernfalls enthält die Präsentation zusätzliche leere Felder.
+      </p>
+    </div>
+  ),
+
+  InstructionFitting: (
+    <div style={{fontSize: '15px'}}>
+      <p>En este paso se seleccionan <strong>Pomos, Bisagras</strong> y <strong>Cerradura</strong>.</p>
+      <p>Para mayor comodidad, es posible buscar un producto por nombre y ordenar por marca.</p>
+      <p> 
+        Todos tienen el mismo principio de funcionamiento. 
+        Para seleccionar el producto deseado, debe hacer clic en la <strong>imagen</strong> correspondiente. 
+        Y luego hacer clic en el botón <strong>Enviar</strong>.
+      </p>
+    </div>
+  ),
+
+  InstructionOptions: (
+    <div style={{fontSize: '15px'}}>
+      <p>En este paso se seleccionan <strong>Opciones</strong> adicionales para el pedido. <br/>
+      Este paso es opcional.
+      </p>
+      <p>
+        Por defecto, no hay <strong>Opciones</strong> en el pedido. <br/>
+        Si desea agregar algo a su pedido, simplemente haga clic junto al campo correspondiente de <strong>Sí</strong>. <br/>
+        Si necesita eliminar la Opción añadida del pedido, haga clic en <strong>No</strong>.
+      </p>
+      <p>Después de eso, haga clic en el botón <strong>Enviar</strong></p>
+    </div>
+  ),
+
+  InstructionInformation: (
+    <div style={{fontSize: '15px'}}>
+      <p>En este paso se selecciona información adicional para el pedido. <br/>
+      Este paso es opcional.
+      </p>
+      <p>
+        Aquí puedes completar los campos: <strong>Dirección, Ciudad, País, Código postal, Entrega a, Descuento</strong> 
+        seleccionar <strong>Moneda</strong> y <strong>Cliente</strong> del menú desplegable, 
+        determinar el <strong>Estado</strong> del pedido eligiendo entre <strong>Borrador</strong> o <strong>Activo</strong>, 
+        y también escribir un <strong>Comentario</strong> para el pedido.
+      </p>
+      <p>Y luego haz clic en el botón <strong>Enviar</strong>.</p>
+    </div>
+  ),
+
+  InstructionCreateClient: (
+    <div style={{fontSize: '15px'}}>
+      <p>Aquí puedes crear un <strong>Cliente</strong>, que luego se puede agregar al pedido.</p>
+      <p>Aquí puedes completar los campos: <strong>Nombre, Organización, País, Ciudad, Dirección, Código postal, Teléfono, Teléfono-2, Correo electrónico</strong></p>
+      <p>
+        También puedes agregar direcciones adicionales para el cliente. Para hacerlo, haz clic en el botón <strong>Añadir dirección</strong> 
+        O elimina la dirección si ya no es relevante. Para hacerlo, haz clic en el botón <strong>-</strong>
+      </p>
+      <p> Y luego haz clic en el botón <strong>Enviar</strong>.</p>
+    </div>
+  ),
+
+  InstructionOrders: (
+    <div style={{fontSize: '15px'}}>
+      <p>Aquí puedes trabajar con la tabla de <strong>Pedidos</strong>.</p>
+      <p>
+        La tabla tiene los campos:
+        <strong> Pedido, Estado, Creado en, Dirección de entrega, Entregado en, Precio, Descuento, Moneda, Cliente, Manager</strong>
+        que creó el pedido <i>(imagen 1)</i>
+      </p>
+      <p>
+        La tabla está dividida en páginas y por defecto se muestran 5 pedidos. Puedes filtrar el número de pedidos visibles en la página.
+      </p>
+      <p>
+        Utilizando los botones en estos campos, dependiendo del campo seleccionado, es posible ordenar los pedidos
+        por fecha, alfabéticamente, ascendente y descendente. Y también filtrar por <strong>Estado</strong>. <br/>
+        Casi cada campo tiene una opción de búsqueda.
+      </p>
+      <p>
+        Lista desplegable de <strong>Acciones</strong> (imagen 2) <br/>
+        Aquí tienes la oportunidad:
+      </p>
+      <ul>
+        <li><strong>Abrir</strong> el pedido y ver todos los datos y parámetros.</li>
+        <li> <strong>Editar</strong> un pedido <i>(los mismos pasos que al crear)</i></li>
+        <li><strong>Borrar</strong> pedido</li>
+        <li>Cambiar el <strong>Estado</strong> del pedido seleccionando una opción del menú desplegable.</li>
+      </ul>
+    </div>
+  ),
+
+  InstructionClients: (
+    <div style={{fontSize: '15px'}}>
+      <p>Aquí puedes trabajar con la tabla de <strong>Clientes</strong>.</p>
+      <p>
+        La tabla tiene los campos: 
+        <strong> Cliente, Organización, Correo electrónico, Teléfono, Direcciones, Manager</strong> quien creó la orden 
+        y <strong>Empresa por</strong> <i>(imagen 1)</i>
+      </p>
+      <p>
+        La tabla está dividida en páginas y por defecto se muestran 5 clientes. Puedes filtrar la cantidad que es visible en la página.
+      </p>
+      <p> Los campos <strong>Cliente</strong> y <strong>Organización</strong> tienen capacidades de búsqueda y clasificación.</p>
+      <p>
+        Lista desplegable de <strong>Acciones</strong> (imagen 2) <br/>
+        Aquí tienes la oportunidad:
+      </p>
+      <ul>
+        <li> <strong>Editar</strong> datos del cliente <i>(los mismos pasos que al crear)</i></li>
+        <li><strong>Borrar</strong> cliente</li>
+      </ul>
+    </div>
+  ),
 };
 
 export default es;

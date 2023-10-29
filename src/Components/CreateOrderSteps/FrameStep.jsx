@@ -120,7 +120,8 @@ const FrameStep = ({ setCurrentStepSend }) => {
           },
           filters: {
             hidden: {
-              eq: orderData?.hidden || null
+              // eq: orderData?.hidden || null
+              eq: orderData?.hidden || false
             },
             opening: {
               eq: orderData?.opening || null

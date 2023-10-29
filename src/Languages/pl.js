@@ -120,7 +120,6 @@ const pl = {
   elementDecor: 'Wybierz dekorację dla elementu',
   amount: 'Ilość',
   count: 'Liczba',
-
   company: 'Firma',
   door: 'Drzwi',
   product: 'Produkt',
@@ -142,17 +141,236 @@ const pl = {
   tax: 'Podatek',
   totalCost: 'Całkowity koszt',
   colorWarn: 'Proszę pamiętać, że kolory wyświetlane na ekranie mogą nieco różnić się od tych w druku lub w rzeczywistości. Ta różnica może wynikać z różnic w ustawieniach reprodukcji kolorów monitora oraz potencjalnych różnic w procesie drukowania. Zaleca się uwzględnienie tego przy ocenie schematu kolorów prezentacji',
-
   options: 'Opcje',
   horizontalVeneer: 'Pozioma okleina',
   superGloss: 'Super połysk',
-
   elementGetDoor: 'Dekor jak na drzwiach',
   elementGetDecor: 'Indywidualna dekoracja',
   paintFor: "Farba do",
   wall: "ściana",
 
+// Instructions
+  InstructionCreateOrderHeader: (
+    <div style={{fontSize: '15px'}}>
+      <p> 
+        Przed krokami, u góry strony znajdują się <strong>4 przyciski</strong> <span className="instructionSpan">(obraz 1)</span> 
+      </p>
+      <p> 
+        Po kliknięciu przycisku <strong>Szczegóły zamówienia</strong>, otwiera się blok, który wyświetla wszystkie dane zawarte w zamówieniu <span className="instructionSpan">(obraz 2)</span> 
+      </p>
+      <p>
+        Jeśli pożądany kolor nie znajduje się w bazie danych, można go tam dodać. <br/>
+        Po kliknięciu przycisku <strong>Utwórz kolor</strong>, otwiera się blok, w którym należy wypełnić dane <span className="instructionSpan">(obraz 3)</span>:
+      </p>
+      <ul>
+        <li>Kod koloru, znany również jako tytuł,</li>
+        <li>Skala kolorów <i>(RAL lub NCS)</i></li>
+        <li>Grupa <i>(tylko dla kolorów RAL)</i></li>
+        <li>Wybierz, czy to standardowy kolor <i>(wpływa na cenę)</i></li>
+        <li>Prześlij obraz odpowiadającego koloru</li>
+        <li>Kliknij przycisk Wyślij</li>
+      </ul>
+      <p>Po kliknięciu przycisków <strong>Kolory RAL</strong> i <strong>Kolory NCS</strong> otworzy się link z wszystkimi światłami w odpowiednim formacie.</p>
+    </div>
+  ),
 
+  InstructionStartData: (
+    <div style={{fontSize: '15px'}}>
+      <p>
+        Pierwszy krok w tworzeniu zamówienia <br/>
+        Tutaj musisz wybrać: <strong>Podwójne drzwi, Ukryta instalacja, Strona</strong> i <strong>Otwieranie</strong>. <br/>
+        <span className="instructionSpan">Wszystkie pola są wymagane </span> <br/>
+      </p>
+      <p> Opcja <strong>Uniwersalne</strong> w Otwieraniu można wybrać tylko wtedy, gdy jest wybrane <strong>Ukryte</strong>.</p>
+      <p>Następnie kliknij przycisk <strong>Wyślij</strong></p>
+    </div>
+  ),
+
+  InstructionDoor: (
+    <div style={{fontSize: '15px'}}>
+      <p>W tym kroku wybierane jest płótno <i>(obraz 1)</i></p>
+      <p>
+        Musisz wypełnić pola <strong>Szerokość</strong>, <strong>Wysokość</strong> i <strong>Grubość ściany</strong>. Dane są wprowadzane w <strong>milimetrach</strong> <br/>
+        I kliknij również na <strong>pożądany obraz</strong>, który pokazuje płótno drzwiowe.<br/>
+        <span className="instructionSpan">Wszystkie pola są wymagane, a także wymagane jest zdjęcie płótna drzwiowego. </span> <br/>
+        Następnie kliknij przycisk <strong>Wyślij</strong> <i>(obraz 2)</i>
+      </p>
+    </div>
+  ),
+
+  InstructionDecor: (
+    <div style={{fontSize: '15px'}}>
+      <p>
+        Na tym etapie wybiera się dekoracyjne wykończenie. <br/>
+        Opcje dekoracji: <strong>Okleina, Farba, Gres, Lustro, Płyty HPL</strong> i <strong>Podkład</strong> <i>(obraz 1)</i>
+      </p>
+      <p>
+        Aby wybrać <strong>Okleinę, Gres, Lustro, Płyty HPL</strong> lub <strong>Podkład</strong>, 
+        musisz wybrać obraz w odpowiedniej sekcji z pożądaną dekoracją.<br/>
+        <strong>Okleina</strong> ma możliwość sortowania według kategorii.
+      </p>
+      <p>
+        Aby wybrać <strong>Farbę</strong> <i>(obraz 2)</i> <br/>
+        Oprócz wyboru obrazu z kolorem, istnieje obowiązkowe pole o nazwie <strong>Farba dla</strong>, 
+        gdzie trzeba wybrać z rozwijanej listy, co będzie malowane: <strong>Farba, Okleina</strong> lub <strong>Szkło</strong>. <br/>
+        Dla wygody tutaj zaimplementowano sortowanie według typu koloru. <br/>
+        Kolory RAL są podzielone na grupy. <br/>
+        Istnieje także możliwość wyszukiwania według kodu koloru.
+      </p>
+      <p>
+        Po wybraniu pożądanej dekoracji kliknij przycisk <strong>Wyślij</strong> <i>(obraz 3)</i>.
+      </p>
+    </div>
+  ),
+
+  InstructionFrame: (
+    <div style={{fontSize: '15px'}}>
+      <p>
+        Na tym etapie wybierany jest <strong>Ramka</strong>. <br/>
+        Rozwijana lista przedstawia tylko te opcje, które odpowiadają parametrom na podstawie wcześniej wybranych danych
+      </p>
+      <p>Po tym kliknij przycisk <strong>Wyślij</strong></p>
+    </div>
+  ),
+
+  InstructionElements: (
+    <div style={{fontSize: '15px'}}>
+      <p>W tym kroku wybiera się dodatkowe elementy do zamówienia. Krok ten jest opcjonalny <i>(Obraz 1)</i></p>
+      <p>
+        Jeśli potrzebujesz wielu elementów. Kliknij przycisk widoku <strong>+</strong> <br/>
+        Każdy element ma własne właściwości i parametry.
+      </p>
+      <ul>
+        <li>Najpierw musisz <strong>Wybrać element</strong> z rozwijanej listy.</li>
+        <li>
+          Następnie wypełnij pola dostępne dla wybranego elementu. 
+          <strong>Szerokość, Wysokość, Grubość, Długość, Ilość</strong>.
+          Jeśli jakieś pole nie jest dostępne dla elementu, nie będzie można go wypełnić. 
+          <span className="instructionSpan">Pozostałe pola są wymagane</span>.
+        </li>
+        <li>Następnie trzeba wybrać dekorację dla Elementu. <i>(Są 2 opcje)</i></li>
+        <ol>
+          <li>Wybierz ten sam dekor, który został wybrany dla płótna za pomocą przycisku <strong>Dekoracja jak na drzwiach</strong>.</li>
+          <li>
+            Wybierz indywidualną dekorację za pomocą przycisku <strong>Indywidualna dekoracja</strong>. <br/>
+            Po wybraniu tej opcji będziesz mógł wybrać dekorację <i>(Obraz 2)</i>. <br/> 
+            Po wybraniu indywidualnej dekoracji kliknij przycisk <strong>Prześlij</strong> (Obraz 3) na samej dole strony.
+          </li>
+        </ol>
+        <li>Następnie kliknij przycisk <strong>Prześlij</strong> na samym elemencie.</li>
+      </ul>
+      <p>
+        Jeśli dotarłeś do tego kroku, ale nie potrzebujesz elementów w swoim zamówieniu, kliknij przycisk usuwania <strong>X</strong>. 
+        To samo dotyczy utworzonych elementów, które nie zawierają danych. <i>(Obraz 4)</i> <br/>
+        W przeciwnym razie prezentacja będzie zawierać dodatkowe puste pola.
+      </p>
+    </div>
+  ),
+
+  InstructionFitting: (
+    <div style={{fontSize: '15px'}}>
+      <p>W tym kroku wybierane są <strong>Klamki, Zawiasy</strong> oraz <strong>Zamek</strong>.</p>
+      <p> Dla wygody można wyszukiwać produkt po nazwie i sortować według marki.</p>
+      <p> 
+        Wszystkie mają ten sam zasadniczy sposób działania. 
+        Aby wybrać pożądany produkt, należy kliknąć na odpowiedni <strong>obrazek</strong>. 
+        Następnie kliknij przycisk <strong>Wyślij</strong>.
+      </p>
+    </div>
+  ),
+
+  InstructionOptions: (
+    <div style={{fontSize: '15px'}}>
+      <p>W tym kroku wybierane są dodatkowe <strong>Opcje</strong> dla zamówienia. <br/>
+      Ten krok jest opcjonalny.
+      </p>
+      <p>
+        Domyślnie w zamówieniu nie ma żadnych <strong>Opcji</strong>. <br/>
+        Jeśli chcesz dodać coś do zamówienia, wystarczy kliknąć obok odpowiedniego pola <strong>Tak</strong>. <br/>
+        Jeśli chcesz usunąć dodaną Opcję z zamówienia, kliknij <strong>Nie</strong>.
+      </p>
+      <p>Po tym kliknij przycisk <strong>Wyślij</strong></p>
+    </div>
+  ),
+
+  InstructionInformation: (
+    <div style={{fontSize: '15px'}}>
+      <p>W tym kroku wybierane są dodatkowe <strong>Informacje</strong> dla zamówienia. <br/>
+      Ten krok jest opcjonalny.
+      </p>
+      <p>
+        Tutaj możesz wypełnić pola: <strong>Adres, Miasto, Kraj, Kod pocztowy, Dostawa o, Rabat</strong> 
+        wybrać <strong>Waluta</strong> i <strong>Klient</strong> z listy rozwijanej, 
+        określić <strong>Status</strong> zamówienia wybierając <strong>Szkic</strong> lub <strong>Aktywny</strong>, 
+        a także napisać <strong>Komentarz</strong> do zamówienia.
+      </p>
+      <p>A następnie kliknij przycisk <strong>Wyślij</strong>.</p>
+    </div>
+  ),
+
+  InstructionCreateClient: (
+    <div style={{fontSize: '15px'}}>
+      <p>Tutaj możesz utworzyć <strong>Klienta</strong>, który może być następnie dodany do zamówienia.</p>
+      <p>Tutaj możesz wypełnić pola: <strong>Imię, Organizacja, Kraj, Miasto, Adres, Kod pocztowy, Telefon, Telefon-2, E-mail</strong></p>
+      <p>
+        Możesz również dodać dodatkowe adresy dla klienta. Aby to zrobić, kliknij przycisk <strong>Dodaj adres</strong> 
+        Lub usuń adres, jeśli nie jest już aktualny. Aby to zrobić, kliknij przycisk <strong>-</strong>
+      </p>
+      <p> A następnie kliknij przycisk <strong>Wyślij</strong>.</p>
+    </div>
+  ),
+
+  InstructionOrders: (
+    <div style={{fontSize: '15px'}}>
+      <p>Tutaj możesz pracować z tabelą <strong>Zamówienia</strong>.</p>
+      <p>
+        Tabela zawiera pola: 
+        <strong> Zamówienie, Status, Utworzone w, Adres dostawy, Dostarczone w, Cena, Rabat, Waluta, Klient, Menedżer</strong> 
+        który utworzył zamówienie <i>(obraz 1)</i>
+      </p>
+      <p>
+        Tabela jest podzielona na strony i domyślnie wyświetla 5 zamówień na stronie. Można filtrować liczbę widocznych zamówień na stronie.
+      </p>
+      <p>
+        Korzystając z przycisków w tych polach, w zależności od wybranego pola, można sortować zamówienia 
+        według daty, alfabetycznie, rosnąco i malejąco. A także filtrować po <strong>Statusie</strong>. <br/>
+        Prawie każde pole ma opcję wyszukiwania.
+      </p>
+      <p>
+        Rozwijana lista <strong>Akcja</strong> (obraz 2) <br/>
+        Tutaj masz możliwość:
+       </p>
+      <ul>
+        <li><strong>Otwórz</strong> zamówienie i zobacz wszystkie dane i parametry.</li>
+        <li> <strong>Edytuj</strong> zamówienie <i>(te same kroki co przy tworzeniu)</i></li>
+        <li><strong>Usuń</strong> zamówienie</li>
+        <li>Zmień <strong>Status</strong> zamówienia, wybierając opcję z listy rozwijanej.</li>
+      </ul>
+    </div>
+  ),
+
+  InstructionClients: (
+    <div style={{fontSize: '15px'}}>
+      <p>Tutaj możesz pracować z tabelą <strong>Klienci</strong>.</p>
+      <p>
+        Tabela zawiera pola: 
+        <strong> Klient, Organizacja, E-mail, Telefon, Adresy, Manager</strong> który utworzył zamówienie 
+        oraz <strong>Firma według</strong> <i>(obraz 1)</i>
+      </p>
+      <p>
+        Tabela jest podzielona na strony, domyślnie wyświetlane są 5 klientów. Możesz filtrować ilość widoczną na stronie.
+      </p>
+      <p> Pola <strong>Klient</strong> i <strong>Organizacja</strong> mają możliwości wyszukiwania i sortowania.</p>
+      <p>
+        Rozwijana lista <strong>Akcja</strong> (obraz 2) <br/>
+        Tutaj masz możliwość:
+      </p>
+      <ul>
+        <li> <strong>Edytuj</strong> dane klienta <i>(te same kroki co przy tworzeniu)</i></li>
+        <li><strong>Usuń</strong> klienta</li>
+      </ul>
+    </div>
+  ),
 };
 
 export default pl;
