@@ -149,6 +149,58 @@ const pl = {
   paintFor: "Farba do",
   wall: "ściana",
 
+// Products Frame
+  'hidden_standard Hidden': 'Estándar oculto',
+  'type 1 outside Neo Classic': 'Neo Classic exterior',
+  'type 3 inside Art Decore': 'Art Decore interior',
+  'hidden_universal Hidden': 'Universal oculto',
+  'type 1 outside Art Decore': 'Art Decore exterior',
+  'type 3 inside Neo Classic': 'Neo Classic interior',
+  'type 1 outside Loft': 'Loft exterior',
+  'type 3 inside Loft': 'Loft interior',
+
+// Products Elements
+  'aluminium cover': 'Aluminiowa pokrywa',
+  'aluminium cover painting': 'Aluminiowa pokrywa (malowana)',
+  'aluminium moulding': 'Listwa aluminiowa',
+  'aluminium moulding painting': 'Listwa aluminiowa (malowana)',
+  'another side color': 'Inny kolor z drugiej strony',
+  'decor insert Art Decore': 'Dekoracyjna wkładka Art Decore',
+  'decor insert Neo Classic': 'Dekoracyjna wkładka Neo Classic',
+  'extender 200 Loft': 'Rozszerzacz Loft 200',
+  'extender 300 Loft': 'Rozszerzacz Loft 300',
+  'extender 200 Neo Classic': 'Rozszerzacz Neo Classic 200',
+  'extender 300 Neo Classic': 'Rozszerzacz Neo Classic 300',
+  'extender 200 Art Decore': 'Rozszerzacz Art Decore 200',
+  'extender 300 Art Decore': 'Rozszerzacz Art Decore 300',
+  'kapitel Neo Classic': 'Kapitel Neo Classic',
+  'panelling': 'Okładzina',
+  'platband Art Decore': 'Listwa przyszybowa Art Decore',
+  'platband Loft': 'Listwa przyszybowa Loft',
+  'platband Neo Classic': 'Listwa przyszybowa Neo Classic',
+  'platband with thread Neo Classic': 'Listwa przyszybowa z gwintem Neo Classic',
+  'replace glass': 'Wymiana szyby',
+  'skirting Aluminium Painted': 'Listwa przypodłogowa aluminiowa (pomalowana)',
+  'skirting Aluminium': 'Listwa przypodłogowa aluminiowa',
+  'skirting Art Decore': 'Listwa przypodłogowa (Art Decore)',
+  'skirting Loft': 'Listwa przypodłogowa (Loft)',
+  'skirting Neo Classic': 'Listwa przypodłogowa (Neo Classic)',
+
+// Products Options
+  'cat_door': 'Drzwi dla kota',
+  'vent_grille': 'Kratka wentylacyjna',
+  'art sandblasting': 'Piaskowanie artystyczne',
+  'colour picking': 'Wybór koloru',
+  'decore sample': 'Próbka dekoru',
+  'door closer Anselmi': 'Zamknięcie drzwi Anselmi',
+  'door closer tapered': 'Zamknięcie drzwi stożkowe',
+  'electronic lock Paladii': 'Elektroniczny zamek Paladii',
+  'fall stopper Fantom': 'Zatrzymywacz upadku Fantom',
+  'filling with mineral wool': 'Wypełnianie wełną mineralną',
+  'sandblasting': 'Piaskowanie',
+  'spindle set': 'Zestaw wrzeciona',
+  'cutting for decor': 'Krojenie na dekoracje',
+
 // Instructions
   InstructionCreateOrderHeader: (
     <div style={{fontSize: '15px'}}>

@@ -149,7 +149,59 @@ const es = {
   paintFor: "Pintura para",
   wall: "pared",
 
-  // Instructions
+// Products Frame
+  'hidden_standard Hidden': 'Estándar oculto',
+  'type 1 outside Neo Classic': 'Neo Clásico exterior',
+  'type 3 inside Art Decore': 'Art Deco interior',
+  'hidden_universal Hidden': 'Universal oculto',
+  'type 1 outside Art Decore': 'Art Deco exterior',
+  'type 3 inside Neo Classic': 'Neo Clásico interior',
+  'type 1 outside Loft': 'Loft exterior',
+  'type 3 inside Loft': 'Loft interior',
+
+// Products Elements
+  'aluminium cover': 'Cubierta de aluminio',
+  'aluminium cover painting': 'Cubierta de aluminio (pintura)',
+  'aluminium moulding': 'Moldura de aluminio',
+  'aluminium moulding painting': 'Moldura de aluminio (pintura)',
+  'another side color': 'Otro color del otro lado',
+  'decor insert Art Decore': 'Inserto decorativo Art Decore',
+  'decor insert Neo Classic': 'Inserto decorativo Neo Classic',
+  'extender 200 Loft': 'Extensor Loft 200',
+  'extender 300 Loft': 'Extensor Loft 300',
+  'extender 200 Neo Classic': 'Extensor Neo Classic 200',
+  'extender 300 Neo Classic': 'Extensor Neo Classic 300',
+  'extender 200 Art Decore': 'Extensor Art Decore 200',
+  'extender 300 Art Decore': 'Extensor Art Decore 300',
+  'kapitel Neo Classic': 'Capitel Neo Classic',
+  'panelling': 'Revestimiento',
+  'platband Art Decore': 'Cenefa Art Decore',
+  'platband Loft': 'Cenefa Loft',
+  'platband Neo Classic': 'Cenefa Neo Classic',
+  'platband with thread Neo Classic': 'Cenefa con rosca Neo Classic',
+  'replace glass': 'Reemplazar vidrio',
+  'skirting Aluminium Painted': 'Zócalo de aluminio pintado',
+  'skirting Aluminium': 'Zócalo de aluminio',
+  'skirting Art Decore': 'Zócalo (Art Decore)',
+  'skirting Loft': 'Zócalo (Loft)',
+  'skirting Neo Classic': 'Zócalo (Neo Classic)',
+
+// Products Options
+  'cat_door': 'Puerta para gatos',
+  'vent_grille': 'Rejilla de ventilación',
+  'art sandblasting': 'Chorro de arena artístico',
+  'colour picking': 'Selección de color',
+  'decore sample': 'Muestra de decoración',
+  'door closer Anselmi': 'Cierre de puerta Anselmi',
+  'door closer tapered': 'Cierre de puerta cónico',
+  'electronic lock Paladii': 'Cerradura electrónica Paladii',
+  'fall stopper Fantom': 'Tope anticaídas Fantom',
+  'filling with mineral wool': 'Relleno con lana mineral',
+  'sandblasting': 'Chorreado de arena',
+  'spindle set': 'Juego de husillos',
+  'cutting for decor': 'Corte para decoración',
+
+// Instructions
   InstructionCreateOrderHeader: (
     <div style={{fontSize: '15px'}}>
       <p> 

@@ -327,7 +327,8 @@ const DecorElementForm = ({setCurrentStepSend, elementID}) => {
             }}
           >
             {elementOptions.map(option => (
-              <Option key={option.id} value={option.id}>{option.attributes.title}</Option>
+              // <Option key={option.id} value={option.id}>{option.attributes.title}</Option>
+              <Option key={option.id} value={option.id}>{languageMap[selectedLanguage][option.attributes.title]}</Option>
             ))}
           </Select>
         </Form.Item>

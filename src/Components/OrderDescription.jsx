@@ -185,7 +185,9 @@ export const OrderDescription = (
             </Descriptions.Item> */}
 
             <Descriptions.Item className='labelBG' span={2} label={`${language.frame} ${language.type}`} labelStyle={{fontWeight: '600', color:'#000'}}>
-              {frameData.frame?.data?.attributes?.type}
+              {/* {frameData.frame?.data?.attributes?.type} */}
+              {/* {languageMap[selectedLanguage][frameData.frame?.data?.attributes?.type]} */}
+              {languageMap[selectedLanguage][frameData.frame?.data?.attributes?.title]}
             </Descriptions.Item>
 
             <Descriptions.Item className='labelBG' label={`${language.frame} ${language.price}`} labelStyle={{fontWeight: '600', color:'#000'}}>
@@ -281,7 +283,8 @@ export const OrderDescription = (
                 size='middle'
               >
                 <Descriptions.Item className='labelBG' label={`${language.element} ${language.title}`} labelStyle={{fontWeight: '600', color:'#000'}}>
-                  {element.element?.data?.attributes?.title}
+                  {/* {element.element?.data?.attributes?.title} */}
+                  {languageMap[selectedLanguage][element.element?.data?.attributes?.title]}
                 </Descriptions.Item>
 
                 {element?.sizes?.height && (
@@ -363,7 +366,8 @@ export const OrderDescription = (
               <React.Fragment key={index}>
 
                 <Descriptions.Item className='labelBG' label={language.title} labelStyle={{fontWeight: '600', color:'#000'}}>
-                  {option.title}
+                  {/* {option.title} */}
+                  {languageMap[selectedLanguage][option.title]}
                 </Descriptions.Item>
 
                 <Descriptions.Item className='labelBG' label={language.price} labelStyle={{fontWeight: '600', color:'#000'}}>

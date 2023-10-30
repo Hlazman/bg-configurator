@@ -149,6 +149,58 @@ const de = {
   paintFor: "Farbe für",
   wall: "Wand",
 
+// Products Frame
+  'hidden_standard Hidden': 'Versteckter Standard',
+  'type 1 outside Neo Classic': 'Neo Classic außen',
+  'type 3 inside Art Decore': 'Art Decore innen',
+  'hidden_universal Hidden': 'Versteckter Universal',
+  'type 1 outside Art Decore': 'Art Decore außen',
+  'type 3 inside Neo Classic': 'Neo Classic innen',
+  'type 1 outside Loft': 'Loft außen',
+  'type 3 inside Loft': 'Loft innen',
+
+// Products Elements
+  'aluminium cover': 'Aluminiumabdeckung',
+  'aluminium cover painting': 'Aluminiumabdeckung (Bemalung)',
+  'aluminium moulding': 'Aluminiumleiste',
+  'aluminium moulding painting': 'Aluminiumleiste (Bemalung)',
+  'another side color': 'Andere Farbe auf der anderen Seite',
+  'decor insert Art Decore': 'Dekoreinsatz Art Decore',
+  'decor insert Neo Classic': 'Dekoreinsatz Neo Classic',
+  'extender 200 Loft': 'Loft-Erweiterung 200',
+  'extender 300 Loft': 'Loft-Erweiterung 300',
+  'extender 200 Neo Classic': 'Neo Classic-Erweiterung 200',
+  'extender 300 Neo Classic': 'Neo Classic-Erweiterung 300',
+  'extender 200 Art Decore': 'Art Decore-Erweiterung 200',
+  'extender 300 Art Decore': 'Art Decore-Erweiterung 300',
+  'kapitel Neo Classic': 'Neo Classic Kapitel',
+  'panelling': 'Verkleidung',
+  'platband Art Decore': 'Art Decore Plattband',
+  'platband Loft': 'Loft Plattband',
+  'platband Neo Classic': 'Neo Classic Plattband',
+  'platband with thread Neo Classic': 'Neo Classic Plattband mit Gewinde',
+  'replace glass': 'Glas ersetzen',
+  'skirting Aluminium Painted': 'Sockelleiste aus lackiertem Aluminium',
+  'skirting Aluminium': 'Sockelleiste aus Aluminium',
+  'skirting Art Decore': 'Sockelleiste (Art Decore)',
+  'skirting Loft': 'Sockelleiste (Loft)',
+  'skirting Neo Classic': 'Sockelleiste (Neo Classic)',
+
+// Products Options
+  'cat_door': 'Katzentür',
+  'vent_grille': 'Belüftungsgitter',
+  'art sandblasting': 'Kunst-Sandstrahlen',
+  'colour picking': 'Farbauswahl',
+  'decore sample': 'Dekor Muster',
+  'door closer Anselmi': 'Türschließer Anselmi',
+  'door closer tapered': 'Konischer Türschließer',
+  'electronic lock Paladii': 'Elektronisches Schloss Paladii',
+  'fall stopper Fantom': 'Fallstopper Fantom',
+  'filling with mineral wool': 'Füllung mit Mineralwolle',
+  'sandblasting': 'Sandstrahlen',
+  'spindle set': 'Spindel-Set',
+  'cutting for decor': 'Schnitt für Dekor',
+
 // Instructions
   InstructionCreateOrderHeader: (
     <div style={{fontSize: '15px'}}>

@@ -285,7 +285,8 @@ const OptionsStep = ({ setCurrentStepSend }) => {
         {optionsData && optionsData.map(option => (
           <div key={option.id} style={{ display: 'flex', gap: '30px' }}>
             <Form.Item
-              label={option.attributes.title}
+              // label={option.attributes.title}
+              label={languageMap[selectedLanguage][option.attributes.title]}
               name={`option_${option.id}`}
             >
               <Radio.Group

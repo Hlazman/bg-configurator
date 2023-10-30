@@ -150,8 +150,60 @@ const en = {
   elementGetDecor: 'Individual decor',
   paintFor: "Paint for",
   wall: "wall",
-  
-  // Instructions
+
+// Products Options
+  'cat_door': 'Cat Door',
+  'vent_grille': 'Vent Grille',
+  'art sandblasting': 'Art sandblasting',
+  'colour picking': 'Color picking',
+  'decore sample': 'Decore sample',
+  'door closer Anselmi': 'Door closer Anselmi',
+  'door closer tapered': 'Door closer tapered',
+  'electronic lock Paladii': 'Electronic lock Paladii',
+  'fall stopper Fantom': 'Fall stopper Fantom',
+  'filling with mineral wool': 'Filling with mineral wool',
+  'sandblasting': 'Sandblasting',
+  'spindle set': 'Spindle set',
+  'cutting for decor': 'Cutting for decor',
+
+// Products Frame
+  'hidden_standard Hidden': 'Hidden standart',
+  'type 1 outside Neo Classic': 'Neo Classic outside',
+  'type 3 inside Art Decore': 'Art Decore inside',
+  'hidden_universal Hidden': 'Hidden universal',
+  'type 1 outside Art Decore': 'Art Decore outside',
+  'type 3 inside Neo Classic': 'Neo Classic inside',
+  'type 1 outside Loft': 'Loft outside',
+  'type 3 inside Loft': 'Loft inside',
+
+// Products Elements
+  'aluminium cover': 'Aluminium cover',
+  'aluminium cover painting': 'Aluminium cover (painting)',
+  'aluminium moulding': 'Aluminium moulding',
+  'aluminium moulding painting': 'Aluminium moulding (painting)',
+  'another side color': 'Another side color',
+  'decor insert Art Decore': 'Art Decore decor insert',
+  'decor insert Neo Classic': 'Neo Classic decor insert',
+  'extender 200 Loft': 'Loft extender 200',
+  'extender 300 Loft': 'Loft extender 300',
+  'extender 200 Neo Classic': 'Neo Classic extender 200',
+  'extender 300 Neo Classic': 'Neo Classic extender 300',
+  'extender 200 Art Decore': 'Art Decore extender 200',
+  'extender 300 Art Decore': 'Art Decore extender 300',
+  'kapitel Neo Classic': 'Neo Classic kapitel',
+  'panelling': 'Panelling',
+  'platband Art Decore': 'Art Decore platband',
+  'platband Loft': 'Loft platband',
+  'platband Neo Classic': 'Neo Classic platband',
+  'platband with thread Neo Classic': 'Neo Classic platband with thread',
+  'replace glass': 'Replace glass',
+  'skirting Aluminium Painted': 'Skirting aluminium (painted)',
+  'skirting Aluminium': 'Skirting aluminium',
+  'skirting Art Decore': 'Skirting (Art Decore)',
+  'skirting Loft': 'Skirting (Loft)',
+  'skirting Neo Classic': 'Skirting (Neo Classic)',
+
+// Instructions
   InstructionCreateOrderHeader: (
     <div style={{fontSize: '15px'}}>
       <p> 

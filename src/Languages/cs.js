@@ -149,6 +149,58 @@ const cs = {
   paintFor: "Barva pro",
   wall: "stěna",
 
+// Products Frame
+  'hidden_standard Hidden': 'Skrytý standard',
+  'type 1 outside Neo Classic': 'Neo Classic venku',
+  'type 3 inside Art Decore': 'Art Decore uvnitř',
+  'hidden_universal Hidden': 'Skrytý univerzální',
+  'type 1 outside Art Decore': 'Art Decore venku',
+  'type 3 inside Neo Classic': 'Neo Classic uvnitř',
+  'type 1 outside Loft': 'Loft venku',
+  'type 3 inside Loft': 'Loft uvnitř',
+
+// Products Elements
+  'aluminium cover': 'Hliníkový kryt',
+  'aluminium cover painting': 'Hliníkový kryt (malovaný)',
+  'aluminium moulding': 'Hliníková lišta',
+  'aluminium moulding painting': 'Hliníková lišta (malovaná)',
+  'another side color': 'Barva druhé strany',
+  'decor insert Art Decore': 'Vložka dekoru Art Decore',
+  'decor insert Neo Classic': 'Vložka dekoru Neo Classic',
+  'extender 200 Loft': 'Rozšiřovač Loft 200',
+  'extender 300 Loft': 'Rozšiřovač Loft 300',
+  'extender 200 Neo Classic': 'Rozšiřovač Neo Classic 200',
+  'extender 300 Neo Classic': 'Rozšiřovač Neo Classic 300',
+  'extender 200 Art Decore': 'Rozšiřovač Art Decore 200',
+  'extender 300 Art Decore': 'Rozšiřovač Art Decore 300',
+  'kapitel Neo Classic': 'Kapitál Neo Classic',
+  'panelling': 'Obložení',
+  'platband Art Decore': 'Lišta platband Art Decore',
+  'platband Loft': 'Lišta platband Loft',
+  'platband Neo Classic': 'Lišta platband Neo Classic',
+  'platband with thread Neo Classic': 'Lišta platband s nití Neo Classic',
+  'replace glass': 'Výměna skla',
+  'skirting Aluminium Painted': 'Hliníková podlaha (natřená)',
+  'skirting Aluminium': 'Hliníková podlaha',
+  'skirting Art Decore': 'Podlaha (Art Decore)',
+  'skirting Loft': 'Podlaha (Loft)',
+  'skirting Neo Classic': 'Podlaha (Neo Classic)',
+
+// Products Options
+  'cat_door': 'Kočičí dveře',
+  'vent_grille': 'Ventilační mřížka',
+  'art sandblasting': 'Umělecké pískování',
+  'colour picking': 'Výběr barev',
+  'decore sample': 'Vzorek dekoru',
+  'door closer Anselmi': 'Dveřní zavírač Anselmi',
+  'door closer tapered': 'Kónický dveřní zavírač',
+  'electronic lock Paladii': 'Elektronický zámek Paladii',
+  'fall stopper Fantom': 'Zarážka Fantom',
+  'filling with mineral wool': 'Naplnění minerální vlnou',
+  'sandblasting': 'Pískování',
+  'spindle set': 'Souprava hřídelek',
+  'cutting for decor': 'Řezání pro dekor',
+
   // Instructions
     InstructionCreateOrderHeader: (
       <div style={{fontSize: '15px'}}>

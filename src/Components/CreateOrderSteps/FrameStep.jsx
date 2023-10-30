@@ -212,7 +212,8 @@ const FrameStep = ({ setCurrentStepSend }) => {
             allowClear
           >
             {frames.map(frame => (
-              <Option key={frame.id} value={frame.id}>{frame.attributes.title}</Option>
+              // <Option key={frame.id} value={frame.id}>{frame.attributes.title}</Option>
+              <Option key={frame.id} value={frame.id}>{languageMap[selectedLanguage][frame.attributes.title]}</Option>
             ))}
           </Select>
         </Form.Item>

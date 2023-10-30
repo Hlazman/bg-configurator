@@ -149,6 +149,58 @@ const ua = {
   paintFor: "Фарба для",
   wall: "стіна",
 
+// Products Frame
+  'hidden_standard Hidden': 'Прихований стандарт',
+  'type 1 outside Neo Classic': 'Neo Classic ззовні',
+  'type 3 inside Art Decore': 'Art Decore всередині',
+  'hidden_universal Hidden': 'Прихований універсальний',
+  'type 1 outside Art Decore': 'Art Decore ззовні',
+  'type 3 inside Neo Classic': 'Neo Classic всередині',
+  'type 1 outside Loft': 'Loft ззовні',
+  'type 3 inside Loft': 'Loft всередині',
+
+// Products Elements
+  'aluminium cover': 'Алюмінієвий кришка',
+  'aluminium cover painting': 'Алюмінієва кришка (фарбування)',
+  'aluminium moulding': 'Алюмінієвий молдинг',
+  'aluminium moulding painting': 'Алюмінієвий молдинг (фарбування)',
+  'another side color': 'Інший колір з іншого боку',
+  'decor insert Art Decore': 'Декоративна вставка Art Decore',
+  'decor insert Neo Classic': 'Декоративна вставка Neo Classic',
+  'extender 200 Loft': 'Розширювач Loft 200',
+  'extender 300 Loft': 'Розширювач Loft 300',
+  'extender 200 Neo Classic': 'Розширювач Neo Classic 200',
+  'extender 300 Neo Classic': 'Розширювач Neo Classic 300',
+  'extender 200 Art Decore': 'Розширювач Art Decore 200',
+  'extender 300 Art Decore': 'Розширювач Art Decore 300',
+  'kapitel Neo Classic': 'Капітел Neo Classic',
+  'panelling': 'Обрешітка',
+  'platband Art Decore': 'Арт Декор плінтус',
+  'platband Loft': 'Плінтус Loft',
+  'platband Neo Classic': 'Плінтус Neo Classic',
+  'platband with thread Neo Classic': 'Плінтус з ниткою Neo Classic',
+  'replace glass': 'Заміна скла',
+  'skirting Aluminium Painted': 'Алюмінієва підлога (фарбована)',
+  'skirting Aluminium': 'Алюмінієва підлога',
+  'skirting Art Decore': 'Підлога (Art Decore)',
+  'skirting Loft': 'Підлога (Loft)',
+  'skirting Neo Classic': 'Підлога (Neo Classic)',
+
+// Products Options
+  'cat_door': 'Кошачі двері',
+  'vent_grille': 'Вентиляційна решітка',
+  'art sandblasting': 'Мистецьке піскоструйне оброблення',
+  'colour picking': 'Вибір кольору',
+  'decore sample': 'Зразок декору',
+  'door closer Anselmi': 'Дверний доводчик Anselmi',
+  'door closer tapered': 'Конічний дверний доводчик',
+  'electronic lock Paladii': 'Електронний замок Paladii',
+  'fall stopper Fantom': 'Зупинник падіння Fantom',
+  'filling with mineral wool': 'Заповнення мінеральною ватою',
+  'sandblasting': 'Піскоструйна обробка',
+  'spindle set': 'Комплект шпинделя',
+  'cutting for decor': 'Вирізання під декор',
+
 // Instructions
   InstructionCreateOrderHeader: (
     <div style={{fontSize: '15px'}}>
