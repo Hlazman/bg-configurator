@@ -281,7 +281,8 @@ const GroupDecorStep = ({ setCurrentStepSend }) => {
           />,
         },
         {
-          label: language.mirror,
+          // label: language.mirror,
+          label: `${language.mirror} / ${language.glass}`,
           key: 'mirror',
           children: 
             <MirrorStep 

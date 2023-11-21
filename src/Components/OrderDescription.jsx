@@ -156,7 +156,7 @@ export const OrderDescription = (
             </Descriptions.Item>
 
             <Descriptions.Item className='labelBG' label={language.price} labelStyle={{fontWeight: '600', color:'#000'}}>
-              {doorData.price} 100$
+              {doorData.price} {orderData?.currency}
             </Descriptions.Item>
           </>
           )}
@@ -246,15 +246,15 @@ export const OrderDescription = (
             </Descriptions.Item>
 
             <Descriptions.Item className='labelBG' label={`${language.price} (${language.lock})`} labelStyle={{fontWeight: '600', color:'#000'}}>
-              {lockData?.price} 100$ 
+              {lockData?.price} {orderData?.currency} 
             </Descriptions.Item>
 
             <Descriptions.Item className='labelBG' label={`${language.price} (${language.hinges})`} labelStyle={{fontWeight: '600', color:'#000'}}>
-              {hingeData?.price} 100$
+              {hingeData?.price} {orderData?.currency}
             </Descriptions.Item>
 
             <Descriptions.Item className='labelBG' label={`${language.price} (${language.knobe})`} labelStyle={{fontWeight: '600', color:'#000'}}>
-              {knobeData?.price} 100$
+              {knobeData?.price} {orderData?.currency}
             </Descriptions.Item>
           </>
           )}
@@ -340,7 +340,7 @@ export const OrderDescription = (
                 )}
 
                 <Descriptions.Item className='labelBG' label={language.price} labelStyle={{fontWeight: '600', color:'#000'}}>
-                  {element?.price} 100$
+                  {element?.price} {orderData?.currency}
                 </Descriptions.Item>
               </Descriptions>
               </React.Fragment>
@@ -371,7 +371,7 @@ export const OrderDescription = (
                 </Descriptions.Item>
 
                 <Descriptions.Item className='labelBG' label={language.price} labelStyle={{fontWeight: '600', color:'#000'}}>
-                  {option.price} 100$
+                  {option.price} {orderData?.currency}
                 </Descriptions.Item>
               </React.Fragment>
             ))}
@@ -424,7 +424,7 @@ export const OrderDescription = (
             </Descriptions.Item>
 
             <Descriptions.Item className='labelBG' label={language.totalCost} labelStyle={{fontWeight: '600', color:'#000'}}>
-              {orderData?.totalCost} 100$
+              {orderData?.totalCost}
             </Descriptions.Item>
 
             <Descriptions.Item className='labelBG' label={language.currency} labelStyle={{fontWeight: '600', color:'#000'}}>

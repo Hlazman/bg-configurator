@@ -273,7 +273,8 @@ const GroupDecorElementStep = ({elementID, isPaintDecor, isMirrorDecor}) => {
           />,
         },
         {
-          label: language.mirror,
+          // label: language.mirror,
+          label: `${language.mirror} / ${language.glass}`,
           key: 'mirror',
           disabled: isMirrorDecor,
           children: 
@@ -297,7 +298,7 @@ const GroupDecorElementStep = ({elementID, isPaintDecor, isMirrorDecor}) => {
             />,
         },
         {
-          label: language.primer,
+          label: language.primers,
           key: 'primer',
           disabled: isPaintDecor,
           children: 

@@ -165,13 +165,13 @@ const getHeaderTitle = (location, Id) => {
                 </Dropdown.Button>
 
                 {/* {user?.role==='Admin' && ( */}
-                  <Select
+                  {/* <Select
                     key="Company"
                     size="large"
                     defaultValue="boki-poland" // TEMP
                     onChange={handleChange}
                     options={options} // TEMP
-                  />
+                  /> */}
                 {/* )} */}
                 
               </div>
