@@ -140,7 +140,7 @@ const FrameStep = ({ setCurrentStepSend }) => {
       setFrames(data);
     });
   // }, [jwtToken, orderData?.hidden, orderData?.opening, orderIdToUse]);
-  }, [jwtToken, orderData, orderIdToUse, form]);
+  }, [jwtToken, orderData, orderIdToUse, form, frames]);
 
   
   const handleFormSubmit = () => {

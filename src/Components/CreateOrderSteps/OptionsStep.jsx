@@ -29,6 +29,7 @@ const OptionsStep = ({ setCurrentStepSend }) => {
                   id
                   attributes {
                     title
+                    price
                   }
                 }
               }
@@ -200,6 +201,7 @@ const OptionsStep = ({ setCurrentStepSend }) => {
             data: {
               option: option.id,
               title: option.attributes.title,
+              price: option.attributes.price, // new
               order: orderIdToUse,
             },
           },

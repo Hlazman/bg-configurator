@@ -191,7 +191,7 @@ export const OrderDescription = (
             </Descriptions.Item>
 
             <Descriptions.Item className='labelBG' label={`${language.frame} ${language.price}`} labelStyle={{fontWeight: '600', color:'#000'}}>
-              {frameData.price}
+              {frameData.price} {orderData?.currency} 
             </Descriptions.Item>
 
             <Descriptions.Item className='labelBG' label={language.title} labelStyle={{fontWeight: '600', color:'#000'}}>
