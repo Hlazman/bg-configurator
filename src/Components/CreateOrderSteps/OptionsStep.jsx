@@ -52,12 +52,13 @@ const OptionsStep = ({ setCurrentStepSend }) => {
       if (optionsResponse.data.data && optionsResponse.data.data.options) {
         setOptionsData(optionsResponse.data.data.options.data);
       }
+
+      // console.log('fetchOptionsData', optionsData)
   
     } catch (error) {
       console.error('Error fetching order data:', error);
     }
   };
-
 
   const fetchOrderData = async () => {
     try {
@@ -128,6 +129,7 @@ const OptionsStep = ({ setCurrentStepSend }) => {
         //   });
         // });
 
+        // console.log('fetchOrderData', optionsSuborderData)
       }
         
     } catch (error) {
@@ -201,7 +203,7 @@ const OptionsStep = ({ setCurrentStepSend }) => {
             data: {
               option: option.id,
               title: option.attributes.title,
-              // price: option.attributes.price, // new
+              // price: option.attributes.price,
               order: orderIdToUse,
             },
           },
@@ -213,10 +215,11 @@ const OptionsStep = ({ setCurrentStepSend }) => {
           },
         }
       );
-      console.log(response)
+      // console.log('Create Option Suborder', response)
       
       const createdOptionSuborder = response.data.data.createOptionSuborder.data;
       updateOptionSuborder(createdOptionSuborder, option)
+      fetchOrderData()
       
     } catch (error) {
       console.error('Error creating option suborder:', error);
@@ -253,7 +256,8 @@ const OptionsStep = ({ setCurrentStepSend }) => {
           }
         );
         // const deletedID = response.data.data.deleteOptionSuborder.data;
-        console.log(response)
+        // console.log('Delete Option Suborder', response)
+        fetchOrderData()
       } catch (error) {
         console.error('Error deleting option suborder:', error);
       }
@@ -262,7 +266,8 @@ const OptionsStep = ({ setCurrentStepSend }) => {
 
   const updateOptionSuborder = async (updateOptionSuborderId, option) => {
     try {
-      const response = await axios.post(
+      // const response = await axios.post(
+      await axios.post(
         'https://api.boki.fortesting.com.ua/graphql',
         {
           query: `
@@ -290,22 +295,27 @@ const OptionsStep = ({ setCurrentStepSend }) => {
         }
       );
   
-      console.log('Update response:', response.data);
+      // console.log('Update Option Suborder:', response.data);
     } catch (error) {
       console.error('Error updating option suborder:', error);
     }
   };
   
 
-  const [temp, setTemp] = useState(false)
-
-  useEffect(() => {
+  useEffect(()=> {
     fetchOptionsData()
-    fetchOrderData();
-  // }, [orderIdToUse, jwtToken, form]);
-  }, [orderIdToUse, jwtToken, form, temp]);
-  
+    fetchOrderData()
+  },[]);
 
+  // const [temp, setTemp] = useState(false)
+
+  // useEffect(() => {
+  //   fetchOptionsData()
+  //   // fetchOrderData();
+  // }, [orderIdToUse, jwtToken, form]);
+  // // }, [orderIdToUse, jwtToken, form, temp]);
+
+  
   return (
     <Card style={{background: '#F8F8F8', borderColor: '#DCDCDC'}}>
       <Form form={form} onFinish={handleFormSubmit}>
@@ -344,15 +354,15 @@ const OptionsStep = ({ setCurrentStepSend }) => {
             >
               <Radio.Group
                 buttonStyle="solid"
-                defaultValue={false}
+                // defaultValue={false}
                 onChange={(e) => {
                   const selectedValue = e.target.value
 
                   if (selectedValue === true) {
-                    setTemp(true)
+                    // setTemp(true)
                     createSubOrder(option);
                   } else if (selectedValue === false) {
-                    setTemp(false)
+                    // setTemp(false)
                     deleteSubOrder(option.id);
                   }
                 }}
