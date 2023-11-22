@@ -135,10 +135,10 @@ const OptionsStep = ({ setCurrentStepSend }) => {
     }
   };
 
-  useEffect(() => {
-    fetchOptionsData()
-    fetchOrderData();
-  }, [orderIdToUse, jwtToken, form]);
+  // useEffect(() => {
+  //   fetchOptionsData()
+  //   fetchOrderData();
+  // }, [orderIdToUse, jwtToken, form, createSubOrder, deleteSubOrder]);
 
   
   const handleFormSubmit = async (values) => {
@@ -201,7 +201,7 @@ const OptionsStep = ({ setCurrentStepSend }) => {
             data: {
               option: option.id,
               title: option.attributes.title,
-              price: option.attributes.price, // new
+              // price: option.attributes.price, // new
               order: orderIdToUse,
             },
           },
@@ -214,15 +214,21 @@ const OptionsStep = ({ setCurrentStepSend }) => {
         }
       );
       console.log(response)
+      
+      const createdOptionSuborder = response.data.data.createOptionSuborder.data;
+      updateOptionSuborder(createdOptionSuborder, option)
+      
     } catch (error) {
       console.error('Error creating option suborder:', error);
     }
   };
-  
+
   const deleteSubOrder = async (optionId) => {
     const optionSuborder = optionsSuborderData.find(suborder => suborder.attributes.option.data.id === optionId);
+
     if (optionSuborder) {
       try {
+        await updateOptionSuborder(optionSuborder, null)
         const response = await axios.post(
           'https://api.boki.fortesting.com.ua/graphql',
           {
@@ -246,6 +252,7 @@ const OptionsStep = ({ setCurrentStepSend }) => {
             },
           }
         );
+        // const deletedID = response.data.data.deleteOptionSuborder.data;
         console.log(response)
       } catch (error) {
         console.error('Error deleting option suborder:', error);
@@ -253,7 +260,51 @@ const OptionsStep = ({ setCurrentStepSend }) => {
     }
   };
 
+  const updateOptionSuborder = async (updateOptionSuborderId, option) => {
+    try {
+      const response = await axios.post(
+        'https://api.boki.fortesting.com.ua/graphql',
+        {
+          query: `
+            mutation Mutation($updateOptionSuborderId: ID!, $data: OptionSuborderInput!) {
+              updateOptionSuborder(id: $updateOptionSuborderId, data: $data) {
+                data {
+                  id
+                }
+              }
+            }
+          `,
+          variables: {
+            updateOptionSuborderId: updateOptionSuborderId.id,
+            data: {
+              // price: option.attributes.price,
+              price: option ? option.attributes.price : 0,
+            },
+          },
+        },
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${jwtToken}`,
+          },
+        }
+      );
+  
+      console.log('Update response:', response.data);
+    } catch (error) {
+      console.error('Error updating option suborder:', error);
+    }
+  };
+  
 
+  const [temp, setTemp] = useState(false)
+
+  useEffect(() => {
+    fetchOptionsData()
+    fetchOrderData();
+  // }, [orderIdToUse, jwtToken, form]);
+  }, [orderIdToUse, jwtToken, form, temp]);
+  
 
   return (
     <Card style={{background: '#F8F8F8', borderColor: '#DCDCDC'}}>
@@ -293,12 +344,15 @@ const OptionsStep = ({ setCurrentStepSend }) => {
             >
               <Radio.Group
                 buttonStyle="solid"
+                defaultValue={false}
                 onChange={(e) => {
-                  const selectedValue = e.target.value;
-                  const isSelected = selectedValue === true;
-                  if (isSelected) {
+                  const selectedValue = e.target.value
+
+                  if (selectedValue === true) {
+                    setTemp(true)
                     createSubOrder(option);
-                  } else {
+                  } else if (selectedValue === false) {
+                    setTemp(false)
                     deleteSubOrder(option.id);
                   }
                 }}

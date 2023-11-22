@@ -28,7 +28,124 @@ const FrameStep = ({ setCurrentStepSend }) => {
 
   const [form] = Form.useForm();
 
+  // useEffect(() => {
+  //   axios.post(
+  //     'https://api.boki.fortesting.com.ua/graphql',
+  //     {
+  //       query: `
+  //         query Query($orderId: ID) {
+  //           order(id: $orderId) {
+  //             data {
+  //               attributes {
+  //                 hidden
+  //                 double_door
+  //                 opening
+  //                 side
+  //                 door_suborder {
+  //                   data {
+  //                     attributes {
+  //                       decor {
+  //                         data {
+  //                           id
+  //                         }
+  //                       }
+  //                       sizes {
+  //                         height
+  //                         thickness
+  //                         width
+  //                       }
+  //                     }
+  //                   }
+  //                 }
+  //                 frame_suborder {
+  //                   data {
+  //                     attributes {
+  //                       frame {
+  //                         data {
+  //                           attributes {
+  //                             title
+  //                           }
+  //                           id
+  //                         }
+  //                       }
+  //                     }
+  //                   }
+  //                 }
+  //               }
+  //             }
+  //           }
+  //         }
+  //       `,
+  //       variables: {
+  //         orderId: orderIdToUse
+  //       }
+  //     },
+  //     {
+  //       headers: {
+  //         'Content-Type': 'application/json',
+  //         Authorization: `Bearer ${jwtToken}`,
+  //       }
+  //     }
+  //   ).then(response => {
+  //     const data = response.data?.data?.order?.data?.attributes || {};
+  //     setOrderData(data);
+      
+  //     if (orderData?.frame_suborder?.data?.attributes?.frame?.data?.id &&
+  //       orderData?.frame_suborder?.data?.attributes?.frame?.data?.attributes?.title) {
+  //         const frameId = orderData?.frame_suborder?.data?.attributes?.frame?.data?.id;
+  //         if (frames.find(frame => frame.id === frameId)) {
+  //           form.setFieldsValue({ name: frameId });
+  //         }
+  //       }
+  //   });
+  
+  //   axios.post(
+  //     'https://api.boki.fortesting.com.ua/graphql',
+  //     {
+  //       query: `
+  //         query Frames($pagination: PaginationArg, $filters: FrameFiltersInput) {
+  //           frames(pagination: $pagination, filters: $filters) {
+  //             data {
+  //               attributes {
+  //                 title
+  //               }
+  //               id
+  //             }
+  //           }
+  //         }
+  //       `,
+  //       variables: {
+  //         pagination: {
+  //           limit: 20
+  //         },
+  //         filters: {
+  //           hidden: {
+  //             // eq: orderData?.hidden || null
+  //             eq: orderData?.hidden || false
+  //           },
+  //           opening: {
+  //             eq: orderData?.opening || null
+  //           },
+  //         }
+  //       }
+  //     },
+  //     {
+  //       headers: {
+  //         'Content-Type': 'application/json',
+  //         Authorization: `Bearer ${jwtToken}`,
+  //       }
+  //     }
+  //   ).then(response => {
+  //     const data = response.data?.data?.frames?.data || [];
+  //     setFrames(data);
+  //   });
+  // // }, [jwtToken, orderData?.hidden, orderData?.opening, orderIdToUse]);
+  // }, [jwtToken, orderIdToUse, form]);
+
+
   useEffect(() => {
+    // Запрос данных о заказе
+    console.log('Effect 1')
     axios.post(
       'https://api.boki.fortesting.com.ua/graphql',
       {
@@ -89,16 +206,12 @@ const FrameStep = ({ setCurrentStepSend }) => {
     ).then(response => {
       const data = response.data?.data?.order?.data?.attributes || {};
       setOrderData(data);
-      
-      if (orderData?.frame_suborder?.data?.attributes?.frame?.data?.id &&
-        orderData?.frame_suborder?.data?.attributes?.frame?.data?.attributes?.title) {
-          const frameId = orderData?.frame_suborder?.data?.attributes?.frame?.data?.id;
-          if (frames.find(frame => frame.id === frameId)) {
-            form.setFieldsValue({ name: frameId });
-          }
-        }
     });
+  }, [jwtToken, orderIdToUse]);
   
+  useEffect(() => {
+    // Запрос списка рамок
+    console.log('Effect 2')
     axios.post(
       'https://api.boki.fortesting.com.ua/graphql',
       {
@@ -120,7 +233,6 @@ const FrameStep = ({ setCurrentStepSend }) => {
           },
           filters: {
             hidden: {
-              // eq: orderData?.hidden || null
               eq: orderData?.hidden || false
             },
             opening: {
@@ -139,8 +251,8 @@ const FrameStep = ({ setCurrentStepSend }) => {
       const data = response.data?.data?.frames?.data || [];
       setFrames(data);
     });
-  // }, [jwtToken, orderData?.hidden, orderData?.opening, orderIdToUse]);
-  }, [jwtToken, orderData, orderIdToUse, form, frames]);
+  }, [jwtToken, orderData]);
+  
 
   
   const handleFormSubmit = () => {
