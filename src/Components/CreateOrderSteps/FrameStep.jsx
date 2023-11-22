@@ -144,8 +144,6 @@ const FrameStep = ({ setCurrentStepSend }) => {
 
 
   useEffect(() => {
-    // Запрос данных о заказе
-    console.log('Effect 1')
     axios.post(
       'https://api.boki.fortesting.com.ua/graphql',
       {
@@ -208,10 +206,49 @@ const FrameStep = ({ setCurrentStepSend }) => {
       setOrderData(data);
     });
   }, [jwtToken, orderIdToUse]);
+
   
   useEffect(() => {
-    // Запрос списка рамок
-    console.log('Effect 2')
+    // axios.post(
+    //   'https://api.boki.fortesting.com.ua/graphql',
+    //   {
+    //     query: `
+    //       query Frames($pagination: PaginationArg, $filters: FrameFiltersInput) {
+    //         frames(pagination: $pagination, filters: $filters) {
+    //           data {
+    //             attributes {
+    //               title
+    //             }
+    //             id
+    //           }
+    //         }
+    //       }
+    //     `,
+    //     variables: {
+    //       pagination: {
+    //         limit: 20
+    //       },
+    //       filters: {
+    //         hidden: {
+    //           eq: orderData?.hidden || false
+    //         },
+    //         opening: {
+    //           eq: orderData?.opening || null
+    //         },
+    //       }
+    //     }
+    //   },
+    //   {
+    //     headers: {
+    //       'Content-Type': 'application/json',
+    //       Authorization: `Bearer ${jwtToken}`,
+    //     }
+    //   }
+    // ).then(response => {
+    //   const data = response.data?.data?.frames?.data || [];
+    //   setFrames(data);
+    // });
+    
     axios.post(
       'https://api.boki.fortesting.com.ua/graphql',
       {
@@ -231,14 +268,6 @@ const FrameStep = ({ setCurrentStepSend }) => {
           pagination: {
             limit: 20
           },
-          filters: {
-            hidden: {
-              eq: orderData?.hidden || false
-            },
-            opening: {
-              eq: orderData?.opening || null
-            },
-          }
         }
       },
       {
