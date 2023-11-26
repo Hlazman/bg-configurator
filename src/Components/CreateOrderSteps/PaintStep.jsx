@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Form, Input, Button, Card, Radio, Select, Spin, message } from 'antd';
+import { Form, Input, Button, Card, Radio, Select, Spin, message, Affix } from 'antd';
+import { SendOutlined } from '@ant-design/icons';
 import axios from 'axios';
 import { useOrder } from '../../Context/OrderContext';
 import { CreateColorDrawer } from '../CreateColorDrawer';
@@ -146,7 +147,14 @@ const PaintStep = ({ orderID, fetchOrderData, fetchDecorData, checkDecor, sendDe
 
 
   return (
-    <Form onFinish={onFinish} form={form} style={{marginTop: '20px'}}>
+    // <Form onFinish={onFinish} form={form} style={{marginTop: '20px'}}>
+    <Form onFinish={onFinish} form={form}>
+
+      <Affix style={{ position: 'absolute', top: '-60px', right: '20px'}} offsetTop={60}>
+        <Button style={{backgroundColor: '#1677ff', color: 'white' }} htmlType="submit" icon={<SendOutlined />}>
+          {`${language.submit} ${language.decor}`}
+        </Button>
+      </Affix>
         
         <div style={{display: 'flex', gap: '20px', flexWrap: 'wrap'}}>
 
@@ -270,11 +278,11 @@ const PaintStep = ({ orderID, fetchOrderData, fetchDecorData, checkDecor, sendDe
         </Form.Item>
       )}
 
-      <Form.Item wrapperCol={{ offset: 4, span: 16 }}>
+      {/* <Form.Item wrapperCol={{ offset: 4, span: 16 }}>
         <Button type="primary" htmlType="submit">
           {language.submit}
         </Button>
-      </Form.Item>
+      </Form.Item> */}
       
     </Form>
 

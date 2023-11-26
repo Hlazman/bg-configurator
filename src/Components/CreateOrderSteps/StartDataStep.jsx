@@ -1,4 +1,5 @@
-import { Form, Button, Card, Radio, message } from 'antd';
+import { Form, Button, Card, Radio, message, Affix } from 'antd';
+import { SendOutlined } from '@ant-design/icons';
 import axios from 'axios';
 import { useOrder } from '../../Context/OrderContext';
 import { useEffect, useState } from 'react';
@@ -106,6 +107,13 @@ const StartDataStep = ({ setCurrentStepSend }) => {
   return (
     <Card style={{background: '#F8F8F8', borderColor: '#DCDCDC'}}>
       <Form form={form} onFinish={handleFormSubmit}>
+
+      <Affix style={{ position: 'absolute', top: '-50px', right: '20px'}} offsetTop={20}>
+        <Button style={{backgroundColor: '#1677ff', color: 'white' }} htmlType="submit" icon={<SendOutlined />}>
+        {`${language.submit} ${language.startData}`}
+        </Button>
+      </Affix>
+
       <div style={{ display: 'flex', gap: '30px' }}>
           <Form.Item
             label={language.doubleDoor}
@@ -163,11 +171,11 @@ const StartDataStep = ({ setCurrentStepSend }) => {
           </Form.Item>
         </div>
         
-        <Form.Item>
+        {/* <Form.Item>
           <Button type="primary" htmlType="submit">
             {language.submit}
           </Button>
-        </Form.Item>
+        </Form.Item> */}
       </Form>
     </Card>
   );

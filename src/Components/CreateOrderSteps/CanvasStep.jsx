@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Form, Input, InputNumber, Button, Card, Radio, Select, Spin, Space, message } from 'antd';
+import { Form, Input, InputNumber, Button, Card, Radio, Select, Spin, Space, message, Affix } from 'antd';
+import { SendOutlined } from '@ant-design/icons';
 import axios from 'axios';
 import { useOrder } from '../../Context/OrderContext';
 import { useLanguage } from '../../Context/LanguageContext';
@@ -143,7 +144,7 @@ const CanvasStep = ({ setCurrentStepSend}) => {
       }
 
       // console.log(response);
-      // message.success(language.successQuery); 
+      // message.success(language.successQuery);
       if (setCurrentStepSend) {
         setCurrentStepSend(prevState => {
           return {
@@ -246,6 +247,12 @@ const CanvasStep = ({ setCurrentStepSend}) => {
       onFinish={onFinish}
       style={{ padding: '0 25px'}}
     >
+
+      <Affix style={{ position: 'absolute', top: '-60px', right: '20px'}} offsetTop={20}>
+        <Button style={{backgroundColor: '#1677ff', color: 'white' }} htmlType="submit" icon={<SendOutlined />}>
+        {`${language.submit} ${language.canvas}`}
+        </Button>
+      </Affix>
     
     <div style={{display: 'flex', gap: '20px', flexWrap: 'wrap'}}>
       <Form.Item style={{margin: '10px 0', flex: '1', 'minWidth': "300px"}}>
@@ -369,11 +376,11 @@ const CanvasStep = ({ setCurrentStepSend}) => {
           </Radio.Group>
         </Form.Item>
       )}
-          <Form.Item>
+          {/* <Form.Item>
           <Button type="primary" htmlType="submit">
             {language.submit}
           </Button>
-        </Form.Item>
+        </Form.Item> */}
     </Form>
   );
 };

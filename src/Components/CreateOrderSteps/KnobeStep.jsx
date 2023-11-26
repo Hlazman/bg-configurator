@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Form, Input, Button, Card, Radio, Select, Divider, Spin, message } from 'antd';
+import { Form, Input, Button, Card, Radio, Select, Divider, Spin, message, Affix } from 'antd';
+import { SendOutlined } from '@ant-design/icons';
 import axios from 'axios';
 import { useOrder } from '../../Context/OrderContext';
 import { useLanguage } from '../../Context/LanguageContext';
@@ -206,6 +207,12 @@ const KnobesStep = ({ setCurrentStepSend }) => {
   return (
     <Form onFinish={handleSbmitForm} form={form}>
 
+      <Affix style={{ position: 'absolute', top: '-60px', right: '20px'}} offsetTop={20}>
+        <Button style={{backgroundColor: '#1677ff', color: 'white' }} htmlType="submit" icon={<SendOutlined />}>
+          {`${language.submit} ${language.knobe}`}
+        </Button>
+      </Affix>
+
       <div style={{display: 'flex', gap: '20px', flexWrap: 'wrap'}}>
         <Input
           placeholder={language.search}
@@ -272,11 +279,11 @@ const KnobesStep = ({ setCurrentStepSend }) => {
         </Form.Item>
       )}
 
-      <Form.Item wrapperCol={{ offset: 4, span: 16 }}>
+      {/* <Form.Item wrapperCol={{ offset: 4, span: 16 }}>
         <Button type="primary" htmlType="submit">
         {language.submit}
         </Button>
-      </Form.Item>
+      </Form.Item> */}
 
     </Form>
   );

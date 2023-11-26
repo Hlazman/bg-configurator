@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Form, Input, Button, Card, Radio, Divider, Spin } from 'antd';
+import { Form, Input, Button, Card, Radio, Divider, Spin, Affix } from 'antd';
+import { SendOutlined } from '@ant-design/icons';
 import axios from 'axios';
 import { useOrder } from '../../Context/OrderContext';
 import { useLanguage } from '../../Context/LanguageContext';
@@ -86,6 +87,12 @@ const HPLStep = ({ fetchOrderData, fetchDecorData, checkDecor, sendDecorForm }) 
   return (
     <Form onFinish={onFinish} form={form}>
 
+      <Affix style={{ position: 'absolute', top: '-50px', right: '20px'}} offsetTop={60}>
+        <Button style={{backgroundColor: '#1677ff', color: 'white' }} htmlType="submit" icon={<SendOutlined />}>
+          {`${language.submit} ${language.decor}`}
+        </Button>
+      </Affix>
+
         <Input
           placeholder={language.search}
           addonBefore={language.searchBy}
@@ -136,11 +143,11 @@ const HPLStep = ({ fetchOrderData, fetchDecorData, checkDecor, sendDecorForm }) 
         </Form.Item>
       )}
 
-        <Form.Item wrapperCol={{ offset: 4, span: 16 }}>
+        {/* <Form.Item wrapperCol={{ offset: 4, span: 16 }}>
           <Button type="primary" htmlType="submit">
             {language.submit}
           </Button>
-        </Form.Item>
+        </Form.Item> */}
     </Form>
   );
 };

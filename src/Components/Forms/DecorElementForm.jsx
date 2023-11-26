@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Form, Button, Select, InputNumber, Spin, Radio, Space, message } from 'antd';
+import { Form, Button, Select, InputNumber, Spin, Radio, Space, message, Affix, Divider } from 'antd';
+import { SendOutlined } from '@ant-design/icons';
 import axios from 'axios';
 import { useOrder } from '../../Context/OrderContext';
 import GroupDecorElementStep from '../CreateOrderSteps/GroupDecorElementStep';
@@ -298,6 +299,12 @@ const DecorElementForm = ({setCurrentStepSend, elementID}) => {
     <Spin spinning={isloading}>
       <Form form={form} onFinish={handleFormSubmit} > 
 
+      <Affix style={{ position: 'absolute', top: '-60px', right: '20px'}} offsetTop={20}>
+        <Button style={{backgroundColor: '#1677ff', color: 'white' }} htmlType="submit" icon={<SendOutlined />}>
+        {`${language.submit} ${language.element}`}
+        </Button>
+      </Affix>
+
       <div style={{display: 'flex', gap: '20px', flexWrap: 'wrap', marginBottom: "30px"}}>
         <Form.Item
           name="name"
@@ -419,19 +426,23 @@ const DecorElementForm = ({setCurrentStepSend, elementID}) => {
 
         </Space.Compact>
 
-        <Form.Item wrapperCol={{ offset: 4, span: 16 }}>
+        {/* <Form.Item wrapperCol={{ offset: 4, span: 16 }}>
           <Button type="primary" htmlType="submit">
             {language.submit}
           </Button>
-        </Form.Item>
+        </Form.Item> */}
 
       </Form>
 
-        <div style={{padding: '0 25px' }}>
+        <div style={{paddingTop: '20px' }}>
           {/* {showDecor && <GroupDecorElementStep elementID={elementID} isOnlyPaintDecor={isOnlyPaintDecor}/>} */}
           {showDecor && !noDecor.includes(currentElementField) && 
-            <GroupDecorElementStep elementID={elementID} isPaintDecor={isPaintDecor} isMirrorDecor={isMirrorDecor}
-            />}
+            <>
+              <Divider/>
+              <h3 style={{textAlign: 'left', paddingBottom: '15px'}}> {language.element} {language.elementGetDecor} </h3>
+              <GroupDecorElementStep elementID={elementID} isPaintDecor={isPaintDecor} isMirrorDecor={isMirrorDecor} />
+            </>
+          }
         </div>
     </Spin>
   );

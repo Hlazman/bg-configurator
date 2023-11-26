@@ -3,6 +3,7 @@ import { AuthContext } from '../../Context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { Form, Input, Select, Radio, DatePicker, Button, message, InputNumber, Card } from 'antd';
+import { SendOutlined } from '@ant-design/icons';
 import { useOrder } from '../../Context/OrderContext';
 import dayjs from 'dayjs';
 import { useLanguage } from '../../Context/LanguageContext';
@@ -283,9 +284,12 @@ const InformationStep = ({ setCurrentStepSend }) => {
         </Form.Item>
 
         <Form.Item wrapperCol={{ offset: 4, span: 16 }}>
-          <Button type="primary" htmlType="submit">
+          {/* <Button type="primary" htmlType="submit">
             {language.submit}
-          </Button>
+          </Button> */}
+        <Button style={{backgroundColor: '#1677ff', color: 'white' }} htmlType="submit" icon={<SendOutlined />}>
+          {`${language.submit} ${language.frame}`}
+        </Button>
         </Form.Item>
       </Form>
     </Card>
