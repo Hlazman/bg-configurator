@@ -134,8 +134,15 @@ const CanvasStep = ({ setCurrentStepSend}) => {
           },
         }
       );
-      console.log(response);
-      message.success(language.successQuery); 
+      
+      if (response.data.errors) {
+        throw new Error()
+      } else {
+        message.success(language.successQuery);
+      }
+
+      // console.log(response);
+      // message.success(language.successQuery); 
       if (setCurrentStepSend) {
         setCurrentStepSend(prevState => {
           return {

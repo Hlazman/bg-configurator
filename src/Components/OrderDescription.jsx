@@ -350,7 +350,9 @@ export const OrderDescription = (
        )}
 
       {/* OPTIONS */}
-      <div style={{padding: '15px', backgroundColor: '#FFF', borderRadius: '15px'}}>
+      {optionsData && optionsData.length > 0 && (
+        <>
+              <div style={{padding: '15px', backgroundColor: '#FFF', borderRadius: '15px'}}>
         
         <p style={{fontWeight: '500', padding: '10px', backgroundColor: '#f06d20', color: '#FFF'}}> 
           {language.Order} {language.options}
@@ -392,6 +394,8 @@ export const OrderDescription = (
 
           </Descriptions>
       </div>
+        </>
+      )}
 
       {/* ORDER INFORMATION */}
       <div style={{padding: '15px', backgroundColor: '#FFF', borderRadius: '15px'}}>

@@ -219,8 +219,12 @@ const GroupDecorElementStep = ({elementID, isPaintDecor, isMirrorDecor}) => {
           },
         }
       );
+
+      
       console.log('Data sent successfully:');
       message.success(language.successQuery);
+
+
     } catch (error) {
       console.error('Error sending data:', error);
       console.error('elementID', elementID);

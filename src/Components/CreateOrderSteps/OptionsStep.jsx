@@ -282,8 +282,9 @@ const OptionsStep = ({ setCurrentStepSend }) => {
           variables: {
             updateOptionSuborderId: updateOptionSuborderId.id,
             data: {
-              // price: option.attributes.price,
-              price: option ? option.attributes.price : 0,
+              // price: option ? option.attributes.price : 0,
+              // title: option.attributes.title,
+              title: option ? option.attributes.title : null,
             },
           },
         },

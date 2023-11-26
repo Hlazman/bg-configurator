@@ -224,8 +224,16 @@ const GroupDecorStep = ({ setCurrentStepSend }) => {
           },
         }
       );
-      console.log('Data sent successfully:', response.data);
-      message.success(language.successQuery);
+
+      if (response.data.errors) {
+        throw new Error()
+      } else {
+        message.success(language.successQuery);
+      }
+
+      // console.log('Data sent successfully:', response.data);
+      // message.success(language.successQuery);
+      
       if (setCurrentStepSend) {
         setCurrentStepSend(prevState => {
           return {
