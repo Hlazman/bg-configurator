@@ -137,6 +137,7 @@ const CanvasStep = ({ setCurrentStepSend}) => {
       
       if (response.data.errors) {
         throw new Error()
+        
       } else {
         message.success(language.successQuery);
       }
@@ -153,7 +154,8 @@ const CanvasStep = ({ setCurrentStepSend}) => {
       }
     } catch (error) {
       console.error(error);
-      message.error(language.errorQuery); 
+      // message.error(language.errorQuery);
+      message.error(`${language.errorQuery}. ${language.wrongSize}`); 
     }
   };
   

@@ -149,6 +149,9 @@ const pl = {
   paintFor: "Farba do",
   wall: "ściana",
 
+  wrongSize: 'Prawdopodobnie wprowadziłeś złe wymiary',
+  wrongDecor: 'Ten dekor prawdopodobnie nie pasuje do tych drzwi',
+
 // Products Frame
   'hidden_standard Hidden': 'Estándar oculto',
   'type 1 outside Neo Classic': 'Neo Classic exterior',

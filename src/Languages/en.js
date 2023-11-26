@@ -150,6 +150,11 @@ const en = {
   elementGetDecor: 'Individual decor',
   paintFor: "Paint for",
   wall: "wall",
+  
+  wrongSize: "You probably entered the wrong dimensions",
+  wrongDecor: "This decor probably doesn't match this door",
+
+
 
 // Products Options
   'cat_door': 'Cat Door',

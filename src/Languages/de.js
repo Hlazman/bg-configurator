@@ -149,6 +149,9 @@ const de = {
   paintFor: "Farbe für",
   wall: "Wand",
 
+  wrongSize: 'Sie haben wahrscheinlich die falschen Abmessungen eingegeben',
+  wrongDecor: 'Dieser Dekor passt wahrscheinlich nicht zu dieser Tür',
+
 // Products Frame
   'hidden_standard Hidden': 'Versteckter Standard',
   'type 1 outside Neo Classic': 'Neo Classic außen',

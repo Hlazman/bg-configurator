@@ -149,6 +149,9 @@ const ua = {
   paintFor: "Фарба для",
   wall: "стіна",
 
+  wrongSize: 'Ви, напевно, ввели неправильні розміри',
+  wrongDecor: 'Цей декор, напевно, не відповідає цим дверим',
+
 // Products Frame
   'hidden_standard Hidden': 'Прихований стандарт',
   'type 1 outside Neo Classic': 'Neo Classic ззовні',

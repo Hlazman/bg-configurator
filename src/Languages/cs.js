@@ -149,6 +149,9 @@ const cs = {
   paintFor: "Barva pro",
   wall: "stěna",
 
+  wrongSize: 'Pravděpodobně jste zadali nesprávné rozměry',
+  wrongDecor: 'Tento dekor pravděpodobně neodpovídá této dveři',
+
 // Products Frame
   'hidden_standard Hidden': 'Skrytý standard',
   'type 1 outside Neo Classic': 'Neo Classic venku',

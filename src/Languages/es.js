@@ -149,6 +149,9 @@ const es = {
   paintFor: "Pintura para",
   wall: "pared",
 
+  wrongSize: 'Probablemente ingresaste las dimensiones incorrectas',
+  wrongDecor: 'Este decorado probablemente no coincide con esta puerta',
+
 // Products Frame
   'hidden_standard Hidden': 'Estándar oculto',
   'type 1 outside Neo Classic': 'Neo Clásico exterior',

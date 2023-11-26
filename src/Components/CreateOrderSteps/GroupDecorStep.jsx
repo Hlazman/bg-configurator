@@ -244,7 +244,8 @@ const GroupDecorStep = ({ setCurrentStepSend }) => {
       }
     } catch (error) {
       console.error('Error sending data:', error);
-      message.error(language.errorQuery);
+      // message.error(language.errorQuery);
+      message.error(`${language.errorQuery}. ${language.wrongDecor}`);
     }
   };
 
