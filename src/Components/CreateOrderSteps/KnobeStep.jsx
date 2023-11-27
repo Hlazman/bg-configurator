@@ -270,7 +270,8 @@ const KnobesStep = ({ setCurrentStepSend }) => {
       {isLoading ? (
         <Spin size="large" />
       ) : (
-        <Form.Item name="knobeStep" rules={[{ required: true, message: language.requiredField }]}>
+        // <Form.Item name="knobeStep" rules={[{ required: true, message: language.requiredField }]}>
+        <Form.Item name="knobeStep" rules={[{ required: previousKnobeId !== null ? false : true, message: language.requiredField }]}>
           <Radio.Group>
             <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}>
               {filteredImgs.map((knob) => (

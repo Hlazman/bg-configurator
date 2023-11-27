@@ -251,7 +251,7 @@ const InformationStep = ({ setCurrentStepSend }) => {
           </Form.Item>
 
           <Form.Item label={language.currency} name="currency" style={{ width: '100%' }}>
-            <Select>
+            <Select disabled>
               <Option value="EUR">EUR €</Option>
               <Option value="PLN">PLN zł</Option>
               <Option value="USD">USD $</Option>
