@@ -419,20 +419,25 @@ export const OrderDescription = (
               {dayjs(orderData?.deliveryAt).format('YYYY-MM-DD HH:mm:ss')}
             </Descriptions.Item>
 
-            <Descriptions.Item className='labelBG' label={language.discount} labelStyle={{fontWeight: '600', color:'#000'}}>
-              {orderData?.discount}
+            <Descriptions.Item className='labelBG' label={language.price} labelStyle={{fontWeight: '600', color:'#000'}}>
+              {orderData?.totalCost - Math.ceil(orderData?.totalCost / 100 * orderData?.tax)}
             </Descriptions.Item>
 
             <Descriptions.Item className='labelBG' label={language.tax} labelStyle={{fontWeight: '600', color:'#000'}}>
-              {orderData?.tax} 20
-            </Descriptions.Item>
-
-            <Descriptions.Item className='labelBG' label={language.totalCost} labelStyle={{fontWeight: '600', color:'#000'}}>
-              {orderData?.totalCost}
+              {/* {orderData?.tax} <br/> */}
+              {Math.ceil(orderData?.totalCost / 100 * orderData?.tax)}
             </Descriptions.Item>
 
             <Descriptions.Item className='labelBG' label={language.currency} labelStyle={{fontWeight: '600', color:'#000'}}>
               {orderData?.currency}
+            </Descriptions.Item>
+
+            <Descriptions.Item className='labelBG' label={language.discount} labelStyle={{fontWeight: '600', color:'#000'}}>
+              {orderData?.discount ? orderData?.discount: 0}
+            </Descriptions.Item>
+
+            <Descriptions.Item className='labelBG' label={language.totalCost} labelStyle={{fontWeight: '600', color:'#000'}}>
+              {orderData?.totalCost}
             </Descriptions.Item>
 
           </Descriptions>

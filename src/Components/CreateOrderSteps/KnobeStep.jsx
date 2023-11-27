@@ -115,12 +115,13 @@ const KnobesStep = ({ setCurrentStepSend }) => {
     const [form] = Form.useForm();
 
     const handleSbmitForm = async () => {
+      console.log('knobeVariant from Form', knobeVariant)
       const variables = {
         // "updateFrameFittingId": knobeSuborder.data.id,
         "updateFrameFittingId": knobeSuborderId,
         "data": {
           "knobe": previousKnobeId,
-          'knobe_variant': knobeVariant, 
+          knobe_variant: knobeVariant,
         }
       };
   
@@ -166,10 +167,11 @@ const KnobesStep = ({ setCurrentStepSend }) => {
   
     useEffect(() => {
       setIsLoading(true);
-  
+
       const variables = {
         // frameFittingId: knobeSuborder.data.id
-        frameFittingId: knobeSuborderId
+        frameFittingId: knobeSuborderId,
+        'knobe_variant': knobeVariant, 
       };
   
       axios.post('https://api.boki.fortesting.com.ua/graphql', {
@@ -178,6 +180,7 @@ const KnobesStep = ({ setCurrentStepSend }) => {
             frameFitting(id: $frameFittingId) {
               data {
                 attributes {
+                  knobe_variant
                   knobe {
                     data {
                       id
@@ -197,8 +200,11 @@ const KnobesStep = ({ setCurrentStepSend }) => {
       })
       .then((response) => {
         const knobeId = response?.data?.data?.frameFitting?.data?.attributes?.knobe?.data?.id;
+        const variant = response?.data?.data?.frameFitting?.data?.attributes?.knobe_variant;
+
         if (knobeId) {
           setPreviousKnobeId(knobeId);
+          setKnobeVariant(variant)
         }
         setIsLoading(false);
       })
@@ -229,7 +235,6 @@ const KnobesStep = ({ setCurrentStepSend }) => {
         />
 
       <Form.Item 
-          // label="Paint for" 
           label={language.knobe} 
           rules={[{ required: true, message: language.requiredField }]}
           style={{margin: '10px 0', flex: '1', 'minWidth': "300px"}}
