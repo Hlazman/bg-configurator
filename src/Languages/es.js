@@ -152,6 +152,11 @@ const es = {
   wrongSize: 'Probablemente ingresaste las dimensiones incorrectas',
   wrongDecor: 'Este decorado probablemente no coincide con esta puerta',
 
+  installation: 'Instalación',
+  simple: 'Manija simple',
+  cylinder: 'Con una superposición bajo el cilindro',
+  wc: 'Con una superposición bajo el inodoro',
+
 // Products Frame
   'hidden_standard Hidden': 'Estándar oculto',
   'type 1 outside Neo Classic': 'Neo Clásico exterior',

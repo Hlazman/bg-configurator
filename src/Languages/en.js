@@ -155,6 +155,12 @@ const en = {
   wrongDecor: "This decor probably doesn't match this door",
 
 
+  installation: "Installation",
+  simple: "Simple knobe",
+  cylinder: "With an overlay under the cylinder",
+  wc: "With an overlay under the WC",
+
+
 
 // Products Options
   'cat_door': 'Cat Door',

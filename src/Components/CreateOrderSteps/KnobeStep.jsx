@@ -11,6 +11,7 @@ const KnobesStep = ({ setCurrentStepSend }) => {
   const [searchQuery, setSearchQuery] = useState('');
   // const [selectedBrand, setSelectedBrand] = useState('ALL');
   const [selectedBrand, setSelectedBrand] = useState('Airone');
+  const [knobeVariant, setKnobeVariant] = useState('standard');
   const [isLoading, setIsLoading] = useState(true);
   const [previousKnobeId, setPreviousKnobeId] = useState(null);
   const { selectedLanguage } = useLanguage();
@@ -23,6 +24,10 @@ const KnobesStep = ({ setCurrentStepSend }) => {
   const { knobeSuborderId } = useOrder();
 
   const jwtToken = localStorage.getItem('token');
+
+  const handleKnobeVariant = (value) => {
+    setKnobeVariant(value)
+  }
 
   useEffect(() => {
     const fetchData = async () => {
@@ -114,7 +119,8 @@ const KnobesStep = ({ setCurrentStepSend }) => {
         // "updateFrameFittingId": knobeSuborder.data.id,
         "updateFrameFittingId": knobeSuborderId,
         "data": {
-          "knobe": previousKnobeId
+          "knobe": previousKnobeId,
+          'knobe_variant': knobeVariant, 
         }
       };
   
@@ -221,6 +227,23 @@ const KnobesStep = ({ setCurrentStepSend }) => {
           onChange={e => handleSearchQueryChange(e.target.value)}
           style={{margin: '10px 0', flex: '1', 'minWidth': "300px"}}
         />
+
+      <Form.Item 
+          // label="Paint for" 
+          label={language.knobe} 
+          rules={[{ required: true, message: language.requiredField }]}
+          style={{margin: '10px 0', flex: '1', 'minWidth': "300px"}}
+        >
+          <Select
+            name="selectedPaintFor"
+            value={knobeVariant}
+            onChange={handleKnobeVariant}
+          >
+            <Select.Option value="standard">{language.simple}</Select.Option>
+            <Select.Option value="cylinder">{language.cylinder}</Select.Option>
+            <Select.Option value="wc">{language.wc}</Select.Option>
+          </Select>
+        </Form.Item>
 
       <Form.Item 
         label={language.sorting}

@@ -152,6 +152,11 @@ const ua = {
   wrongSize: 'Ви, напевно, ввели неправильні розміри',
   wrongDecor: 'Цей декор, напевно, не відповідає цим дверим',
 
+  installation: 'Монтаж',
+  simple: 'Проста ручка',
+  cylinder: 'З насадкою під циліндр',
+  wc: 'З насадкою під унітазом',
+
 // Products Frame
   'hidden_standard Hidden': 'Прихований стандарт',
   'type 1 outside Neo Classic': 'Neo Classic ззовні',

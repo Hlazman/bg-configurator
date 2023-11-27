@@ -152,6 +152,11 @@ const cs = {
   wrongSize: 'Pravděpodobně jste zadali nesprávné rozměry',
   wrongDecor: 'Tento dekor pravděpodobně neodpovídá této dveři',
 
+  installation: 'Instalace',
+  simple: 'Jednoduchá rukojeť',
+  cylinder: 'S nástavcem pod válcem',
+  wc: 'S nástavcem pod WC',
+
 // Products Frame
   'hidden_standard Hidden': 'Skrytý standard',
   'type 1 outside Neo Classic': 'Neo Classic venku',

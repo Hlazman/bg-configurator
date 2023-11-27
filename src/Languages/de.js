@@ -152,6 +152,11 @@ const de = {
   wrongSize: 'Sie haben wahrscheinlich die falschen Abmessungen eingegeben',
   wrongDecor: 'Dieser Dekor passt wahrscheinlich nicht zu dieser Tür',
 
+  installation: 'Installation',
+  simple: 'Einfacher Knauf',
+  cylinder: 'Mit einer Überlagerung unter dem Zylinder',
+  wc: 'Mit einer Überlagerung unter der Toilette',
+
 // Products Frame
   'hidden_standard Hidden': 'Versteckter Standard',
   'type 1 outside Neo Classic': 'Neo Classic außen',

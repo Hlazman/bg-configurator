@@ -152,6 +152,11 @@ const pl = {
   wrongSize: 'Prawdopodobnie wprowadziłeś złe wymiary',
   wrongDecor: 'Ten dekor prawdopodobnie nie pasuje do tych drzwi',
 
+  installation: 'Montaż',
+  simple: 'Prosty gałka',
+  cylinder: 'Z nakładką pod cylinderem',
+  wc: 'Z nakładką pod WC',
+
 // Products Frame
   'hidden_standard Hidden': 'Estándar oculto',
   'type 1 outside Neo Classic': 'Neo Classic exterior',
