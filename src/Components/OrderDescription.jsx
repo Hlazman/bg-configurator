@@ -484,14 +484,15 @@ export const OrderDescription = (
               {orderData?.horizontal_veneer && (
                 <Descriptions.Item className='labelBG' label={language.title} labelStyle={{fontWeight: '600', color:'#000'}}>
                   {/* {orderData?.horizontal_veneer ? language.yes : language.no} */}
-                  {orderData?.horizontal_veneer ? 'horizontal_veneer' : ''}
+                  {orderData?.horizontal_veneer ? language.horizontalVeneer : ''}
                 </Descriptions.Item>
               )}
 
               {orderData?.super_gloss && (
                 <Descriptions.Item className='labelBG' label={language.title} labelStyle={{fontWeight: '600', color:'#000'}}>
                   {/* {orderData?.super_gloss ? language.yes : language.no} */}
-                  {orderData?.super_gloss ? 'super_gloss' : ''}
+                  {/* {orderData?.super_gloss ? 'super_gloss' : ''} */}
+                  {orderData?.horizontal_veneer ? language.superGloss : ''}
                 </Descriptions.Item>
               )}
 

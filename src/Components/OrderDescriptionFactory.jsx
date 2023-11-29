@@ -116,7 +116,7 @@ export const OrderDescriptionFactory = (
       {/* HEADER */}
       <div style={{padding: '15px', backgroundColor: '#FFF', borderRadius: '15px'}}>
 
-      {/* DOOR DETAILS */}        
+      {/* DOOR DETAILS */}
         <p style={{fontWeight: '500', padding: '10px', backgroundColor: '#f06d20', color: '#FFF'}}> 
           {language.door}
         </p>
@@ -353,13 +353,13 @@ export const OrderDescriptionFactory = (
 
               {orderData?.horizontal_veneer && (
                 <Descriptions.Item className='labelBG' label={language.title} labelStyle={{fontWeight: '600', color:'#000'}}>
-                  {orderData?.horizontal_veneer ? 'horizontal_veneer' : ''}
+                  {orderData?.horizontal_veneer ? language.horizontalVeneer : ''}
                 </Descriptions.Item>
               )}
 
               {orderData?.super_gloss && (
                 <Descriptions.Item className='labelBG' label={language.title} labelStyle={{fontWeight: '600', color:'#000'}}>
-                  {orderData?.super_gloss ? 'super_gloss' : ''}
+                   {orderData?.horizontal_veneer ? language.superGloss : ''}
                 </Descriptions.Item>
               )}
           </Descriptions>
