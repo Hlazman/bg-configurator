@@ -1,5 +1,5 @@
-import { Form, Button, Card, Radio, message, Affix } from 'antd';
-import { SendOutlined } from '@ant-design/icons';
+import { Form, Button, Card, Radio, message, Affix, Input, InputNumber, Space, Divider } from 'antd';
+import { SendOutlined, MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
 import axios from 'axios';
 import { useOrder } from '../../Context/OrderContext';
 import { useEffect, useState } from 'react';
@@ -309,6 +309,20 @@ const OptionsStep = ({ setCurrentStepSend }) => {
     fetchOrderData()
   },[]);
 
+
+  const [items, setItems] = useState([{ id: 0, name: '', price: '' }]);
+
+  const handleAddItem = () => {
+    const newId = items.length;
+    setItems([...items, { id: newId, name: '', price: '' }]);
+  };
+
+  const handleRemoveItem = (index) => {
+    const updatedItems = [...items];
+    updatedItems.splice(index, 1);
+    setItems(updatedItems);
+  };
+
   // const [temp, setTemp] = useState(false)
 
   // useEffect(() => {
@@ -388,6 +402,28 @@ const OptionsStep = ({ setCurrentStepSend }) => {
             {language.submit}
           </Button>
         </Form.Item> */}
+
+        <Divider/>
+        <h3 style={{textAlign: 'left'}}>{language.additionalOption}</h3>
+        
+        {items.map((item, index) => (
+          <div key={index} style={{ display: 'flex', gap: '20px'}}>
+            <Form.Item name={['items', index, 'name']}>
+              <Input placeholder={language.name} addonBefore={language.name} />
+            </Form.Item>
+            <Form.Item name={['items', index, 'price']}>
+              <InputNumber placeholder={language.price} addonBefore={language.price} />
+            </Form.Item>
+            <Button danger onClick={() => handleRemoveItem(index)} icon={<MinusCircleOutlined />} />
+          </div>
+        ))}
+        
+        <Form.Item>
+          <Button type="primary" onClick={handleAddItem} icon={<PlusOutlined />}>
+            {language.addOption}
+          </Button>
+        </Form.Item>
+
       </Form>
     </Card>
   );

@@ -120,7 +120,7 @@ const LockStep = ({ setCurrentStepSend }) => {
       // "updateFrameFittingId": lockSuborder.data.id,
       "updateFrameFittingId": lockSuborderId,
       "data": {
-        "lock": previousLockId
+        "lock": previousLockId, 
       }
     };
 

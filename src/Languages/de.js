@@ -159,6 +159,11 @@ const de = {
 
   exchangeRate: "Die Datenbank speichert den Preis nur in Euro. Sie können in eine andere Währung umrechnen, aber diese Daten werden nur in PDF-Dateien gespeichert. Seien Sie vorsichtig, die Informationen zu Wechselkursen werden täglich aktualisiert. Und wenn Sie die Bestellung anpassen möchten, können die Preise unterschiedlich sein.",
 
+  additionalOption: 'Zusätzliche Optionen',
+  addOption: 'Option hinzufügen',
+  factory: 'Fabrik',
+  presentation: 'Präsentation',
+
 // Products Frame
   'hidden_standard Hidden': 'Versteckter Standard',
   'type 1 outside Neo Classic': 'Neo Classic außen',

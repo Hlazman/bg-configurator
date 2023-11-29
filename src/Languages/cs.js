@@ -159,6 +159,11 @@ const cs = {
 
   exchangeRate: "Databáze ukládá cenu pouze v eurech. Můžete převádět na jinou měnu, ale tyto údaje budou uloženy pouze v souborech PDF. Buďte opatrní, informace o směnných kurzech se aktualizují každý den. A pokud si přejete upravit objednávku, ceny se mohou lišit.",
 
+  additionalOption: 'Další možnosti',
+  addOption: 'Přidat možnost',
+  factory: 'Továrna',
+  presentation: 'Prezentace',
+
 // Products Frame
   'hidden_standard Hidden': 'Skrytý standard',
   'type 1 outside Neo Classic': 'Neo Classic venku',

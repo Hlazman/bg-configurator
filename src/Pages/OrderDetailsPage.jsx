@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { Button } from 'antd';
+import { Button, Divider } from 'antd';
 import html2pdf from 'html2pdf.js';
 import axios from 'axios';
 import { useOrder } from '../Context/OrderContext';
 import { OrderDescription } from '../Components/OrderDescription';
+import { OrderDescriptionFactory } from '../Components/OrderDescriptionFactory';
 import { useParams } from 'react-router-dom';
 import { useLanguage } from '../Context/LanguageContext';
 import languageMap from '../Languages/language';
@@ -62,6 +63,24 @@ export const OrderDetailsPage = () => {
       .save();
       setIsCreatingPdf(false);
   };
+
+  const handlePdfExportFactory = async () => {
+    setIsCreatingPdf(true);
+    const element = document.getElementById('pdf-content-factory');
+  
+    await html2pdf()
+      .from(element)
+      .set({
+        margin: [5, 0, 5, 0], 
+        filename: `Factory Order ${orderId}.pdf`,
+        image: { type: 'jpeg', quality: 0.98 },
+        html2canvas: { scale: 2 },
+        jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
+        pagebreak: { mode: 'avoid-all', after: '#nextpage' }
+      })
+      .save();
+      setIsCreatingPdf(false);
+  };
   
   // const handleOpenPdf = async () => {
   //   setIsCreatingPdf(true);
@@ -111,6 +130,7 @@ export const OrderDetailsPage = () => {
                     side
                     tax
                     totalCost
+                    basicTotalCost
                     door_suborder {
                       data {
                         id
@@ -217,6 +237,7 @@ const fetchFrameData = async (frameId) => {
                       }
                     }
                     price
+                    basicPrice
                   }
                 }
               }
@@ -253,6 +274,7 @@ const fetchDoorData = async (doorId) => {
               data {
                 attributes {
                   price
+                  basicPrice
                   sizes {
                     height
                     thickness
@@ -424,6 +446,7 @@ const fetchElementsData = async (elementIds) => {
                   attributes {
                     amount
                     price
+                    basicPrice
                     sizes {
                       height
                       thickness
@@ -586,6 +609,7 @@ const fetchHingeData = async (hingeId) => {
                 attributes {
                   title
                   price
+                  basicPrice
                   type
                   amount
                   hinge {
@@ -639,7 +663,9 @@ const fetchKnobeData = async (knobeid) => {
                 attributes {
                   title
                   price
+                  basicPrice
                   type
+                  knobe_variant
                   knobe {
                     data {
                       attributes {
@@ -691,6 +717,7 @@ const fetchLockData = async (lockId) => {
                 attributes {
                   title
                   price
+                  basicPrice
                   type
                   lock {
                     data {
@@ -759,6 +786,7 @@ const fetchOptionsData = async (optionIds) => {
                   attributes {
                     title
                     price
+                    basicPrice
                   }
                 }
               }
@@ -787,11 +815,15 @@ const fetchOptionsData = async (optionIds) => {
 };
 
   return (
-    <div >
+    <div>
+      <Divider/>
       <div style={{margin: '20px', display:'flex', gap: '20px', justifyContent: 'center'}}>
-        <Button type="primary" size={'large'} onClick={handlePdfExport}>{language.save} PDF</Button>
+          <h2 style={{display: 'inline-block', marginRight: '30px'}}> {language.presentation} </h2>
+          <Button type="primary" size={'large'} onClick={handlePdfExport}>{language.save} PDF</Button>
+        {/* <Button type="primary" size={'large'} onClick={handlePdfExport}>{language.save} PDF</Button> */}
         {/* <Button onClick={handleOpenPdf}>{language.open} PDF</Button> */}
       </div>
+      <Divider/>
 
       <div id="pdf-content">
         <OrderDescription
@@ -806,6 +838,29 @@ const fetchOptionsData = async (optionIds) => {
           optionsData={optionsData}
           isCreatingPdf={isCreatingPdf}
         />
+      </div>
+
+      <Divider/>
+      <div>
+        <h2 style={{display: 'inline-block', marginRight: '30px'}}> {language.factory} </h2>
+        <Button type="primary" size={'large'} onClick={handlePdfExportFactory}>{language.save} PDF</Button>
+      <Divider/>
+        {/* <Button onClick={handleOpenPdf}>{language.open} PDF</Button> */}
+
+        <div id="pdf-content-factory">
+          <OrderDescriptionFactory
+            orderId={orderId} 
+            orderData={orderData} 
+            frameData={frameData}
+            doorData={doorData}
+            elementData={elementData}
+            hingeData={hingeData}
+            knobeData={knobeData}
+            lockData={lockData}
+            optionsData={optionsData}
+            isCreatingPdf={isCreatingPdf}
+          />
+        </div>
       </div>
     </div>
   );

@@ -290,15 +290,18 @@ export const OrderDescription = (
             </Descriptions.Item>
 
             <Descriptions.Item className='labelBG' label={language.title} labelStyle={{fontWeight: '600', color:'#000'}}>
-              {lockData?.title}
+              {/* {lockData?.title} */}
+              {lockData?.lock?.data?.attributes?.title}
             </Descriptions.Item>
 
             <Descriptions.Item className='labelBG' label={language.title} labelStyle={{fontWeight: '600', color:'#000'}}>
-              {hingeData?.title}
+              {/* {hingeData?.title} */}
+              {hingeData?.hinge?.data?.attributes?.title}
             </Descriptions.Item>
 
             <Descriptions.Item className='labelBG' label={language.title} labelStyle={{fontWeight: '600', color:'#000'}}>
-              {knobeData?.title}
+              {/* {knobeData?.title} */}
+              {knobeData?.knobe?.data?.attributes?.title} / {languageMap[selectedLanguage][knobeData.knobe_variant]}
             </Descriptions.Item>
 
             <Descriptions.Item className='labelBG' label={`${language.image} (${language.lock})`} labelStyle={{fontWeight: '600', color:'#000'}}>
