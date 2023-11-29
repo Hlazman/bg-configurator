@@ -160,6 +160,8 @@ const en = {
   cylinder: "With an overlay under the cylinder",
   wc: "With an overlay under the WC",
 
+  exchangeRate: "The database stores the price only in Euros. You can convert to another currency, but this data will only be saved in PDF files. Be careful, information about exchange rates is updated every day. And if you wish to adjust the Order, the prices may be different.",
+
 
 
 // Products Options

@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect } from 'react';
-import {Descriptions, Image, Divider, Card, Select, Space} from 'antd';
+import {Descriptions, Image, Divider, Card, Select, Space, Alert} from 'antd';
 import dayjs from 'dayjs';
 import { AuthContext } from '../Context/AuthContext';
 import logo from '../logo.svg';
@@ -18,53 +18,80 @@ export const OrderDescription = (
   const { Option } = Select;
   
   const [currency, setCurrency] = useState('EUR');
-  const [convertedPrice, setConvertedPrice] = useState(null);
+  const [convertedDoorPrice, setConvertedDoorPrice] = useState(null);
+  const [convertedFramePrice, setConvertedFramePrice] = useState(null);
+  const [convertedKnobePrice, setConvertedKnobePrice] = useState(null);
+  const [convertedLockPrice, setConvertedLockPrice] = useState(null);
+  const [convertedHingePrice, setConvertedHingePrice] = useState(null);
+  const [convertedOptionPrice, setConvertedOptionPrice] = useState([]);
+  const [convertedElementPrice, setConvertedElementPrice] = useState([]);
+  const [convertedPriceNOTax, setConvertedPriceNOTax] = useState('');
+  const [convertedPriceWithTax, setConvertedPriceWithTax] = useState('');
+  const [convertedPriceTotal, setConvertedPriceTotal] = useState('');
+  const [exchangeRates, setExchangeRates] = useState(null);
 
-  const handleCurrency = (value) => {
+  const fetchExchangeRates = async () => {
+    try {
+      const response = await fetch(`https://open.er-api.com/v6/latest/${currency}`);
+      if (!response.ok) {
+        throw new Error('Failed to fetch exchange rates');
+      }
+      const data = await response.json();
+      setExchangeRates(data.rates);
+    } catch (error) {
+      console.error('Error fetching exchange rates:', error);
+    }
+  };
+  
+  useEffect(() => {
+    fetchExchangeRates();
+  }, []);
+  
+  const convertCurrency = (price, selectedCurrency) => {
+    if (!exchangeRates || !selectedCurrency || !price) {
+      return null;
+    }
+  
+    const euroPrice = price / exchangeRates['EUR'];
+    const convertedPrice = euroPrice * exchangeRates[selectedCurrency];
+  
+    return Math.ceil(convertedPrice);
+  };
+  
+  const handleCurrencyChange = async (value) => {
     setCurrency(value);
-  }
-
-  // async function convertPriceToCurrency(priceInEUR, targetCurrency) {
-  //   try {
-  //     const response = await fetch('https://api.exchangeratesapi.io/latest');
-  //     const data = await response.json();
-  //     const exchangeRates = data.rates;
   
-  //     if (exchangeRates && exchangeRates[targetCurrency]) {
-  //       const convertedAmount = Math.ceil(priceInEUR * exchangeRates[targetCurrency]);
-  //       return `${convertedAmount} ${targetCurrency}`;
-  //     } else {
-  //       return 'Currency not available';
-  //     }
-  //   } catch (error) {
-  //     console.error('Error fetching exchange rates:', error);
-  //     return 'Error';
-  //   }
-  // }
+    const convertedDoorPrice = convertCurrency(doorData.price, value);
+    const convertedFramePrice = convertCurrency(frameData.price, value);
+    const convertedKnobePrice = convertCurrency(knobeData.price, value);
+    const convertedHingePrice = convertCurrency(hingeData.price, value);
+    const convertedLockPrice = convertCurrency(lockData.price, value);
+    
+    const convertedElementPrice = elementData.map((element) => {
+      const updatedPrice = convertCurrency(element.price, value);
+      return { ...element, convertedPrice: updatedPrice };
+    });
 
-  // useEffect(() => {
-  //   async function fetchConvertedPrice() {
-  //     try {
-  //       const targetCurrency = 'PLN'; // Замените на вашу целевую валюту
-  //       const response = await convertPriceToCurrency(priceInEUR, targetCurrency);
-  //       setConvertedPrice(response);
-  //     } catch (error) {
-  //       console.error('Error converting price:', error);
-  //     }
-  //   }
+    const convertedOptionPrice = optionsData.map((option) => {
+      const updatedPrice = convertCurrency(option.price, value);
+      return { ...option, convertedPrice: updatedPrice };
+    });
 
-  //   fetchConvertedPrice();
-  // }, [currency]);
+    const convertedPriceNOTax = convertCurrency(orderData?.totalCost - Math.ceil(orderData?.totalCost / 100 * orderData?.tax), value);
+    const convertedPriceWithTax = convertCurrency(Math.ceil(orderData?.totalCost / 100 * orderData?.tax), value);
+    const convertedPriceTotal = convertCurrency(orderData.totalCost, value);
   
-
-  // useEffect(() => {
-  //   if (elementData && elementData.length > 0) {
-  //     for(let i = 0; i < elementData.length; i++) {
-  //       console.log(elementData[i]?.decor?.data?.attributes?.paint.data?.attributes?.color_range)
-  //     }
-  //   }
-
-  // }, [elementData])
+    setConvertedDoorPrice(convertedDoorPrice);
+    setConvertedFramePrice(convertedFramePrice);
+    setConvertedKnobePrice(convertedKnobePrice);
+    setConvertedHingePrice(convertedHingePrice);
+    setConvertedLockPrice(convertedLockPrice);
+    setConvertedElementPrice(convertedElementPrice)
+    setConvertedOptionPrice(convertedOptionPrice)
+    setConvertedPriceNOTax(convertedPriceNOTax)
+    setConvertedPriceWithTax(convertedPriceWithTax);
+    setConvertedPriceTotal(convertedPriceTotal);
+  };
 
     if (!orderData) {
     return null;
@@ -74,12 +101,11 @@ export const OrderDescription = (
     
     <div style={{maxWidth: isCreatingPdf ? 'auto' : '900px', margin: '0 auto'}}>
 
-    <Space style={{display: 'flex', alignItems: 'baseline'}}>
+    <Space style={{display: isCreatingPdf ? 'none' : 'flex', marginBottom: '20px', alignItems: 'baseline'}}>
       <p> {language.currency} </p>
       <Select
-        style={{display: isCreatingPdf ? 'none' : 'block', marginBottom: '20px' }}
         defaultValue={currency}
-        onChange={handleCurrency}
+        onChange={handleCurrencyChange}
       >
         <Option value="EUR">EUR €</Option>
         <Option value="PLN">PLN zł</Option>
@@ -87,6 +113,15 @@ export const OrderDescription = (
         <Option value="UAH">UAH ₴</Option>
       </Select>
     </Space>
+    {/* <p style={{display: isCreatingPdf ? 'none' : 'flex'}}> {language.exchangeRate} </p> */}
+
+    <Alert
+      style={{display: isCreatingPdf ? 'none' : 'block', marginBottom: '10px'}}
+      // message="Warning"
+      // showIcon
+      description={language.exchangeRate}
+      type="warning"
+    />
 
       {/* HEADER */}
       <div style={{padding: '15px', backgroundColor: '#FFF', borderRadius: '15px'}}>
@@ -214,8 +249,8 @@ export const OrderDescription = (
             </Descriptions.Item>
 
             <Descriptions.Item className='labelBG' label={language.price} labelStyle={{fontWeight: '600', color:'#000'}}>
-              {doorData.price} {orderData?.currency}
-              {/* {convertPriceToCurrency(doorData.price, currency)} {orderData?.currency} */}
+              {/* {doorData.price} {orderData?.currency} */}
+              {convertedDoorPrice ? `${convertedDoorPrice} ${currency}` : `${doorData.price} ${orderData?.currency}`}
             </Descriptions.Item>
           </>
           )}
@@ -250,7 +285,8 @@ export const OrderDescription = (
             </Descriptions.Item>
 
             <Descriptions.Item className='labelBG' label={`${language.frame} ${language.price}`} labelStyle={{fontWeight: '600', color:'#000'}}>
-              {frameData.price} {orderData?.currency} 
+              {/* {frameData.price} {orderData?.currency}  */}
+              {convertedFramePrice ? `${convertedFramePrice} ${currency}` : `${frameData.price} ${orderData?.currency}`}
             </Descriptions.Item>
 
             <Descriptions.Item className='labelBG' label={language.title} labelStyle={{fontWeight: '600', color:'#000'}}>
@@ -305,15 +341,18 @@ export const OrderDescription = (
             </Descriptions.Item>
 
             <Descriptions.Item className='labelBG' label={`${language.price} (${language.lock})`} labelStyle={{fontWeight: '600', color:'#000'}}>
-              {lockData?.price} {orderData?.currency} 
+              {/* {lockData?.price} {orderData?.currency}  */}
+              {convertedLockPrice ? `${convertedLockPrice} ${currency}` : `${lockData.price} ${orderData?.currency}`} 
             </Descriptions.Item>
 
             <Descriptions.Item className='labelBG' label={`${language.price} (${language.hinges}) / ${language.amount}`} labelStyle={{fontWeight: '600', color:'#000'}}>
-              {hingeData?.price} {orderData?.currency} / {language.amount}: {hingeData?.amount}
+              {/* {hingeData?.price} {orderData?.currency} / {language.amount}: {hingeData?.amount} */}
+              {convertedHingePrice ? `${convertedHingePrice} ${currency}` : `${hingeData.price} ${orderData?.currency}`} / {language.amount}: {hingeData?.amount}
             </Descriptions.Item>
 
             <Descriptions.Item className='labelBG' label={`${language.price} (${language.knobe})`} labelStyle={{fontWeight: '600', color:'#000'}}>
-              {knobeData?.price} {orderData?.currency}
+              {/* {knobeData?.price} {orderData?.currency} */}
+              {convertedKnobePrice ? `${convertedKnobePrice} ${currency}` : `${knobeData.price} ${orderData?.currency}`}
             </Descriptions.Item>
           </>
           )}
@@ -399,7 +438,8 @@ export const OrderDescription = (
                 )}
 
                 <Descriptions.Item className='labelBG' label={language.price} labelStyle={{fontWeight: '600', color:'#000'}}>
-                  {element?.price} {orderData?.currency}
+                  {/* {element?.price} {orderData?.currency} */}
+                  {convertedElementPrice[index] ? `${convertedElementPrice[index].convertedPrice} ${currency}` : `${element.price} ${orderData?.currency}`}
                 </Descriptions.Item>
               </Descriptions>
               </React.Fragment>
@@ -432,7 +472,8 @@ export const OrderDescription = (
                 </Descriptions.Item>
 
                 <Descriptions.Item className='labelBG' label={language.price} labelStyle={{fontWeight: '600', color:'#000'}}>
-                  {option.price} {orderData?.currency}
+                  {/* {option.price} {orderData?.currency} */}
+                  {convertedOptionPrice[index] ? `${convertedOptionPrice[index].convertedPrice} ${currency}` : `${option.price} ${orderData?.currency}`}
                 </Descriptions.Item>
               </React.Fragment>
             ))}
@@ -479,24 +520,27 @@ export const OrderDescription = (
             </Descriptions.Item>
 
             <Descriptions.Item className='labelBG' label={language.price} labelStyle={{fontWeight: '600', color:'#000'}}>
-              {orderData?.totalCost - Math.ceil(orderData?.totalCost / 100 * orderData?.tax)}
+              {/* {orderData?.totalCost - Math.ceil(orderData?.totalCost / 100 * orderData?.tax)} */}
+              {convertedPriceNOTax ? `${convertedPriceNOTax} ${currency}` : `${orderData?.totalCost - Math.ceil(orderData?.totalCost / 100 * orderData?.tax)} ${orderData?.currency}`}
             </Descriptions.Item>
 
             <Descriptions.Item className='labelBG' label={language.tax} labelStyle={{fontWeight: '600', color:'#000'}}>
               {/* {orderData?.tax} <br/> */}
-              {Math.ceil(orderData?.totalCost / 100 * orderData?.tax)}
+              {/* {Math.ceil(orderData?.totalCost / 100 * orderData?.tax)} */}
+              {convertedPriceWithTax ? `${convertedPriceWithTax} ${currency}` : `${Math.ceil(orderData?.totalCost / 100 * orderData?.tax)} ${orderData?.currency}`}
             </Descriptions.Item>
 
-            <Descriptions.Item className='labelBG' label={language.currency} labelStyle={{fontWeight: '600', color:'#000'}}>
+            {/* <Descriptions.Item className='labelBG' label={language.currency} labelStyle={{fontWeight: '600', color:'#000'}}>
               {orderData?.currency}
-            </Descriptions.Item>
+            </Descriptions.Item> */}
 
-            <Descriptions.Item className='labelBG' label={language.discount} labelStyle={{fontWeight: '600', color:'#000'}}>
+            <Descriptions.Item className='labelBG' label={`${language.discount} %`} labelStyle={{fontWeight: '600', color:'#000'}}>
               {orderData?.discount ? orderData?.discount: 0}
             </Descriptions.Item>
 
             <Descriptions.Item className='labelBG' label={language.totalCost} labelStyle={{fontWeight: '600', color:'#000'}}>
-              {orderData?.totalCost}
+              {/* {orderData?.totalCost} */}
+              {convertedPriceTotal ? `${convertedPriceTotal} ${currency}` : `${orderData?.totalCost} ${orderData?.currency}`}
             </Descriptions.Item>
 
           </Descriptions>

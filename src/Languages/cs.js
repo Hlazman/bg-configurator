@@ -157,6 +157,8 @@ const cs = {
   cylinder: 'S nástavcem pod válcem',
   wc: 'S nástavcem pod WC',
 
+  exchangeRate: "Databáze ukládá cenu pouze v eurech. Můžete převádět na jinou měnu, ale tyto údaje budou uloženy pouze v souborech PDF. Buďte opatrní, informace o směnných kurzech se aktualizují každý den. A pokud si přejete upravit objednávku, ceny se mohou lišit.",
+
 // Products Frame
   'hidden_standard Hidden': 'Skrytý standard',
   'type 1 outside Neo Classic': 'Neo Classic venku',

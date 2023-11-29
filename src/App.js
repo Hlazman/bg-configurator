@@ -201,7 +201,10 @@ const getHeaderTitle = (location, Id) => {
             </Content>
 
             <Footer style={{ textAlign: 'center', backgroundColor: 'white', marginTop:'30px' }}>
-              ©2023 Created by
+              <div style={{display: 'flex', justifyContent: 'space-between'}}>
+              <p> ©2023 Created by </p> 
+              <p><a href="https://www.exchangerate-api.com" rel="noreferrer" target="_blank"> Rates By Exchange Rate API</a></p>
+              </div>
             </Footer>
           </Layout>
         </Layout>

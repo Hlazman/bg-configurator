@@ -157,6 +157,8 @@ const es = {
   cylinder: 'Con una superposición bajo el cilindro',
   wc: 'Con una superposición bajo el inodoro',
 
+  exchangeRate: "La base de datos almacena el precio solo en euros. Puede convertirlo a otra moneda, pero estos datos solo se guardarán en archivos PDF. Tenga cuidado, la información sobre los tipos de cambio se actualiza todos los días. Y si desea ajustar el pedido, los precios pueden ser diferentes.",
+
 // Products Frame
   'hidden_standard Hidden': 'Estándar oculto',
   'type 1 outside Neo Classic': 'Neo Clásico exterior',

@@ -340,7 +340,7 @@ const CanvasStep = ({ setCurrentStepSend}) => {
                     door.attributes.product_properties.image.data.attributes.url === imgSrc
                 );
                 return (
-                    <Radio value={door.id} >
+                    <Radio key={door.id} value={door.id} >
                       <Card
                         className="custom-card"
                         hoverable
