@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Form, Input, Button, Card, Radio, Select, Divider, Spin, message, Affix } from 'antd';
+import { Form, Input, Button, Card, Radio, Select, Divider, Spin, message, Affix, InputNumber } from 'antd';
 import { SendOutlined } from '@ant-design/icons';
 import axios from 'axios';
 import { useOrder } from '../../Context/OrderContext';
@@ -17,6 +17,12 @@ const HingeStep = ({ setCurrentStepSend }) => {
   const [selectedHingeId, setSelectedHingeId] = useState(null);
   const { selectedLanguage } = useLanguage();
   const language = languageMap[selectedLanguage];
+
+  const [hingeAmount, setHingeAmount] = useState(1)
+
+  const handleHingeAmount = (value) => {
+    setHingeAmount(value)
+  }
   
   // const { order } = useOrder();
   // const orderId = order.id;
@@ -120,7 +126,8 @@ const HingeStep = ({ setCurrentStepSend }) => {
         // "updateFrameFittingId": hingeSuborder.data.id,
         "updateFrameFittingId": hingeSuborderId,
         "data": {
-          "hinge": previousHingeId
+          "hinge": previousHingeId,
+          'custom_amount': hingeAmount,
         }
       };
   
@@ -170,7 +177,8 @@ const HingeStep = ({ setCurrentStepSend }) => {
   
       const variables = {
         // frameFittingId: hingeSuborder.data.id
-        frameFittingId: hingeSuborderId
+        frameFittingId: hingeSuborderId,
+        // amount: hingeAmount,
       };
   
       axios.post('https://api.boki.fortesting.com.ua/graphql', {
@@ -179,6 +187,7 @@ const HingeStep = ({ setCurrentStepSend }) => {
             frameFitting(id: $frameFittingId) {
               data {
                 attributes {
+                  amount
                   hinge {
                     data {
                       id
@@ -198,9 +207,16 @@ const HingeStep = ({ setCurrentStepSend }) => {
       })
       .then((response) => {
         const hingeId = response?.data?.data?.frameFitting?.data?.attributes?.hinge?.data?.id;
+        const amount = response?.data?.data?.frameFitting?.data?.attributes?.amount;
+
         if (hingeId) {
           setPreviousHingeId(hingeId);
         }
+
+        if (amount) {
+          setHingeAmount(amount)
+        }
+
         setIsLoading(false);
       })
       .catch((error) => {
@@ -244,12 +260,29 @@ const HingeStep = ({ setCurrentStepSend }) => {
           ))}
         </Select>
         </Form.Item>
+
+        <Form.Item
+            name="amount"
+            // rules={[{ required: true, message: language.requiredField }]}
+            style={{margin: '10px 0', flex: '1', 'minWidth': "300px"}}
+          >
+            <InputNumber
+              // defaultValue={hingeAmount}
+              value={hingeAmount}
+              onChange={handleHingeAmount}
+              addonBefore={language.amount} 
+              addonAfter={language.count}
+            />
+            <span style={{display: 'none'}}> ({hingeAmount}) </span>
+          </Form.Item>
+        
       </div>
 
       {isLoading ? (
         <Spin size="large" />
       ) : (
-        <Form.Item name="hingesStep" rules={[{ required: true, message: language.requiredField }]}>
+        // <Form.Item name="hingesStep" rules={[{ required: true, message: language.requiredField }]}>
+        <Form.Item name="hingesStep" rules={[{ required: previousHingeId !== null ? false : true, message: language.requiredField }]}>
           <Radio.Group >
             <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}>
               {filteredImgs.map((hinge) => (

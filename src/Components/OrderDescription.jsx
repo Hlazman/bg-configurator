@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect } from 'react';
-import {Descriptions, Image, Divider, Card} from 'antd';
+import {Descriptions, Image, Divider, Card, Select, Space} from 'antd';
 import dayjs from 'dayjs';
 import { AuthContext } from '../Context/AuthContext';
 import logo from '../logo.svg';
@@ -15,6 +15,48 @@ export const OrderDescription = (
   const { selectedLanguage } = useLanguage();
   const language = languageMap[selectedLanguage];
 
+  const { Option } = Select;
+  
+  const [currency, setCurrency] = useState('EUR');
+  const [convertedPrice, setConvertedPrice] = useState(null);
+
+  const handleCurrency = (value) => {
+    setCurrency(value);
+  }
+
+  // async function convertPriceToCurrency(priceInEUR, targetCurrency) {
+  //   try {
+  //     const response = await fetch('https://api.exchangeratesapi.io/latest');
+  //     const data = await response.json();
+  //     const exchangeRates = data.rates;
+  
+  //     if (exchangeRates && exchangeRates[targetCurrency]) {
+  //       const convertedAmount = Math.ceil(priceInEUR * exchangeRates[targetCurrency]);
+  //       return `${convertedAmount} ${targetCurrency}`;
+  //     } else {
+  //       return 'Currency not available';
+  //     }
+  //   } catch (error) {
+  //     console.error('Error fetching exchange rates:', error);
+  //     return 'Error';
+  //   }
+  // }
+
+  // useEffect(() => {
+  //   async function fetchConvertedPrice() {
+  //     try {
+  //       const targetCurrency = 'PLN'; // Замените на вашу целевую валюту
+  //       const response = await convertPriceToCurrency(priceInEUR, targetCurrency);
+  //       setConvertedPrice(response);
+  //     } catch (error) {
+  //       console.error('Error converting price:', error);
+  //     }
+  //   }
+
+  //   fetchConvertedPrice();
+  // }, [currency]);
+  
+
   // useEffect(() => {
   //   if (elementData && elementData.length > 0) {
   //     for(let i = 0; i < elementData.length; i++) {
@@ -29,7 +71,23 @@ export const OrderDescription = (
   }
 
   return (
+    
     <div style={{maxWidth: isCreatingPdf ? 'auto' : '900px', margin: '0 auto'}}>
+
+    <Space style={{display: 'flex', alignItems: 'baseline'}}>
+      <p> {language.currency} </p>
+      <Select
+        style={{display: isCreatingPdf ? 'none' : 'block', marginBottom: '20px' }}
+        defaultValue={currency}
+        onChange={handleCurrency}
+      >
+        <Option value="EUR">EUR €</Option>
+        <Option value="PLN">PLN zł</Option>
+        <Option value="USD">USD $</Option>
+        <Option value="UAH">UAH ₴</Option>
+      </Select>
+    </Space>
+
       {/* HEADER */}
       <div style={{padding: '15px', backgroundColor: '#FFF', borderRadius: '15px'}}>
         <div style={{display: 'flex', justifyContent: 'space-around', alignItems: 'center', gap: '20px'}}>
@@ -157,6 +215,7 @@ export const OrderDescription = (
 
             <Descriptions.Item className='labelBG' label={language.price} labelStyle={{fontWeight: '600', color:'#000'}}>
               {doorData.price} {orderData?.currency}
+              {/* {convertPriceToCurrency(doorData.price, currency)} {orderData?.currency} */}
             </Descriptions.Item>
           </>
           )}
@@ -249,8 +308,8 @@ export const OrderDescription = (
               {lockData?.price} {orderData?.currency} 
             </Descriptions.Item>
 
-            <Descriptions.Item className='labelBG' label={`${language.price} (${language.hinges})`} labelStyle={{fontWeight: '600', color:'#000'}}>
-              {hingeData?.price} {orderData?.currency}
+            <Descriptions.Item className='labelBG' label={`${language.price} (${language.hinges}) / ${language.amount}`} labelStyle={{fontWeight: '600', color:'#000'}}>
+              {hingeData?.price} {orderData?.currency} / {language.amount}: {hingeData?.amount}
             </Descriptions.Item>
 
             <Descriptions.Item className='labelBG' label={`${language.price} (${language.knobe})`} labelStyle={{fontWeight: '600', color:'#000'}}>

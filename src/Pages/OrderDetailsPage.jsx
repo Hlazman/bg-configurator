@@ -587,6 +587,7 @@ const fetchHingeData = async (hingeId) => {
                   title
                   price
                   type
+                  amount
                   hinge {
                     data {
                       attributes {

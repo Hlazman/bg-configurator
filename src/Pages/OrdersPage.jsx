@@ -507,7 +507,7 @@ const handleOpenOrder = (orderID) => {
       },    
     },
     {
-      title: `${language.price}`,
+      title: `${language.price} €`,
       dataIndex: ['attributes', 'totalCost'],
       key: 'orderPrice',
       width: '120px',

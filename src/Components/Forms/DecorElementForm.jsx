@@ -30,11 +30,11 @@ const DecorElementForm = ({setCurrentStepSend, elementID}) => {
   const [isPaintDecor, setIsPaintDecor] = useState(false);
   const [isMirrorDecor, setIsMirrorDecor] = useState(false);
   
-  const noWidthHeightThickness = ['14', '15', '16', '17', '18', '20', '21', '22', '23', '24', '25']
-  // const noLength = ['22', '23', '24', '25']
-  const noDecor = ['16', '20', '22']
-  const paintDecor = ['16', '17', '20', '21', '22', '23', '24', '25']
-  const mirrorDecor = ['16', '17', '20', '21', '22', '23', '25']
+  const noWidthHeightThickness = ['14', '15', '16', '17', '18', '20', '21', '22', '23', '24', '25'];
+  // const noLength = ['22', '23', '24', '25'];
+  const noDecor = ['16', '20', '22'];
+  const paintDecor = ['16', '17', '20', '21', '22', '23', '24', '25'];
+  const mirrorDecor = ['16', '17', '20', '21', '22', '23', '25'];
 
   const [showDecor, setShowDecor] = useState(false); 
   const handleShowDecorClick = () => {
