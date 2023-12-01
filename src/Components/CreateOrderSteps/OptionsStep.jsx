@@ -79,6 +79,7 @@ const OptionsStep = ({ setCurrentStepSend }) => {
                         attributes {
                           title
                           price
+                          custom
                           option {
                             data {
                               id
@@ -98,6 +99,9 @@ const OptionsStep = ({ setCurrentStepSend }) => {
             orderId: orderIdToUse,
             pagination: {
               limit: 20
+            },
+            filters: {
+              custom: false,
             }
           },
         },
@@ -112,11 +116,14 @@ const OptionsStep = ({ setCurrentStepSend }) => {
       if (response.data?.data?.order) {
         const orderData = response.data.data.order.data.attributes;
         const suborderOptionsData = response.data.data.order.data.attributes.option_suborders.data;
+        const customFalseSuborders = suborderOptionsData.filter(suborder => suborder.attributes.custom === false);
         
-        setOptionsSuborderData(suborderOptionsData)
-        form.setFieldsValue(orderData);
+        // setOptionsSuborderData(suborderOptionsData)
+        setOptionsSuborderData(customFalseSuborders)
 
-        suborderOptionsData.forEach(option => {
+        form.setFieldsValue(orderData);
+        // suborderOptionsData.forEach(option => {
+          customFalseSuborders.forEach(option => {
           form.setFieldsValue({
             [`option_${option.attributes.option.data.id}`]: true
           });
@@ -310,18 +317,18 @@ const OptionsStep = ({ setCurrentStepSend }) => {
   },[]);
 
 
-  const [items, setItems] = useState([{ id: 0, name: '', price: '' }]);
+  // const [items, setItems] = useState([{ id: 0, name: '', price: '' }]);
 
-  const handleAddItem = () => {
-    const newId = items.length;
-    setItems([...items, { id: newId, name: '', price: '' }]);
-  };
+  // const handleAddItem = () => {
+  //   const newId = items.length;
+  //   setItems([...items, { id: newId, name: '', price: '' }]);
+  // };
 
-  const handleRemoveItem = (index) => {
-    const updatedItems = [...items];
-    updatedItems.splice(index, 1);
-    setItems(updatedItems);
-  };
+  // const handleRemoveItem = (index) => {
+  //   const updatedItems = [...items];
+  //   updatedItems.splice(index, 1);
+  //   setItems(updatedItems);
+  // };
 
   // const [temp, setTemp] = useState(false)
 
@@ -403,7 +410,7 @@ const OptionsStep = ({ setCurrentStepSend }) => {
           </Button>
         </Form.Item> */}
 
-        <Divider/>
+        {/* <Divider/>
         <h3 style={{textAlign: 'left'}}>{language.additionalOption}</h3>
         
         {items.map((item, index) => (
@@ -422,7 +429,7 @@ const OptionsStep = ({ setCurrentStepSend }) => {
           <Button type="primary" onClick={handleAddItem} icon={<PlusOutlined />}>
             {language.addOption}
           </Button>
-        </Form.Item>
+        </Form.Item> */}
 
       </Form>
     </Card>

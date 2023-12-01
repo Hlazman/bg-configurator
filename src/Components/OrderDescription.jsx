@@ -471,7 +471,8 @@ export const OrderDescription = (
 
                 <Descriptions.Item className='labelBG' label={language.title} labelStyle={{fontWeight: '600', color:'#000'}}>
                   {/* {option.title} */}
-                  {languageMap[selectedLanguage][option.title]}
+                  {/* {languageMap[selectedLanguage][option.title]} */}
+                  {languageMap[selectedLanguage][option.title] ? languageMap[selectedLanguage][option.title] : option.title}
                 </Descriptions.Item>
 
                 <Descriptions.Item className='labelBG' label={language.price} labelStyle={{fontWeight: '600', color:'#000'}}>

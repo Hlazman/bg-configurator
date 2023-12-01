@@ -15,6 +15,7 @@ import { CreateColorDrawer } from '../Components/CreateColorDrawer';
 import { useLanguage } from '../Context/LanguageContext';
 import languageMap from '../Languages/language';
 import OptionsStep from '../Components/CreateOrderSteps/OptionsStep';
+import OptionsAdditionalStep from '../Components/CreateOrderSteps/OptionsAdditionalStep';
 
 export const EditOrderPage = () => {
   const { selectedLanguage } = useLanguage();
@@ -154,8 +155,12 @@ export const EditOrderPage = () => {
         );
         case 6:
         return (
-          <InformationStep />
+          <OptionsAdditionalStep />
         );
+        case 7:
+          return (
+            <InformationStep />
+          );
       default:
         return null;
     }
@@ -213,8 +218,12 @@ export const EditOrderPage = () => {
             status: (currentStep === 5 ? 'process' : 'finish'),
           },
           {
-            title: language.information,
+            title: language.additional,
             status: (currentStep === 6 ? 'process' : 'finish'),
+          },
+          {
+            title: language.information,
+            status: (currentStep === 7 ? 'process' : 'finish'),
           },
         ]}
       >

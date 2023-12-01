@@ -342,11 +342,12 @@ export const OrderDescriptionFactory = (
               <React.Fragment key={index}>
 
                 <Descriptions.Item className='labelBG' label={language.title} labelStyle={{fontWeight: '600', color:'#000'}}>
-                  {languageMap[selectedLanguage][option.title]}
+                  {/* {languageMap[selectedLanguage][option.title]} */}
+                  {languageMap[selectedLanguage][option.title] ? languageMap[selectedLanguage][option.title] : option.title}
                 </Descriptions.Item>
 
                 <Descriptions.Item className='labelBG' label={language.price} labelStyle={{fontWeight: '600', color:'#000'}}>
-                  {convertedOptionPrice[index] ? `${convertedOptionPrice[index].convertedPrice} ${currency}` : `${option.basicPrice} ${orderData?.currency}`}
+                  {convertedOptionPrice[index] ? `${convertedOptionPrice[index].convertedPrice} ${currency}` : `${option.basicPrice ? option.basicPrice: option.price} ${orderData?.currency}`}
                 </Descriptions.Item>
               </React.Fragment>
             ))}

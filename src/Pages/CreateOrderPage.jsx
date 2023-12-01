@@ -15,6 +15,7 @@ import { CreateColorDrawer } from '../Components/CreateColorDrawer';
 import { useLanguage } from '../Context/LanguageContext';
 import languageMap from '../Languages/language';
 import OptionsStep from '../Components/CreateOrderSteps/OptionsStep';
+import OptionsAdditionalStep from '../Components/CreateOrderSteps/OptionsAdditionalStep';
 
 
 export const CreateOrderPage = () => {
@@ -43,6 +44,7 @@ export const CreateOrderPage = () => {
     fittingKnobeSend: false,
     fittingHingeSend: false,
     optionsSend: false,
+    optionsAdditionalSend: false,
     informationSend: false,
   });
 
@@ -257,6 +259,12 @@ export const CreateOrderPage = () => {
         );
         case 6:
         return (
+          <OptionsAdditionalStep
+            setCurrentStepSend={setCurrentStepSend}
+        />
+        );
+        case 7:
+        return (
           <InformationStep
             setCurrentStepSend={setCurrentStepSend}
         />
@@ -324,8 +332,12 @@ export const CreateOrderPage = () => {
             status: (currentStep === 5 ? 'process' : currentStepSend.optionsSend ? 'finish' : 'error'),
           },
           {
+            title: language.additional,
+            status: (currentStep === 6 ? 'process' : currentStepSend.optionsAdditionalSend ? 'finish' : 'error'),
+          },
+          {
             title: language.information,
-            status: (currentStep === 6 ? 'process' : currentStepSend.informationSend ? 'finish' : 'error'),
+            status: (currentStep === 7 ? 'process' : currentStepSend.informationSend ? 'finish' : 'error'),
           },
         ]}
       >
