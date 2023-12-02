@@ -1,6 +1,5 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { AuthContext } from '../../Context/AuthContext';
-import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { Form, Input, Select, Radio, DatePicker, Button, message, InputNumber, Card } from 'antd';
 import { SendOutlined } from '@ant-design/icons';
@@ -19,12 +18,32 @@ const InformationStep = ({ setCurrentStepSend }) => {
 
   const jwtToken = localStorage.getItem('token');
   const locale = localStorage.getItem('selectedLanguage') || 'en'
-  const navigate = useNavigate()
   const { selectedLanguage } = useLanguage();
   const language = languageMap[selectedLanguage];
   
   const [clients, setClients] = useState([]);
   const [form] = Form.useForm();
+
+  const handleClientChange = (clientId) => {
+    const selectedClientData = clients.find((client) => client.id === clientId);
+  
+    if (selectedClientData?.attributes?.addresses?.length > 0) {
+      const { address, city, country, zipCode } = selectedClientData.attributes.addresses[0];
+      form.setFieldsValue({
+        address: address || '',
+        city: city || '',
+        country: country || '',
+        zipCode: zipCode || '',
+      });
+    } else {
+      form.setFieldsValue({
+        address: '',
+        city: '',
+        country: '',
+        zipCode: '',
+      });
+    }
+  };
 
   useEffect(() => {
     axios
@@ -38,6 +57,13 @@ const InformationStep = ({ setCurrentStepSend }) => {
                   id
                   attributes {
                     client_name
+                    addresses {
+                      id
+                      address
+                      city
+                      country
+                      zipCode
+                    }
                   }
                 }
               }
@@ -122,7 +148,6 @@ const InformationStep = ({ setCurrentStepSend }) => {
         localStorage.setItem('token', jwtToken);
         localStorage.setItem('selectedLanguage', locale);
       })
-      // .then(()=> navigate('/'))
       .catch((error) => {
         message.error(language.errorQuery);
       });
@@ -198,7 +223,42 @@ const InformationStep = ({ setCurrentStepSend }) => {
   return (
     <Card style={{background: '#F8F8F8', borderColor: '#DCDCDC', marginTop: '20px'}}>
       <Form form={form} onFinish={onFinish} initialValues={{ currency: 'EUR' }} >
-      
+
+        <div style={{ display: 'flex', gap: '30px' }}>
+          <Form.Item label={language.deliveryAt} name="deliveryAt" style={{ width: '100%' }}>
+            <DatePicker
+              format={dateFormat}
+              showTime 
+              addonBefore={language.deliveryAt} />
+          </Form.Item>
+
+          <Form.Item 
+            name="discount" 
+            style={{ width: '100%' }}
+          >
+            <InputNumber addonBefore={language.discount}/>
+          </Form.Item>
+
+          <Form.Item label={language.currency} name="currency" style={{ width: '100%' }}>
+            <Select disabled>
+              <Option value="EUR">EUR €</Option>
+              <Option value="PLN">PLN zł</Option>
+              <Option value="USD">USD $</Option>
+              <Option value="UAH">UAH ₴</Option>
+            </Select>
+          </Form.Item>
+
+          <Form.Item label={language.client} name="client" style={{ width: '100%' }}>
+            <Select onChange={handleClientChange}>
+              {clients.map((client) => (
+                <Option key={client.id} value={client.id}>
+                  {client.attributes.client_name}
+                </Option>
+              ))}
+            </Select>
+          </Form.Item>
+        </div>
+
         <div style={{ display: 'flex', gap: '30px' }}>
           <Form.Item name="address" style={{ width: '100%' }} >
             <Input addonBefore={language.address}/>
@@ -235,42 +295,6 @@ const InformationStep = ({ setCurrentStepSend }) => {
         </div>
 
         <div style={{ display: 'flex', gap: '30px' }}>
-          <Form.Item label={language.deliveryAt} name="deliveryAt" style={{ width: '100%' }}>
-            {/* <DatePicker showTime addonBefore="deliveryAt" /> */}
-            <DatePicker
-              format={dateFormat}
-              showTime 
-              addonBefore={language.deliveryAt} />
-          </Form.Item>
-
-          <Form.Item 
-            name="discount" 
-            style={{ width: '100%' }}
-          >
-            <InputNumber addonBefore={language.discount}/>
-          </Form.Item>
-
-          <Form.Item label={language.currency} name="currency" style={{ width: '100%' }}>
-            <Select disabled>
-              <Option value="EUR">EUR €</Option>
-              <Option value="PLN">PLN zł</Option>
-              <Option value="USD">USD $</Option>
-              <Option value="UAH">UAH ₴</Option>
-            </Select>
-          </Form.Item>
-
-          <Form.Item label={language.client} name="client" style={{ width: '100%' }}>
-            <Select >
-              {clients.map((client) => (
-                <Option key={client.id} value={client.id}>
-                  {client.attributes.client_name}
-                </Option>
-              ))}
-            </Select>
-          </Form.Item>
-        </div>
-
-        <div style={{ display: 'flex', gap: '30px' }}>
         <Form.Item label={language.status} name="status">
             <Radio.Group buttonStyle="solid">
               <Radio.Button value="Draft">Draft</Radio.Button>
@@ -284,12 +308,9 @@ const InformationStep = ({ setCurrentStepSend }) => {
         </Form.Item>
 
         <Form.Item wrapperCol={{ offset: 4, span: 16 }}>
-          {/* <Button type="primary" htmlType="submit">
-            {language.submit}
-          </Button> */}
-        <Button style={{backgroundColor: '#1677ff', color: 'white' }} htmlType="submit" icon={<SendOutlined />}>
-          {`${language.submit} ${language.frame}`}
-        </Button>
+          <Button style={{backgroundColor: '#1677ff', color: 'white' }} htmlType="submit" icon={<SendOutlined />}>
+            {`${language.submit} ${language.frame}`}
+          </Button>
         </Form.Item>
       </Form>
     </Card>

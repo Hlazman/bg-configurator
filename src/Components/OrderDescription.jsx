@@ -517,7 +517,7 @@ export const OrderDescription = (
           size='default'
           >
             <Descriptions.Item span={2} className='labelBG' label={language.shippingAddress} labelStyle={{fontWeight: '600', color:'#000'}}>
-              {`${orderData?.shippingAddress?.address} ${orderData?.shippingAddress?.country} ${orderData?.shippingAddress?.city} ${orderData?.shippingAddress?.zipCode}`}
+              {`${orderData?.shippingAddress?.address}, ${orderData?.shippingAddress?.country}, ${orderData?.shippingAddress?.city}, ${orderData?.shippingAddress?.zipCode}`}
             </Descriptions.Item>
 
             <Descriptions.Item span={2} className='labelBG' label={language.deliveryAt} labelStyle={{fontWeight: '600', color:'#000'}}>

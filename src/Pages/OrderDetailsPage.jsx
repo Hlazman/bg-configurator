@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { Button, Divider } from 'antd';
 import html2pdf from 'html2pdf.js';
 import axios from 'axios';
@@ -8,9 +8,11 @@ import { OrderDescriptionFactory } from '../Components/OrderDescriptionFactory';
 import { useParams } from 'react-router-dom';
 import { useLanguage } from '../Context/LanguageContext';
 import languageMap from '../Languages/language';
+import { AuthContext } from '../Context/AuthContext';
 
 
 export const OrderDetailsPage = () => {
+  const { user } = useContext(AuthContext);
   const jwtToken = localStorage.getItem('token');
   const { orderId, setOrderId } = useOrder();
   const [orderData, setOrderData] = useState(null);
@@ -27,6 +29,8 @@ export const OrderDetailsPage = () => {
   const [hingeData, setHingeData] = useState(null);
   const [knobeData, setKnobeData] = useState(null);
   const [optionsData, setOptionsData] = useState(null);
+
+  const isBoss = ['info@boki-group.com', 'testadmin@mail.com', 'stookal@gmail.com']
 
   const embedImages = async () => {
     const images = document.querySelectorAll('img');
@@ -761,6 +765,7 @@ const fetchLockData = async (lockId) => {
 const { orderId: urlOrderId } = useParams();
 
 useEffect(() => {
+  console.log(isBoss.includes(user.email))
   if (!orderId) {
     setOrderId(urlOrderId);
     fetchData();
@@ -840,28 +845,30 @@ const fetchOptionsData = async (optionIds) => {
         />
       </div>
 
-      <Divider/>
-      <div>
-        <h2 style={{display: 'inline-block', marginRight: '30px'}}> {language.factory} </h2>
-        <Button type="primary" size={'large'} onClick={handlePdfExportFactory}>{language.save} PDF</Button>
-      <Divider/>
-        {/* <Button onClick={handleOpenPdf}>{language.open} PDF</Button> */}
+      {isBoss.includes(user.email) && (
+        <div>
+          <Divider/>
+          <h2 style={{display: 'inline-block', marginRight: '30px'}}> {language.factory} </h2>
+          <Button type="primary" size={'large'} onClick={handlePdfExportFactory}>{language.save} PDF</Button>
+          <Divider/>
+          {/* <Button onClick={handleOpenPdf}>{language.open} PDF</Button> */}
 
-        <div id="pdf-content-factory">
-          <OrderDescriptionFactory
-            orderId={orderId} 
-            orderData={orderData} 
-            frameData={frameData}
-            doorData={doorData}
-            elementData={elementData}
-            hingeData={hingeData}
-            knobeData={knobeData}
-            lockData={lockData}
-            optionsData={optionsData}
-            isCreatingPdf={isCreatingPdf}
-          />
+          <div id="pdf-content-factory">
+            <OrderDescriptionFactory
+              orderId={orderId} 
+              orderData={orderData} 
+              frameData={frameData}
+              doorData={doorData}
+              elementData={elementData}
+              hingeData={hingeData}
+              knobeData={knobeData}
+              lockData={lockData}
+              optionsData={optionsData}
+              isCreatingPdf={isCreatingPdf}
+            />
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 };

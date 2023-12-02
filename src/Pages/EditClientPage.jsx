@@ -76,15 +76,15 @@ export const EditClientPage = () => {
       });
   }, [clientId, jwtToken, form, language]);
 
-  const handleAddAddress = () => {
-    setAddresses([...addresses, { country: null, city: null, address: null, zipCode: null }]);
-  };
+  // const handleAddAddress = () => {
+  //   setAddresses([...addresses, { country: null, city: null, address: null, zipCode: null }]);
+  // };
 
-  const handleRemoveAddress = (index) => {
-    const updatedAddresses = [...addresses];
-    updatedAddresses.splice(index, 1);
-    setAddresses(updatedAddresses);
-  };
+  // const handleRemoveAddress = (index) => {
+  //   const updatedAddresses = [...addresses];
+  //   updatedAddresses.splice(index, 1);
+  //   setAddresses(updatedAddresses);
+  // };
 
   const onFinish = (values) => {
     setLoading(true);
@@ -166,22 +166,24 @@ export const EditClientPage = () => {
           </Form.Item>
 
           {addresses.map((address, index) => (
-            <Space key={index} style={{ alignItems: 'flex-start' }}>
+            // <Space key={index} style={{ alignItems: 'flex-start' }}>
+            <div key={index} style={{ display: 'flex', gap: '30px' }}>
 
-              <Form.Item name={['addresses', index, 'country']}>
+              <Form.Item name={['addresses', index, 'country']} style={{ width: '100%' }}>
                 <Input placeholder={language.country} addonBefore={language.country} />
               </Form.Item>
 
-              <Form.Item name={['addresses', index, 'city']}>
+              <Form.Item name={['addresses', index, 'city']} style={{ width: '100%' }}>
                 <Input placeholder={language.city} addonBefore={language.city} />
               </Form.Item>
 
-              <Form.Item name={['addresses', index, 'address']}>
+              <Form.Item name={['addresses', index, 'address']} style={{ width: '100%' }}>
                 <Input placeholder={language.address} addonBefore={language.address} />
               </Form.Item>
 
               <Form.Item 
                 name={['addresses', index, 'zipCode']}
+                style={{ width: '100%' }}
                 rules={[
                   {
                     pattern: /^[0-9]+$/,
@@ -200,20 +202,21 @@ export const EditClientPage = () => {
                 <Input placeholder={language.zipCode} addonBefore={language.zipCode} />
               </Form.Item>
 
-              <Button
+              {/* <Button
                 danger
                 type="primary"
                 onClick={() => handleRemoveAddress(index)}
                 icon={<MinusCircleOutlined />}
-              ></Button>
-            </Space>
+              ></Button> */}
+            {/* </Space> */}
+            </div>
           ))}
 
-          <Form.Item>
+          {/* <Form.Item>
             <Button type="primary" onClick={handleAddAddress} icon={<PlusOutlined />}>
               {language.addAddress}
             </Button>
-          </Form.Item>
+          </Form.Item> */}
 
           <Form.Item 
             name="phone"
