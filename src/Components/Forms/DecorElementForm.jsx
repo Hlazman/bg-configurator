@@ -15,23 +15,15 @@ const DecorElementForm = ({setCurrentStepSend, elementID}) => {
   const jwtToken = localStorage.getItem('token');
   const { selectedLanguage } = useLanguage();
   const language = languageMap[selectedLanguage];
-
-  // const { order } = useOrder();
-  // const orderId = order.id;
-  // const orderIdToUse = orderID || orderId;
-  // const doorSuborder = order.suborders.find(suborder => suborder.name === 'doorSub');
-
-    const { dorSuborderId } = useOrder();
-    // const orderIdToUse = orderId;
-
+  const { dorSuborderId } = useOrder();
   const [form] = Form.useForm();
 
   const [currentElementField, setCurrentElementField] = useState('');
   const [isPaintDecor, setIsPaintDecor] = useState(false);
   const [isMirrorDecor, setIsMirrorDecor] = useState(false);
   
+  const onlyWidth = ['1', '2', '11', '13'];
   const noWidthHeightThickness = ['14', '15', '16', '17', '18', '20', '21', '22', '23', '24', '25'];
-  // const noLength = ['22', '23', '24', '25'];
   const noDecor = ['16', '20', '22'];
   const paintDecor = ['16', '17', '20', '21', '22', '23', '24', '25'];
   const mirrorDecor = ['16', '17', '20', '21', '22', '23', '25'];
@@ -95,7 +87,7 @@ const DecorElementForm = ({setCurrentStepSend, elementID}) => {
           height: elementSuborderData?.attributes?.sizes?.height,
           thickness: elementSuborderData?.attributes?.sizes?.thickness,
           amount: elementSuborderData?.attributes?.amount,
-          length: elementSuborderData?.attributes?.sizes?.length, // NEW
+          length: elementSuborderData?.attributes?.sizes?.length,
         });
       }
       setCurrentElementField(elementSuborderData?.attributes?.element?.data?.id)
@@ -104,7 +96,6 @@ const DecorElementForm = ({setCurrentStepSend, elementID}) => {
     .catch(error => {
       console.error('Error fetching element suborder data:', error);
     });
-  // }, [jwtToken, elementID, form]);
   }, [jwtToken, elementID, form]);
 
   useEffect(() => {
@@ -147,7 +138,6 @@ const DecorElementForm = ({setCurrentStepSend, elementID}) => {
   }, [jwtToken, form]);
 
   const handleFormSubmit = values => {
-    // const { name, width, height, thickness, amount } = values;
     const { name, width, height, thickness, amount, length } = values;
     const selectedElement = elementOptions.find(option => option.id === name);
 
@@ -159,7 +149,7 @@ const DecorElementForm = ({setCurrentStepSend, elementID}) => {
           height,
           thickness,
           width,
-          length, // NEW
+          length,
         }
       };
   
@@ -316,7 +306,6 @@ const DecorElementForm = ({setCurrentStepSend, elementID}) => {
             placeholder={language.element}
             allowClear
             defaultValue={undefined}
-            // NEW
             onChange={(value) => { 
               setCurrentElementField(value);
                 
@@ -334,7 +323,6 @@ const DecorElementForm = ({setCurrentStepSend, elementID}) => {
             }}
           >
             {elementOptions.map(option => (
-              // <Option key={option.id} value={option.id}>{option.attributes.title}</Option>
               <Option key={option.id} value={option.id}>{languageMap[selectedLanguage][option.attributes.title]}</Option>
             ))}
           </Select>
@@ -344,8 +332,6 @@ const DecorElementForm = ({setCurrentStepSend, elementID}) => {
           style={{margin: '10px 0', flex: '1', 'minWidth': "300px", textAlign: 'left'}}
           name="radioOption"
           label={language.elementDecor}
-          // rules={[{ required: true, message: language.requiredField }]}
-          // rules={[{ required: isFieldLength !== '16', message: language.requiredField }]}
           rules={[{ required: !noDecor.includes(currentElementField), message: language.requiredField }]}
         >
           <Radio.Group type="dashed" buttonStyle="solid" onChange={handleRadioChange}>
@@ -358,84 +344,84 @@ const DecorElementForm = ({setCurrentStepSend, elementID}) => {
         <Space.Compact wrap="true" direction="hirizontal" size="middle">
           <Form.Item 
             name="width" 
-            // rules={[{ required: true, message: language.requiredField }]}
-            // rules={[{ required: isFieldLength !== '9' && isFieldLength !== '1', message: language.requiredField }]}
             rules={[{ required: !noWidthHeightThickness.includes(currentElementField), message: language.requiredField }]}
           >
             <InputNumber 
               style={{margin: '0 5px'}}
               addonBefore={language.width} 
               addonAfter="mm"
-              disabled={noWidthHeightThickness.includes(currentElementField)} // NEW
+              disabled={noWidthHeightThickness.includes(currentElementField)}
             />
           </Form.Item>
           
           <Form.Item 
             name="height" 
-            // rules={[{ required: true, message: language.requiredField }]} 
-            // rules={[{ required: isFieldLength !== '9' && isFieldLength !== '1', message: language.requiredField }]} 
-            rules={[{ required: !noWidthHeightThickness.includes(currentElementField), message: language.requiredField }]} 
+            // rules={[{ required: !noWidthHeightThickness.includes(currentElementField), message: language.requiredField }]} 
+            rules={[{ 
+              required: !noWidthHeightThickness.includes(currentElementField) && !onlyWidth.includes(currentElementField), 
+              message: language.requiredField 
+            }]} 
           >
             <InputNumber
               style={{margin: '0 5px'}}
               addonBefore={language.height} 
               addonAfter="mm"
-              disabled={noWidthHeightThickness.includes(currentElementField)} // NEW
+              // disabled={noWidthHeightThickness.includes(currentElementField)}
+              disabled={noWidthHeightThickness.includes(currentElementField) || onlyWidth.includes(currentElementField)}
               />
           </Form.Item>
 
           <Form.Item 
             name="thickness"
-            // rules={[{ required: true, message: language.requiredField }]} 
-            // rules={[{ required: isFieldLength !== '9' && isFieldLength !== '1', message: language.requiredField }]} 
-            rules={[{ required: !noWidthHeightThickness.includes(currentElementField), message: language.requiredField }]} 
+            // rules={[{ required: !noWidthHeightThickness.includes(currentElementField), message: language.requiredField }]} 
+            rules={[{ 
+              required: !noWidthHeightThickness.includes(currentElementField) && !onlyWidth.includes(currentElementField), 
+              message: language.requiredField 
+            }]}  
           >
             <InputNumber
               style={{margin: '0 5px'}}
               addonBefore={language.thickness} 
               addonAfter="mm"
-              disabled={noWidthHeightThickness.includes(currentElementField)} // NEW
+              // disabled={noWidthHeightThickness.includes(currentElementField)}
+              disabled={noWidthHeightThickness.includes(currentElementField) || onlyWidth.includes(currentElementField)}
             />
           </Form.Item>
 
-          {/* NEW  ++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/}
           <Form.Item 
               name="length"
-              // rules={[{ required: isFieldLength === '9' || isFieldLength === '1', message: language.requiredField }]} 
-              // rules={[{ required: noWidthHeightThickness.includes(currentElementField), message: language.requiredField }]} 
               rules={[{ required: noWidthHeightThickness.slice(0, -4).includes(currentElementField), message: language.requiredField }]} 
             >
-            {/* addonBefore={language.length} */}
             <InputNumber
               style={{margin: '0 5px'}}
               addonBefore='length' 
               addonAfter="mm" 
-              // disabled={!noWidthHeightThickness.includes(currentElementField)} 
               disabled={!noWidthHeightThickness.slice(0, -4).includes(currentElementField)}
 
             />
           </Form.Item>
-          {/* NEW  ++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/}
 
           <Form.Item
             name="amount"
-            rules={[{ required: true, message: language.requiredField }]}
+            // rules={[{ required: true, message: language.requiredField }]}
+            rules={[{ 
+              required: !noWidthHeightThickness.includes(currentElementField) || !onlyWidth.includes(currentElementField), 
+              message: language.requiredField 
+            }]}
           >
-            <InputNumber style={{margin: '0 5px'}} addonBefore={language.amount} addonAfter={language.count}/>
+            <InputNumber 
+              style={{margin: '0 5px'}} 
+              addonBefore={language.amount} 
+              addonAfter={language.count}
+              disabled={onlyWidth.includes(currentElementField)}
+            />
           </Form.Item>
 
         </Space.Compact>
 
-        {/* <Form.Item wrapperCol={{ offset: 4, span: 16 }}>
-          <Button type="primary" htmlType="submit">
-            {language.submit}
-          </Button>
-        </Form.Item> */}
-
       </Form>
 
         <div style={{paddingTop: '20px' }}>
-          {/* {showDecor && <GroupDecorElementStep elementID={elementID} isOnlyPaintDecor={isOnlyPaintDecor}/>} */}
           {showDecor && !noDecor.includes(currentElementField) && 
             <>
               <Divider/>

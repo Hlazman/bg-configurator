@@ -34,7 +34,7 @@ const OptionsAdditionalStep = ({ setCurrentStepSend }) => {
   //   }
   // };
 
-  const handleRemoveItem = (index) => {
+  const handleRemoveItem = async (index) => {
     if (items[index]) {
       setDeleteItem(items[index]);
       setModalVisible(true);
@@ -258,7 +258,9 @@ const OptionsAdditionalStep = ({ setCurrentStepSend }) => {
   
   useEffect(()=> {
     fetchOrderData()
+    // console.log('go')
   },[trigger]);
+
 
    useEffect(() => {
     form.setFieldsValue({
@@ -330,7 +332,13 @@ const OptionsAdditionalStep = ({ setCurrentStepSend }) => {
                     title={`${language.removeData} ${user.username}?`}
                     open={modalVisible}
                     onOk={handleDeleteConfirmed}
+                    // onOk={() => {
+                    //   handleDeleteConfirmed();
+                    // }}
                     onCancel={() => setModalVisible(false)}
+                    // onCancel={() => {
+                    //   setModalVisible(false);
+                    // }}
                   >
                     <p>{language.undone}</p>
                   </Modal>

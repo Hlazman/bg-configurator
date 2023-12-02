@@ -1,6 +1,6 @@
 import React, { useContext, useState } from 'react';
-import { Form, Input, Button, Card, Space, Spin, message } from 'antd';
-import { UserOutlined, PlusOutlined, MinusCircleOutlined } from '@ant-design/icons';
+import { Form, Input, Button, Card, Spin, message } from 'antd';
+import { UserOutlined} from '@ant-design/icons';
 import axios from 'axios';
 import { AuthContext } from '../Context/AuthContext';
 import { useLanguage } from '../Context/LanguageContext';
@@ -10,21 +10,9 @@ export const CreateClientPage = () => {
   const { user } = useContext(AuthContext);
   const jwtToken = localStorage.getItem('token');
   const [form] = Form.useForm();
-  const [addresses, setAddresses] = useState([{ id: 0, country: null, city: null, address: null, zipCode: null }]);
   const [loading, setLoading] = useState(false);
   const { selectedLanguage } = useLanguage();
   const language = languageMap[selectedLanguage];
-
-  const handleAddAddress = () => {
-    const newId = addresses.length;
-    setAddresses([...addresses, { id: newId, country: null, city: null, address: null, zipCode: null }]);
-  };
-
-  const handleRemoveAddress = (index) => {
-    const updatedAddresses = [...addresses];
-    updatedAddresses.splice(index, 1);
-    setAddresses(updatedAddresses);
-  };
 
   const onFinish = () => {
     setLoading(true);  
@@ -32,7 +20,12 @@ export const CreateClientPage = () => {
     
     const data = {
       client_name: formValues.client_name,
-      addresses: formValues.addresses,
+      addresses: [{
+        country: formValues.country,
+        city: formValues.city,
+        address: formValues.address,
+        zipCode: formValues.zipCode,
+      }],
       contacts: {
         phone: formValues.phone,
         email: formValues.email,
@@ -59,7 +52,6 @@ export const CreateClientPage = () => {
         console.error(error);
         message.error(language.errorQuery);
       })
-      // .finally(() => setAddresses([{ id: null, country: null, city: null, address: null, zipCode: null }]));
   };
 
   return (
@@ -92,55 +84,49 @@ export const CreateClientPage = () => {
             <Input placeholder={language.organization} addonBefore={language.organization}/>
           </Form.Item>
 
-          {addresses.map((address, index) => (
-            <Space key={index} style={{alignItems: 'flex-start'}}>
-              <Form.Item
-                name={['addresses', index, 'country']}
-              >
-                <Input placeholder={language.country} addonBefore={language.country} />
-              </Form.Item>
-              <Form.Item
-                name={['addresses', index, 'city']}
-              >
-                <Input placeholder={language.city} addonBefore={language.city} />
-              </Form.Item>
-              <Form.Item
-                name={['addresses', index, 'address']}
-              >
-                <Input placeholder={language.address} addonBefore={language.address} />
-              </Form.Item>
-              <Form.Item
-                name={['addresses', index, 'zipCode']}
-                rules={[
-                  {
-                    pattern: /^[0-9]+$/,
-                    message: `${language.zipCodeNumber}`,
+          <div style={{ display: 'flex', gap: '30px' }}>
+            <Form.Item
+              name='country'
+              style={{ width: '100%' }}
+            >
+              <Input placeholder={language.country} addonBefore={language.country} />
+            </Form.Item>
+
+            <Form.Item
+              name='city'
+              style={{ width: '100%' }}
+            >
+              <Input placeholder={language.city} addonBefore={language.city} />
+            </Form.Item>
+
+            <Form.Item
+              name='address'
+              style={{ width: '100%' }}
+            >
+              <Input placeholder={language.address} addonBefore={language.address} />
+            </Form.Item>
+
+            <Form.Item
+              name='zipCode'
+              style={{ width: '100%' }}
+              rules={[
+                {
+                  pattern: /^[0-9]+$/,
+                  message: `${language.zipCodeNumber}`,
+                },
+                ({ getFieldValue }) => ({
+                  validator(_, value) {
+                    if (!getFieldValue('zipCode') || value.length >= 5) {
+                      return Promise.resolve();
+                    }
+                    return Promise.reject(`${language.zipCodeValid}`);
                   },
-                  ({ getFieldValue }) => ({
-                    validator(_, value) {
-                      if (!getFieldValue(['addresses', index, 'zipCode']) || value.length >= 5) {
-                        return Promise.resolve();
-                      }
-                      return Promise.reject(`${language.zipCodeValid}`);
-                    },
-                  }),
-                ]}
-              >
-                <Input placeholder={language.zipCode} addonBefore={language.zipCode} />
-              </Form.Item>
-              
-              <Button danger
-                type="primary" onClick={handleRemoveAddress} icon={<MinusCircleOutlined />}> 
-              </Button>
-
-            </Space>
-          ))}
-
-          <Form.Item>
-            <Button type="primary" onClick={handleAddAddress} icon={<PlusOutlined />}>
-              {language.addAddress}
-            </Button>
-          </Form.Item>
+                }),
+              ]}
+            >
+              <Input placeholder={language.zipCode} addonBefore={language.zipCode} />
+            </Form.Item>
+          </div>
 
           <Form.Item
             name="phone"
@@ -171,12 +157,6 @@ export const CreateClientPage = () => {
           >
             <Input placeholder="Email" addonBefore="Email"/>
           </Form.Item>
-
-          {/* <Form.Item
-            name="company"
-          >
-            <Input placeholder="Company" />
-          </Form.Item> */}
 
           <Form.Item>
             <Button type="primary" htmlType="submit">
