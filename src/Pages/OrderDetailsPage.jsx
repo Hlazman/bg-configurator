@@ -30,7 +30,7 @@ export const OrderDetailsPage = () => {
   const [knobeData, setKnobeData] = useState(null);
   const [optionsData, setOptionsData] = useState(null);
 
-  const isBoss = ['info@boki-group.com', 'testadmin@mail.com', 'stookal@gmail.com']
+  const isBoss = ['1', '2', '4'];
 
   const embedImages = async () => {
     const images = document.querySelectorAll('img');
@@ -765,13 +765,12 @@ const fetchLockData = async (lockId) => {
 const { orderId: urlOrderId } = useParams();
 
 useEffect(() => {
-  console.log(isBoss.includes(user.email))
   if (!orderId) {
     setOrderId(urlOrderId);
     fetchData();
   } else {
     fetchData();
-  }
+  }  
 }, [jwtToken, orderId, urlOrderId]);
 
 
@@ -845,7 +844,7 @@ const fetchOptionsData = async (optionIds) => {
         />
       </div>
 
-      {isBoss.includes(user.email) && (
+      {isBoss.includes(user.id) && (
         <div>
           <Divider/>
           <h2 style={{display: 'inline-block', marginRight: '30px'}}> {language.factory} </h2>

@@ -38,6 +38,16 @@ const OptionsAdditionalStep = ({ setCurrentStepSend }) => {
     if (items[index]) {
       setDeleteItem(items[index]);
       setModalVisible(true);
+
+      // if (form.getFieldsValue().items.length !== optionsSuborderData.length) {
+      //   form.setFieldsValue({
+      //     items: items.map((item, index) => ({
+      //       ...item,
+      //       key: index,
+      //     })),
+      //   });
+      // }
+
     }
   };
   
@@ -45,6 +55,7 @@ const OptionsAdditionalStep = ({ setCurrentStepSend }) => {
     if (deleteItem) {
       const suborderId = deleteItem.id.toString();
       deleteSubOrder(suborderId, deleteItem);
+
       setModalVisible(false);
     }
   };
@@ -324,8 +335,18 @@ const OptionsAdditionalStep = ({ setCurrentStepSend }) => {
                   <Button 
                     danger 
                     onClick={() => {
-                      handleRemoveItem(key);
                       remove(name);
+                      handleRemoveItem(key);
+
+                      // if (form.getFieldsValue().items.length !== optionsSuborderData.length) {
+                      //   form.setFieldsValue({
+                      //     items: items.map((item, index) => ({
+                      //       ...item,
+                      //       key: index,
+                      //     })),
+                      //   });
+                      // }
+
                     }} icon={<MinusCircleOutlined />} />
 
                   <Modal
