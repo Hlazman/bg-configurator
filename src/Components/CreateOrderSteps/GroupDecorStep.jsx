@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Tabs, message } from 'antd';
 import VeneerStep from './VeneerStep';
 import PaintStep from './PaintStep';
@@ -15,6 +15,7 @@ const GroupDecorStep = ({ setCurrentStepSend }) => {
   const jwtToken = localStorage.getItem('token');
   const { selectedLanguage } = useLanguage();
   const language = languageMap[selectedLanguage];
+  const [messageApi, contextHolder] = message.useMessage();
 
   const handleTabChange = tabKey => {
     setActiveTab(tabKey);
@@ -149,7 +150,6 @@ const GroupDecorStep = ({ setCurrentStepSend }) => {
             data: {
               title: data.title,
               type: data.type,
-              // [data.type]: data.productId,
               [dataType]: data.productId,
             }
           }
@@ -168,7 +168,6 @@ const GroupDecorStep = ({ setCurrentStepSend }) => {
       throw error;
     }
   };
-    // const checkDecor = async (type, title, decorData, setSelectedDecorId, productId,) => {
     const checkDecor = async (type, title, decorData, setSelectedDecorId, productId, setDecorData) => {
     const foundDecor = decorData.find(decor =>
       decor.attributes.type === type && decor.attributes.title.toLowerCase() === title.toLowerCase()
@@ -228,11 +227,8 @@ const GroupDecorStep = ({ setCurrentStepSend }) => {
       if (response.data.errors) {
         throw new Error()
       } else {
-        message.success(language.successQuery);
+        messageApi.success(language.successQuery);
       }
-
-      // console.log('Data sent successfully:', response.data);
-      // message.success(language.successQuery);
       
       if (setCurrentStepSend) {
         setCurrentStepSend(prevState => {
@@ -244,87 +240,88 @@ const GroupDecorStep = ({ setCurrentStepSend }) => {
       }
     } catch (error) {
       console.error('Error sending data:', error);
-      // message.error(language.errorQuery);
-      message.error(`${language.errorQuery}. ${language.wrongDecor}`);
+      messageApi.error(`${language.errorQuery}. ${language.wrongDecor}`);
     }
   };
 
   return (
-    <Tabs 
-      type="card" 
-      activeKey={activeTab} 
-      onChange={handleTabChange}
-      destroyInactiveTabPane={true}
-      items={[
-        {
-          label: language.veneer,
-          key: 'veneer',
-          children: 
-            <VeneerStep 
+    <>
+      {contextHolder}
+      <Tabs 
+        type="card" 
+        activeKey={activeTab} 
+        onChange={handleTabChange}
+        destroyInactiveTabPane={true}
+        items={[
+          {
+            label: language.veneer,
+            key: 'veneer',
+            children: 
+              <VeneerStep 
+                fetchDecorData={fetchDecorData}
+                fetchOrderData={fetchOrderData}
+                checkDecor={checkDecor}
+                sendDecorForm={sendDecorForm}
+              />,
+          },
+          {
+            label: language.paint,
+            key: 'paint',
+            children: 
+              <PaintStep 
               fetchDecorData={fetchDecorData}
               fetchOrderData={fetchOrderData}
               checkDecor={checkDecor}
               sendDecorForm={sendDecorForm}
-            />,
-        },
-        {
-          label: language.paint,
-          key: 'paint',
-          children: 
-            <PaintStep 
-            fetchDecorData={fetchDecorData}
-            fetchOrderData={fetchOrderData}
-            checkDecor={checkDecor}
-            sendDecorForm={sendDecorForm}
-            />,
-        },
-        {
-          label: language.stoneware,
-          key: 'stoneware',
-          children: 
-            <StoneStep 
-            fetchDecorData={fetchDecorData}
-            fetchOrderData={fetchOrderData}
-            checkDecor={checkDecor}
-            sendDecorForm={sendDecorForm} 
-          />,
-        },
-        {
-          // label: language.mirror,
-          label: `${language.mirror} / ${language.glass}`,
-          key: 'mirror',
-          children: 
-            <MirrorStep 
+              />,
+          },
+          {
+            label: language.stoneware,
+            key: 'stoneware',
+            children: 
+              <StoneStep 
               fetchDecorData={fetchDecorData}
               fetchOrderData={fetchOrderData}
               checkDecor={checkDecor}
-              sendDecorForm={sendDecorForm}
-          />,
-        },
-        {
-          label: language.hpl,
-          key: 'hpl',
-          children: 
-            <HPLStep 
-            fetchDecorData={fetchDecorData}
-            fetchOrderData={fetchOrderData}
-            checkDecor={checkDecor}
-            sendDecorForm={sendDecorForm} 
+              sendDecorForm={sendDecorForm} 
             />,
-        },
-        {
-          label: language.primers,
-          key: 'primer',
-          children: 
-            <PrimerStep 
-            fetchDecorData={fetchDecorData}
-            fetchOrderData={fetchOrderData}
-            checkDecor={checkDecor}
-            sendDecorForm={sendDecorForm} 
+          },
+          {
+            label: `${language.mirror} / ${language.glass}`,
+            key: 'mirror',
+            children: 
+              <MirrorStep 
+                fetchDecorData={fetchDecorData}
+                fetchOrderData={fetchOrderData}
+                checkDecor={checkDecor}
+                sendDecorForm={sendDecorForm}
             />,
-        },
-      ]}
+          },
+          {
+            label: language.hpl,
+            key: 'hpl',
+            children: 
+              <HPLStep 
+              fetchDecorData={fetchDecorData}
+              fetchOrderData={fetchOrderData}
+              checkDecor={checkDecor}
+              sendDecorForm={sendDecorForm} 
+              />,
+          },
+          {
+            label: language.primers,
+            key: 'primer',
+            children: 
+              <PrimerStep 
+              fetchDecorData={fetchDecorData}
+              fetchOrderData={fetchOrderData}
+              checkDecor={checkDecor}
+              sendDecorForm={sendDecorForm} 
+              />,
+          },
+        ]}
     />
+    </>
   );
 };
 

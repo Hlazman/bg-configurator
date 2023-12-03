@@ -158,11 +158,15 @@ const cs = {
   wc: 'S nástavcem pod WC',
 
   exchangeRate: "Databáze ukládá cenu pouze v eurech. Můžete převádět na jinou měnu, ale tyto údaje budou uloženy pouze v souborech PDF. Buďte opatrní, informace o směnných kurzech se aktualizují každý den. A pokud si přejete upravit objednávku, ceny se mohou lišit.",
+  'firstPainFor': 'Nejprve musíte vybrat pole pro barvu "Barva pro"',
 
   additionalOption: 'Další možnosti',
   addOption: 'Přidat možnost',
   factory: 'Továrna',
   presentation: 'Prezentace',
+
+  NoDecorData: 'Nebyla nalezena žádná data dekorace',
+  NoDecorDataDoor: 'Dekor dveří není vybrán',
 
 // Products Frame
   'hidden_standard Hidden': 'Skrytý standard',
@@ -215,6 +219,19 @@ const cs = {
   'sandblasting': 'Pískování',
   'spindle set': 'Souprava hřídelek',
   'cutting for decor': 'Řezání pro dekor',
+
+// Products Elements TYPE
+  decorInsert: "Vložit dekor",
+  wallplate: "Stěnový panel",
+  cover: "Překryv",
+  platband: "Lišty",
+  threadedPlatband: "Víceřadý lištový panel",
+  extender: "Výběrová lišta",
+  kapitel: "Kapitál",
+  skirting: "Obklad",
+  moulding: "Lícovka",
+  replaceGlass: "Výměna skla",
+  anotherSideColor: "Barva druhé strany",
 
   // Instructions
     InstructionCreateOrderHeader: (

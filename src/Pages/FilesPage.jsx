@@ -26,7 +26,6 @@ import createOrderHeader from '../Instructions/createOrderHeader.png';
 import createOrderDetails from '../Instructions/createOrderDetails.png'; 
 import createColor from '../Instructions/createColor.png'; 
 
-
 export const FilesPage = () => {
   const { selectedLanguage } = useLanguage();
   const language = languageMap[selectedLanguage];
@@ -34,7 +33,6 @@ export const FilesPage = () => {
   return (
     <Collapse
       style={{marginTop: '30px', textAlign: 'left'}} 
-      // items={items} 
       items={[
         {
           key: '1',

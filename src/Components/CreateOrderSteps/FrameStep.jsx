@@ -1,4 +1,4 @@
-import { Form, Button, Card, Spin, Select, message, Affix } from 'antd';
+import { Form, Button, Card, Select, message } from 'antd';
 import { SendOutlined } from '@ant-design/icons';
 import axios from 'axios';
 import { useOrder } from '../../Context/OrderContext';
@@ -8,141 +8,16 @@ import languageMap from '../../Languages/language';
 
 const { Option } = Select;
 
-// const FrameStep = ({ orderID }) => {
 const FrameStep = ({ setCurrentStepSend }) => {
   const jwtToken = localStorage.getItem('token');
   const { selectedLanguage } = useLanguage();
   const language = languageMap[selectedLanguage];
-  
-  // const { order } = useOrder();
-  // const updateOrderId = order?.id;
-  // const orderIdToUse = orderID || updateOrderId;
-  // const frameSuborder = order.suborders.find(suborder => suborder.name === 'frameSub');
-  
+  const [messageApi, contextHolder] = message.useMessage();
   const { orderId, frameSuborderId } = useOrder()
-    const orderIdToUse = orderId;
-  
-  // const [isloading, setIsLoading] = useState(false);
-
+  const orderIdToUse = orderId;
   const [frames, setFrames] = useState([]);
   const [orderData, setOrderData] = useState({});
-
   const [form] = Form.useForm();
-
-  // useEffect(() => {
-  //   axios.post(
-  //     'https://api.boki.fortesting.com.ua/graphql',
-  //     {
-  //       query: `
-  //         query Query($orderId: ID) {
-  //           order(id: $orderId) {
-  //             data {
-  //               attributes {
-  //                 hidden
-  //                 double_door
-  //                 opening
-  //                 side
-  //                 door_suborder {
-  //                   data {
-  //                     attributes {
-  //                       decor {
-  //                         data {
-  //                           id
-  //                         }
-  //                       }
-  //                       sizes {
-  //                         height
-  //                         thickness
-  //                         width
-  //                       }
-  //                     }
-  //                   }
-  //                 }
-  //                 frame_suborder {
-  //                   data {
-  //                     attributes {
-  //                       frame {
-  //                         data {
-  //                           attributes {
-  //                             title
-  //                           }
-  //                           id
-  //                         }
-  //                       }
-  //                     }
-  //                   }
-  //                 }
-  //               }
-  //             }
-  //           }
-  //         }
-  //       `,
-  //       variables: {
-  //         orderId: orderIdToUse
-  //       }
-  //     },
-  //     {
-  //       headers: {
-  //         'Content-Type': 'application/json',
-  //         Authorization: `Bearer ${jwtToken}`,
-  //       }
-  //     }
-  //   ).then(response => {
-  //     const data = response.data?.data?.order?.data?.attributes || {};
-  //     setOrderData(data);
-      
-  //     if (orderData?.frame_suborder?.data?.attributes?.frame?.data?.id &&
-  //       orderData?.frame_suborder?.data?.attributes?.frame?.data?.attributes?.title) {
-  //         const frameId = orderData?.frame_suborder?.data?.attributes?.frame?.data?.id;
-  //         if (frames.find(frame => frame.id === frameId)) {
-  //           form.setFieldsValue({ name: frameId });
-  //         }
-  //       }
-  //   });
-  
-  //   axios.post(
-  //     'https://api.boki.fortesting.com.ua/graphql',
-  //     {
-  //       query: `
-  //         query Frames($pagination: PaginationArg, $filters: FrameFiltersInput) {
-  //           frames(pagination: $pagination, filters: $filters) {
-  //             data {
-  //               attributes {
-  //                 title
-  //               }
-  //               id
-  //             }
-  //           }
-  //         }
-  //       `,
-  //       variables: {
-  //         pagination: {
-  //           limit: 20
-  //         },
-  //         filters: {
-  //           hidden: {
-  //             // eq: orderData?.hidden || null
-  //             eq: orderData?.hidden || false
-  //           },
-  //           opening: {
-  //             eq: orderData?.opening || null
-  //           },
-  //         }
-  //       }
-  //     },
-  //     {
-  //       headers: {
-  //         'Content-Type': 'application/json',
-  //         Authorization: `Bearer ${jwtToken}`,
-  //       }
-  //     }
-  //   ).then(response => {
-  //     const data = response.data?.data?.frames?.data || [];
-  //     setFrames(data);
-  //   });
-  // // }, [jwtToken, orderData?.hidden, orderData?.opening, orderIdToUse]);
-  // }, [jwtToken, orderIdToUse, form]);
-
 
   useEffect(() => {
     axios.post(
@@ -210,46 +85,6 @@ const FrameStep = ({ setCurrentStepSend }) => {
 
   
   useEffect(() => {
-    // axios.post(
-    //   'https://api.boki.fortesting.com.ua/graphql',
-    //   {
-    //     query: `
-    //       query Frames($pagination: PaginationArg, $filters: FrameFiltersInput) {
-    //         frames(pagination: $pagination, filters: $filters) {
-    //           data {
-    //             attributes {
-    //               title
-    //             }
-    //             id
-    //           }
-    //         }
-    //       }
-    //     `,
-    //     variables: {
-    //       pagination: {
-    //         limit: 20
-    //       },
-    //       filters: {
-    //         hidden: {
-    //           eq: orderData?.hidden || false
-    //         },
-    //         opening: {
-    //           eq: orderData?.opening || null
-    //         },
-    //       }
-    //     }
-    //   },
-    //   {
-    //     headers: {
-    //       'Content-Type': 'application/json',
-    //       Authorization: `Bearer ${jwtToken}`,
-    //     }
-    //   }
-    // ).then(response => {
-    //   const data = response.data?.data?.frames?.data || [];
-    //   setFrames(data);
-    // });
-    
     axios.post(
       'https://api.boki.fortesting.com.ua/graphql',
       {
@@ -282,8 +117,6 @@ const FrameStep = ({ setCurrentStepSend }) => {
       setFrames(data);
     });
   }, [jwtToken, orderData]);
-  
-
   
   const handleFormSubmit = () => {
     const selectedFrameId = form.getFieldValue('name');
@@ -322,8 +155,7 @@ const FrameStep = ({ setCurrentStepSend }) => {
         }
       }
     ).then(response => {
-      console.log('Data updated:', response.data);
-      message.success(language.successQuery);
+      messageApi.success(language.successQuery);
       if (setCurrentStepSend) {
         setCurrentStepSend(prevState => {
           return {
@@ -333,22 +165,15 @@ const FrameStep = ({ setCurrentStepSend }) => {
         });
       }
     }).catch(error => {
-      console.error('Error updating data:', error);
-      message.error(language.errorQuery);
+      messageApi.error(language.errorQuery);
     });
   };
 
   return (
     <Card style={{background: '#F8F8F8', borderColor: '#DCDCDC'}}>
-     {/* <Spin spinning={isloading}> */}
       <Form form={form} onFinish={handleFormSubmit}>
+        {contextHolder}
 
-      {/* <Affix style={{ position: 'absolute', top: '-50px', right: '20px'}} offsetTop={20}>
-        <Button style={{backgroundColor: '#1677ff', color: 'white' }} htmlType="submit" icon={<SendOutlined />}>
-          {`${language.submit} ${language.frame}`}
-        </Button>
-      </Affix> */}
-          
         <Form.Item
           label={language.frame}
           name="name"
@@ -360,7 +185,6 @@ const FrameStep = ({ setCurrentStepSend }) => {
             allowClear
           >
             {frames.map(frame => (
-              // <Option key={frame.id} value={frame.id}>{frame.attributes.title}</Option>
               <Option key={frame.id} value={frame.id}>{languageMap[selectedLanguage][frame.attributes.title]}</Option>
             ))}
           </Select>
@@ -373,8 +197,6 @@ const FrameStep = ({ setCurrentStepSend }) => {
         </Form.Item>
 
       </Form>
-
-    {/* </Spin> */}
     </Card>
   );
 };

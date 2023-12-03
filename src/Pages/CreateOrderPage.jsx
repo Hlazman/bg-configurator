@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Steps, Form, Input, Button, Dropdown} from 'antd';
+import { Steps, Button} from 'antd';
 import { SearchOutlined } from '@ant-design/icons';
 import { OrderDrawer } from '../Components/OrderDrawer';
 import GroupDoorStep from '../Components/CreateOrderSteps/GroupDoorStep';
@@ -17,7 +17,6 @@ import languageMap from '../Languages/language';
 import OptionsStep from '../Components/CreateOrderSteps/OptionsStep';
 import OptionsAdditionalStep from '../Components/CreateOrderSteps/OptionsAdditionalStep';
 
-
 export const CreateOrderPage = () => {
   const { selectedLanguage } = useLanguage();
   const language = languageMap[selectedLanguage];
@@ -33,7 +32,7 @@ export const CreateOrderPage = () => {
   
   const navigate = useNavigate();
   const [currentStep, setCurrentStep] = useState(0);
-  
+  const { orderId: urlOrderId } = useParams();
   const [currentStepSend, setCurrentStepSend] = useState({
     startDataSend: false,
     canvasSend: false,
@@ -48,10 +47,9 @@ export const CreateOrderPage = () => {
     informationSend: false,
   });
 
-
-  const handlePrev = () => {
-    setCurrentStep(currentStep - 1);
-  };
+  // const handlePrev = () => {
+  //   setCurrentStep(currentStep - 1);
+  // };
 
   const handleStepClick = (step) => {
     setCurrentStep(step);
@@ -203,12 +201,6 @@ export const CreateOrderPage = () => {
       console.error('Error creating order:', error);
     }
   };
-
-  // useEffect(() => {
-  //   handleCreateOrder();
-  // },[])
-
-  const { orderId: urlOrderId } = useParams();
 
   useEffect(() => {
     if (urlOrderId) {

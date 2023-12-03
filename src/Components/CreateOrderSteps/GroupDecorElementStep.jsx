@@ -10,12 +10,13 @@ import PrimerStep from './PrimerStep';
 import { useLanguage } from '../../Context/LanguageContext';
 import languageMap from '../../Languages/language';
 
-// const GroupDecorElementStep = (elementID) => {
-const GroupDecorElementStep = ({elementID, isPaintDecor, isMirrorDecor}) => {
+// const GroupDecorElementStep = ({elementID, isPaintDecor, isMirrorDecor}) => {
+const GroupDecorElementStep = ({elementID}) => {
   const [activeTab, setActiveTab] = useState('paint');
   const { selectedLanguage } = useLanguage();
   const language = languageMap[selectedLanguage];
   const jwtToken = localStorage.getItem('token');
+  const [messageApi, contextHolder] = message.useMessage();
 
   const handleTabChange = tabKey => {
     setActiveTab(tabKey);
@@ -46,7 +47,6 @@ const GroupDecorElementStep = ({elementID, isPaintDecor, isMirrorDecor}) => {
           }
           `,
           variables: {
-            // elementSuborderId: elementID.elementID.toString(),
             elementSuborderId: elementID,
           }
         },
@@ -164,7 +164,6 @@ const GroupDecorElementStep = ({elementID, isPaintDecor, isMirrorDecor}) => {
     }
   };
 
-  // const checkDecor = async (type, title, decorData, setSelectedDecorId, productId) => {
   const checkDecor = async (type, title, decorData, setSelectedDecorId, productId, setDecorData) => {
     const foundDecor = decorData.find(decor =>
       decor.attributes.type === type && decor.attributes.title.toLowerCase() === title.toLowerCase()
@@ -178,7 +177,6 @@ const GroupDecorElementStep = ({elementID, isPaintDecor, isMirrorDecor}) => {
   
       try {
         const newDecorId = await createDecor({ title, type, productId});
-        // fetchDecorData();
         fetchDecorData(setDecorData);
         setSelectedDecorId(newDecorId);
         console.log(`Created: ${newDecorId}`);
@@ -207,7 +205,6 @@ const GroupDecorElementStep = ({elementID, isPaintDecor, isMirrorDecor}) => {
             }
           `,
           variables: {
-            // updateElementSuborderId: elementID.elementID.toString(),
             updateElementSuborderId: elementID,
             data: data
           }
@@ -219,21 +216,16 @@ const GroupDecorElementStep = ({elementID, isPaintDecor, isMirrorDecor}) => {
           },
         }
       );
-
-      
-      console.log('Data sent successfully:');
-      message.success(language.successQuery);
-
+      messageApi.success(language.successQuery);
 
     } catch (error) {
-      console.error('Error sending data:', error);
-      console.error('elementID', elementID);
-      console.error('elementID.elementID', elementID.elementID);
-      message.error(language.errorQuery);
+      messageApi.error(language.errorQuery);
     }
   };
 
   return (
+  <>
+    {contextHolder}
     <Tabs 
       type="card" 
       activeKey={activeTab} 
@@ -243,7 +235,7 @@ const GroupDecorElementStep = ({elementID, isPaintDecor, isMirrorDecor}) => {
         {
           label: language.veneer,
           key: 'veneer',
-          disabled: isPaintDecor,
+          // disabled: isPaintDecor,
           children: 
             <VeneerStep 
               fetchDecorData={fetchDecorData}
@@ -261,13 +253,13 @@ const GroupDecorElementStep = ({elementID, isPaintDecor, isMirrorDecor}) => {
             fetchOrderData={fetchOrderData}
             checkDecor={checkDecor}
             sendDecorForm={sendDecorForm}
-            isPaintDecor={isPaintDecor}
+            // isPaintDecor={isPaintDecor}
             />,
         },
         {
           label: language.stoneware,
           key: 'stoneware',
-          disabled: isPaintDecor,
+          // disabled: isPaintDecor,
           children: 
             <StoneStep 
             fetchDecorData={fetchDecorData}
@@ -277,10 +269,9 @@ const GroupDecorElementStep = ({elementID, isPaintDecor, isMirrorDecor}) => {
           />,
         },
         {
-          // label: language.mirror,
           label: `${language.mirror} / ${language.glass}`,
           key: 'mirror',
-          disabled: isMirrorDecor,
+          // disabled: isMirrorDecor,
           children: 
             <MirrorStep 
               fetchDecorData={fetchDecorData}
@@ -292,7 +283,7 @@ const GroupDecorElementStep = ({elementID, isPaintDecor, isMirrorDecor}) => {
         {
           label: language.hpl,
           key: 'hpl',
-          disabled: isPaintDecor,
+          // disabled: isPaintDecor,
           children: 
             <HPLStep 
             fetchDecorData={fetchDecorData}
@@ -304,7 +295,7 @@ const GroupDecorElementStep = ({elementID, isPaintDecor, isMirrorDecor}) => {
         {
           label: language.primers,
           key: 'primer',
-          disabled: isPaintDecor,
+          // disabled: isPaintDecor,
           children: 
             <PrimerStep 
             fetchDecorData={fetchDecorData}
@@ -315,6 +306,7 @@ const GroupDecorElementStep = ({elementID, isPaintDecor, isMirrorDecor}) => {
         },
       ]}
     />
+  </>
   );
 };
 

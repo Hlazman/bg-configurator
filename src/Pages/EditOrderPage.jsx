@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Steps, Form, Input, Button} from 'antd';
+import { Steps, Button} from 'antd';
 import { SearchOutlined } from '@ant-design/icons';
 import { OrderDrawer } from '../Components/OrderDrawer';
 import GroupDoorStep from '../Components/CreateOrderSteps/GroupDoorStep';
@@ -21,7 +21,6 @@ export const EditOrderPage = () => {
   const { selectedLanguage } = useLanguage();
   const language = languageMap[selectedLanguage];
   const jwtToken = localStorage.getItem('token');  
-  // const { addOrder, addSuborder, editOrderId } = useOrder();
   const { 
     orderId, setOrderId, 
     dorSuborderId, setDoorSuborderId, 
@@ -34,9 +33,9 @@ export const EditOrderPage = () => {
 
   const [currentStep, setCurrentStep] = useState(0);
 
-  const handlePrev = () => {
-    setCurrentStep(currentStep - 1);
-  };
+  // const handlePrev = () => {
+  //   setCurrentStep(currentStep - 1);
+  // };
 
   const handleStepClick = (step) => {
     setCurrentStep(step);
@@ -77,7 +76,6 @@ export const EditOrderPage = () => {
             }
           `,
           variables: {
-            // orderId: orderID
             orderId: orderId
           },
         },
@@ -89,8 +87,7 @@ export const EditOrderPage = () => {
         }
       );
   
-      const orderData = response.data.data.order.data.attributes;  
-      // setOrderId(orderData);
+      const orderData = response.data.data.order.data.attributes;
   
       const doorSuborderId = orderData.door_suborder.data.id;
       setDoorSuborderId(doorSuborderId);

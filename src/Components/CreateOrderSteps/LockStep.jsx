@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Form, Input, Button, Card, Radio, Select, Divider, Spin, message, Affix } from 'antd';
+import { Form, Input, Button, Card, Radio, Select, Spin, message, Affix } from 'antd';
 import { SendOutlined } from '@ant-design/icons';
 import axios from 'axios';
 import { useOrder } from '../../Context/OrderContext';
@@ -9,21 +9,13 @@ import languageMap from '../../Languages/language';
 const LockStep = ({ setCurrentStepSend }) => {
   const [lockData, setLockData] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
-  // const [selectedBrand, setSelectedBrand] = useState('ALL');
+  const [messageApi, contextHolder] = message.useMessage();
   const [selectedBrand, setSelectedBrand] = useState('Polaris');
   const [isLoading, setIsLoading] = useState(true);
   const [previousLockId, setPreviousLockId] = useState(null);
   const { selectedLanguage } = useLanguage();
   const language = languageMap[selectedLanguage];
-
-  
-  // const { order } = useOrder();
-  // const orderId = order.id;
-  // const orderIdToUse = orderID || orderId;
-  // const lockSuborder = order.suborders.find(suborder => suborder.name === 'lockSub');
-
   const { lockSuborderId } = useOrder();
-
   const jwtToken = localStorage.getItem('token');
 
   useEffect(() => {
@@ -78,7 +70,6 @@ const LockStep = ({ setCurrentStepSend }) => {
       }
     };
 
-    // const storedBrand = localStorage.getItem('selectedBrandLock') || 'ALL';
     const storedBrand = localStorage.getItem('selectedBrandLock') || 'Polaris';
     const storedSearchQuery = localStorage.getItem('searchQuery') || '';
 
@@ -88,7 +79,6 @@ const LockStep = ({ setCurrentStepSend }) => {
     fetchData();
   }, [jwtToken]);
 
-  // const brandOptions = ['ALL', ...new Set(lockData.map(lock => lock.attributes.brand))];
   const brandOptions = [...new Set(lockData.map(lock => lock.attributes.brand)), 'ALL',];
 
   const handleBrandChange = value => {
@@ -117,7 +107,6 @@ const LockStep = ({ setCurrentStepSend }) => {
 
   const handleSbmitForm = async () => {
     const variables = {
-      // "updateFrameFittingId": lockSuborder.data.id,
       "updateFrameFittingId": lockSuborderId,
       "data": {
         "lock": previousLockId, 
@@ -146,8 +135,7 @@ const LockStep = ({ setCurrentStepSend }) => {
       }
     )
     .then((response) => {
-      console.log('Success:', response.data);
-      message.success(language.successQuery);
+      messageApi.success(language.successQuery);
       if (setCurrentStepSend) {
         setCurrentStepSend(prevState => {
           return {
@@ -158,8 +146,7 @@ const LockStep = ({ setCurrentStepSend }) => {
       }
     })
     .catch((error) => {
-      console.error('Ошибка:', error);
-      message.error(language.errorQuery);
+      messageApi.error(language.errorQuery);
     });
   }
 
@@ -168,7 +155,6 @@ const LockStep = ({ setCurrentStepSend }) => {
     setIsLoading(true);
 
     const variables = {
-      // frameFittingId: lockSuborder.data.id
       frameFittingId: lockSuborderId
     };
 
@@ -207,11 +193,11 @@ const LockStep = ({ setCurrentStepSend }) => {
       setIsLoading(false);
     });
 
-  // }, [jwtToken, lockSuborder]);
   }, [jwtToken, lockSuborderId]);
 
   return (
     <Form onFinish={handleSbmitForm} form={form}>
+      {contextHolder}
 
       <Affix style={{ position: 'absolute', top: '-60px', right: '20px'}} offsetTop={20}>
         <Button style={{backgroundColor: '#1677ff', color: 'white' }} htmlType="submit" icon={<SendOutlined />}>
@@ -284,13 +270,6 @@ const LockStep = ({ setCurrentStepSend }) => {
           </Radio.Group>
         </Form.Item>
       )}
-
-      {/* <Form.Item wrapperCol={{ offset: 4, span: 16 }}>
-        <Button type="primary" htmlType="submit">
-          {language.submit}
-        </Button>
-      </Form.Item> */}
-      
     </Form>
   );
 };

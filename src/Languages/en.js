@@ -161,12 +161,15 @@ const en = {
   wc: "With an overlay under the WC",
   
   exchangeRate: "The database stores the price only in Euros. You can convert to another currency, but this data will only be saved in PDF files. Be careful, information about exchange rates is updated every day. And if you wish to adjust the Order, the prices may be different.",
-
+  firstPainFor: 'First you need to choose field "Pait for"',
+  
   additionalOption: "Additional options",
   addOption: "Add Option",
   factory: "Factory",
   presentation: "Presentation",
 
+  NoDecorData: 'No decor data found',
+  NoDecorDataDoor: 'Door decor is not selected',
 
 // Products Options
   'cat_door': 'Cat Door',
@@ -219,6 +222,19 @@ const en = {
   'skirting Art Decore': 'Skirting (Art Decore)',
   'skirting Loft': 'Skirting (Loft)',
   'skirting Neo Classic': 'Skirting (Neo Classic)',
+
+// Products Elements TYPE
+  decorInsert: "Insert decor", 
+  wallplate: "Wall panel",
+  cover: "Cover",
+  platband: "Platband",
+  threadedPlatband: "Threaded Platband",
+  extender: "Extender", 
+  kapitel: "Kapitel", 
+  skirting: "Skirting", 
+  moulding: "Moulding",
+  replaceGlass: "Replace glass",
+  anotherSideColor: "Another side color",
 
 // Instructions
   InstructionCreateOrderHeader: (

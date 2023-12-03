@@ -158,11 +158,15 @@ const de = {
   wc: 'Mit einer Überlagerung unter der Toilette',
 
   exchangeRate: "Die Datenbank speichert den Preis nur in Euro. Sie können in eine andere Währung umrechnen, aber diese Daten werden nur in PDF-Dateien gespeichert. Seien Sie vorsichtig, die Informationen zu Wechselkursen werden täglich aktualisiert. Und wenn Sie die Bestellung anpassen möchten, können die Preise unterschiedlich sein.",
+  firstPainFor: 'Zuerst müssen Sie das Feld "Farbe für" auswählen',
 
   additionalOption: 'Zusätzliche Optionen',
   addOption: 'Option hinzufügen',
   factory: 'Fabrik',
   presentation: 'Präsentation',
+
+  NoDecorData: 'Keine Dekordaten gefunden',
+  NoDecorDataDoor: 'Türdekoration ist nicht ausgewählt',
 
 // Products Frame
   'hidden_standard Hidden': 'Versteckter Standard',
@@ -215,6 +219,19 @@ const de = {
   'sandblasting': 'Sandstrahlen',
   'spindle set': 'Spindel-Set',
   'cutting for decor': 'Schnitt für Dekor',
+
+// Products Elements TYPE
+  decorInsert: "Dekoreinsatz",
+  wallplate: "Wandpaneel",
+  cover: "Überlagerung",
+  platband: "Leisten",
+  threadedPlatband: "Gewindeplatte",
+  extender: "Auswahlleiste",
+  kapitel: "Kapitel",
+  skirting: "Sockelleiste",
+  moulding: "Leiste",
+  replaceGlass: "Glas austauschen",
+  anotherSideColor: "Farbe der anderen Seite",
 
 // Instructions
   InstructionCreateOrderHeader: (

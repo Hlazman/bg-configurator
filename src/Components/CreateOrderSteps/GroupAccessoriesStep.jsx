@@ -7,7 +7,7 @@ import { useLanguage } from '../../Context/LanguageContext';
 import languageMap from '../../Languages/language';
 
 const GroupAccessoriesStep = ({ setCurrentStepSend }) => {
-  const [activeTab, setActiveTab] = useState('hinges');
+  const [activeTab, setActiveTab] = useState('knobe');
   const { selectedLanguage } = useLanguage();
   const language = languageMap[selectedLanguage];
 

@@ -451,6 +451,7 @@ const fetchElementsData = async (elementIds) => {
                     amount
                     price
                     basicPrice
+                    type
                     sizes {
                       height
                       thickness
@@ -824,7 +825,6 @@ const fetchOptionsData = async (optionIds) => {
       <div style={{margin: '20px', display:'flex', gap: '20px', justifyContent: 'center'}}>
           <h2 style={{display: 'inline-block', marginRight: '30px'}}> {language.presentation} </h2>
           <Button type="primary" size={'large'} onClick={handlePdfExport}>{language.save} PDF</Button>
-        {/* <Button type="primary" size={'large'} onClick={handlePdfExport}>{language.save} PDF</Button> */}
         {/* <Button onClick={handleOpenPdf}>{language.open} PDF</Button> */}
       </div>
       <Divider/>
@@ -849,8 +849,8 @@ const fetchOptionsData = async (optionIds) => {
           <Divider/>
           <h2 style={{display: 'inline-block', marginRight: '30px'}}> {language.factory} </h2>
           <Button type="primary" size={'large'} onClick={handlePdfExportFactory}>{language.save} PDF</Button>
-          <Divider/>
           {/* <Button onClick={handleOpenPdf}>{language.open} PDF</Button> */}
+          <Divider/>
 
           <div id="pdf-content-factory">
             <OrderDescriptionFactory

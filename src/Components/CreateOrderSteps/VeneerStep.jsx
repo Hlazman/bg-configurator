@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Form, Input, Button, Card, Radio, Select, Divider, Spin, Affix } from 'antd';
+import { Form, Input, Button, Card, Radio, Select, Spin, Affix } from 'antd';
 import { SendOutlined } from '@ant-design/icons';
 import axios from 'axios';
 import { useOrder } from '../../Context/OrderContext';
@@ -9,7 +9,6 @@ import languageMap from '../../Languages/language';
 const VeneerStep = ({ fetchOrderData, fetchDecorData, checkDecor, sendDecorForm }) => {
   const [veneerData, setVeneerData] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
-  // const [selectedCategory, setSelectedCategory] = useState('ALL');
   const [selectedCategory, setSelectedCategory] = useState('');
   const [isloading, setIsLoading] = useState(true);  
   const jwtToken = localStorage.getItem('token');
@@ -18,11 +17,6 @@ const VeneerStep = ({ fetchOrderData, fetchDecorData, checkDecor, sendDecorForm 
   const [selectedDecorId, setSelectedDecorId] = useState(null);
   const { selectedLanguage } = useLanguage();
   const language = languageMap[selectedLanguage];
-  
-  // const { order } = useOrder();
-  // const orderId = order.id;
-  // const orderIdToUse = orderID || orderId;
-  // const doorSuborder = order.suborders.find(suborder => suborder.name === 'doorSub');
   const { orderId, dorSuborderId} = useOrder();
   const orderIdToUse = orderId;
 
@@ -181,8 +175,6 @@ const VeneerStep = ({ fetchOrderData, fetchDecorData, checkDecor, sendDecorForm 
                         : 'none',
                     }}
                     onClick={() => {
-                      // await checkDecor('veneer', veneer.title, decorData, setSelectedDecorId, veneer.productId, setDecorData);
-                      // await setPreviousVeneerTitle(veneer.title);
                       checkDecor('veneer', veneer.title, decorData, setSelectedDecorId, veneer.productId, setDecorData);
                       setPreviousVeneerTitle(veneer.title);
                     }}
@@ -199,7 +191,6 @@ const VeneerStep = ({ fetchOrderData, fetchDecorData, checkDecor, sendDecorForm 
                       description={veneer.description}
                       style={{ paddingTop: '10px' }}
                     />
-                    {/* <Radio value={veneer.id} style={{ display: 'none' }} /> */}
                   </Card>
                 </Radio>
               ))}
@@ -207,12 +198,6 @@ const VeneerStep = ({ fetchOrderData, fetchDecorData, checkDecor, sendDecorForm 
           </Radio.Group>
         </Form.Item>
       )}
-
-      {/* <Form.Item wrapperCol={{ offset: 4, span: 16 }}>
-        <Button type="primary" htmlType="submit">
-        {language.submit}
-        </Button>
-      </Form.Item> */}
     </Form>
   );
 };

@@ -16,6 +16,7 @@ export const CreateColorDrawer = () => {
   const [form] = Form.useForm();
   const [loading, setLoading] = useState(false);
   const [colorGroupDisabled, setColorGroupDisabled] = useState(false);
+  const [messageApi, contextHolder] = message.useMessage();
 
   const handleColorRangeChange = (value) => {
     if (value === 'NCS') {
@@ -110,21 +111,18 @@ export const CreateColorDrawer = () => {
           },
         }
       );
-  
-      console.log('Response:', response.data);
-      message.success(language.successQuery);
+      messageApi.success(language.successQuery);
       form.resetFields();
     } catch (error) {
-      console.error('Error:', error);
-      message.error(language.errorQuery);
+      messageApi.error(language.errorQuery);
     } finally {
       setLoading(false);
     }
   };
   
-
   return (
     <>
+      {contextHolder}
       <Space>
         <Button type="primary" onClick={showLargeDrawer}>
           {language.createColor}

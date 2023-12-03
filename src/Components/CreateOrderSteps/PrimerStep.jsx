@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Form, Input, Button, Card, Radio, Divider, Spin, Affix } from 'antd';
+import { Form, Input, Button, Card, Radio, Spin, Affix } from 'antd';
 import { SendOutlined } from '@ant-design/icons';
 import axios from 'axios';
 import { useOrder } from '../../Context/OrderContext';
@@ -16,11 +16,6 @@ const PrimerStep = ({orderID, fetchOrderData, fetchDecorData, checkDecor, sendDe
   const [selectedDecorId, setSelectedDecorId] = useState(null);
   const { selectedLanguage } = useLanguage();
   const language = languageMap[selectedLanguage];
-  
-  // const { order } = useOrder();
-  // const orderId = order.id;
-  // const orderIdToUse = orderID || orderId;
-  // const doorSuborder = order.suborders.find(suborder => suborder.name === 'doorSub');
   const { orderId, dorSuborderId } = useOrder();
   const orderIdToUse = orderId;
 
@@ -30,7 +25,6 @@ const PrimerStep = ({orderID, fetchOrderData, fetchDecorData, checkDecor, sendDe
 
   const [form] = Form.useForm();
   const onFinish = async () => {
-    // sendDecorForm(orderIdToUse, doorSuborder, selectedDecorId);
     sendDecorForm(orderIdToUse, dorSuborderId, selectedDecorId);
   };
 
@@ -120,7 +114,6 @@ const PrimerStep = ({orderID, fetchOrderData, fetchDecorData, checkDecor, sendDe
                         previousPrimerTitle === primer.attributes.title ? '7px solid #f06d20' : 'none',
                     }}
                     onClick={() => {
-                      // checkDecor('primer', primer.attributes.title, decorData, setSelectedDecorId, primer.id);
                       checkDecor('primer', primer.attributes.title, decorData, setSelectedDecorId, primer.id, setDecorData);
                       setPreviousPrimerTitle(primer.attributes.title);
                     }}
@@ -141,13 +134,6 @@ const PrimerStep = ({orderID, fetchOrderData, fetchDecorData, checkDecor, sendDe
           </Radio.Group>
         </Form.Item>
       )}
-
-        {/* <Form.Item wrapperCol={{ offset: 4, span: 16 }}>
-          <Button type="primary" htmlType="submit">
-          {language.submit}
-          </Button>
-        </Form.Item> */}
-
     </Form>
   );
 };

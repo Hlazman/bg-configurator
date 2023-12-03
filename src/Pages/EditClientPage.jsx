@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { Form, Input, Button, Card, Space, Spin, message } from 'antd';
-import { UserOutlined, PlusOutlined, MinusCircleOutlined } from '@ant-design/icons';
+import { UserOutlined } from '@ant-design/icons';
 import axios from 'axios';
 import { useLanguage } from '../Context/LanguageContext';
 import languageMap from '../Languages/language';
@@ -75,16 +75,6 @@ export const EditClientPage = () => {
         message.error(language.errorGet);
       });
   }, [clientId, jwtToken, form, language]);
-
-  // const handleAddAddress = () => {
-  //   setAddresses([...addresses, { country: null, city: null, address: null, zipCode: null }]);
-  // };
-
-  // const handleRemoveAddress = (index) => {
-  //   const updatedAddresses = [...addresses];
-  //   updatedAddresses.splice(index, 1);
-  //   setAddresses(updatedAddresses);
-  // };
 
   const onFinish = (values) => {
     setLoading(true);
@@ -166,7 +156,6 @@ export const EditClientPage = () => {
           </Form.Item>
 
           {addresses.map((address, index) => (
-            // <Space key={index} style={{ alignItems: 'flex-start' }}>
             <div key={index} style={{ display: 'flex', gap: '30px' }}>
 
               <Form.Item name={['addresses', index, 'country']} style={{ width: '100%' }}>
@@ -202,21 +191,8 @@ export const EditClientPage = () => {
                 <Input placeholder={language.zipCode} addonBefore={language.zipCode} />
               </Form.Item>
 
-              {/* <Button
-                danger
-                type="primary"
-                onClick={() => handleRemoveAddress(index)}
-                icon={<MinusCircleOutlined />}
-              ></Button> */}
-            {/* </Space> */}
             </div>
           ))}
-
-          {/* <Form.Item>
-            <Button type="primary" onClick={handleAddAddress} icon={<PlusOutlined />}>
-              {language.addAddress}
-            </Button>
-          </Form.Item> */}
 
           <Form.Item 
             name="phone"

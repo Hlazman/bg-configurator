@@ -12,7 +12,7 @@ const OptionsAdditionalStep = ({ setCurrentStepSend }) => {
   const { orderId } = useOrder();
   const jwtToken = localStorage.getItem('token');
   const orderIdToUse = orderId;
-
+  const [messageApi, contextHolder] = message.useMessage();
   const [form] = Form.useForm();
   const { selectedLanguage } = useLanguage();
   const language = languageMap[selectedLanguage];
@@ -38,24 +38,13 @@ const OptionsAdditionalStep = ({ setCurrentStepSend }) => {
     if (items[index]) {
       setDeleteItem(items[index]);
       setModalVisible(true);
-
-      // if (form.getFieldsValue().items.length !== optionsSuborderData.length) {
-      //   form.setFieldsValue({
-      //     items: items.map((item, index) => ({
-      //       ...item,
-      //       key: index,
-      //     })),
-      //   });
-      // }
-
     }
   };
   
-  const handleDeleteConfirmed = () => {
+  const handleDeleteConfirmed = (name) => {
     if (deleteItem) {
       const suborderId = deleteItem.id.toString();
       deleteSubOrder(suborderId, deleteItem);
-
       setModalVisible(false);
     }
   };
@@ -139,7 +128,7 @@ const OptionsAdditionalStep = ({ setCurrentStepSend }) => {
         }
       }
   
-      message.success(language.successQuery);
+      messageApi.success(language.successQuery);
   
       if (setCurrentStepSend) {
         setCurrentStepSend(prevState => ({
@@ -148,8 +137,7 @@ const OptionsAdditionalStep = ({ setCurrentStepSend }) => {
         }));
       }
     } catch (error) {
-      console.error('Error updating/creating orders:', error);
-      message.error(language.errorQuery);
+      messageApi.error(language.errorQuery);
     }
   };
   
@@ -222,7 +210,7 @@ const OptionsAdditionalStep = ({ setCurrentStepSend }) => {
           }
         );
 
-        message.success(language.successQuery);
+        messageApi.success(language.successQuery);
 
       } catch (error) {
         console.error('Error deleting option suborder:', error);
@@ -269,7 +257,7 @@ const OptionsAdditionalStep = ({ setCurrentStepSend }) => {
   
   useEffect(()=> {
     fetchOrderData()
-    // console.log('go')
+    console.log('go')
   },[trigger]);
 
 
@@ -286,6 +274,7 @@ const OptionsAdditionalStep = ({ setCurrentStepSend }) => {
   return (
     <Card style={{ background: '#F8F8F8', borderColor: '#DCDCDC' }}>
       <Form form={form} name="dynamic_form_nest_item" onFinish={handleFormSubmit}>
+      {contextHolder}
 
         <Affix style={{ position: 'absolute', top: '20px', right: '20px'}} offsetTop={20}>
           <Button style={{backgroundColor: '#1677ff', color: 'white' }} htmlType="submit" icon={<SendOutlined />}>
@@ -335,31 +324,27 @@ const OptionsAdditionalStep = ({ setCurrentStepSend }) => {
                   <Button 
                     danger 
                     onClick={() => {
-                      remove(name);
                       handleRemoveItem(key);
-
-                      // if (form.getFieldsValue().items.length !== optionsSuborderData.length) {
-                      //   form.setFieldsValue({
-                      //     items: items.map((item, index) => ({
-                      //       ...item,
-                      //       key: index,
-                      //     })),
-                      //   });
-                      // }
-
+                      if (fields.length !== items.length ) {
+                        remove(name);
+                      }
                     }} icon={<MinusCircleOutlined />} />
 
                   <Modal
                     title={`${language.removeData} ${user.username}?`}
                     open={modalVisible}
-                    onOk={handleDeleteConfirmed}
-                    // onOk={() => {
-                    //   handleDeleteConfirmed();
-                    // }}
-                    onCancel={() => setModalVisible(false)}
-                    // onCancel={() => {
-                    //   setModalVisible(false);
-                    // }}
+                    // onOk={handleDeleteConfirmed}
+                    onOk={() => {
+                      handleDeleteConfirmed();
+                      // remove(key)
+                    }}
+                    // onCancel={() => setModalVisible(false)}
+                    onCancel={() => {
+                      console.log('name', name);
+                      console.log('key', key);
+                      console.log('key', key);
+                      setModalVisible(false);
+                    }}
                   >
                     <p>{language.undone}</p>
                   </Modal>

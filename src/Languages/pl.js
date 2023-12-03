@@ -158,11 +158,15 @@ const pl = {
   wc: 'Z nakładką pod WC',
 
   exchangeRate: "Baza danych przechowuje cenę tylko w euro. Możesz przeliczyć na inną walutę, ale te dane będą zapisane tylko w plikach PDF. Bądź ostrożny, informacje o kursach wymiany są aktualizowane codziennie. Jeśli chcesz dostosować zamówienie, ceny mogą być inne.",
+  firstPainFor: 'Najpierw musisz wybrać pole "Farba do"',
 
   additionalOption: 'Dodatkowe opcje',
   addOption: 'Dodaj opcję',
   factory: 'Fabryka',
   presentation: 'Prezentacja',
+
+  NoDecorData: 'Nie znaleziono danych dotyczących dekoracji',
+  NoDecorDataDoor: 'Nie wybrano dekoracji drzwi',
 
 // Products Frame
   'hidden_standard Hidden': 'Estándar oculto',
@@ -215,6 +219,19 @@ const pl = {
   'sandblasting': 'Piaskowanie',
   'spindle set': 'Zestaw wrzeciona',
   'cutting for decor': 'Krojenie na dekoracje',
+
+// Products Elements TYPE
+  decorInsert: "Wkładka dekoracyjna",
+  wallplate: "Panel ścienny",
+  cover: "Nakładka",
+  platband: "Listwy",
+  threadedPlatband: "Listwa z gwintem",
+  extender: "Listwa wyboru",
+  kapitel: "Kapitel",
+  skirting: "Listwa przypodłogowa",
+  moulding: "Listwa",
+  replaceGlass: "Wymiana szkła",
+  anotherSideColor: "Kolor z drugiej strony",
 
 // Instructions
   InstructionCreateOrderHeader: (

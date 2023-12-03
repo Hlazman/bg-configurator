@@ -1,39 +1,32 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Form, Input, Button, Card, Radio, Select, Spin, message, Affix } from 'antd';
 import { SendOutlined } from '@ant-design/icons';
 import axios from 'axios';
 import { useOrder } from '../../Context/OrderContext';
-import { CreateColorDrawer } from '../CreateColorDrawer';
 import { useLanguage } from '../../Context/LanguageContext';
 import languageMap from '../../Languages/language';
 
 const PaintStep = ({ orderID, fetchOrderData, fetchDecorData, checkDecor, sendDecorForm, isPaintDecor }) => {
   const [paintData, setPaintData] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
-  // const [selectedColorGroup, setSelectedColorGroup] = useState('ALL');
+  const [messageApi, contextHolder] = message.useMessage();
   const [selectedColorGroup, setSelectedColorGroup] = useState('');
   const [selectedColorRange, setSelectedColorRange] = useState('RAL');
   const { selectedLanguage } = useLanguage();
   const language = languageMap[selectedLanguage];
-
-  // const [selectedPaintFor, setSelectedPaintFor] = useState('');
-  const [selectedPaintFor, setSelectedPaintFor] = useState(isPaintDecor ? 'paint' : '');
+  // const [selectedPaintFor, setSelectedPaintFor] = useState(isPaintDecor ? 'paint' : '');
+  const [selectedPaintFor, setSelectedPaintFor] = useState('');
   const [isPaintType, setIsPaintType] = useState(true);
-
   const [isLoading, setIsLoading] = useState(true);
   const jwtToken = localStorage.getItem('token');
   const [previousColorTittle, setPreviousColorTitle] = useState(null);
   const [decorData, setDecorData] = useState([]);
   const [selectedDecorId, setSelectedDecorId] = useState(null);
-
   const [isDisabledGroup, setIsDisabledGroup] = useState(false);
-  
-  const { order } = useOrder();
-  // const orderId = order.id;
-  // const orderIdToUse = orderID || orderId;
-  // const doorSuborder = order.suborders.find(suborder => suborder.name === 'doorSub');
+  // const { order } = useOrder();
   const { orderId, dorSuborderId } = useOrder();
   const orderIdToUse = orderId;
+  const paintForSelectRef = useRef(null);
 
   const [form] = Form.useForm();
 
@@ -147,8 +140,8 @@ const PaintStep = ({ orderID, fetchOrderData, fetchDecorData, checkDecor, sendDe
 
 
   return (
-    // <Form onFinish={onFinish} form={form} style={{marginTop: '20px'}}>
     <Form onFinish={onFinish} form={form}>
+      {contextHolder}
 
       <Affix style={{ position: 'absolute', top: '-60px', right: '20px'}} offsetTop={60}>
         <Button style={{backgroundColor: '#1677ff', color: 'white' }} htmlType="submit" icon={<SendOutlined />}>
@@ -166,18 +159,18 @@ const PaintStep = ({ orderID, fetchOrderData, fetchDecorData, checkDecor, sendDe
           style={{margin: '10px 0', flex: '1', 'minWidth': "300px"}}
         />
           
-        <Form.Item 
-          // label="Paint for" 
+        <Form.Item
           label={language.paintFor} 
           rules={[{ required: true, message: language.requiredField }]}
           style={{margin: '10px 0', flex: '1', 'minWidth': "300px"}}
         >
           <Select
             name="selectedPaintFor"
-            // value={selectedPaintFor}
-            value={ !isPaintDecor ? selectedPaintFor : 'paint'}
+            // value={ !isPaintDecor ? selectedPaintFor : 'paint'}
+            value={selectedPaintFor}
             onChange={handlePaintForChange}
-            disabled={isPaintDecor}
+            // disabled={isPaintDecor}
+            ref={paintForSelectRef}
           >
             <Select.Option value="paint">{language.paint}</Select.Option>
             <Select.Option value="painted_glass">{language.glass}</Select.Option>
@@ -239,23 +232,13 @@ const PaintStep = ({ orderID, fetchOrderData, fetchDecorData, checkDecor, sendDe
                             : 'none',
                       }}
                       onClick={() => {
-                        // if (isOnlyPaintDecor) {
-                        //   setSelectedPaintFor('paint')
-                        // }
-
                         if (selectedPaintFor) {
                           checkDecor(selectedPaintFor, paint.attributes.color_code, decorData, setSelectedDecorId, paint.id, setDecorData);
                           setPreviousColorTitle(paint.attributes.color_code);
                         } else {
-                          message.error('First you need to choose "Pait for" ')
+                          messageApi.error(language.firstPainFor);
+                          paintForSelectRef.current.focus();
                         }
-
-                        // if (selectedPaintFor) {
-                        //   checkDecor(selectedPaintFor, paint.attributes.color_code, decorData, setSelectedDecorId, paint.id, setDecorData);
-                        //   setPreviousColorTitle(paint.attributes.color_code);
-                        // } else {
-                        //   message.error('First you need to choose "Pait for" ')
-                        // }
                       }}
                     >
                       <div style={{ overflow: 'hidden', height: 120 }}>
@@ -277,16 +260,7 @@ const PaintStep = ({ orderID, fetchOrderData, fetchDecorData, checkDecor, sendDe
           </Radio.Group>
         </Form.Item>
       )}
-
-      {/* <Form.Item wrapperCol={{ offset: 4, span: 16 }}>
-        <Button type="primary" htmlType="submit">
-          {language.submit}
-        </Button>
-      </Form.Item> */}
-      
     </Form>
-
-
   );
 };
 

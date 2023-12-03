@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Form, Input, Button, Card, Radio, Divider, Spin, Affix } from 'antd';
+import { Form, Input, Button, Card, Radio, Spin, Affix } from 'antd';
 import { SendOutlined } from '@ant-design/icons';
 import axios from 'axios';
 import { useOrder } from '../../Context/OrderContext';
@@ -16,11 +16,6 @@ const MirrorStep = ({fetchOrderData, fetchDecorData, checkDecor, sendDecorForm }
   const [selectedDecorId, setSelectedDecorId] = useState(null);
   const { selectedLanguage } = useLanguage();
   const language = languageMap[selectedLanguage];
-  
-  // const { order } = useOrder();
-  // const orderId = order.id;
-  // const orderIdToUse = orderID || orderId;
-  // const doorSuborder = order.suborders.find(suborder => suborder.name === 'doorSub');
   const { orderId, dorSuborderId } = useOrder();
   const orderIdToUse = orderId;
 
@@ -29,8 +24,8 @@ const MirrorStep = ({fetchOrderData, fetchDecorData, checkDecor, sendDecorForm }
   );
 
   const [form] = Form.useForm();
+
   const onFinish = async () => {
-    // sendDecorForm(orderIdToUse, doorSuborder, selectedDecorId);
     sendDecorForm(orderIdToUse, dorSuborderId, selectedDecorId);
   };
 
@@ -99,7 +94,6 @@ const MirrorStep = ({fetchOrderData, fetchDecorData, checkDecor, sendDecorForm }
           style={{ marginBottom: '10px' }}
         />
 
-
       {isLoading ? (
         <div style={{ textAlign: 'center', marginTop: '20px' }}>
           <Spin size="large" />
@@ -120,7 +114,6 @@ const MirrorStep = ({fetchOrderData, fetchDecorData, checkDecor, sendDecorForm }
                         previousMirrorTitle === mirror.attributes.title ? '7px solid #f06d20' : 'none',
                     }}
                     onClick={() => {
-                      // checkDecor('mirror', mirror.attributes.title, decorData, setSelectedDecorId, mirror.id);
                       checkDecor('mirror', mirror.attributes.title, decorData, setSelectedDecorId, mirror.id, setDecorData);
                       setPreviousMirrorTitle(mirror.attributes.title);
                     }}
@@ -140,13 +133,6 @@ const MirrorStep = ({fetchOrderData, fetchDecorData, checkDecor, sendDecorForm }
           </Radio.Group>
         </Form.Item>
       )}
-
-        {/* <Form.Item wrapperCol={{ offset: 4, span: 16 }}>
-          <Button type="primary" htmlType="submit">
-            {language.submit}
-          </Button>
-        </Form.Item> */}
-
     </Form>
   );
 };

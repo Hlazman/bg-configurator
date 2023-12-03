@@ -158,11 +158,15 @@ const es = {
   wc: 'Con una superposición bajo el inodoro',
 
   exchangeRate: "La base de datos almacena el precio solo en euros. Puede convertirlo a otra moneda, pero estos datos solo se guardarán en archivos PDF. Tenga cuidado, la información sobre los tipos de cambio se actualiza todos los días. Y si desea ajustar el pedido, los precios pueden ser diferentes.",
+  firstPainFor: 'Primero debes elegir el campo "Pintura para"',
 
   additionalOption: 'Opciones adicionales',
   addOption: 'Agregar opción',
   factory: 'Fábrica',
   presentation: 'Presentación',
+
+  NoDecorData: 'No se encontraron datos de decoración',
+  NoDecorDataDoor: 'No se ha seleccionado decoración para la puerta',
 
 // Products Frame
   'hidden_standard Hidden': 'Estándar oculto',
@@ -215,6 +219,19 @@ const es = {
   'sandblasting': 'Chorreado de arena',
   'spindle set': 'Juego de husillos',
   'cutting for decor': 'Corte para decoración',
+
+// Products Elements TYPE
+  decorInsert: "Inserto decorativo",
+  wallplate: "Panel de pared",
+  cover: "Cubierta",
+  platband: "Listones",
+  threadedPlatband: "Listón roscado",
+  extender: "Barra de selección",
+  kapitel: "Capitel",
+  skirting: "Zócalo",
+  moulding: "Moldura",
+  replaceGlass: "Reemplazar cristal",
+  anotherSideColor: "Color del otro lado",
 
 // Instructions
   InstructionCreateOrderHeader: (

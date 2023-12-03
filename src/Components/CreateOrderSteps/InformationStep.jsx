@@ -24,6 +24,8 @@ const InformationStep = ({ setCurrentStepSend }) => {
   const [clients, setClients] = useState([]);
   const [form] = Form.useForm();
 
+  const [messageApi, contextHolder] = message.useMessage();
+
   const handleClientChange = (clientId) => {
     const selectedClientData = clients.find((client) => client.id === clientId);
   
@@ -133,7 +135,7 @@ const InformationStep = ({ setCurrentStepSend }) => {
         }
       )
       .then((response) => {
-        message.success(language.successQuery);
+        messageApi.success(language.successQuery);
         if (setCurrentStepSend) {
           setCurrentStepSend(prevState => {
             return {
@@ -149,7 +151,7 @@ const InformationStep = ({ setCurrentStepSend }) => {
         localStorage.setItem('selectedLanguage', locale);
       })
       .catch((error) => {
-        message.error(language.errorQuery);
+        messageApi.error(language.errorQuery);
       });
   };
 
@@ -222,6 +224,7 @@ const InformationStep = ({ setCurrentStepSend }) => {
 
   return (
     <Card style={{background: '#F8F8F8', borderColor: '#DCDCDC', marginTop: '20px'}}>
+      {contextHolder}
       <Form form={form} onFinish={onFinish} initialValues={{ currency: 'EUR' }} >
 
         <div style={{ display: 'flex', gap: '30px' }}>

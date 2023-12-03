@@ -11,7 +11,6 @@ export const OrderDrawer = () => {
   const [open, setOpen] = useState(false);
   // const [size, setSize] = useState();
   
-  
   const showLargeDrawer = () => {
     // setSize('large');
     setOpen(true);

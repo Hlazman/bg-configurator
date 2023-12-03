@@ -158,11 +158,15 @@ const ua = {
   wc: '3 насадкою під унітазом',
 
   exchangeRate: "База даних зберігає ціну лише в євро. Ви можете конвертувати в іншу валюту, але ці дані будуть збережені тільки y PDF-файлах. Будьте обережні, інформація про курси валют оновлюється щодня. I якщо ви бажаєте змінити замовлення, ціни можуть бути різними.",
+  firstPainFor: 'Спочатку вам потрібно вибрати поле "Фарба для"',
 
   additionalOption: 'Додаткові опції',
   addOption: 'Додати опцію',
   factory: 'Фабрика',
   presentation: 'Презентація',
+
+  NoDecorData: 'Дані про декор не знайдені',
+  NoDecorDataDoor: 'He вибрано декор для дверей',
 
 // Products Frame
   'hidden_standard Hidden': 'Прихований стандарт',
@@ -215,6 +219,19 @@ const ua = {
   'sandblasting': 'Піскоструйна обробка',
   'spindle set': 'Комплект шпинделя',
   'cutting for decor': 'Вирізання під декор',
+
+// Products Elements TYPE
+  decorInsert: "Вставка декору",
+  wallplate: "Cтiнoвa панель",
+  cover: "Накладка",
+  platband: "Лиштва",
+  threadedPlatband: "Лиштва з різьбленням",
+  extender: "Добірна планка",
+  kapitel: "Капітель",
+  skirting: "Плінтус",
+  moulding: "Молдинг",
+  replaceGlass: "Заміна скла",
+  anotherSideColor: "Колір з іншого боку",
 
 // Instructions
   InstructionCreateOrderHeader: (

@@ -4,7 +4,6 @@ import { useState, useEffect, useContext } from 'react';
 import axios from 'axios';
 import { AuthContext } from '../Context/AuthContext';
 import { useOrder } from '../Context/OrderContext';
-import { EditOrderPage } from './EditOrderPage';
 import { useNavigate } from 'react-router-dom';
 import { useLanguage } from '../Context/LanguageContext';
 import languageMap from '../Languages/language';
@@ -38,7 +37,6 @@ export const OrdersPage = () => {
 
 const handleOpenOrder = (orderID) => {
   setOrderId(orderID)
-  // navigate(`/order`);
   navigate(`/order/${orderID}`);
 };
 
@@ -504,7 +502,7 @@ const handleOpenOrder = (orderID) => {
             document.querySelector('.ant-table-filter-dropdown input')?.focus();
           }, 0);
         }
-      },    
+      },
     },
     {
       title: `${language.price} €`,

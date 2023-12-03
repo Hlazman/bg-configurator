@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect } from 'react';
-import {Descriptions, Image, Divider, Card, Select, Space, Alert} from 'antd';
+import {Descriptions, Select, Space, Alert} from 'antd';
 import { AuthContext } from '../Context/AuthContext';
 import { useLanguage } from '../Context/LanguageContext';
 import languageMap from '../Languages/language';
@@ -89,7 +89,6 @@ export const OrderDescriptionFactory = (
   }
 
   return (
-    
     <div style={{maxWidth: isCreatingPdf ? 'auto' : '900px', margin: '0 auto'}}>
 
     <Space style={{display: isCreatingPdf ? 'none' : 'flex', marginBottom: '20px', alignItems: 'baseline'}}>
@@ -269,7 +268,7 @@ export const OrderDescriptionFactory = (
                 size='middle'
               >
                 <Descriptions.Item className='labelBG' label={`${language.element} ${language.title}`} labelStyle={{fontWeight: '600', color:'#000'}}>
-                  {languageMap[selectedLanguage][element.element?.data?.attributes?.title]}
+                  {languageMap[selectedLanguage][element.type]}: {languageMap[selectedLanguage][element.element?.data?.attributes?.title]}
                 </Descriptions.Item>
 
                 {element?.sizes?.height && (
@@ -342,7 +341,6 @@ export const OrderDescriptionFactory = (
               <React.Fragment key={index}>
 
                 <Descriptions.Item className='labelBG' label={language.title} labelStyle={{fontWeight: '600', color:'#000'}}>
-                  {/* {languageMap[selectedLanguage][option.title]} */}
                   {languageMap[selectedLanguage][option.title] ? languageMap[selectedLanguage][option.title] : option.title}
                 </Descriptions.Item>
 
@@ -380,7 +378,6 @@ export const OrderDescriptionFactory = (
           size='default'
           >
             <Descriptions.Item>
-              {/* {convertedPriceTotal ? `${convertedPriceTotal} ${currency}` : `${orderData?.totalCost} ${orderData?.currency}`} */}
               {convertedPriceTotal ? `${convertedPriceTotal} ${currency}` : `${orderData?.basicTotalCost} ${orderData?.currency}`}
             </Descriptions.Item>
 

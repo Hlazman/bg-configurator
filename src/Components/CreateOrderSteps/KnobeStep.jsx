@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Form, Input, Button, Card, Radio, Select, Divider, Spin, message, Affix } from 'antd';
+import { Form, Input, Button, Card, Radio, Select, Spin, message, Affix } from 'antd';
 import { SendOutlined } from '@ant-design/icons';
 import axios from 'axios';
 import { useOrder } from '../../Context/OrderContext';
@@ -9,20 +9,14 @@ import languageMap from '../../Languages/language';
 const KnobesStep = ({ setCurrentStepSend }) => {
   const [knobesData, setKnobesData] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
-  // const [selectedBrand, setSelectedBrand] = useState('ALL');
+  const [messageApi, contextHolder] = message.useMessage();
   const [selectedBrand, setSelectedBrand] = useState('Airone');
   const [knobeVariant, setKnobeVariant] = useState('standard');
   const [isLoading, setIsLoading] = useState(true);
   const [previousKnobeId, setPreviousKnobeId] = useState(null);
   const { selectedLanguage } = useLanguage();
   const language = languageMap[selectedLanguage];
-  
-  // const { order } = useOrder();
-  // const orderId = order.id;
-  // const orderIdToUse = orderID || orderId;
-  // const knobeSuborder = order.suborders.find(suborder => suborder.name === 'knobeSub');
   const { knobeSuborderId } = useOrder();
-
   const jwtToken = localStorage.getItem('token');
 
   const handleKnobeVariant = (value) => {
@@ -78,7 +72,6 @@ const KnobesStep = ({ setCurrentStepSend }) => {
       }
     };
 
-    // const storedBrand = localStorage.getItem('selectedBrandKnobe') || 'ALL';
     const storedBrand = localStorage.getItem('selectedBrandKnobe') || 'Airone';
     const storedSearchQuery = localStorage.getItem('searchQuery') || '';
 
@@ -117,7 +110,6 @@ const KnobesStep = ({ setCurrentStepSend }) => {
     const handleSbmitForm = async () => {
       console.log('knobeVariant from Form', knobeVariant)
       const variables = {
-        // "updateFrameFittingId": knobeSuborder.data.id,
         "updateFrameFittingId": knobeSuborderId,
         "data": {
           "knobe": previousKnobeId,
@@ -147,8 +139,7 @@ const KnobesStep = ({ setCurrentStepSend }) => {
         }
       )
       .then((response) => {
-        console.log('Success:', response.data);
-        message.success(language.successQuery);
+        messageApi.success(language.successQuery);
         if (setCurrentStepSend) {
           setCurrentStepSend(prevState => {
             return {
@@ -159,8 +150,7 @@ const KnobesStep = ({ setCurrentStepSend }) => {
         }
       })
       .catch((error) => {
-        console.error('Ошибка:', error);
-        message.error(language.errorQuery);
+        messageApi.error(language.errorQuery);
       });
     }
   
@@ -169,7 +159,6 @@ const KnobesStep = ({ setCurrentStepSend }) => {
       setIsLoading(true);
 
       const variables = {
-        // frameFittingId: knobeSuborder.data.id
         frameFittingId: knobeSuborderId,
         'knobe_variant': knobeVariant, 
       };
@@ -213,11 +202,11 @@ const KnobesStep = ({ setCurrentStepSend }) => {
         setIsLoading(false);
       });
   
-    // }, [jwtToken, knobeSuborder]);
     }, [jwtToken, knobeSuborderId]);
 
   return (
     <Form onFinish={handleSbmitForm} form={form}>
+      {contextHolder}
 
       <Affix style={{ position: 'absolute', top: '-60px', right: '20px'}} offsetTop={20}>
         <Button style={{backgroundColor: '#1677ff', color: 'white' }} htmlType="submit" icon={<SendOutlined />}>
@@ -270,7 +259,6 @@ const KnobesStep = ({ setCurrentStepSend }) => {
       {isLoading ? (
         <Spin size="large" />
       ) : (
-        // <Form.Item name="knobeStep" rules={[{ required: true, message: language.requiredField }]}>
         <Form.Item name="knobeStep" rules={[{ required: previousKnobeId !== null ? false : true, message: language.requiredField }]}>
           <Radio.Group>
             <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}>
@@ -307,13 +295,6 @@ const KnobesStep = ({ setCurrentStepSend }) => {
           </Radio.Group>
         </Form.Item>
       )}
-
-      {/* <Form.Item wrapperCol={{ offset: 4, span: 16 }}>
-        <Button type="primary" htmlType="submit">
-        {language.submit}
-        </Button>
-      </Form.Item> */}
-
     </Form>
   );
 };

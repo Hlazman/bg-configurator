@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { Form, Input, Button, Card, Radio, Divider, Spin, Affix } from 'antd';
+import { Form, Input, Button, Card, Radio, Spin, Affix } from 'antd';
 import { SendOutlined } from '@ant-design/icons';
 import axios from 'axios';
 import { useOrder } from '../../Context/OrderContext';
 import { useLanguage } from '../../Context/LanguageContext';
 import languageMap from '../../Languages/language';
-
 
 const HPLStep = ({ fetchOrderData, fetchDecorData, checkDecor, sendDecorForm }) => {
   const [HPLData, setHPLData] = useState([]);
@@ -17,17 +16,12 @@ const HPLStep = ({ fetchOrderData, fetchDecorData, checkDecor, sendDecorForm }) 
   const [selectedDecorId, setSelectedDecorId] = useState(null);
   const { selectedLanguage } = useLanguage();
   const language = languageMap[selectedLanguage];
-  
-  // const { order } = useOrder();
-  // const orderId = order.id;
-  // const orderIdToUse = orderID || orderId;
-  // const doorSuborder = order.suborders.find(suborder => suborder.name === 'doorSub');
   const { orderId, dorSuborderId } = useOrder();
   const orderIdToUse = orderId;
 
   const [form] = Form.useForm();
+  
   const onFinish = async () => {
-    // sendDecorForm(orderIdToUse, doorSuborder, selectedDecorId);
     sendDecorForm(orderIdToUse, dorSuborderId, selectedDecorId);
   };
 
@@ -122,7 +116,6 @@ const HPLStep = ({ fetchOrderData, fetchDecorData, checkDecor, sendDecorForm }) 
                         previousHPLTitle === hpl.attributes.title ? '7px solid #f06d20' : 'none',
                     }}
                     onClick={() => {
-                      // checkDecor('HPL', hpl.attributes.title, decorData, setSelectedDecorId, hpl.id);
                       checkDecor('HPL', hpl.attributes.title, decorData, setSelectedDecorId, hpl.id, setDecorData);
                       setPreviousHPLTitle(hpl.attributes.title);
                     }}
@@ -142,12 +135,6 @@ const HPLStep = ({ fetchOrderData, fetchDecorData, checkDecor, sendDecorForm }) 
           </Radio.Group>
         </Form.Item>
       )}
-
-        {/* <Form.Item wrapperCol={{ offset: 4, span: 16 }}>
-          <Button type="primary" htmlType="submit">
-            {language.submit}
-          </Button>
-        </Form.Item> */}
     </Form>
   );
 };

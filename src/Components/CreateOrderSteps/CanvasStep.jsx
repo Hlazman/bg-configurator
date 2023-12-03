@@ -6,28 +6,19 @@ import { useOrder } from '../../Context/OrderContext';
 import { useLanguage } from '../../Context/LanguageContext';
 import languageMap from '../../Languages/language';
 
-// const CanvasStep = ({ formData, handleNext, orderID }) => {
 const CanvasStep = ({ setCurrentStepSend}) => {
+  const [messageApi, contextHolder] = message.useMessage();
   const { selectedLanguage } = useLanguage();
   const language = languageMap[selectedLanguage];
-  
   const { orderId, dorSuborderId } = useOrder();
-  // const { addSuborder } = useOrder();
-  // const doorSuborder = order.suborders.find(suborder => suborder.name === 'doorSub');
-  // const orderId = order.id;
-  // const orderIdToUse = orderID || orderId;
   const orderIdToUse = orderId;
   const jwtToken = localStorage.getItem('token');
-
   const [doorData, setDoorData] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
-  // const [selectedCollection, setSelectedCollection] = useState('ALL');
   const [selectedCollection, setSelectedCollection] = useState('Loft');
   const [isLoading, setIsLoading] = useState(true);
   const [previousDoorId, setPreviousDoorId] = useState(null);
-
   const [form] = Form.useForm();
-  // const [doorSuborderData, setDoorSuborderData] = useState(null);
 
   useEffect(() => {
     const fetchOrderData = async () => {
@@ -140,11 +131,9 @@ const CanvasStep = ({ setCurrentStepSend}) => {
         throw new Error()
         
       } else {
-        message.success(language.successQuery);
+        messageApi.success(language.successQuery);
       }
 
-      // console.log(response);
-      // message.success(language.successQuery);
       if (setCurrentStepSend) {
         setCurrentStepSend(prevState => {
           return {
@@ -155,8 +144,7 @@ const CanvasStep = ({ setCurrentStepSend}) => {
       }
     } catch (error) {
       console.error(error);
-      // message.error(language.errorQuery);
-      message.error(`${language.errorQuery}. ${language.wrongSize}`); 
+      messageApi.error(`${language.errorQuery}. ${language.wrongSize}`); 
     }
   };
   
@@ -218,8 +206,6 @@ const CanvasStep = ({ setCurrentStepSend}) => {
     fetchData();
   }, [jwtToken]);
 
-  // here
-  // const collectionOptions = ['ALL', ...new Set(doorData.map(door => door.attributes.collection))]; 
   const collectionOptions = [language.all, ...new Set(doorData.map(door => door.attributes.collection))]; 
 
   const handleCollectionChange = value => {
@@ -235,7 +221,6 @@ const CanvasStep = ({ setCurrentStepSend}) => {
 
   const filteredImgS = doorData
     .filter(door =>
-      // (selectedCollection === 'ALL' || door.attributes.collection === selectedCollection) &&
       (selectedCollection === language.all || door.attributes.collection === selectedCollection) &&
       door.attributes.product_properties.title.toLowerCase().includes(searchQuery.toLowerCase())
     )
@@ -247,7 +232,7 @@ const CanvasStep = ({ setCurrentStepSend}) => {
       onFinish={onFinish}
       style={{ padding: '0 25px'}}
     >
-
+      {contextHolder}
       <Affix style={{ position: 'absolute', top: '-60px', right: '20px'}} offsetTop={20}>
         <Button style={{backgroundColor: '#1677ff', color: 'white' }} htmlType="submit" icon={<SendOutlined />}>
         {`${language.submit} ${language.canvas}`}
@@ -315,7 +300,6 @@ const CanvasStep = ({ setCurrentStepSend}) => {
             },
           ]}
         >
-          {/* <InputNumber addonBefore={language.thickness} addonAfter="mm"/> */}
           <InputNumber addonBefore={`${language.thickness} ${language.wall}`} addonAfter="mm"/>
         </Form.Item>
       </Space>
@@ -376,11 +360,6 @@ const CanvasStep = ({ setCurrentStepSend}) => {
           </Radio.Group>
         </Form.Item>
       )}
-          {/* <Form.Item>
-          <Button type="primary" htmlType="submit">
-            {language.submit}
-          </Button>
-        </Form.Item> */}
     </Form>
   );
 };

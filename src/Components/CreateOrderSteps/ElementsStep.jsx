@@ -1,5 +1,5 @@
 import React, { useRef, useState, useEffect } from 'react';
-import { Tabs, Spin } from 'antd';
+import { Tabs } from 'antd';
 import axios from 'axios';
 import { useOrder } from '../../Context/OrderContext';
 import DecorElementForm from '../Forms/DecorElementForm';
@@ -10,18 +10,8 @@ const ElementsStep = ({ setCurrentStepSend }) => {
   const jwtToken = localStorage.getItem('token');
   const { selectedLanguage } = useLanguage();
   const language = languageMap[selectedLanguage];
-  
-  // const { order } = useOrder();
-  // const orderId = order.id;
-  // const orderIdToUse = orderID || orderId;
-
   const { orderId } = useOrder();
   const orderIdToUse = orderId;
-  
-  // const doorSuborder = order.suborders.find(suborder => suborder.name === 'doorSub');
-  // const [decorDataId, setDecorDataId] = useState(null);
-  // const [elementID, setElementID] = useState(null);
-
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
@@ -63,7 +53,6 @@ const ElementsStep = ({ setCurrentStepSend }) => {
           const orderData = response.data.data.order.data.attributes.element_suborders.data;
           if (orderData && orderData.length > 0) {
             const newItems = orderData.map((data, index) => {
-              // const newActiveKey = `Element ${1 + newTabIndex.current++}`;
               const newActiveKey = `${language.element} ${1 + newTabIndex.current++}`;
 
               return {
@@ -181,7 +170,6 @@ const ElementsStep = ({ setCurrentStepSend }) => {
   const add = async () => {
     setIsLoading(true);
     const suborderId = await createElementSuborder();
-    // const newActiveKey = `Element ${1 + newTabIndex.current++}`;
     const newActiveKey = `${language.element} ${1 + newTabIndex.current++}`;
     const newPanes = [...items];
     newPanes.push({

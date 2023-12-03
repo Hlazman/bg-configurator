@@ -10,7 +10,7 @@ const StartDataStep = ({ setCurrentStepSend }) => {
   const { orderId } = useOrder();
   const jwtToken = localStorage.getItem('token');
   const orderIdToUse = orderId;
-
+  const [messageApi, contextHolder] = message.useMessage();
   const [form] = Form.useForm();
   const [orderData, setOrderData] = useState(null);
   const { selectedLanguage } = useLanguage();
@@ -89,7 +89,7 @@ const StartDataStep = ({ setCurrentStepSend }) => {
           },
         }
       );
-      message.success(language.successQuery);
+      messageApi.success(language.successQuery);
       if (setCurrentStepSend) {
         setCurrentStepSend(prevState => {
           return {
@@ -99,14 +99,14 @@ const StartDataStep = ({ setCurrentStepSend }) => {
         });
       }
     } catch (error) {
-      console.error('Error updating order:', error);
-      message.error(language.errorQuery);
+      messageApi.error(language.errorQuery);
     }
   };
 
   return (
     <Card style={{background: '#F8F8F8', borderColor: '#DCDCDC'}}>
       <Form form={form} onFinish={handleFormSubmit}>
+      {contextHolder}
 
       <Affix style={{ position: 'absolute', top: '-50px', right: '20px'}} offsetTop={20}>
         <Button style={{backgroundColor: '#1677ff', color: 'white' }} htmlType="submit" icon={<SendOutlined />}>
@@ -118,7 +118,6 @@ const StartDataStep = ({ setCurrentStepSend }) => {
           <Form.Item
             label={language.doubleDoor}
             name="double_door"
-            // initialValue={orderData ? orderData.double_door : null}
             rules={[{ required: true, message: language.requiredField }]}
           >
             <Radio.Group buttonStyle="solid">
@@ -132,7 +131,6 @@ const StartDataStep = ({ setCurrentStepSend }) => {
           <Form.Item
             label={language.hidden}
             name="hidden"
-            // initialValue={orderData?.hidden ?? null} 
             rules={[{ required: true, message: language.requiredField }]}
           >
             <Radio.Group buttonStyle="solid">
@@ -146,7 +144,6 @@ const StartDataStep = ({ setCurrentStepSend }) => {
           <Form.Item
             label={language.side}
             name="side"
-            // initialValue={orderData?.side ?? null} 
             rules={[{ required: true, message: language.requiredField }]}
           >
             <Radio.Group buttonStyle="solid">
@@ -160,7 +157,6 @@ const StartDataStep = ({ setCurrentStepSend }) => {
           <Form.Item
             label={language.opening}
             name="opening"
-            // initialValue={orderData?.opening ?? null}
             rules={[{ required: true, message: language.requiredField }]}
           >
             <Radio.Group buttonStyle="solid">
@@ -170,12 +166,6 @@ const StartDataStep = ({ setCurrentStepSend }) => {
             </Radio.Group>
           </Form.Item>
         </div>
-        
-        {/* <Form.Item>
-          <Button type="primary" htmlType="submit">
-            {language.submit}
-          </Button>
-        </Form.Item> */}
       </Form>
     </Card>
   );

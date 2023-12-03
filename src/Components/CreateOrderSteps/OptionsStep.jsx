@@ -1,5 +1,5 @@
-import { Form, Button, Card, Radio, message, Affix, Input, InputNumber, Space, Divider } from 'antd';
-import { SendOutlined, MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
+import { Form, Button, Card, Radio, message, Affix } from 'antd';
+import { SendOutlined } from '@ant-design/icons';
 import axios from 'axios';
 import { useOrder } from '../../Context/OrderContext';
 import { useEffect, useState } from 'react';
@@ -10,7 +10,7 @@ const OptionsStep = ({ setCurrentStepSend }) => {
   const { orderId } = useOrder();
   const jwtToken = localStorage.getItem('token');
   const orderIdToUse = orderId;
-
+  const [messageApi, contextHolder] = message.useMessage();
   const [form] = Form.useForm();
   const { selectedLanguage } = useLanguage();
   const language = languageMap[selectedLanguage];
@@ -53,8 +53,6 @@ const OptionsStep = ({ setCurrentStepSend }) => {
       if (optionsResponse.data.data && optionsResponse.data.data.options) {
         setOptionsData(optionsResponse.data.data.options.data);
       }
-
-      // console.log('fetchOptionsData', optionsData)
   
     } catch (error) {
       console.error('Error fetching order data:', error);
@@ -118,26 +116,14 @@ const OptionsStep = ({ setCurrentStepSend }) => {
         const suborderOptionsData = response.data.data.order.data.attributes.option_suborders.data;
         const customFalseSuborders = suborderOptionsData.filter(suborder => suborder.attributes.custom === false);
         
-        // setOptionsSuborderData(suborderOptionsData)
         setOptionsSuborderData(customFalseSuborders)
 
         form.setFieldsValue(orderData);
-        // suborderOptionsData.forEach(option => {
           customFalseSuborders.forEach(option => {
           form.setFieldsValue({
             [`option_${option.attributes.option.data.id}`]: true
           });
         });
-
-        // optionsData.forEach(option => {
-        //   const fieldName = `option_${option.id}`;
-        //   const isSelected = suborderOptionsData.some(suborder => suborder.attributes.option.data.id === option.id);
-        //   form.setFieldsValue({
-        //     [fieldName]: isSelected
-        //   });
-        // });
-
-        // console.log('fetchOrderData', optionsSuborderData)
       }
         
     } catch (error) {
@@ -145,12 +131,6 @@ const OptionsStep = ({ setCurrentStepSend }) => {
     }
   };
 
-  // useEffect(() => {
-  //   fetchOptionsData()
-  //   fetchOrderData();
-  // }, [orderIdToUse, jwtToken, form, createSubOrder, deleteSubOrder]);
-
-  
   const handleFormSubmit = async (values) => {
     const data = {'horizontal_veneer': values.horizontal_veneer, 'super_gloss': values.super_gloss,}
     try {
@@ -178,7 +158,7 @@ const OptionsStep = ({ setCurrentStepSend }) => {
           },
         }
       );
-      message.success(language.successQuery);
+      messageApi.success(language.successQuery);
       if (setCurrentStepSend) {
         setCurrentStepSend(prevState => {
           return {
@@ -188,8 +168,7 @@ const OptionsStep = ({ setCurrentStepSend }) => {
         });
       }
     } catch (error) {
-      console.error('Error updating order:', error);
-      message.error(language.errorQuery);
+      messageApi.error(language.errorQuery);
     }
   };
 
@@ -211,7 +190,6 @@ const OptionsStep = ({ setCurrentStepSend }) => {
             data: {
               option: option.id,
               title: option.attributes.title,
-              // price: option.attributes.price,
               order: orderIdToUse,
             },
           },
@@ -223,9 +201,9 @@ const OptionsStep = ({ setCurrentStepSend }) => {
           },
         }
       );
-      // console.log('Create Option Suborder', response)
       
       const createdOptionSuborder = response.data.data.createOptionSuborder.data;
+      
       updateOptionSuborder(createdOptionSuborder, option)
       fetchOrderData()
       
@@ -263,9 +241,9 @@ const OptionsStep = ({ setCurrentStepSend }) => {
             },
           }
         );
-        // const deletedID = response.data.data.deleteOptionSuborder.data;
-        // console.log('Delete Option Suborder', response)
+
         fetchOrderData()
+
       } catch (error) {
         console.error('Error deleting option suborder:', error);
       }
@@ -274,7 +252,6 @@ const OptionsStep = ({ setCurrentStepSend }) => {
 
   const updateOptionSuborder = async (updateOptionSuborderId, option) => {
     try {
-      // const response = await axios.post(
       await axios.post(
         'https://api.boki.fortesting.com.ua/graphql',
         {
@@ -290,8 +267,6 @@ const OptionsStep = ({ setCurrentStepSend }) => {
           variables: {
             updateOptionSuborderId: updateOptionSuborderId.id,
             data: {
-              // price: option ? option.attributes.price : 0,
-              // title: option.attributes.title,
               title: option ? option.attributes.title : null,
             },
           },
@@ -304,7 +279,6 @@ const OptionsStep = ({ setCurrentStepSend }) => {
         }
       );
   
-      // console.log('Update Option Suborder:', response.data);
     } catch (error) {
       console.error('Error updating option suborder:', error);
     }
@@ -316,32 +290,10 @@ const OptionsStep = ({ setCurrentStepSend }) => {
     fetchOrderData()
   },[]);
 
-
-  // const [items, setItems] = useState([{ id: 0, name: '', price: '' }]);
-
-  // const handleAddItem = () => {
-  //   const newId = items.length;
-  //   setItems([...items, { id: newId, name: '', price: '' }]);
-  // };
-
-  // const handleRemoveItem = (index) => {
-  //   const updatedItems = [...items];
-  //   updatedItems.splice(index, 1);
-  //   setItems(updatedItems);
-  // };
-
-  // const [temp, setTemp] = useState(false)
-
-  // useEffect(() => {
-  //   fetchOptionsData()
-  //   // fetchOrderData();
-  // }, [orderIdToUse, jwtToken, form]);
-  // // }, [orderIdToUse, jwtToken, form, temp]);
-
-  
   return (
     <Card style={{background: '#F8F8F8', borderColor: '#DCDCDC'}}>
       <Form form={form} onFinish={handleFormSubmit}>
+      {contextHolder}
 
       <Affix style={{ position: 'absolute', top: '20px', right: '20px'}} offsetTop={20}>
         <Button style={{backgroundColor: '#1677ff', color: 'white' }} htmlType="submit" icon={<SendOutlined />}>
@@ -351,7 +303,6 @@ const OptionsStep = ({ setCurrentStepSend }) => {
 
       <div style={{ display: 'flex', gap: '30px' }}>
           <Form.Item
-            // label="Horizontal veneer"
             label={language.horizontalVeneer}
             name="horizontal_veneer"
           >
@@ -364,7 +315,6 @@ const OptionsStep = ({ setCurrentStepSend }) => {
 
         <div style={{ display: 'flex', gap: '30px' }}>
           <Form.Item
-            // label="Super gloss"
             label={language.superGloss}
             name="super_gloss"
           >
@@ -378,21 +328,17 @@ const OptionsStep = ({ setCurrentStepSend }) => {
         {optionsData && optionsData.map(option => (
           <div key={option.id} style={{ display: 'flex', gap: '30px' }}>
             <Form.Item
-              // label={option.attributes.title}
               label={languageMap[selectedLanguage][option.attributes.title]}
               name={`option_${option.id}`}
             >
               <Radio.Group
                 buttonStyle="solid"
-                // defaultValue={false}
                 onChange={(e) => {
                   const selectedValue = e.target.value
 
                   if (selectedValue === true) {
-                    // setTemp(true)
                     createSubOrder(option);
                   } else if (selectedValue === false) {
-                    // setTemp(false)
                     deleteSubOrder(option.id);
                   }
                 }}
@@ -403,34 +349,6 @@ const OptionsStep = ({ setCurrentStepSend }) => {
             </Form.Item>
           </div>
         ))}
-
-        {/* <Form.Item>
-          <Button type="primary" htmlType="submit">
-            {language.submit}
-          </Button>
-        </Form.Item> */}
-
-        {/* <Divider/>
-        <h3 style={{textAlign: 'left'}}>{language.additionalOption}</h3>
-        
-        {items.map((item, index) => (
-          <div key={index} style={{ display: 'flex', gap: '20px'}}>
-            <Form.Item name={['items', index, 'name']}>
-              <Input placeholder={language.name} addonBefore={language.name} />
-            </Form.Item>
-            <Form.Item name={['items', index, 'price']}>
-              <InputNumber placeholder={language.price} addonBefore={language.price} />
-            </Form.Item>
-            <Button danger onClick={() => handleRemoveItem(index)} icon={<MinusCircleOutlined />} />
-          </div>
-        ))}
-        
-        <Form.Item>
-          <Button type="primary" onClick={handleAddItem} icon={<PlusOutlined />}>
-            {language.addOption}
-          </Button>
-        </Form.Item> */}
-
       </Form>
     </Card>
   );

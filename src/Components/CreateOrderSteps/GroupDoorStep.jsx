@@ -28,7 +28,6 @@ const GroupDoorStep = ({ setCurrentStepSend }) => {
         {
           label: language.canvas,
           key: 'canvas',
-          // children: <CanvasStep formData={formData} handleCardClick={handleCardClick} handleNext={handleNext} />,
           children: <CanvasStep setCurrentStepSend={setCurrentStepSend} />,
         },
       ]}
