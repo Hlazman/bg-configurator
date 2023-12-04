@@ -285,7 +285,7 @@ const OptionsAdditionalStep = ({ setCurrentStepSend }) => {
         <Form.List name="items">
           {(fields, { add, remove }) => (
             <>
-              {fields.map(({ key, name, ...restField }) => (
+              {fields.map(({ key, name, ...restField }, index) => (
                 <Space
                   key={key}
                   style={{
@@ -340,9 +340,6 @@ const OptionsAdditionalStep = ({ setCurrentStepSend }) => {
                     }}
                     // onCancel={() => setModalVisible(false)}
                     onCancel={() => {
-                      console.log('name', name);
-                      console.log('key', key);
-                      console.log('key', key);
                       setModalVisible(false);
                     }}
                   >

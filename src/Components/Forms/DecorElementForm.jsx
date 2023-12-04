@@ -21,26 +21,12 @@ const DecorElementForm = ({setCurrentStepSend, elementID}) => {
   const [currentElementField, setCurrentElementField] = useState('');
   const [showDecor, setShowDecor] = useState(false); 
 
-  // const [isPaintDecor, setIsPaintDecor] = useState(false);
-  // const [isMirrorDecor, setIsMirrorDecor] = useState(false);
-  // const onlyWidth = ['1', '2', '11', '13'];
-  // const noWidthHeightThickness = ['14', '15', '16', '17', '18', '20', '21', '22', '23', '24', '25'];
-  // const noDecor = ['16', '20', '22'];
-  // const paintDecor = ['16', '17', '20', '21', '22', '23', '24', '25'];
-  // const mirrorDecor = ['16', '17', '20', '21', '22', '23', '25'];
-
   const noWidth = ['anotherSideColor', 'skirting', 'moulding'];
   const noHeigt = ['anotherSideColor', 'skirting', 'moulding', 'platband', 'threadedPlatband', 'kapitel', 'extender',];
   const noThickness = ['anotherSideColor', 'platband', 'threadedPlatband', 'kapitel', 'extender', 'decorInsert', 'wallplate', 'cover', 'replaceGlass'];
   const noLength = ['anotherSideColor', 'platband', 'threadedPlatband', 'kapitel', 'extender', 'decorInsert', 'wallplate', 'cover', 'replaceGlass'];
 
   const handleShowDecorClick = () => {
-    // if (paintDecor.includes(currentElementField)) {
-    //   setIsPaintDecor(true)
-    // }
-    // if (mirrorDecor.includes(currentElementField)) {
-    //   setIsMirrorDecor(true)
-    // }
     setShowDecor(true);
   }
 
@@ -87,7 +73,6 @@ const DecorElementForm = ({setCurrentStepSend, elementID}) => {
       const elementSuborderData = response.data.data.elementSuborder.data;
       if (elementSuborderData) {
         form.setFieldsValue({
-          // name: elementSuborderData?.attributes?.element?.data?.id,
           name: elementSuborderData?.attributes?.type,
           width: elementSuborderData?.attributes?.sizes?.width,
           height: elementSuborderData?.attributes?.sizes?.height,
@@ -96,7 +81,6 @@ const DecorElementForm = ({setCurrentStepSend, elementID}) => {
           length: elementSuborderData?.attributes?.sizes?.length,
         });
       }
-      // setCurrentElementField(elementSuborderData?.attributes?.element?.data?.id)
       setCurrentElementField(elementSuborderData?.attributes?.element?.data?.type)
       
     })
@@ -147,13 +131,11 @@ const DecorElementForm = ({setCurrentStepSend, elementID}) => {
 
   const handleFormSubmit = values => {
     const { name, width, height, thickness, amount, length } = values;
-    // const selectedElement = elementOptions.find(option => option.id === name);
     const selectedElement = elementOptions.find(option => option.attributes.type === name);
 
     if (elementID) {
       const data = {
         amount,
-        // element: selectedElement.id,
         type: selectedElement.attributes.type,
         sizes: {
           height,
@@ -319,34 +301,17 @@ const DecorElementForm = ({setCurrentStepSend, elementID}) => {
             defaultValue={undefined}
             onChange={(value) => { 
               setCurrentElementField(value);
-                
-              // if (paintDecor.includes(value)) {
-              //     setIsPaintDecor(true)
-              //   } else {
-              //     setIsPaintDecor(false)
-              //   }
-
-              //   if (mirrorDecor.includes(value)) {
-              //     setIsMirrorDecor(true)
-              //   } else {
-              //     setIsMirrorDecor(false)
-              //   }
             }}
           >
-            {/* {elementOptions.map(option => (
-              <Option key={option.id} value={option.id}>{languageMap[selectedLanguage][option.attributes.title]}</Option>
-            ))} */}
-
               {elementOptions
                 .filter(option => {
                   if (!uniqueTypesSet.has(option.attributes.type)) {
-                    uniqueTypesSet.add(option.attributes.type); // Добавляем уникальный тип в Set
+                    uniqueTypesSet.add(option.attributes.type);
                     return true;
                   }
                   return false;
                 })
                 .map(option => (
-                  // <Option key={option.id} value={option.id}>
                   <Option key={option.id} value={option.attributes.type}>
                     {languageMap[selectedLanguage][option.attributes.type]}
                   </Option>
@@ -358,12 +323,9 @@ const DecorElementForm = ({setCurrentStepSend, elementID}) => {
           style={{margin: '10px 0', flex: '1', 'minWidth': "300px", textAlign: 'left'}}
           name="radioOption"
           label={language.elementDecor}
-          // rules={[{ required: !noDecor.includes(currentElementField), message: language.requiredField }]}
           rules={[{ required: true, message: language.requiredField }]}
         >
           <Radio.Group type="dashed" buttonStyle="solid" onChange={handleRadioChange}>
-            {/* <Radio.Button disabled={noDecor.includes(currentElementField)} value="choose">{language.elementGetDecor}</Radio.Button> */}
-            {/* <Radio.Button disabled={paintDecor.includes(currentElementField)} value="get">{language.elementGetDoor}</Radio.Button> */}
             <Radio.Button value="choose">{language.elementGetDecor}</Radio.Button>
             <Radio.Button value="get">{language.elementGetDoor}</Radio.Button>
           </Radio.Group>
@@ -373,14 +335,12 @@ const DecorElementForm = ({setCurrentStepSend, elementID}) => {
         <Space.Compact wrap="true" direction="hirizontal" size="middle">
           <Form.Item 
             name="width" 
-            // rules={[{ required: !noWidthHeightThickness.includes(currentElementField), message: language.requiredField }]}
             rules={[{ required: !noWidth.includes(currentElementField), message: language.requiredField }]}
           >
             <InputNumber 
               style={{margin: '0 5px'}}
               addonBefore={language.width} 
               addonAfter="mm"
-              // disabled={noWidthHeightThickness.includes(currentElementField)}
               disabled={noWidth.includes(currentElementField)}
             />
           </Form.Item>
@@ -388,7 +348,6 @@ const DecorElementForm = ({setCurrentStepSend, elementID}) => {
           <Form.Item 
             name="height" 
             rules={[{ 
-              // required: !noWidthHeightThickness.includes(currentElementField) && !onlyWidth.includes(currentElementField), 
               required: !noHeigt.includes(currentElementField), 
               message: language.requiredField 
             }]} 
@@ -397,7 +356,6 @@ const DecorElementForm = ({setCurrentStepSend, elementID}) => {
               style={{margin: '0 5px'}}
               addonBefore={language.height} 
               addonAfter="mm"
-              // disabled={noWidthHeightThickness.includes(currentElementField) || onlyWidth.includes(currentElementField)}
               disabled={noHeigt.includes(currentElementField)}
               />
           </Form.Item>
@@ -405,7 +363,6 @@ const DecorElementForm = ({setCurrentStepSend, elementID}) => {
           <Form.Item 
             name="thickness"
             rules={[{ 
-              // required: !noWidthHeightThickness.includes(currentElementField) && !onlyWidth.includes(currentElementField), 
               required: !noThickness.includes(currentElementField), 
               message: language.requiredField 
             }]}  
@@ -414,21 +371,18 @@ const DecorElementForm = ({setCurrentStepSend, elementID}) => {
               style={{margin: '0 5px'}}
               addonBefore={language.thickness} 
               addonAfter="mm"
-              // disabled={noWidthHeightThickness.includes(currentElementField) || onlyWidth.includes(currentElementField)}
               disabled={noThickness.includes(currentElementField)}
             />
           </Form.Item>
 
           <Form.Item 
               name="length"
-              // rules={[{ required: noWidthHeightThickness.slice(0, -4).includes(currentElementField), message: language.requiredField }]} 
               rules={[{ required: !noLength.includes(currentElementField), message: language.requiredField }]} 
             >
             <InputNumber
               style={{margin: '0 5px'}}
               addonBefore='length' 
               addonAfter="mm" 
-              // disabled={!noWidthHeightThickness.slice(0, -4).includes(currentElementField)}
               disabled={noLength.includes(currentElementField)}
 
             />
@@ -436,16 +390,11 @@ const DecorElementForm = ({setCurrentStepSend, elementID}) => {
 
           <Form.Item
             name="amount"
-            // rules={[{ 
-            //   // required: !noWidthHeightThickness.includes(currentElementField) || !onlyWidth.includes(currentElementField),
-            //   message: language.requiredField
-            // }]}
           >
             <InputNumber 
               style={{margin: '0 5px'}} 
               addonBefore={language.amount} 
               addonAfter={language.count}
-              // disabled={onlyWidth.includes(currentElementField)}
             />
           </Form.Item>
 
@@ -454,12 +403,10 @@ const DecorElementForm = ({setCurrentStepSend, elementID}) => {
       </Form>
 
         <div style={{paddingTop: '20px' }}>
-          {/* {showDecor && !noDecor.includes(currentElementField) &&  */}
           {showDecor && 
             <>
               <Divider/>
               <h3 style={{textAlign: 'left', paddingBottom: '15px'}}> {language.element} {language.elementGetDecor} </h3>
-              {/* <GroupDecorElementStep elementID={elementID} isPaintDecor={isPaintDecor} isMirrorDecor={isMirrorDecor} /> */}
               <GroupDecorElementStep elementID={elementID} />
             </>
           }

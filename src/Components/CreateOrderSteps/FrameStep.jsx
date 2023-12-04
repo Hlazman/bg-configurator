@@ -80,6 +80,12 @@ const FrameStep = ({ setCurrentStepSend }) => {
     ).then(response => {
       const data = response.data?.data?.order?.data?.attributes || {};
       setOrderData(data);
+
+      if (data?.frame_suborder?.data?.attributes?.frame.data.id) {
+        form.setFieldsValue({
+          name: data?.frame_suborder?.data?.attributes?.frame.data.id,
+        });
+      }
     });
   }, [jwtToken, orderIdToUse]);
 

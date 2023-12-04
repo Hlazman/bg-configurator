@@ -169,14 +169,14 @@ const pl = {
   NoDecorDataDoor: 'Nie wybrano dekoracji drzwi',
 
 // Products Frame
-  'hidden_standard Hidden': 'Estándar oculto',
-  'type 1 outside Neo Classic': 'Neo Classic exterior',
-  'type 3 inside Art Decore': 'Art Decore interior',
-  'hidden_universal Hidden': 'Universal oculto',
-  'type 1 outside Art Decore': 'Art Decore exterior',
-  'type 3 inside Neo Classic': 'Neo Classic interior',
-  'type 1 outside Loft': 'Loft exterior',
-  'type 3 inside Loft': 'Loft interior',
+  'hidden_standard Hidden': 'Ukryty standard',
+  'type 1 outside Neo Classic': 'Neo Classic poza',
+  'type 3 inside Art Decore': 'Art Decore wewnątrz',
+  'hidden_universal Hidden': 'Ukryty uniwersalny',
+  'type 1 outside Art Decore': 'Art Decore poza',
+  'type 3 inside Neo Classic': 'Neo Classic wewnątrz',
+  'type 1 outside Loft': 'Loft poza',
+  'type 3 inside Loft': 'Loft wewnątrz',
 
 // Products Elements
   'aluminium cover': 'Aluminiowa pokrywa',
