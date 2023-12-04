@@ -20,24 +20,16 @@ const OptionsAdditionalStep = ({ setCurrentStepSend }) => {
   const [optionsSuborderData, setOptionsSuborderData] = useState(null);
 
   const [items, setItems] = useState([]);
-  // const [removeItem, seRemoveItem] = useState(false);
   const [trigger, setTrigger] = useState(false);
-
   const [deleteItem, setDeleteItem] = useState(null);
   const [modalVisible, setModalVisible] = useState(false);
-
-
-  // const handleRemoveItem = (index) => {
-  //   if (items[index]) {
-  //     const suborderId = items[index].id.toString();
-  //     deleteSubOrder(suborderId, items[index]);
-  //   }
-  // };
+  const [itemIndex, setItemIndex] = useState(null);
 
   const handleRemoveItem = async (index) => {
     if (items[index]) {
       setDeleteItem(items[index]);
       setModalVisible(true);
+      setItemIndex(index)
     }
   };
   
@@ -285,7 +277,7 @@ const OptionsAdditionalStep = ({ setCurrentStepSend }) => {
         <Form.List name="items">
           {(fields, { add, remove }) => (
             <>
-              {fields.map(({ key, name, ...restField }, index) => (
+              {fields.map(({ key, name, ...restField }) => (
                 <Space
                   key={key}
                   style={{
@@ -329,31 +321,27 @@ const OptionsAdditionalStep = ({ setCurrentStepSend }) => {
                         remove(name);
                       }
                     }} icon={<MinusCircleOutlined />} />
-
-                  <Modal
-                    title={`${language.removeData} ${user.username}?`}
-                    afterClose={fetchOrderData}
-                    open={modalVisible}
-                    // onOk={handleDeleteConfirmed}
-                    onOk={() => {
-                      handleDeleteConfirmed();
-                      // remove(key)
-                    }}
-                    // onCancel={() => setModalVisible(false)}
-                    onCancel={() => {
-                      setModalVisible(false);
-                    }}
-                  >
-                    <p>{language.undone}</p>
-                  </Modal>
-
                 </Space>
               ))}
+
               <Form.Item>
                 <Button type="primary" onClick={() => add()} icon={<PlusCircleOutlined />}>
                   {language.addOption}
                 </Button>
               </Form.Item>
+
+              <Modal
+                title={`${language.removeData} ${user.username}?`}
+                open={modalVisible}
+                onOk={() => {
+                  handleDeleteConfirmed();
+                  remove(itemIndex);
+                  setItemIndex(null);
+                }}
+                onCancel={() => setModalVisible(false)}
+              >
+                <p>{language.undone}</p>
+            </Modal>
             </>
           )}
         </Form.List>
