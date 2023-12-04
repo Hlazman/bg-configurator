@@ -25,6 +25,7 @@ const DecorElementForm = ({setCurrentStepSend, elementID}) => {
   const noHeigt = ['anotherSideColor', 'skirting', 'moulding', 'platband', 'threadedPlatband', 'kapitel', 'extender',];
   const noThickness = ['anotherSideColor', 'platband', 'threadedPlatband', 'kapitel', 'extender', 'decorInsert', 'wallplate', 'cover', 'replaceGlass'];
   const noLength = ['anotherSideColor', 'platband', 'threadedPlatband', 'kapitel', 'extender', 'decorInsert', 'wallplate', 'cover', 'replaceGlass'];
+  const noDecor = ['cover', 'moulding'];
 
   const handleShowDecorClick = () => {
     setShowDecor(true);
@@ -323,7 +324,8 @@ const DecorElementForm = ({setCurrentStepSend, elementID}) => {
           style={{margin: '10px 0', flex: '1', 'minWidth': "300px", textAlign: 'left'}}
           name="radioOption"
           label={language.elementDecor}
-          rules={[{ required: true, message: language.requiredField }]}
+          // rules={[{ required: true, message: language.requiredField }]}
+          rules={[{ required: !noDecor.includes(currentElementField), message: language.requiredField }]}
         >
           <Radio.Group type="dashed" buttonStyle="solid" onChange={handleRadioChange}>
             <Radio.Button value="choose">{language.elementGetDecor}</Radio.Button>

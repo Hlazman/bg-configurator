@@ -332,6 +332,7 @@ const OptionsAdditionalStep = ({ setCurrentStepSend }) => {
 
                   <Modal
                     title={`${language.removeData} ${user.username}?`}
+                    afterClose={fetchOrderData}
                     open={modalVisible}
                     // onOk={handleDeleteConfirmed}
                     onOk={() => {
