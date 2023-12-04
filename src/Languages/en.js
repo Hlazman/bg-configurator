@@ -165,6 +165,7 @@ const en = {
   
   additionalOption: "Additional options",
   addOption: "Add Option",
+  addElement: "Add Element",
   factory: "Factory",
   presentation: "Presentation",
 

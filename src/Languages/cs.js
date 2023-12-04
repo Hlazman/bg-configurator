@@ -162,6 +162,7 @@ const cs = {
 
   additionalOption: 'Další možnosti',
   addOption: 'Přidat možnost',
+  addElement: "Přidat prvek",
   factory: 'Továrna',
   presentation: 'Prezentace',
 

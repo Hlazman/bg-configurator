@@ -162,6 +162,7 @@ const es = {
 
   additionalOption: 'Opciones adicionales',
   addOption: 'Agregar opción',
+  addElement: "Agregar elemento",
   factory: 'Fábrica',
   presentation: 'Presentación',
 

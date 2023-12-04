@@ -1,6 +1,7 @@
 import React, { useRef, useState, useEffect } from 'react';
-import { Tabs } from 'antd';
+import { Tabs, Button } from 'antd';
 import axios from 'axios';
+import { PlusCircleOutlined } from '@ant-design/icons';
 import { useOrder } from '../../Context/OrderContext';
 import DecorElementForm from '../Forms/DecorElementForm';
 import { useLanguage } from '../../Context/LanguageContext';
@@ -64,9 +65,10 @@ const ElementsStep = ({ setCurrentStepSend }) => {
             });
             setItems(newItems);
             setActiveKey(newItems[0].key);
-          } else if (orderData.length < 1) {
-            add();
           }
+          // } else if (orderData.length < 1) {
+            // add();
+          // }
         } 
       } catch (error) {
         console.error('Error fetching order data:', error);
@@ -170,7 +172,8 @@ const ElementsStep = ({ setCurrentStepSend }) => {
   const add = async () => {
     setIsLoading(true);
     const suborderId = await createElementSuborder();
-    const newActiveKey = `${language.element} ${1 + newTabIndex.current++}`;
+    // const newActiveKey = `${language.element} ${1 + newTabIndex.current++}`;
+    const newActiveKey = `${language.element} ${++newTabIndex.current}`;
     const newPanes = [...items];
     newPanes.push({
       label: newActiveKey,
@@ -226,13 +229,21 @@ const ElementsStep = ({ setCurrentStepSend }) => {
   };
 
   return (
-    <Tabs
-      type="editable-card"
-      onChange={onChange}
-      activeKey={activeKey}
-      onEdit={onEdit}
-      items={items}
-    />
+    <>
+      <Button type="primary" onClick={() => add()} icon={<PlusCircleOutlined />}>
+        {language.addElement}
+      </Button>
+
+      <Tabs
+        type="editable-card"
+        onChange={onChange}
+        activeKey={activeKey}
+        onEdit={onEdit}
+        items={items}
+        hideAdd
+      />
+    </>
+
   );
 };
 

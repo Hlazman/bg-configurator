@@ -162,6 +162,7 @@ const ua = {
 
   additionalOption: 'Додаткові опції',
   addOption: 'Додати опцію',
+  addElement: "Додати елемент",
   factory: 'Фабрика',
   presentation: 'Презентація',
 

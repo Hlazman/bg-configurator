@@ -162,6 +162,7 @@ const pl = {
 
   additionalOption: 'Dodatkowe opcje',
   addOption: 'Dodaj opcję',
+  addElement: "Dodaj element",
   factory: 'Fabryka',
   presentation: 'Prezentacja',
 
