@@ -27,6 +27,18 @@ const DecorElementForm = ({setCurrentStepSend, elementID}) => {
   const noLength = ['anotherSideColor', 'platband', 'threadedPlatband', 'kapitel', 'extender', 'decorInsert', 'wallplate', 'cover', 'replaceGlass'];
   const noDecor = ['cover', 'moulding'];
 
+  const [isWidthDisabled, setIsWidthDisabled] = useState(false); 
+  const [isWidthRequired, setIsWidthRequired] = useState(false); 
+  const [isHeightRequired, setIsHeightRequired] = useState(false); 
+  const [isHeightDisabled, setIsHeightDisabled] = useState(false); 
+  const [isThicknessRequired, setIsThicknessRequired] = useState(false); 
+  const [isThicknessDisabled, setIsThicknessDisabled] = useState(false); 
+  const [isLengthRequired, setIsLengthRequired] = useState(false); 
+  const [isLengthDisabled, setIsLengthDisabled] = useState(false);
+  const [isDecorRequired, setIsDecorRequired] = useState(false); 
+  
+
+
   const handleShowDecorClick = () => {
     setShowDecor(true);
   }
@@ -82,8 +94,30 @@ const DecorElementForm = ({setCurrentStepSend, elementID}) => {
           length: elementSuborderData?.attributes?.sizes?.length,
         });
       }
-      setCurrentElementField(elementSuborderData?.attributes?.element?.data?.type)
-      
+
+      setCurrentElementField(elementSuborderData?.attributes?.element?.data?.type);
+
+      if (noWidth.includes(elementSuborderData?.attributes?.type)) {
+        setIsWidthDisabled(true);
+        setIsWidthRequired(false)
+      }
+      if (noHeigt.includes(elementSuborderData?.attributes?.type)) {
+        setIsHeightDisabled(true);
+        setIsHeightRequired(false)
+      }
+      if (noThickness.includes(elementSuborderData?.attributes?.type)) {
+        setIsThicknessDisabled(true);
+        setIsThicknessRequired(false)
+      }
+      if (noLength.includes(elementSuborderData?.attributes?.type)) {
+        setIsLengthDisabled(true);
+        setIsLengthRequired(false)
+      }
+      if (noDecor.includes(elementSuborderData?.attributes?.type)) {
+        isDecorRequired(false)
+      }
+
+
     })
     .catch(error => {
       console.error('Error fetching element suborder data:', error);
@@ -325,7 +359,7 @@ const DecorElementForm = ({setCurrentStepSend, elementID}) => {
           name="radioOption"
           label={language.elementDecor}
           // rules={[{ required: true, message: language.requiredField }]}
-          rules={[{ required: !noDecor.includes(currentElementField), message: language.requiredField }]}
+          rules={[{ required: !noDecor.includes(currentElementField) || isDecorRequired, message: language.requiredField }]}
         >
           <Radio.Group type="dashed" buttonStyle="solid" onChange={handleRadioChange}>
             <Radio.Button value="choose">{language.elementGetDecor}</Radio.Button>
@@ -337,20 +371,20 @@ const DecorElementForm = ({setCurrentStepSend, elementID}) => {
         <Space.Compact wrap="true" direction="hirizontal" size="middle">
           <Form.Item 
             name="width" 
-            rules={[{ required: !noWidth.includes(currentElementField), message: language.requiredField }]}
+            rules={[{ required: !noWidth.includes(currentElementField) || isWidthRequired, message: language.requiredField }]}
           >
             <InputNumber 
               style={{margin: '0 5px'}}
               addonBefore={language.width} 
               addonAfter="mm"
-              disabled={noWidth.includes(currentElementField)}
+              disabled={noWidth.includes(currentElementField) || isWidthDisabled}
             />
           </Form.Item>
           
           <Form.Item 
             name="height" 
             rules={[{ 
-              required: !noHeigt.includes(currentElementField), 
+              required: !noHeigt.includes(currentElementField) || isHeightRequired, 
               message: language.requiredField 
             }]} 
           >
@@ -358,14 +392,14 @@ const DecorElementForm = ({setCurrentStepSend, elementID}) => {
               style={{margin: '0 5px'}}
               addonBefore={language.height} 
               addonAfter="mm"
-              disabled={noHeigt.includes(currentElementField)}
+              disabled={noHeigt.includes(currentElementField) || isHeightDisabled}
               />
           </Form.Item>
 
           <Form.Item 
             name="thickness"
             rules={[{ 
-              required: !noThickness.includes(currentElementField), 
+              required: !noThickness.includes(currentElementField) || isThicknessRequired, 
               message: language.requiredField 
             }]}  
           >
@@ -373,19 +407,19 @@ const DecorElementForm = ({setCurrentStepSend, elementID}) => {
               style={{margin: '0 5px'}}
               addonBefore={language.thickness} 
               addonAfter="mm"
-              disabled={noThickness.includes(currentElementField)}
+              disabled={noThickness.includes(currentElementField) || isThicknessDisabled}
             />
           </Form.Item>
 
           <Form.Item 
               name="length"
-              rules={[{ required: !noLength.includes(currentElementField), message: language.requiredField }]} 
+              rules={[{ required: !noLength.includes(currentElementField) || isLengthRequired, message: language.requiredField }]} 
             >
             <InputNumber
               style={{margin: '0 5px'}}
               addonBefore='length' 
               addonAfter="mm" 
-              disabled={noLength.includes(currentElementField)}
+              disabled={noLength.includes(currentElementField) || isLengthDisabled}
 
             />
           </Form.Item>
