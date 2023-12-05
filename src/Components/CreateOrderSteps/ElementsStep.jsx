@@ -230,7 +230,8 @@ const ElementsStep = ({ setCurrentStepSend }) => {
 
   return (
     <>
-      <Button type="primary" onClick={() => add()} icon={<PlusCircleOutlined />}>
+      {/* <Button type="primary" onClick={() => add()} icon={<PlusCircleOutlined />}> */}
+      <Button type="primary" onClick={add} icon={<PlusCircleOutlined />}>
         {language.addElement}
       </Button>
 
