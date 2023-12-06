@@ -12,7 +12,7 @@ import { ClientsPage } from './Pages/ClientsPage';
 import { FilesPage } from './Pages/FilesPage';
 import { CreateClientPage } from './Pages/CreateClientPage';
 import { CreateOrderPage } from './Pages/CreateOrderPage';
-import { ConfigProvider, Layout, Select, Dropdown, Spin} from 'antd';
+import { ConfigProvider, Layout, Select, Dropdown, Form} from 'antd';
 import { UserOutlined } from '@ant-design/icons';
 import { Navigation } from './Components/Navigation';
 import logo from './logo.svg';
@@ -20,27 +20,27 @@ import './App.css';
 import { EditClientPage } from './Pages/EditClientPage';
 import { EditOrderPage } from './Pages/EditOrderPage';
 import { OrderDetailsPage } from './Pages/OrderDetailsPage';
-
-// TEMP
-const options = [
-  {
-    value: 'boki-poland',
-    label: 'boki-poland',
-  },
-  {
-    value: 'boki-prague',
-    label: 'boki-prague',
-  },
-];
+import axios from 'axios';
+import { useSelectedCompany } from './Context/CompanyContext';
 
 const { Header, Content, Footer, Sider } = Layout;
+const { Option } = Select;
 
 const App = () => {
   const { isAuthenticated, user, logout } = useContext(AuthContext);
   const [collapsed, setCollapsed] = useState(false);
   const { selectedLanguage } = useLanguage();
   const language = languageMap[selectedLanguage];
-  // const [loading, setLoading] = useState(true);
+  const { selectedCompany, setSelectedCompany } = useSelectedCompany();
+  const [companies, setCompanies] = useState([]);
+  const jwtToken = localStorage.getItem('token');
+  const [form] = Form.useForm();
+  
+
+  const handleSelectChange = (value) => {
+    setSelectedCompany(value);
+    localStorage.setItem('selectedCompanyId', value);
+  };
 
   const handleLogout = () => {
     logout();
@@ -67,10 +67,6 @@ const App = () => {
       onClick: handleLogout
     },
   ];
-
-  const handleChange = (value) => {
-    console.log(`Selected: ${value}`);
-  };
 
   const location = useLocation();
   const orderId = location.pathname.split('/').pop();
@@ -128,6 +124,81 @@ const getHeaderTitle = (location, Id) => {
       navigate('/');
     }
   }, [location.pathname, navigate]);
+
+  const fetchData = async () => {
+    try {
+      const response = await axios.post(
+        'https://api.boki.fortesting.com.ua/graphql',
+        {
+          query: `
+            query Query($filters: CompanyFiltersInput) {
+              companies(filters: $filters) {
+                data {
+                  id
+                  attributes {
+                    name
+                    managers {
+                      data {
+                        id
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          `,
+          variables: {
+            filters: {
+              managers: {
+                id: {
+                  eq: user?.id
+                }
+              }
+            }
+          }
+        },
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${jwtToken}`,
+          }
+        }
+      );
+  
+      setCompanies(response?.data?.data?.companies?.data);
+      
+      if (!localStorage.getItem('selectedCompanyId')) {
+        if (user?.id === '4') {
+          setSelectedCompany('1');
+        } else if (user?.id === '5') {
+          setSelectedCompany('2');
+        } else {
+          setSelectedCompany('3');
+        }
+        
+        form.setFieldsValue({
+          company: selectedCompany,
+        });
+
+        localStorage.setItem('selectedCompanyId', selectedCompany);
+      } else {
+        form.setFieldsValue({
+          company: localStorage.getItem('selectedCompanyId'),
+        });
+        setSelectedCompany(localStorage.getItem('selectedCompanyId'));
+      }
+
+    } catch (error) {
+      console.error('Error fetching companies:', error);
+    }
+  };
+
+  useEffect(() => {
+    if (user?.id) {
+      fetchData();
+    }
+  }, [jwtToken, user?.id, selectedCompany, form]);
+
   
   return (
     <ConfigProvider
@@ -163,16 +234,23 @@ const getHeaderTitle = (location, Id) => {
                 <Dropdown.Button size="large" menu={{ items }} placement="bottom" icon={<UserOutlined />}>
                   {user.username}
                 </Dropdown.Button>
-
-                {/* {user?.role==='Admin' && ( */}
-                  {/* <Select
-                    key="Company"
-                    size="large"
-                    defaultValue="boki-poland" // TEMP
-                    onChange={handleChange}
-                    options={options} // TEMP
-                  /> */}
-                {/* )} */}
+                
+                <Form form={form}>
+                  <Form.Item name='company'>
+                    <Select
+                      value={selectedCompany}
+                      onChange={handleSelectChange}
+                      style={{ width: 150 }}
+                      size='large'
+                    >
+                      {companies.map((company) => (
+                        <Option key={company.id} value={company.id}>
+                          {company.attributes.name}
+                        </Option>
+                      ))}
+                    </Select>
+                  </Form.Item>
+                </Form>
                 
               </div>
             </Header>
@@ -187,11 +265,10 @@ const getHeaderTitle = (location, Id) => {
                   <Route path="/createclient" element={<CreateClientPage />} />
                   <Route path="/editclient/:clientId" element={<EditClientPage />} />
                   <Route path="/createorder" element={<CreateOrderPage />} />
-                  <Route path="/createorder/:orderId" element={<CreateOrderPage />} />
+                  <Route path="/createorder/:orderId" element={<CreateOrderPage/>} />
                   <Route path="/editorder" element={<EditOrderPage />} />
                   <Route path="/editorder/:orderId" element={<EditOrderPage />} />
                   <Route path="/files" element={<FilesPage />} />
-                  {/* <Route path="/order" element={<OrderDetailsPage />} /> */}
                   <Route path="/order/:orderId" element={<OrderDetailsPage />} />
                   <Route path="/resetpassword" element={<ResetPasswordPage />} />
                   <Route path="/savepassword" element={<SavePasswordPage />} />
@@ -211,9 +288,6 @@ const getHeaderTitle = (location, Id) => {
       ) : (
         <Routes>
           <Route path="/" element={<AuthPage />} />
-          {/* <Route path="/auth" element={<AuthPage />} /> */}
-          {/* <Route path="*" element={<Navigate to="/auth" replace />} /> */}
-          {/* <Route path="*" element={<Navigate to="/" replace />} /> */}
           <Route path="/resetpassword" element={<ResetPasswordPage />} />
           <Route path="/savepassword" element={<SavePasswordPage />} />
         </Routes>

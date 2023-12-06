@@ -6,6 +6,7 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { AuthProvider } from './Context/AuthContext'
+import { SelectedCompanyProvider } from './Context/CompanyContext'
 import { OrderProvider } from './Context/OrderContext'
 import { LanguageProvider  } from './Context/LanguageContext';
 
@@ -16,9 +17,11 @@ root.render(
     <Router>
       <LanguageProvider>
       <AuthProvider>
-        <OrderProvider>
-          <App />
-        </OrderProvider>
+        <SelectedCompanyProvider>
+          <OrderProvider>
+            <App />
+          </OrderProvider>
+        </SelectedCompanyProvider>
       </AuthProvider>
       </LanguageProvider>
     </Router>

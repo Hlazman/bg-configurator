@@ -4,6 +4,7 @@ import { useState, useEffect, useContext } from 'react';
 import axios from 'axios';
 import { AuthContext } from '../Context/AuthContext';
 import { useOrder } from '../Context/OrderContext';
+import { useSelectedCompany } from '../Context/CompanyContext';
 import { useNavigate } from 'react-router-dom';
 import { useLanguage } from '../Context/LanguageContext';
 import languageMap from '../Languages/language';
@@ -22,6 +23,8 @@ export const OrdersPage = () => {
   const jwtToken = localStorage.getItem('token');
   const { user } = useContext(AuthContext);
   const [deleteOrderId, setDeleteOrderId] = useState(null);
+
+  const { selectedCompany } = useSelectedCompany();
 
   const handlePaginationChange = (current, pageSize) => {
     setPagination({ ...pagination, current, pageSize });
@@ -45,8 +48,8 @@ const handleOpenOrder = (orderID) => {
       setLoading(true);
       const response = await axios.post('https://api.boki.fortesting.com.ua/graphql', {
         query: `
-          query Orders($pagination: PaginationArg) {
-            orders(pagination: $pagination) {
+          query Orders($pagination: PaginationArg, $filters: OrderFiltersInput) {
+            orders(pagination: $pagination, filters: $filters) {
               data {
                 id
                 attributes {
@@ -93,6 +96,13 @@ const handleOpenOrder = (orderID) => {
         variables: {
           pagination: {
             limit: 400,
+          },
+          filters: {
+            company: {
+              id: {
+                eq: selectedCompany,
+              }
+            }
           },
         },
       }, {
@@ -155,7 +165,7 @@ const handleOpenOrder = (orderID) => {
 
   useEffect(() => {
     fetchData();
-  }, []);
+  }, [selectedCompany]);
 
   const expandedRowRender = (record) => (
     <div>

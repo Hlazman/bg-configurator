@@ -10,6 +10,7 @@ import InformationStep from '../Components/CreateOrderSteps/InformationStep';
 import FrameStep from '../Components/CreateOrderSteps/FrameStep';
 import axios from 'axios';
 import { useOrder } from '../Context/OrderContext';
+import { useSelectedCompany } from '../Context/CompanyContext';
 import { useNavigate, useParams } from 'react-router-dom';
 import { CreateColorDrawer } from '../Components/CreateColorDrawer';
 import { useLanguage } from '../Context/LanguageContext';
@@ -46,10 +47,7 @@ export const CreateOrderPage = () => {
     optionsAdditionalSend: false,
     informationSend: false,
   });
-
-  // const handlePrev = () => {
-  //   setCurrentStep(currentStep - 1);
-  // };
+  const { selectedCompany } = useSelectedCompany();
 
   const handleStepClick = (step) => {
     setCurrentStep(step);
@@ -70,7 +68,9 @@ export const CreateOrderPage = () => {
             }
           `,
           variables: {
-            data: {}
+            data: {
+              company: selectedCompany,
+            }
           },
         },
         {
