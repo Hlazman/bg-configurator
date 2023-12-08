@@ -23,6 +23,10 @@ import { OrderDetailsPage } from './Pages/OrderDetailsPage';
 import axios from 'axios';
 import { useSelectedCompany } from './Context/CompanyContext';
 
+import CreateTotalOrderPage from './Pages/CreateTotalOrderPage';
+import EditTotalOrderPage from './Pages/EditTotalOrderPage';
+import { TotalOrdersPage } from './Pages/TotalOrdersPage';
+
 const { Header, Content, Footer, Sider } = Layout;
 const { Option } = Select;
 
@@ -261,6 +265,13 @@ const getHeaderTitle = (location, Id) => {
                   <Route path="/" element={<OrdersPage />} />
                   <Route path="/auth" element={<Navigate to="/" replace />} />
                   <Route path="/orders" element={<Navigate to="/" replace />} />
+
+                  <Route path="/totalorder" element={<TotalOrdersPage />} />
+                  <Route path="/createtotalorder" element={<CreateTotalOrderPage/>} />
+                  <Route path="/createtotalorder/:totalorderId" element={<CreateTotalOrderPage/>} />
+                  <Route path="/edittotalorder" element={<EditTotalOrderPage/>} />
+                  <Route path="/edittotalorder/:totalorderId" element={<EditTotalOrderPage/>} />
+
                   <Route path="/clients" element={<ClientsPage />} />
                   <Route path="/createclient" element={<CreateClientPage />} />
                   <Route path="/editclient/:clientId" element={<EditClientPage />} />

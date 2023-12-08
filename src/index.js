@@ -8,6 +8,7 @@ import reportWebVitals from './reportWebVitals';
 import { AuthProvider } from './Context/AuthContext'
 import { SelectedCompanyProvider } from './Context/CompanyContext'
 import { OrderProvider } from './Context/OrderContext'
+import { TotalOrderProvider } from './Context/TotalOrderContext'
 import { LanguageProvider  } from './Context/LanguageContext';
 
 
@@ -18,9 +19,11 @@ root.render(
       <LanguageProvider>
       <AuthProvider>
         <SelectedCompanyProvider>
-          <OrderProvider>
-            <App />
-          </OrderProvider>
+          <TotalOrderProvider>
+            <OrderProvider>
+              <App />
+            </OrderProvider>
+          </TotalOrderProvider>
         </SelectedCompanyProvider>
       </AuthProvider>
       </LanguageProvider>

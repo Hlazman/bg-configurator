@@ -24,12 +24,26 @@ export const Navigation = () => {
       'label': createOrderContent,
       'disabled': isCreateOrderDisabled,
     },
+    // new
+    {
+      'key': "createtotalorder", 
+      // 'icon': <UsergroupAddOutlined />,
+      'label': (<NavLink to="/createtotalorder"> CREATE TOTAL ORDER</NavLink>)
+    },
+    // new
     {
       'key': "createclient", 
       'icon': <UsergroupAddOutlined />,
       'label': (<NavLink to="/createclient">{language.createClient}</NavLink>)
     },
     { type: "divider" },
+    // new
+    {
+      'key': "totalorder", 
+      // 'icon': <DatabaseOutlined />,
+      'label': (<NavLink to="totalorder"> TOTAL ORDER </NavLink>)
+    },
+    // new
     {
       'key': "orders", 
       'icon': <DatabaseOutlined />,

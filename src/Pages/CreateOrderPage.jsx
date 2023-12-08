@@ -17,6 +17,7 @@ import { useLanguage } from '../Context/LanguageContext';
 import languageMap from '../Languages/language';
 import OptionsStep from '../Components/CreateOrderSteps/OptionsStep';
 import OptionsAdditionalStep from '../Components/CreateOrderSteps/OptionsAdditionalStep';
+import { useTotalOrder } from '../Context/TotalOrderContext';
 
 export const CreateOrderPage = () => {
   const { selectedLanguage } = useLanguage();
@@ -48,6 +49,7 @@ export const CreateOrderPage = () => {
     informationSend: false,
   });
   const { selectedCompany } = useSelectedCompany();
+  const { totalOrderId } = useTotalOrder();
 
   const handleStepClick = (step) => {
     setCurrentStep(step);
@@ -70,6 +72,7 @@ export const CreateOrderPage = () => {
           variables: {
             data: {
               company: selectedCompany,
+              total_order: totalOrderId,
             }
           },
         },
