@@ -3,7 +3,7 @@ import { DownOutlined, SearchOutlined, FilterOutlined, EditOutlined, FolderOpenO
 import { useState, useEffect, useContext } from 'react';
 import axios from 'axios';
 import { AuthContext } from '../Context/AuthContext';
-import { useOrder } from '../Context/OrderContext';
+import { useTotalOrder } from '../Context/TotalOrderContext';
 import { useSelectedCompany } from '../Context/CompanyContext';
 import { useNavigate } from 'react-router-dom';
 import { useLanguage } from '../Context/LanguageContext';
@@ -22,25 +22,24 @@ export const TotalOrdersPage = () => {
   const [loading, setLoading] = useState(true);
   const jwtToken = localStorage.getItem('token');
   const { user } = useContext(AuthContext);
-  const [deleteOrderId, setDeleteOrderId] = useState(null);
-
+  const [deleteTotalOrderId, setDeleteTotalOrderId] = useState(null);
   const { selectedCompany } = useSelectedCompany();
+  const navigate = useNavigate();
+  const { setTotalOrderId } = useTotalOrder();
 
   const handlePaginationChange = (current, pageSize) => {
     setPagination({ ...pagination, current, pageSize });
   };
 
-  const navigate = useNavigate();
-  const { setOrderId } = useOrder();
-
-  const handleEditOrder = (orderID) => {
-  setOrderId(orderID)
-  navigate(`/editorder`); 
+  const handleEditTotalOrder = (totalOrderID) => {
+  setTotalOrderId(totalOrderID)
+  navigate(`/edittotalorder`);
 };
 
-const handleOpenOrder = (orderID) => {
-  setOrderId(orderID)
-  navigate(`/order/${orderID}`);
+const handleOpenTotalOrder = (totalOrderID) => {
+  setTotalOrderId(totalOrderID)
+  localStorage.setItem('TotalOrderId', totalOrderID);
+  navigate(`/orders`);
 };
 
   const fetchData = async () => {
@@ -48,8 +47,8 @@ const handleOpenOrder = (orderID) => {
       setLoading(true);
       const response = await axios.post('https://api.boki.fortesting.com.ua/graphql', {
         query: `
-          query Orders($pagination: PaginationArg, $filters: OrderFiltersInput) {
-            orders(pagination: $pagination, filters: $filters) {
+          query TotalOrders($pagination: PaginationArg, $filters: TotalOrderFiltersInput) {
+            totalOrders(pagination: $pagination, filters: $filters) {
               data {
                 id
                 attributes {
@@ -61,6 +60,7 @@ const handleOpenOrder = (orderID) => {
                     }
                   }
                   comment
+                  title
                   company {
                     data {
                       attributes {
@@ -70,15 +70,7 @@ const handleOpenOrder = (orderID) => {
                   }
                   createdAt
                   discount
-                  currency
-                  manager {
-                    data {
-                      attributes {
-                        username
-                      }
-                    }
-                  }
-                  shippingAddress {
+                  contacts {
                     address
                     city
                     country
@@ -112,12 +104,12 @@ const handleOpenOrder = (orderID) => {
         },
       });
 
-      const orders = response.data.data.orders.data.map((order) => ({
-        ...order,
-        key: order.id,
+      const totalOrders = response?.data?.data?.totalOrders?.data?.map((totalorder) => ({
+        ...totalorder,
+        key: totalorder.id,
       }));
 
-      setData(orders);
+      setData(totalOrders);
     } catch (error) {
       console.error('Error loading data:', error);
     } finally {
@@ -125,14 +117,14 @@ const handleOpenOrder = (orderID) => {
     }
   }
 
-  const deleteOrder = async (orderId) => {
+  const deleteTotalOrder = async (totalOrderId) => {
     try {
       const response = await axios.post(
         'https://api.boki.fortesting.com.ua/graphql',
         {
           query: `
-            mutation Mutation($deleteOrderId: ID!) {
-              deleteOrder(id: $deleteOrderId) {
+            mutation Mutation($deleteTotalOrderId: ID!) {
+              deleteTotalOrder(id: $deleteTotalOrderId) {
                 data {
                   id
                 }
@@ -140,7 +132,7 @@ const handleOpenOrder = (orderID) => {
             }
           `,
           variables: {
-            deleteOrderId: orderId,
+            deleteTotalOrderId: totalOrderId,
           },
         },
         {
@@ -151,7 +143,7 @@ const handleOpenOrder = (orderID) => {
         }
       );
 
-      if (response.data.data.deleteOrder) {
+      if (response.data.data.deleteTotalOrder) {
         message.success(`${language.successDelete}`);
         fetchData();
       }
@@ -159,7 +151,7 @@ const handleOpenOrder = (orderID) => {
       message.error(`${language.errorDelete}`);
       console.log(error)
     } finally {
-      setDeleteOrderId(null);
+      setDeleteTotalOrderId(null);
     }
   };
 
@@ -183,12 +175,12 @@ const handleOpenOrder = (orderID) => {
     setSelectedFilters(selectedFilterValues);
   };
 
-  const handleStatusClick = async (orderId, newStatus) => {
+  const handleStatusClick = async (totalOrderId, newStatus) => {
     try {
       const response = await axios.post('https://api.boki.fortesting.com.ua/graphql', {
         query: `
-          mutation Mutation($updateOrderId: ID!, $data: OrderInput!) {
-            updateOrder(id: $updateOrderId, data: $data) {
+          mutation Mutation($updateTotalOrderId: ID!, $data: TotalOrderInput!) {
+            updateTotalOrder(id: $updateTotalOrderId, data: $data) {
               data {
                 id
               }
@@ -196,7 +188,7 @@ const handleOpenOrder = (orderID) => {
           }
         `,
         variables: {
-          updateOrderId: orderId,
+          updateTotalOrderId: totalOrderId,
           data: {
             status: newStatus,
           },
@@ -208,31 +200,31 @@ const handleOpenOrder = (orderID) => {
         },
       });
 
-      const updatedOrder = response.data.data.updateOrder.data;
+      const updatedTotalOrder = response.data.data.updateTotalOrder.data;
       setData((prevData) =>
-        prevData.map((order) =>
-          order.id === updatedOrder.id ? { ...order, attributes: { ...order.attributes, status: newStatus } } : order
+        prevData.map((totalOrder) =>
+          totalOrder.id === updatedTotalOrder.id ? { ...totalOrder, attributes: { ...totalOrder.attributes, status: newStatus } } : totalOrder
         )
       );
     } catch (error) {
-      console.error('Error updating order status:', error);
+      console.error('Error updating totalOrder status:', error);
     }
   };
 
     const items = [
     {
-      key: 'openOrder',
+      key: 'openTotalOrder',
       label: `${language.open}`,
       icon: <FolderOpenOutlined />,
     },
     {
-      key: 'editOrder',
+      key: 'editTotalOrder',
       label: `${language.edit}`,
       icon: <EditOutlined/>,
 
     },
     {
-      key: 'deleteOrder',
+      key: 'deleteTotalOrder',
       label: `${language.delete}`,
       icon: <CloseCircleOutlined />,
       danger: true,
@@ -264,12 +256,12 @@ const handleOpenOrder = (orderID) => {
   const columns = [
     {
       title: `${language.order}`,
-      dataIndex: 'id',
-      key: 'id',
+      dataIndex: ['attributes', 'title'],
+      key: 'title',
       width: '200px',
       fixed: 'left',
-      sorter: (a, b) => (a.id || '').localeCompare(b.id || ''),
-      render: (text) => `BG Order # ${text || ''}`,
+      sorter: (a, b) => (a.attributes.title || '').localeCompare(b.attributes.title || ''),
+      render: (text) => `${text || ''}`,
       filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters }) => (
         <div style={{ padding: 8 }}>
           <Input
@@ -299,8 +291,8 @@ const handleOpenOrder = (orderID) => {
         <SearchOutlined style={{ color: filtered ? 'blue' : '#f06d20' }} />
       ),
       onFilter: (value, record) => {
-        const orderName = record.id || '';
-        return orderName.toLowerCase().includes(value.toLowerCase());
+        const totalOrderName = record.attributes.title || '';
+        return totalOrderName.toLowerCase().includes(value.toLowerCase());
       },
       onFilterDropdownOpenChange: (visible) => {
         if (visible) {
@@ -313,7 +305,7 @@ const handleOpenOrder = (orderID) => {
     {
       title: `${language.status}`,
       dataIndex: ['attributes', 'status'],
-      key: 'orderStatus',
+      key: 'totalOrderStatus',
       width: '120px',
       sorter: (a, b) => (a.attributes.status || '').localeCompare(b.attributes.status || ''),
       filters: [
@@ -352,9 +344,9 @@ const handleOpenOrder = (orderID) => {
     {
       title: `${language.createdAt}`,
       dataIndex: ['attributes', 'createdAt'],
-      key: 'orderCreatedAt',
+      key: 'totalOrderCreatedAt',
       width: '150px',
-      defaultSortOrder: 'desc',
+      defaultSortToatlOrder: 'desc',
       sorter: (a, b) => (a.attributes.createdAt || '').localeCompare(b.attributes.createdAt || ''),
       render: (text) => {
         if (!text) return '';
@@ -406,17 +398,17 @@ const handleOpenOrder = (orderID) => {
     },
     {
       title: `${language.deliveryAddress}`,
-      dataIndex: ['attributes', 'shippingAddress'],
-      key: 'orderDeliveryAddress',
+      dataIndex: ['attributes', 'contacts'],
+      key: 'totalOrderDeliveryAddress',
       width: '200px',
-      render: (shippingAddress) => (
-        shippingAddress
-          ? `${shippingAddress.address || ''}${shippingAddress.city ? `, ${shippingAddress.city}` : ''}${shippingAddress.country ? `, ${shippingAddress.country}` : ''}${shippingAddress.zipCode ? `, ${shippingAddress.zipCode}` : ''}`
+      render: (contacts) => (
+        contacts
+          ? `${contacts.address || ''}${contacts.city ? `, ${contacts.city}` : ''}${contacts.country ? `, ${contacts.country}` : ''}${contacts.zipCode ? `, ${contacts.zipCode}` : ''}`
           : ''
       ),
       sorter: (a, b) => {
-        const addressA = `${a.attributes.shippingAddress?.address || ''} ${a.attributes.shippingAddress?.city || ''} ${a.attributes.shippingAddress?.country || ''} ${a.attributes.shippingAddress?.zipCode || ''}`;
-        const addressB = `${b.attributes.shippingAddress?.address || ''} ${b.attributes.shippingAddress?.city || ''} ${b.attributes.shippingAddress?.country || ''} ${b.attributes.shippingAddress?.zipCode || ''}`;
+        const addressA = `${a.attributes.contacts?.address || ''} ${a.attributes.contacts?.city || ''} ${a.attributes.contacts?.country || ''} ${a.attributes.contacts?.zipCode || ''}`;
+        const addressB = `${b.attributes.contacts?.address || ''} ${b.attributes.contacts?.city || ''} ${b.attributes.contacts?.country || ''} ${b.attributes.contacts?.zipCode || ''}`;
         return addressA.localeCompare(addressB);
       },
       filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters }) => (
@@ -448,8 +440,8 @@ const handleOpenOrder = (orderID) => {
         <SearchOutlined style={{ color: filtered ? 'blue' : '#f06d20' }} />
       ),
       onFilter: (value, record) => {
-        const shippingAddress = record.attributes.shippingAddress || {};
-        const address = `${shippingAddress.address || ''} ${shippingAddress.city || ''} ${shippingAddress.country || ''} ${shippingAddress.zipCode || ''}`;
+        const contacts = record.attributes.contacts || {};
+        const address = `${contacts.address || ''} ${contacts.city || ''} ${contacts.country || ''} ${contacts.zipCode || ''}`;
         return address.toLowerCase().includes(value.toLowerCase());
       },
       onFilterDropdownOpenChange: (visible) => {
@@ -463,7 +455,7 @@ const handleOpenOrder = (orderID) => {
     {
       title: `${language.deliveryAt}`,
       dataIndex: ['attributes', 'deliveryAt'],
-      key: 'orderDeliveryAt',
+      key: 'tottalOrderDeliveryAt',
       width: '150px',
       sorter: (a, b) => (a.attributes.deliveryAt || '').localeCompare(b.attributes.deliveryAt || ''),
       render: (text) => {
@@ -517,7 +509,7 @@ const handleOpenOrder = (orderID) => {
     {
       title: `${language.price} €`,
       dataIndex: ['attributes', 'totalCost'],
-      key: 'orderPrice',
+      key: 'totalOrderPrice',
       width: '120px',
       sorter: (a, b) => (a.attributes.totalCost || 0) - (b.attributes.totalCost || 0),
       render: (text) => text || '',
@@ -525,7 +517,7 @@ const handleOpenOrder = (orderID) => {
     {
       title: `${language.discount}`,
       dataIndex: ['attributes', 'discount'],
-      key: 'orderDiscount',
+      key: 'tottalOrderDiscount',
       width: '150px',
       sorter: (a, b) => {
         const discountA = String(a.attributes.discount || '');
@@ -535,17 +527,9 @@ const handleOpenOrder = (orderID) => {
       render: (text) => text || '',
     },
     {
-      title: `${language.currency}`,
-      dataIndex: ['attributes', 'currency'],
-      key: 'orderCurrency',
-      width: '120px',
-      sorter: (a, b) => (a.attributes.currency || '').localeCompare(b.attributes.currency || ''),
-      render: (text) => text || '',
-    },
-    {
       title: `${language.client}`,
       dataIndex: ['attributes', 'client', 'data', 'attributes', 'client_name'],
-      key: 'orderClient',
+      key: 'totalOrderClient',
       width: '150px',
       sorter: (a, b) => {
         const clientNameA = a.attributes?.client?.data?.attributes?.client_name || '';
@@ -594,57 +578,6 @@ const handleOpenOrder = (orderID) => {
       },
     },
     {
-      title: `${language.manager}`,
-      dataIndex: ['attributes', 'manager', 'data', 'attributes', 'username'],
-      key: 'orderManager',
-      width: '150px',
-      sorter: (a, b) => {
-        const usernameA = a.attributes?.manager?.data?.attributes?.username || '';
-        const usernameB = b.attributes?.manager?.data?.attributes?.username || '';
-        return usernameA.localeCompare(usernameB);
-      },
-      render: (text) => text || '',
-      filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters }) => (
-        <div style={{ padding: 8 }}>
-          <Input
-            placeholder={language.search}
-            value={selectedKeys[0]}
-            onChange={(e) => setSelectedKeys(e.target.value ? [e.target.value] : [])}
-            onPressEnter={() => confirm()}
-            style={{ width: 188, marginBottom: 8, display: 'block' }}
-          />
-          <Space>
-            <Button
-              type="primary"
-              onClick={() => confirm()}
-              icon={<SearchOutlined />}
-              size="small"
-              style={{ width: 90 }}
-            >
-              {language.search}
-            </Button>
-            <Button onClick={() => { clearFilters(); confirm(); }} size="small" style={{ width: 90 }}>
-              {language.reset}
-            </Button>
-          </Space>
-        </div>
-      ),
-      filterIcon: (filtered) => (
-        <SearchOutlined style={{ color: filtered ? 'blue' : '#f06d20' }} />
-      ),
-      onFilter: (value, record) => {
-        const managerName = record.attributes?.manager?.data?.attributes?.username || '';
-        return managerName.toLowerCase().includes(value.toLowerCase());
-      },
-      onFilterDropdownOpenChange: (visible) => {
-        if (visible) {
-          setTimeout(() => {
-            document.querySelector('.ant-table-filter-dropdown input')?.focus();
-          }, 0);
-        }
-      },
-    },
-    {
       title: `${language.action}`,
       dataIndex: 'operation',
       key: 'operation',
@@ -660,9 +593,9 @@ const handleOpenOrder = (orderID) => {
                   else if (key === 'active') handleStatusClick(record.id, 'Active');
                   else if (key === 'paid') handleStatusClick(record.id, 'Paid');
                   else if (key === 'closed') handleStatusClick(record.id, 'Closed');
-                  else if (key === 'deleteOrder') setDeleteOrderId(record.id);
-                  else if (key === 'editOrder') handleEditOrder(record.id);
-                  else if (key === 'openOrder') handleOpenOrder(record.id);
+                  else if (key === 'deleteTotalOrder') setDeleteTotalOrderId(record.id);
+                  else if (key === 'editTotalOrder') handleEditTotalOrder(record.id);
+                  else if (key === 'openTotalOrder') handleOpenTotalOrder(record.id);
               }
           }
           } trigger={['click']} >
@@ -677,7 +610,6 @@ const handleOpenOrder = (orderID) => {
 
   return (
     <>
-     <h1> TOTAL ORDER </h1>
       <Spin spinning={loading} size="large">
         <Table
           rowSelection={{}}
@@ -705,9 +637,9 @@ const handleOpenOrder = (orderID) => {
 
       <Modal
         title={`${language.removeData} ${user.username}?`}
-        open={deleteOrderId !== null}
-        onOk={() => deleteOrder(deleteOrderId)}
-        onCancel={() => setDeleteOrderId(null)}
+        open={deleteTotalOrderId !== null}
+        onOk={() => deleteTotalOrder(deleteTotalOrderId)}
+        onCancel={() => setDeleteTotalOrderId(null)}
         okText={`${language.yes}`}
         cancelText={`${language.cancel}`}
       >

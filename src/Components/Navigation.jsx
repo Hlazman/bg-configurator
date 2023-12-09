@@ -13,37 +13,23 @@ export const Navigation = () => {
   const language = languageMap[selectedLanguage];
   
   const location = useLocation();
-  const isCreateOrderDisabled = location.pathname.startsWith('/createorder/');
-  const createOrderContent = isCreateOrderDisabled ? language.createOrder : <NavLink to="/createorder">{language.createOrder}</NavLink>;
+  const isCreateOrderDisabled = location.pathname.startsWith('/createtotalorder/');
+  const createOrderContent = isCreateOrderDisabled ? language.createOrder : <NavLink to="/createtotalorder">{language.createOrder}</NavLink>;
 
   const menuItems = [
     { type: "divider" },
     {
-      'key': "createorder", 
+      'key': "createtotalorder", 
       'icon': <FormOutlined />,
       'label': createOrderContent,
       'disabled': isCreateOrderDisabled,
     },
-    // new
-    {
-      'key': "createtotalorder", 
-      // 'icon': <UsergroupAddOutlined />,
-      'label': (<NavLink to="/createtotalorder"> CREATE TOTAL ORDER</NavLink>)
-    },
-    // new
     {
       'key': "createclient", 
       'icon': <UsergroupAddOutlined />,
       'label': (<NavLink to="/createclient">{language.createClient}</NavLink>)
     },
     { type: "divider" },
-    // new
-    {
-      'key': "totalorder", 
-      // 'icon': <DatabaseOutlined />,
-      'label': (<NavLink to="totalorder"> TOTAL ORDER </NavLink>)
-    },
-    // new
     {
       'key': "orders", 
       'icon': <DatabaseOutlined />,

@@ -169,6 +169,12 @@ const cs = {
   NoDecorData: 'Nebyla nalezena žádná data dekorace',
   NoDecorDataDoor: 'Dekor dveří není vybrán',
 
+  addOrder: "Přidat objednávku",
+  orderList: "Seznam objednávek",
+  totalOrder: "Celková objednávka",
+  fullPresentation: "Úplná prezentace",
+  shortPresentation: "Krátká prezentace",
+
 // Products Frame
   'hidden_standard Hidden': 'Skrytý standard',
   'type 1 outside Neo Classic': 'Neo Classic venku',

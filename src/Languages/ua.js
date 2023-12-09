@@ -169,6 +169,12 @@ const ua = {
   NoDecorData: 'Дані про декор не знайдені',
   NoDecorDataDoor: 'He вибрано декор для дверей',
 
+  addOrder: "Додати замовлення",
+  orderList: "Список замовлень",
+  totalOrder: "Загальне замовлення",
+  fullPresentation: "Повна презентація",
+  shortPresentation: "Коротка презентація",
+
 // Products Frame
   'hidden_standard Hidden': 'Прихований стандарт',
   'type 1 outside Neo Classic': 'Neo Classic ззовні',

@@ -169,6 +169,12 @@ const pl = {
   NoDecorData: 'Nie znaleziono danych dotyczących dekoracji',
   NoDecorDataDoor: 'Nie wybrano dekoracji drzwi',
 
+  addOrder: "Dodaj zamówienie",
+  orderList: "Lista zamówień",
+  totalOrder: "Całe zamówienie",
+  fullPresentation: "Pełna prezentacja",
+  shortPresentation: "Krótka prezentacja",
+
 // Products Frame
   'hidden_standard Hidden': 'Ukryty standard',
   'type 1 outside Neo Classic': 'Neo Classic poza',

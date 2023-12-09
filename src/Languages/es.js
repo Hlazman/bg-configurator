@@ -169,6 +169,12 @@ const es = {
   NoDecorData: 'No se encontraron datos de decoración',
   NoDecorDataDoor: 'No se ha seleccionado decoración para la puerta',
 
+  addOrder: "Agregar orden",
+  orderList: "Lista de órdenes",
+  totalOrder: "Orden total",
+  fullPresentation: "Presentación completa",
+  shortPresentation: "Presentación breve",
+
 // Products Frame
   'hidden_standard Hidden': 'Estándar oculto',
   'type 1 outside Neo Classic': 'Neo Clásico exterior',

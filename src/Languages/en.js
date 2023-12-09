@@ -168,9 +168,15 @@ const en = {
   addElement: "Add Element",
   factory: "Factory",
   presentation: "Presentation",
-
+  
   NoDecorData: 'No decor data found',
   NoDecorDataDoor: 'Door decor is not selected',
+
+  addOrder: "Add Order",
+  orderList: "Orders list",
+  totalOrder: "Total order",
+  fullPresentation: "Full presentation",
+  shortPresentation: "Short presentation",
 
 // Products Options
   'cat_door': 'Cat Door',

@@ -222,7 +222,6 @@ const EditTotalOrderPage = () => {
   return (
     <Card style={{background: '#F8F8F8', borderColor: '#DCDCDC', marginTop: '20px'}}>
       {contextHolder}
-      <h1>Edit</h1>
       <Form form={form} onFinish={onFinish} initialValues={{ currency: 'EUR' }} >
 
         <div style={{ display: 'flex', gap: '30px' }}>

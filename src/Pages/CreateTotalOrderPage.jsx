@@ -62,6 +62,8 @@ const CreateTotalOrderPage = () => {
           variables: {
             data: {
               company: selectedCompany,
+              title: 'No title',
+              status: 'Draft',
             }
           },
         },
@@ -117,7 +119,7 @@ const CreateTotalOrderPage = () => {
 
   const onFinish = async (values) => {
     const data = {
-      title: values.title || null,
+      title: values.title || 'No title',
       client: values.client || null,
       comment: values.comment || null,
       contacts: {
@@ -194,7 +196,10 @@ const CreateTotalOrderPage = () => {
       <Form form={form} onFinish={onFinish} initialValues={{ currency: 'EUR' }} >
 
         <div style={{ display: 'flex', gap: '30px' }}>
-        <Form.Item name="title" style={{ width: '100%' }}>
+        <Form.Item 
+          name="title"
+          style={{ width: '100%' }}
+        >
             <Input addonBefore={language.title}/>
           </Form.Item>
 

@@ -73,15 +73,15 @@ const App = () => {
   ];
 
   const location = useLocation();
-  const orderId = location.pathname.split('/').pop();
+  const pageId = location.pathname.split('/').pop();
 
 const getHeaderTitle = (location, Id) => {
-  if (location.pathname.startsWith('/createorder/')) {
+  if (location.pathname.startsWith('/createorder/') || location.pathname.startsWith('/editorder/')) {
     return `${language.order} #${Id}`;
   }
 
-  if (location.pathname.startsWith('/editorder/')) {
-    return `${language.order} #${Id}`;
+  if (location.pathname.startsWith('/createtotalorder/') || location.pathname.startsWith('/edittotalorder/')) {
+    return `${language.totalOrder} #${Id}`;
   }
 
   if (location.pathname.startsWith('/editclient/')) {
@@ -95,6 +95,8 @@ const getHeaderTitle = (location, Id) => {
   switch (location.pathname) {
     case '/':
       return language.orders;
+    case '/orders':
+      return language.orderList;
     case '/clients':
       return language.clients;
     case '/createclient':
@@ -110,12 +112,13 @@ const getHeaderTitle = (location, Id) => {
   }
 };
 
-  const headerTitle = getHeaderTitle(location, orderId);
+  const headerTitle = getHeaderTitle(location, pageId);
 
   useEffect(() => {
     localStorage.setItem('savedPath', location.pathname);
   }, [location.pathname]);
 
+  // TODO
   useEffect(() => {
     if (!location.pathname.startsWith('/createorder/')) {
       localStorage.removeItem('currentOrder');
@@ -262,16 +265,14 @@ const getHeaderTitle = (location, Id) => {
             <Content style={{ margin: '0 16px' }}>
               <div className="App">
                 <Routes>
-                  <Route path="/" element={<OrdersPage />} />
+                  <Route path="/" element={<TotalOrdersPage />} />
                   <Route path="/auth" element={<Navigate to="/" replace />} />
-                  <Route path="/orders" element={<Navigate to="/" replace />} />
-
-                  <Route path="/totalorder" element={<TotalOrdersPage />} />
+                  <Route path="/totalorder" element={<Navigate to="/" replace />} />
+                  <Route path="/orders" element={<OrdersPage />} />
                   <Route path="/createtotalorder" element={<CreateTotalOrderPage/>} />
                   <Route path="/createtotalorder/:totalorderId" element={<CreateTotalOrderPage/>} />
                   <Route path="/edittotalorder" element={<EditTotalOrderPage/>} />
                   <Route path="/edittotalorder/:totalorderId" element={<EditTotalOrderPage/>} />
-
                   <Route path="/clients" element={<ClientsPage />} />
                   <Route path="/createclient" element={<CreateClientPage />} />
                   <Route path="/editclient/:clientId" element={<EditClientPage />} />
