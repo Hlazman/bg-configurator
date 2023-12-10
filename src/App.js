@@ -6,6 +6,7 @@ import languageMap from './Languages/language';
 import { NotFoundPage } from './Pages/NotFoundPage';
 import { AuthPage } from './Pages/AuthPage';
 import { OrdersPage } from './Pages/OrdersPage';
+import { TotalOrderDetailsPage } from './Pages/TotalOrderDetailsPage';
 import { ResetPasswordPage } from './Pages/ResetPasswordPage';
 import { SavePasswordPage } from './Pages/SavePasswordPage';
 import { ClientsPage } from './Pages/ClientsPage';
@@ -90,6 +91,18 @@ const getHeaderTitle = (location, Id) => {
 
   if (location.pathname.startsWith('/order/')) {
     return `${language.orderDetails} #${Id}`;
+  }
+
+  if (location.pathname.startsWith('/totalorderdetails') && localStorage.getItem('presentation') === 'factory') {
+    return `${language.factory}`;
+  }
+
+  if (location.pathname.startsWith('/totalorderdetails') && localStorage.getItem('presentation') === 'full') {
+    return `${language.fullPresentation}`;
+  }
+
+  if (location.pathname.startsWith('/totalorderdetails') && localStorage.getItem('presentation') === 'short') {
+    return `${language.shortPresentation}`;
   }
 
   switch (location.pathname) {
@@ -285,6 +298,8 @@ const getHeaderTitle = (location, Id) => {
                   <Route path="/resetpassword" element={<ResetPasswordPage />} />
                   <Route path="/savepassword" element={<SavePasswordPage />} />
                   <Route path="*" element={<NotFoundPage />} />
+
+                  <Route path="/totalorderdetails" element={<TotalOrderDetailsPage />} />
                 </Routes>
               </div>
             </Content>

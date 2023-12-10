@@ -1,13 +1,13 @@
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useState, useContext, useEffect, useRef } from 'react';
 import {Descriptions, Select, Space, Alert} from 'antd';
 import { AuthContext } from '../Context/AuthContext';
 import { useLanguage } from '../Context/LanguageContext';
 import languageMap from '../Languages/language';
 
 
-export const OrderDescriptionFactory = (
-  {orderData, orderId, frameData, doorData, elementData, lockData, hingeData, knobeData, optionsData, isCreatingPdf}
-  ) => {
+export const OrderDescriptionFactory = ({
+  orderData, orderId, frameData, doorData, elementData, lockData, hingeData, knobeData, optionsData, isCreatingPdf, orderName, currancyValue
+}) => {
   const { user } = useContext(AuthContext);
   const { selectedLanguage } = useLanguage();
   const language = languageMap[selectedLanguage];
@@ -37,10 +37,6 @@ export const OrderDescriptionFactory = (
       console.error('Error fetching exchange rates:', error);
     }
   };
-  
-  useEffect(() => {
-    fetchExchangeRates();
-  }, []);
   
   const convertCurrency = (price, selectedCurrency) => {
     if (!exchangeRates || !selectedCurrency || !price) {
@@ -84,6 +80,19 @@ export const OrderDescriptionFactory = (
     setConvertedPriceTotal(convertedPriceTotal);
   };
 
+  const prevCurrencyValue = useRef(currancyValue);
+
+  useEffect(() => {
+    fetchExchangeRates();
+  }, []);
+
+  useEffect(() => {
+    if (prevCurrencyValue.current !== currancyValue) {
+      handleCurrencyChange(currancyValue);
+      prevCurrencyValue.current = currancyValue;
+    }
+  }, [currancyValue]);
+
     if (!orderData) {
     return null;
   }
@@ -91,30 +100,9 @@ export const OrderDescriptionFactory = (
   return (
     <div style={{maxWidth: isCreatingPdf ? 'auto' : '900px', margin: '0 auto'}}>
 
-    <Space style={{display: isCreatingPdf ? 'none' : 'flex', marginBottom: '20px', alignItems: 'baseline'}}>
-      <p> {language.currency} </p>
-      <Select
-        defaultValue={currency}
-        onChange={handleCurrencyChange}
-      >
-        <Option value="EUR">EUR €</Option>
-        <Option value="PLN">PLN zł</Option>
-        <Option value="USD">USD $</Option>
-        <Option value="UAH">UAH ₴</Option>
-      </Select>
-    </Space>
-
-    <Alert
-      style={{display: isCreatingPdf ? 'none' : 'block', marginBottom: '10px'}}
-      // message="Warning"
-      // showIcon
-      description={language.exchangeRate}
-      type="warning"
-    />
-
       {/* HEADER */}
       <div style={{padding: '15px', backgroundColor: '#FFF', borderRadius: '15px'}}>
-
+        <h2> {language.order} # {orderName} </h2>
       {/* DOOR DETAILS */}
         <p style={{fontWeight: '500', padding: '10px', backgroundColor: '#f06d20', color: '#FFF'}}> 
           {language.door}

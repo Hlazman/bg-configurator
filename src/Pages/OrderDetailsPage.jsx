@@ -9,9 +9,11 @@ import { useParams } from 'react-router-dom';
 import { useLanguage } from '../Context/LanguageContext';
 import languageMap from '../Languages/language';
 import { AuthContext } from '../Context/AuthContext';
+import { useNavigate } from 'react-router-dom';
+import { LeftCircleOutlined } from '@ant-design/icons';
 
 
-export const OrderDetailsPage = () => {
+export const OrderDetailsPage = ({fromTotalOrder, isCreatingTotalPdf, orderName, currancyValue}) => {
   const { user } = useContext(AuthContext);
   const jwtToken = localStorage.getItem('token');
   const { orderId, setOrderId } = useOrder();
@@ -21,6 +23,7 @@ export const OrderDetailsPage = () => {
   const language = languageMap[selectedLanguage];
 
   const [isCreatingPdf, setIsCreatingPdf] = useState(false);
+  const navigate = useNavigate();
 
   const [doorData, setDoorData] = useState(null);
   const [frameData, setFrameData] = useState(null);
@@ -29,8 +32,7 @@ export const OrderDetailsPage = () => {
   const [hingeData, setHingeData] = useState(null);
   const [knobeData, setKnobeData] = useState(null);
   const [optionsData, setOptionsData] = useState(null);
-
-  const isBoss = ['1', '2', '4'];
+  const presentation = localStorage.getItem('presentation');
 
   const embedImages = async () => {
     const images = document.querySelectorAll('img');
@@ -58,25 +60,7 @@ export const OrderDetailsPage = () => {
       .from(element)
       .set({
         margin: [5, 0, 5, 0], 
-        filename: `Order ${orderId}.pdf`,
-        image: { type: 'jpeg', quality: 0.98 },
-        html2canvas: { scale: 2 },
-        jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
-        pagebreak: { mode: 'avoid-all', after: '#nextpage' }
-      })
-      .save();
-      setIsCreatingPdf(false);
-  };
-
-  const handlePdfExportFactory = async () => {
-    setIsCreatingPdf(true);
-    const element = document.getElementById('pdf-content-factory');
-  
-    await html2pdf()
-      .from(element)
-      .set({
-        margin: [5, 0, 5, 0], 
-        filename: `Factory Order ${orderId}.pdf`,
+        filename: `Order ${fromTotalOrder ? fromTotalOrder : orderId}.pdf`,
         image: { type: 'jpeg', quality: 0.98 },
         html2canvas: { scale: 2 },
         jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
@@ -86,26 +70,6 @@ export const OrderDetailsPage = () => {
       setIsCreatingPdf(false);
   };
   
-  // const handleOpenPdf = async () => {
-  //   setIsCreatingPdf(true);
-  //   const element = document.getElementById('pdf-content');
-  //   await embedImages();
-  
-  //   await html2pdf()
-  //     .from(element)
-  //     .set({
-  //       margin: [5, 0, 5, 0], 
-  //       filename: `Order ${orderId}.pdf`,
-  //       image: { type: 'jpeg', quality: 0.98 },
-  //       html2canvas: { scale: 2 },
-  //       jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
-  //       // pagebreak: { mode: ['avoid-all', 'css', 'legacy'] }
-  //       pagebreak: { mode: 'avoid-all', after: '#nextpage' }
-  //     })
-  //     .outputPdf('dataurlnewwindow');
-  //     setIsCreatingPdf(false);
-  // };
-
   const fetchData = async () => {
     try {
       const response = await axios.post(
@@ -169,7 +133,7 @@ export const OrderDetailsPage = () => {
             }
           `,
           variables: {
-            orderId: orderId,
+            orderId: fromTotalOrder ? fromTotalOrder : orderId,
           },
         },
         {
@@ -821,41 +785,19 @@ const fetchOptionsData = async (optionIds) => {
 
   return (
     <div>
-      <Divider/>
-      <div style={{margin: '20px', display:'flex', gap: '20px', justifyContent: 'center'}}>
-          <h2 style={{display: 'inline-block', marginRight: '30px'}}> {language.presentation} </h2>
-          <Button type="primary" size={'large'} onClick={handlePdfExport}>{language.save} PDF</Button>
-        {/* <Button onClick={handleOpenPdf}>{language.open} PDF</Button> */}
-      </div>
-      <Divider/>
-
-      <div id="pdf-content">
-        <OrderDescription
-          orderId={orderId} 
-          orderData={orderData} 
-          frameData={frameData}
-          doorData={doorData}
-          elementData={elementData}
-          hingeData={hingeData}
-          knobeData={knobeData}
-          lockData={lockData}
-          optionsData={optionsData}
-          isCreatingPdf={isCreatingPdf}
-        />
-      </div>
-
-      {isBoss.includes(user.id) && (
+      {/* SINGLEORDER */}
+      {presentation === 'singleOrder' && (
         <div>
-          <Divider/>
-          <h2 style={{display: 'inline-block', marginRight: '30px'}}> {language.factory} </h2>
-          <Button type="primary" size={'large'} onClick={handlePdfExportFactory}>{language.save} PDF</Button>
-          {/* <Button onClick={handleOpenPdf}>{language.open} PDF</Button> */}
-          <Divider/>
+          
+          <div style={{display: 'flex', gap: '20px', justifyContent: 'space-between', margin: '20px 50px'}}>
+            <Button icon={<LeftCircleOutlined />} type="dashed" onClick={()=> navigate(`/orders`)}> {language.orderList} </Button>
+            <Button type="primary" size={'large'} onClick={handlePdfExport}>{language.save} PDF</Button>
+          </div>
 
-          <div id="pdf-content-factory">
-            <OrderDescriptionFactory
-              orderId={orderId} 
-              orderData={orderData} 
+          <div id="pdf-content">
+            <OrderDescription
+              orderId={orderId}
+              orderData={orderData}
               frameData={frameData}
               doorData={doorData}
               elementData={elementData}
@@ -868,6 +810,28 @@ const fetchOptionsData = async (optionIds) => {
           </div>
         </div>
       )}
+
+        {/* FACTORY */}
+       {presentation === 'factory' && (
+            <OrderDescriptionFactory
+              orderId={orderId} 
+              orderData={orderData}
+              frameData={frameData}
+              doorData={doorData}
+              elementData={elementData}
+              hingeData={hingeData}
+              knobeData={knobeData}
+              lockData={lockData}
+              optionsData={optionsData}
+              isCreatingPdf={isCreatingTotalPdf}
+              orderName={orderName}
+              currancyValue={currancyValue}
+            />
+      )}
+
+        {/* FULL TOATAL ORDER */}
+        {/* SHORT TOATAL ORDER */}
+
     </div>
   );
 };

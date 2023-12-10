@@ -1,4 +1,4 @@
-import { Table, Dropdown, Space, Button, Tag, Input, Spin, Modal, message, Divider } from 'antd';
+import { Table, Dropdown, Space, Button, Input, Spin, Modal, message, Divider } from 'antd';
 import { 
   DownOutlined, SearchOutlined, EditOutlined, FolderOpenOutlined, CloseCircleOutlined, PlusCircleOutlined, FileDoneOutlined 
 } from '@ant-design/icons';
@@ -30,6 +30,8 @@ export const OrdersPage = () => {
   const { selectedCompany } = useSelectedCompany();
   const { totalOrderId } = useTotalOrder();
 
+  const isBoss = ['1', '2', '4'];
+
   const handlePaginationChange = (current, pageSize) => {
     setPagination({ ...pagination, current, pageSize });
   };
@@ -44,7 +46,9 @@ export const OrdersPage = () => {
 
 const handleOpenOrder = (orderID) => {
   setOrderId(orderID)
+  localStorage.setItem('presentation', 'singleOrder');
   navigate(`/order/${orderID}`);
+
 };
 
   const fetchData = async () => {
@@ -57,23 +61,23 @@ const handleOpenOrder = (orderID) => {
               data {
                 id
                 attributes {
-                  client {
+                  door_suborder {
                     data {
                       attributes {
-                        client_name
+                        door {
+                          data {
+                            attributes {
+                              product_properties {
+                                title
+                              }
+                            }
+                          }
+                        }
                       }
                     }
                   }
                   comment
-                  company {
-                    data {
-                      attributes {
-                        name
-                      }
-                    }
-                  }
                   createdAt
-                  discount
                   currency
                   manager {
                     data {
@@ -82,16 +86,7 @@ const handleOpenOrder = (orderID) => {
                       }
                     }
                   }
-                  shippingAddress {
-                    address
-                    city
-                    country
-                    zipCode
-                  }
                   totalCost
-                  tax
-                  status
-                  deliveryAt
                 }
               }
             }
@@ -109,7 +104,6 @@ const handleOpenOrder = (orderID) => {
             },
             total_order: {
               id: {
-                // eq: totalOrderId,
                 eq: totalOrderId ? totalOrderId : localStorage.getItem('TotalOrderId'),
               }
             }, 
@@ -122,7 +116,7 @@ const handleOpenOrder = (orderID) => {
         },
       });
 
-      const orders = response.data.data.orders.data.map((order) => ({
+      const orders = response?.data?.data?.orders?.data.map((order) => ({
         ...order,
         key: order.id,
       }));
@@ -193,42 +187,6 @@ const handleOpenOrder = (orderID) => {
     setSelectedFilters(selectedFilterValues);
   };
 
-  const handleStatusClick = async (orderId, newStatus) => {
-    try {
-      const response = await axios.post('https://api.boki.fortesting.com.ua/graphql', {
-        query: `
-          mutation Mutation($updateOrderId: ID!, $data: OrderInput!) {
-            updateOrder(id: $updateOrderId, data: $data) {
-              data {
-                id
-              }
-            }
-          }
-        `,
-        variables: {
-          updateOrderId: orderId,
-          data: {
-            status: newStatus,
-          },
-        },
-      }, {
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${jwtToken}`,
-        },
-      });
-
-      const updatedOrder = response.data.data.updateOrder.data;
-      setData((prevData) =>
-        prevData.map((order) =>
-          order.id === updatedOrder.id ? { ...order, attributes: { ...order.attributes, status: newStatus } } : order
-        )
-      );
-    } catch (error) {
-      console.error('Error updating order status:', error);
-    }
-  };
-
     const items = [
     {
       key: 'openOrder',
@@ -246,28 +204,6 @@ const handleOpenOrder = (orderID) => {
       label: `${language.delete}`,
       icon: <CloseCircleOutlined />,
       danger: true,
-    },
-    {
-      key: '10',
-      label: `${language.status}`,
-      children: [
-        {
-          key: 'draft',
-          label: 'Draft',
-        },
-        {
-          key: 'active',
-          label: 'Active',
-        },
-        {
-          key: 'paid',
-          label: 'Paid',
-        },
-        {
-          key: 'closed',
-          label: 'Closed',
-        },
-      ],
     },
   ];
 
@@ -320,45 +256,57 @@ const handleOpenOrder = (orderID) => {
         }
       },
     },
-    // {
-    //   title: `${language.status}`,
-    //   dataIndex: ['attributes', 'status'],
-    //   key: 'orderStatus',
-    //   width: '120px',
-    //   sorter: (a, b) => (a.attributes.status || '').localeCompare(b.attributes.status || ''),
-    //   filters: [
-    //     { text: 'Draft', value: 'Draft' },
-    //     { text: 'Active', value: 'Active' },
-    //     { text: 'Paid', value: 'Paid' },
-    //     { text: 'Closed', value: 'Closed' },
-    //   ],
-    //   filterIcon: (filtered) => (
-    //     <FilterOutlined style={{ color: filtered ? 'blue' : '#f06d20' }} />
-    //   ),
-    //   onFilter: (value, record) => (record.attributes.status || '') === value,
-    //   render: (status) => {
-    //     let color = 'default';
-  
-    //     switch (status) {
-    //       case 'Draft':
-    //         color = 'grey';
-    //         break;
-    //       case 'Active':
-    //         color = 'blue';
-    //         break;
-    //       case 'Paid':
-    //         color = 'green';
-    //         break;
-    //       case 'Closed':
-    //         color = 'gold';
-    //         break;
-    //       default:
-    //         break;
-    //     }
-  
-    //     return <Tag color={color}>{status || ''}</Tag>;
-    //   },
-    // },
+    {
+      title: `${language.door} ${language.title}`,
+      dataIndex: ['attributes', 'door_suborder', 'data', 'attributes', 'door', 'data', 'attributes', 'product_properties', 'title'],
+      key: 'orderClient',
+      width: '150px',
+      sorter: (a, b) => {
+        const doorTitleA = a.attributes?.door_suborder?.data?.attributes?.door?.data?.attributes?.product_properties?.title || '';
+        const doorTitleB = b.attributes?.door_suborder?.data?.attributes?.door?.data?.attributes?.product_properties?.title || '';
+        return doorTitleA.localeCompare(doorTitleB);
+      },
+      render: (text) => text || '',
+      filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters }) => (
+        <div style={{ padding: 8 }}>
+          <Input
+            placeholder={language.search}
+            value={selectedKeys[0]}
+            onChange={(e) => setSelectedKeys(e.target.value ? [e.target.value] : [])}
+            onPressEnter={() => confirm()}
+            style={{ width: 188, marginBottom: 8, display: 'block' }}
+          />
+          <Space>
+            <Button
+              type="primary"
+              onClick={() => confirm()}
+              icon={<SearchOutlined />}
+              size="small"
+              style={{ width: 90 }}
+            >
+              {language.search}
+            </Button>
+            <Button onClick={() => { clearFilters(); confirm(); }} size="small" style={{ width: 90 }}>
+              {language.reset}
+            </Button>
+          </Space>
+        </div>
+      ),
+      filterIcon: (filtered) => (
+        <SearchOutlined style={{ color: filtered ? 'blue' : '#f06d20' }} />
+      ),
+      onFilter: (value, record) => {
+        const doorName = record.attributes?.door_suborder?.data?.attributes?.door?.data?.attributes?.product_properties?.title || '';
+        return doorName.toLowerCase().includes(value.toLowerCase());
+      },
+      onFilterDropdownOpenChange: (visible) => {
+        if (visible) {
+          setTimeout(() => {
+            document.querySelector('.ant-table-filter-dropdown input')?.focus();
+          }, 0);
+        }
+      },
+    },
     {
       title: `${language.createdAt}`,
       dataIndex: ['attributes', 'createdAt'],
@@ -414,116 +362,6 @@ const handleOpenOrder = (orderID) => {
         }
       },
     },
-    // {
-    //   title: `${language.deliveryAddress}`,
-    //   dataIndex: ['attributes', 'shippingAddress'],
-    //   key: 'orderDeliveryAddress',
-    //   width: '200px',
-    //   render: (shippingAddress) => (
-    //     shippingAddress
-    //       ? `${shippingAddress.address || ''}${shippingAddress.city ? `, ${shippingAddress.city}` : ''}${shippingAddress.country ? `, ${shippingAddress.country}` : ''}${shippingAddress.zipCode ? `, ${shippingAddress.zipCode}` : ''}`
-    //       : ''
-    //   ),
-    //   sorter: (a, b) => {
-    //     const addressA = `${a.attributes.shippingAddress?.address || ''} ${a.attributes.shippingAddress?.city || ''} ${a.attributes.shippingAddress?.country || ''} ${a.attributes.shippingAddress?.zipCode || ''}`;
-    //     const addressB = `${b.attributes.shippingAddress?.address || ''} ${b.attributes.shippingAddress?.city || ''} ${b.attributes.shippingAddress?.country || ''} ${b.attributes.shippingAddress?.zipCode || ''}`;
-    //     return addressA.localeCompare(addressB);
-    //   },
-    //   filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters }) => (
-    //     <div style={{ padding: 8 }}>
-    //       <Input
-    //         placeholder={language.search}
-    //         value={selectedKeys[0]}
-    //         onChange={(e) => setSelectedKeys(e.target.value ? [e.target.value] : [])}
-    //         onPressEnter={() => confirm()}
-    //         style={{ width: 188, marginBottom: 8, display: 'block' }}
-    //       />
-    //       <Space>
-    //         <Button
-    //           type="primary"
-    //           onClick={() => confirm()}
-    //           icon={<SearchOutlined />}
-    //           size="small"
-    //           style={{ width: 90 }}
-    //         >
-    //           {language.search}
-    //         </Button>
-    //         <Button onClick={() => { clearFilters(); confirm(); }} size="small" style={{ width: 90 }}>
-    //           {language.reset}
-    //         </Button>
-    //       </Space>
-    //     </div>
-    //   ),
-    //   filterIcon: (filtered) => (
-    //     <SearchOutlined style={{ color: filtered ? 'blue' : '#f06d20' }} />
-    //   ),
-    //   onFilter: (value, record) => {
-    //     const shippingAddress = record.attributes.shippingAddress || {};
-    //     const address = `${shippingAddress.address || ''} ${shippingAddress.city || ''} ${shippingAddress.country || ''} ${shippingAddress.zipCode || ''}`;
-    //     return address.toLowerCase().includes(value.toLowerCase());
-    //   },
-    //   onFilterDropdownOpenChange: (visible) => {
-    //     if (visible) {
-    //       setTimeout(() => {
-    //         document.querySelector('.ant-table-filter-dropdown input')?.focus();
-    //       }, 0);
-    //     }
-    //   },
-    // },
-    // {
-    //   title: `${language.deliveryAt}`,
-    //   dataIndex: ['attributes', 'deliveryAt'],
-    //   key: 'orderDeliveryAt',
-    //   width: '150px',
-    //   sorter: (a, b) => (a.attributes.deliveryAt || '').localeCompare(b.attributes.deliveryAt || ''),
-    //   render: (text) => {
-    //     if (!text) return '';
-    //     const date = new Date(text);
-    //     const formattedDate = `${String(date.getDate()).padStart(2, '0')}.${String(date.getMonth() + 1).padStart(2, '0')}.${date.getFullYear()} ${String(date.getHours()).padStart(2, '0')}:${String(date.getMinutes()).padStart(2, '0')}`;
-    //     return formattedDate;
-    //   },
-    //   filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters }) => (
-    //     <div style={{ padding: 8 }}>
-    //       <Input
-    //         placeholder={language.search}
-    //         value={selectedKeys[0]}
-    //         onChange={(e) => setSelectedKeys(e.target.value ? [e.target.value] : [])}
-    //         onPressEnter={() => confirm()}
-    //         style={{ width: 188, marginBottom: 8, display: 'block' }}
-    //       />
-    //       <Space>
-    //         <Button
-    //           type="primary"
-    //           onClick={() => confirm()}
-    //           icon={<SearchOutlined />}
-    //           size="small"
-    //           style={{ width: 90 }}
-    //         >
-    //           {language.search}
-    //         </Button>
-    //         <Button onClick={() => { clearFilters(); confirm(); }} size="small" style={{ width: 90 }}>
-    //           {language.reset}
-    //         </Button>
-    //       </Space>
-    //     </div>
-    //   ),
-    //   filterIcon: (filtered) => (
-    //     <SearchOutlined style={{ color: filtered ? 'blue' : '#f06d20' }} />
-    //   ),
-    //   onFilter: (value, record) => {
-    //     const deliveryAt = record.attributes.deliveryAt || '';
-    //     const date = new Date(deliveryAt);
-    //     const formattedDate = `${String(date.getDate()).padStart(2, '0')}.${String(date.getMonth() + 1).padStart(2, '0')}.${date.getFullYear()} ${String(date.getHours()).padStart(2, '0')}:${String(date.getMinutes()).padStart(2, '0')}`;
-    //     return formattedDate.toLowerCase().includes(value.toLowerCase());
-    //   },
-    //   onFilterDropdownOpenChange: (visible) => {
-    //     if (visible) {
-    //       setTimeout(() => {
-    //         document.querySelector('.ant-table-filter-dropdown input')?.focus();
-    //       }, 0);
-    //     }
-    //   },
-    // },
     {
       title: `${language.price} €`,
       dataIndex: ['attributes', 'totalCost'],
@@ -532,18 +370,6 @@ const handleOpenOrder = (orderID) => {
       sorter: (a, b) => (a.attributes.totalCost || 0) - (b.attributes.totalCost || 0),
       render: (text) => text || '',
     },
-    // {
-    //   title: `${language.discount}`,
-    //   dataIndex: ['attributes', 'discount'],
-    //   key: 'orderDiscount',
-    //   width: '150px',
-    //   sorter: (a, b) => {
-    //     const discountA = String(a.attributes.discount || '');
-    //     const discountB = String(b.attributes.discount || '');
-    //     return discountA.localeCompare(discountB);
-    //   },
-    //   render: (text) => text || '',
-    // },
     {
       title: `${language.currency}`,
       dataIndex: ['attributes', 'currency'],
@@ -552,57 +378,6 @@ const handleOpenOrder = (orderID) => {
       sorter: (a, b) => (a.attributes.currency || '').localeCompare(b.attributes.currency || ''),
       render: (text) => text || '',
     },
-    // {
-    //   title: `${language.client}`,
-    //   dataIndex: ['attributes', 'client', 'data', 'attributes', 'client_name'],
-    //   key: 'orderClient',
-    //   width: '150px',
-    //   sorter: (a, b) => {
-    //     const clientNameA = a.attributes?.client?.data?.attributes?.client_name || '';
-    //     const clientNameB = b.attributes?.client?.data?.attributes?.client_name || '';
-    //     return clientNameA.localeCompare(clientNameB);
-    //   },
-    //   render: (text) => text || '',
-    //   filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters }) => (
-    //     <div style={{ padding: 8 }}>
-    //       <Input
-    //         placeholder={language.search}
-    //         value={selectedKeys[0]}
-    //         onChange={(e) => setSelectedKeys(e.target.value ? [e.target.value] : [])}
-    //         onPressEnter={() => confirm()}
-    //         style={{ width: 188, marginBottom: 8, display: 'block' }}
-    //       />
-    //       <Space>
-    //         <Button
-    //           type="primary"
-    //           onClick={() => confirm()}
-    //           icon={<SearchOutlined />}
-    //           size="small"
-    //           style={{ width: 90 }}
-    //         >
-    //           {language.search}
-    //         </Button>
-    //         <Button onClick={() => { clearFilters(); confirm(); }} size="small" style={{ width: 90 }}>
-    //           {language.reset}
-    //         </Button>
-    //       </Space>
-    //     </div>
-    //   ),
-    //   filterIcon: (filtered) => (
-    //     <SearchOutlined style={{ color: filtered ? 'blue' : '#f06d20' }} />
-    //   ),
-    //   onFilter: (value, record) => {
-    //     const clientName = record.attributes?.client?.data?.attributes?.client_name || '';
-    //     return clientName.toLowerCase().includes(value.toLowerCase());
-    //   },
-    //   onFilterDropdownOpenChange: (visible) => {
-    //     if (visible) {
-    //       setTimeout(() => {
-    //         document.querySelector('.ant-table-filter-dropdown input')?.focus();
-    //       }, 0);
-    //     }
-    //   },
-    // },
     {
       title: `${language.manager}`,
       dataIndex: ['attributes', 'manager', 'data', 'attributes', 'username'],
@@ -666,11 +441,7 @@ const handleOpenOrder = (orderID) => {
             {
               items,
               onClick: ({ key }) => {
-                  if (key === 'draft') handleStatusClick(record.id, 'Draft');
-                  else if (key === 'active') handleStatusClick(record.id, 'Active');
-                  else if (key === 'paid') handleStatusClick(record.id, 'Paid');
-                  else if (key === 'closed') handleStatusClick(record.id, 'Closed');
-                  else if (key === 'deleteOrder') setDeleteOrderId(record.id);
+                  if (key === 'deleteOrder') setDeleteOrderId(record.id);
                   else if (key === 'editOrder') handleEditOrder(record.id);
                   else if (key === 'openOrder') handleOpenOrder(record.id);
               }
@@ -691,14 +462,43 @@ const handleOpenOrder = (orderID) => {
       <Button type="primary" icon={<PlusCircleOutlined />} onClick={() => navigate(`/createorder/`)}>
           {language.addOrder}
       </Button>
+      
       <div style={{display: 'flex', gap: '20px'}}>
-        <Button type="primary" icon={<FileDoneOutlined />} onClick={() => {}}>
-            {language.fullPresentation}
+        <Button
+          type="primary"
+          icon={<FileDoneOutlined />}
+          onClick={() => {
+            localStorage.setItem('presentation', 'full');
+            navigate('/totalorderdetails')}
+          }
+        >
+          {language.fullPresentation}
         </Button>
 
-        <Button type="primary" icon={<FileDoneOutlined />} onClick={() => {}}>
+        <Button 
+          type="primary" 
+          icon={<FileDoneOutlined />} 
+          onClick={() => {
+            localStorage.setItem('presentation', 'short');
+            navigate('/totalorderdetails')}
+          }
+        >
             {language.shortPresentation}
         </Button>
+
+        {isBoss.includes(user.id) && (
+        <Button 
+          type="primary" 
+          icon={<FileDoneOutlined />} 
+          onClick={() => {
+            localStorage.setItem('presentation', 'factory');
+            navigate('/totalorderdetails')}
+          }
+        >
+            {language.factory}
+        </Button>
+        )}
+        
       </div>
     </div>
     
