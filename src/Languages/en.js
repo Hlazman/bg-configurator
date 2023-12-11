@@ -178,6 +178,8 @@ const en = {
   fullPresentation: "Full presentation",
   shortPresentation: "Short presentation",
 
+  dublicate: 'Dublicate',
+
 // Products Options
   'cat_door': 'Cat Door',
   'vent_grille': 'Vent Grille',

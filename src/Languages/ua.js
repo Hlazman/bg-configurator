@@ -175,6 +175,8 @@ const ua = {
   fullPresentation: "Повна презентація",
   shortPresentation: "Коротка презентація",
 
+  duplicate: "Дублікат",
+
 // Products Frame
   'hidden_standard Hidden': 'Прихований стандарт',
   'type 1 outside Neo Classic': 'Neo Classic ззовні',

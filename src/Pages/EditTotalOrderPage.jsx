@@ -96,6 +96,7 @@ const EditTotalOrderPage = () => {
                   discount
                   title
                   status
+                  installation
                   comment
                   contacts {
                     address
@@ -133,6 +134,7 @@ const EditTotalOrderPage = () => {
           deliveryAt: deliveryAtFormated,
           discount: totalOrderData?.discount || '',
           status: totalOrderData?.status || 'Draft',
+          installation: totalOrderData?.installation,
           comment: totalOrderData?.comment || '',
           currency: totalOrderData?.currency || 'EUR',
           client: totalOrderData?.client ? totalOrderData?.client?.data?.id : '',
@@ -158,6 +160,7 @@ const EditTotalOrderPage = () => {
         zipCode: values.zipCode || null,
       },
       status: values.status,
+      installation: values.installation,
       deliveryAt: values.deliveryAt ? values.deliveryAt.toISOString() : null,
       discount: values.discount || null,
     };
@@ -294,6 +297,13 @@ const EditTotalOrderPage = () => {
             <Radio.Group buttonStyle="solid">
               <Radio.Button value="Draft">Draft</Radio.Button>
               <Radio.Button value="Active">Active</Radio.Button>
+            </Radio.Group>
+          </Form.Item>
+
+          <Form.Item label={language.installation} name="installation">
+            <Radio.Group buttonStyle="solid">
+              <Radio.Button value={true}>{language.yes}</Radio.Button>
+              <Radio.Button value={false}>{language.no}</Radio.Button>
             </Radio.Group>
           </Form.Item>
         </div>

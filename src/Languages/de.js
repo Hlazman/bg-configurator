@@ -175,6 +175,8 @@ const de = {
   fullPresentation: "Vollständige Präsentation",
   shortPresentation: "Kurzpräsentation",
 
+  duplicate: "Duplikat",
+
 // Products Frame
   'hidden_standard Hidden': 'Versteckter Standard',
   'type 1 outside Neo Classic': 'Neo Classic außen',

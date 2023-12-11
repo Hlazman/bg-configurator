@@ -175,6 +175,8 @@ const cs = {
   fullPresentation: "Úplná prezentace",
   shortPresentation: "Krátká prezentace",
 
+  duplicate: "Duplikát",
+
 // Products Frame
   'hidden_standard Hidden': 'Skrytý standard',
   'type 1 outside Neo Classic': 'Neo Classic venku',

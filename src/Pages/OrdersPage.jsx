@@ -1,6 +1,6 @@
 import { Table, Dropdown, Space, Button, Input, Spin, Modal, message, Divider } from 'antd';
 import { 
-  DownOutlined, SearchOutlined, EditOutlined, FolderOpenOutlined, CloseCircleOutlined, PlusCircleOutlined, FileDoneOutlined 
+  DownOutlined, SearchOutlined, EditOutlined, FolderOpenOutlined, CloseCircleOutlined, PlusCircleOutlined, FileDoneOutlined, CopyOutlined 
 } from '@ant-design/icons';
 import { useState, useEffect, useContext } from 'react';
 import axios from 'axios';
@@ -11,6 +11,7 @@ import { useNavigate } from 'react-router-dom';
 import { useLanguage } from '../Context/LanguageContext';
 import languageMap from '../Languages/language';
 import { useTotalOrder } from '../Context/TotalOrderContext';
+import { dublicateOrder } from '../api/dublicateOrder'
 
 export const OrdersPage = () => {
   const { selectedLanguage } = useLanguage();
@@ -26,7 +27,7 @@ export const OrdersPage = () => {
   const jwtToken = localStorage.getItem('token');
   const { user } = useContext(AuthContext);
   const [deleteOrderId, setDeleteOrderId] = useState(null);
-
+  const [messageApi, contextHolder] = message.useMessage();
   const { selectedCompany } = useSelectedCompany();
   const { totalOrderId } = useTotalOrder();
 
@@ -48,7 +49,6 @@ const handleOpenOrder = (orderID) => {
   setOrderId(orderID)
   localStorage.setItem('presentation', 'singleOrder');
   navigate(`/order/${orderID}`);
-
 };
 
   const fetchData = async () => {
@@ -156,15 +156,22 @@ const handleOpenOrder = (orderID) => {
       );
 
       if (response.data.data.deleteOrder) {
-        message.success(`${language.successDelete}`);
+        messageApi.success(`${language.successDelete}`);
         fetchData();
       }
     } catch (error) {
-      message.error(`${language.errorDelete}`);
+      messageApi.error(`${language.errorDelete}`);
       console.log(error)
     } finally {
       setDeleteOrderId(null);
     }
+  };
+
+  const handleDublicate = async (id) => {
+    setLoading(true);
+    await dublicateOrder(id, jwtToken, totalOrderId, selectedCompany, user);
+    await fetchData();
+    setLoading(false);
   };
 
   useEffect(() => {
@@ -198,6 +205,11 @@ const handleOpenOrder = (orderID) => {
       label: `${language.edit}`,
       icon: <EditOutlined/>,
 
+    },
+    {
+      key: 'dublicate',
+      label: `${language.dublicate}`,
+      icon: <CopyOutlined />,
     },
     {
       key: 'deleteOrder',
@@ -444,6 +456,8 @@ const handleOpenOrder = (orderID) => {
                   if (key === 'deleteOrder') setDeleteOrderId(record.id);
                   else if (key === 'editOrder') handleEditOrder(record.id);
                   else if (key === 'openOrder') handleOpenOrder(record.id);
+                  else if (key === 'dublicate') handleDublicate(record.id);
+                  
               }
           }
           } trigger={['click']} >
@@ -459,6 +473,8 @@ const handleOpenOrder = (orderID) => {
   return (
     <>
     <div style={{display: 'flex', gap: '20px', marginTop: '20px', justifyContent: 'space-between' }}>
+      {contextHolder}
+
       <Button type="primary" icon={<PlusCircleOutlined />} onClick={() => navigate(`/createorder/`)}>
           {language.addOrder}
       </Button>

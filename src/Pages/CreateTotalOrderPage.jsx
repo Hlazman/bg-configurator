@@ -129,6 +129,7 @@ const CreateTotalOrderPage = () => {
         zipCode: values.zipCode || null,
       },
       status: values.status,
+      installation: values.installation,
       deliveryAt: values.deliveryAt ? values.deliveryAt.toISOString() : null,
       discount: values.discount || null,
     };
@@ -268,6 +269,13 @@ const CreateTotalOrderPage = () => {
             <Radio.Group buttonStyle="solid">
               <Radio.Button value="Draft">Draft</Radio.Button>
               <Radio.Button value="Active">Active</Radio.Button>
+            </Radio.Group>
+          </Form.Item>
+
+          <Form.Item label={language.installation} name="installation">
+            <Radio.Group buttonStyle="solid">
+              <Radio.Button value={true}>{language.yes}</Radio.Button>
+              <Radio.Button value={false}>{language.no}</Radio.Button>
             </Radio.Group>
           </Form.Item>
         </div>
