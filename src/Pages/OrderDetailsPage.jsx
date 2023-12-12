@@ -11,6 +11,8 @@ import languageMap from '../Languages/language';
 import { AuthContext } from '../Context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import { LeftCircleOutlined } from '@ant-design/icons';
+import { OrderDescriptionShort } from '../Components/OrderDescriptionShort';
+import { OrderDescriptionFull } from '../Components/OrderDescriptionFull';
 
 
 export const OrderDetailsPage = ({fromTotalOrder, isCreatingTotalPdf, orderName, currancyValue}) => {
@@ -830,7 +832,40 @@ const fetchOptionsData = async (optionIds) => {
       )}
 
         {/* FULL TOATAL ORDER */}
+        {presentation === 'full' && (
+            <OrderDescriptionFull
+              orderId={orderId} 
+              orderData={orderData}
+              frameData={frameData}
+              doorData={doorData}
+              elementData={elementData}
+              hingeData={hingeData}
+              knobeData={knobeData}
+              lockData={lockData}
+              optionsData={optionsData}
+              isCreatingPdf={isCreatingTotalPdf}
+              orderName={orderName}
+              currancyValue={currancyValue}
+            />
+        )}
+
         {/* SHORT TOATAL ORDER */}
+        {presentation === 'short' && (
+            <OrderDescriptionShort
+              orderId={orderId} 
+              orderData={orderData}
+              frameData={frameData}
+              doorData={doorData}
+              elementData={elementData}
+              hingeData={hingeData}
+              knobeData={knobeData}
+              lockData={lockData}
+              optionsData={optionsData}
+              isCreatingPdf={isCreatingTotalPdf}
+              orderName={orderName}
+              currancyValue={currancyValue}
+            />
+        )}
 
     </div>
   );

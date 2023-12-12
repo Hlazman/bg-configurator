@@ -13,7 +13,7 @@ import { ClientsPage } from './Pages/ClientsPage';
 import { FilesPage } from './Pages/FilesPage';
 import { CreateClientPage } from './Pages/CreateClientPage';
 import { CreateOrderPage } from './Pages/CreateOrderPage';
-import { ConfigProvider, Layout, Select, Dropdown, Form} from 'antd';
+import { ConfigProvider, Layout, Select, Dropdown, Form, BackTop } from 'antd';
 import { UserOutlined } from '@ant-design/icons';
 import { Navigation } from './Components/Navigation';
 import logo from './logo.svg';
@@ -247,7 +247,7 @@ const getHeaderTitle = (location, Id) => {
           
           <Layout>
             <Header className="header">
-
+            <BackTop />
               <h1 className='headerTitle'>{headerTitle}</h1>
 
               <div style={{ display: 'flex', gap: '10px', margin: '15px 0' }}>

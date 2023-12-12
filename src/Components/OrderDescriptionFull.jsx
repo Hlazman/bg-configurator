@@ -1,21 +1,16 @@
-import React, { useState, useContext, useEffect } from 'react';
-import {Descriptions, Image, Divider, Select, Space, Alert} from 'antd';
+import React, { useState, useEffect, useRef } from 'react';
+import {Descriptions, Select } from 'antd';
 import { PictureOutlined } from '@ant-design/icons';
 import dayjs from 'dayjs';
-import { AuthContext } from '../Context/AuthContext';
-import logo from '../logo.svg';
 import { useLanguage } from '../Context/LanguageContext';
 import languageMap from '../Languages/language';
 
 
-export const OrderDescription = (
-  {orderData, orderId, frameData, doorData, elementData, lockData, hingeData, knobeData, optionsData, isCreatingPdf}
-  ) => {
-  const { user } = useContext(AuthContext);
+export const OrderDescriptionFull = ({
+  orderData, orderId, frameData, doorData, elementData, lockData, hingeData, knobeData, optionsData, isCreatingPdf, orderName, currancyValue
+}) => {
   const { selectedLanguage } = useLanguage();
   const language = languageMap[selectedLanguage];
-
-  const { Option } = Select;
   
   const [currency, setCurrency] = useState('EUR');
   const [convertedDoorPrice, setConvertedDoorPrice] = useState(null);
@@ -42,11 +37,7 @@ export const OrderDescription = (
       console.error('Error fetching exchange rates:', error);
     }
   };
-  
-  useEffect(() => {
-    fetchExchangeRates();
-  }, []);
-  
+
   const convertCurrency = (price, selectedCurrency) => {
     if (!exchangeRates || !selectedCurrency || !price) {
       return null;
@@ -92,6 +83,20 @@ export const OrderDescription = (
     setConvertedPriceWithTax(convertedPriceWithTax);
     setConvertedPriceTotal(convertedPriceTotal);
   };
+  
+  const prevCurrencyValue = useRef(currancyValue);
+
+  useEffect(() => {
+    fetchExchangeRates();
+  }, []);
+
+  useEffect(() => {
+    if (prevCurrencyValue.current !== currancyValue) {
+      handleCurrencyChange(currancyValue);
+      prevCurrencyValue.current = currancyValue;
+    }
+  }, [currancyValue]);
+  
 
     if (!orderData) {
     return null;
@@ -101,45 +106,9 @@ export const OrderDescription = (
     
     <div style={{maxWidth: isCreatingPdf ? 'auto' : '900px', margin: '0 auto'}}>
 
-    <Space style={{display: isCreatingPdf ? 'none' : 'flex', marginBottom: '20px', alignItems: 'baseline'}}>
-      <p> {language.currency} </p>
-      <Select
-        defaultValue={currency}
-        onChange={handleCurrencyChange}
-      >
-        <Option value="EUR">EUR €</Option>
-        <Option value="PLN">PLN zł</Option>
-        <Option value="USD">USD $</Option>
-        <Option value="UAH">UAH ₴</Option>
-      </Select>
-    </Space>
-
-    <Alert
-      style={{display: isCreatingPdf ? 'none' : 'block', marginBottom: '10px'}}
-      description={language.exchangeRate}
-      type="warning"
-    />
-
       {/* HEADER */}
-      <div style={{padding: '15px', backgroundColor: '#FFF', borderRadius: '15px'}}>
-        <div style={{display: 'flex', justifyContent: 'space-around', alignItems: 'center', gap: '20px'}}>
-          <Image width={100} src={`${logo}`} preview={false}/>
-
-          <Descriptions
-            column={3}
-            layout="vertical"
-            bordered
-            size='small'
-            style={{width: '50%'}}
-          >
-          <Descriptions.Item label={language.company}> Boki Group Poland</Descriptions.Item>
-          <Descriptions.Item label={language.manager}> {`${user.username}`}</Descriptions.Item>
-          <Descriptions.Item label={`${language.order} #`} labelStyle={{fontWeight: '600', color:'#f06d20'}}> {`${orderId}`}</Descriptions.Item>
-          </Descriptions>
-        </div>
-
-        <Divider style={{padding: '0', margin: '0'}}/>
-
+      <div style={{padding: '5px', backgroundColor: '#FFF', borderRadius: '15px'}}>
+        <h2> {language.order} # {orderName} </h2>
       {/* DOOR DETAILS */}
         <p style={{fontWeight: '500', padding: '10px', backgroundColor: '#f06d20', color: '#FFF'}}> 
           {language.door}
@@ -258,7 +227,7 @@ export const OrderDescription = (
       </div>
 
       {/* FRAME AND FITTING DETAILS */}
-      <div style={{padding: '15px', backgroundColor: '#FFF', borderRadius: '15px'}}>
+      <div style={{padding: '5px', backgroundColor: '#FFF', borderRadius: '15px'}}>
         <p style={{fontWeight: '500', padding: '10px', backgroundColor: '#f06d20', color: '#FFF'}}> 
           {language.frame} & {language.fitting} 
         </p>
@@ -362,7 +331,7 @@ export const OrderDescription = (
        {elementData && elementData.length > 0 && (
         <>
           <div id='nextpage'></div>
-          <div style={{padding: '15px', backgroundColor: '#FFF', borderRadius: '15px'}}>
+          <div style={{padding: '5px', backgroundColor: '#FFF', borderRadius: '15px'}}>
               
             {elementData && elementData.map((element, index) => (
               <React.Fragment key={index}>
@@ -451,7 +420,7 @@ export const OrderDescription = (
       {/* OPTIONS */}
       {optionsData && optionsData.length > 0 && (
         <>
-              <div style={{padding: '15px', backgroundColor: '#FFF', borderRadius: '15px'}}>
+              <div style={{padding: '5px', backgroundColor: '#FFF', borderRadius: '15px'}}>
         
         <p style={{fontWeight: '500', padding: '10px', backgroundColor: '#f06d20', color: '#FFF'}}> 
           {language.Order} {language.options}
@@ -494,7 +463,7 @@ export const OrderDescription = (
       )}
 
       {/* ORDER INFORMATION */}
-      <div style={{padding: '15px', backgroundColor: '#FFF', borderRadius: '15px'}}>
+      <div style={{padding: '5px', backgroundColor: '#FFF', borderRadius: '15px'}}>
         <p style={{fontWeight: '500', padding: '10px', backgroundColor: '#f06d20', color: '#FFF'}}> 
           {language.Order} {language.information}
         </p>
@@ -532,9 +501,6 @@ export const OrderDescription = (
           </Descriptions>
     </div>
 
-    <p style={{margin: '30px 15px 15px', textAlign: 'left' }}> 
-      <span style={{color: 'red', fontWeight: 'bold'}}> * </span> {language.colorWarn}
-    </p>
   </div>
   );
 };
