@@ -10,20 +10,22 @@ import { useNavigate } from 'react-router-dom';
 import { LeftCircleOutlined } from '@ant-design/icons';
 import { AuthContext } from '../Context/AuthContext';
 import { useSelectedCompany } from '../Context/CompanyContext';
+import dayjs from 'dayjs';
 import logo from '../logo.svg';
 
 export const TotalOrderDetailsPage = () => {
   const { Option } = Select;
-  const [ordersCount, setOrdersCount] = useState([])
+  const [ordersCount, setOrdersCount] = useState([]);
+  const [totalOrderData, setTotalOrderData] = useState([]);
   const { totalOrderId } = useTotalOrder();
   const jwtToken = localStorage.getItem('token');
   const presentation = localStorage.getItem('presentation');
   const { selectedLanguage } = useLanguage();
   const language = languageMap[selectedLanguage];
   const [isCreatingTotalPdf, setIsCreatingTotalPdf] = useState(false);
-  const navigate = useNavigate();
   const { user } = useContext(AuthContext);
   const { selectedCompany } = useSelectedCompany();
+  const navigate = useNavigate();
 
   const getCompanyName = () => {
     switch (selectedCompany) {
@@ -47,6 +49,18 @@ export const TotalOrderDetailsPage = () => {
               data {
                 id
                 attributes {
+                  totalCost
+                  contacts {
+                    address
+                    city
+                    country
+                    zipCode
+                  }
+                  deliveryAt
+                  discount
+                  installationCost
+                  installation
+                  tax
                   orders {
                     data {
                       id
@@ -69,8 +83,11 @@ export const TotalOrderDetailsPage = () => {
       });
 
 
-      const orders = response?.data?.data?.totalOrder?.data?.attributes?.orders?.data
+      const orders = response?.data?.data?.totalOrder?.data?.attributes?.orders?.data;
+      const totalOrderData = response?.data?.data?.totalOrder?.data?.attributes;
       setOrdersCount(orders);
+      setTotalOrderData(totalOrderData);
+      console.log(totalOrderData)
       
     } catch (error) {
       console.error('Error loading data:', error);
@@ -114,6 +131,58 @@ export const TotalOrderDetailsPage = () => {
   };
 
 
+  // CONVERTION FUNCTION +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ START
+  const [noTaxTotalCostConverted, setNoTaxTotalCostConverted] = useState('');
+  const [withTaxTotalCostConverted, setWithTaxTotalCostConverted] = useState('');
+  const [totalCostConverted, setTotalCostConverted] = useState('');
+  // const [basicCostConverted, setBasicCostConverted] = useState('');
+  const [installationPriceConverted, setInstallationPriceConverted] = useState('');
+  const [exchangeRates, setExchangeRates] = useState(null);
+
+  const fetchExchangeRates = async () => {
+    try {
+      const response = await fetch(`https://open.er-api.com/v6/latest/${currancyValue}`);
+      if (!response.ok) {
+        throw new Error('Failed to fetch exchange rates');
+      }
+      const data = await response.json();
+      setExchangeRates(data.rates);
+    } catch (error) {
+      console.error('Error fetching exchange rates:', error);
+    }
+  };
+  
+  const convertCurrency = (price, selectedCurrency) => {
+    if (!exchangeRates || !selectedCurrency || !price) {
+      return null;
+    }
+  
+    const euroPrice = price / exchangeRates['EUR'];
+    const convertedPrice = euroPrice * exchangeRates[selectedCurrency];
+  
+    return Math.ceil(convertedPrice);
+  };
+  
+  const handleCurrencyChange = async (value) => {
+    const priceNoTax = convertCurrency(totalOrderData?.totalCost - Math.ceil(totalOrderData?.totalCost / 100 * totalOrderData?.tax), value);
+    const priceWithTax = convertCurrency(Math.ceil(totalOrderData?.totalCost / 100 * totalOrderData?.tax), value);
+    const totalPrice = convertCurrency(totalOrderData.totalCost, value);
+    // const basicPrice = convertCurrency(orderData.basicPrice, value);
+    const installationPrice = convertCurrency(totalOrderData.installationCost, value);
+  
+    setNoTaxTotalCostConverted(priceNoTax)
+    setWithTaxTotalCostConverted(priceWithTax);
+    setTotalCostConverted(totalPrice);
+    // setBasicCostConverted(basicPrice);
+    setInstallationPriceConverted(installationPrice)
+  };
+
+  useEffect(() => {
+    fetchExchangeRates();
+  }, []);
+
+  // CONVERTION FUNCTION +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ END
+
   useEffect(() => {
     fetchData();
   }, [totalOrderId]);
@@ -123,9 +192,9 @@ export const TotalOrderDetailsPage = () => {
   
   const totalCurrencyChange = (value) => {
     setCurrancyValue(value);
+    handleCurrencyChange(value); // NEW
   }
 
-  
   return (
     <>
       <div style={{display: 'flex', gap: '20px', justifyContent: 'space-between', margin: '20px 50px'}}>
@@ -190,6 +259,56 @@ export const TotalOrderDetailsPage = () => {
             ))
             }
         </>
+
+        {(presentation === 'full' || presentation === 'short') && (
+           <>
+            <div style={{padding: '15px', backgroundColor: '#FFF', borderRadius: '15px', width: '900px', margin: '0 auto'}}>
+              <p style={{fontWeight: '500', padding: '10px', backgroundColor: '#f06d20', color: '#FFF'}}> 
+                {language.Order} {language.information}
+              </p>
+
+              <Descriptions
+                column={4}
+                layout="vertical"
+                bordered
+                size='default'
+                >
+                  <Descriptions.Item span={2} className='labelBG' label={language.shippingAddress} labelStyle={{fontWeight: '600', color:'#000'}}>
+                    {`${totalOrderData?.contacts?.address}, ${totalOrderData?.contacts?.country}, ${totalOrderData?.contacts?.city}, ${totalOrderData?.contacts?.zipCode}`}
+                  </Descriptions.Item>
+
+                  <Descriptions.Item span={2} className='labelBG' label={language.deliveryAt} labelStyle={{fontWeight: '600', color:'#000'}}>
+                    {dayjs(totalOrderData?.deliveryAt).format('YYYY-MM-DD HH:mm:ss')}
+                  </Descriptions.Item>
+
+                  <Descriptions.Item span={2} className='labelBG' label={language.installation} labelStyle={{fontWeight: '600', color:'#000'}}>
+                    {`${totalOrderData?.installation ? language.yes : language.no}`}
+                  </Descriptions.Item>
+
+                  <Descriptions.Item span={2} className='labelBG' label={`${language.installation} ${language.price}`} labelStyle={{fontWeight: '600', color:'#000'}}>
+                    {installationPriceConverted ? `${installationPriceConverted} ${currancyValue}` : `${totalOrderData?.installationCost} ${currancyValue}`}
+                  </Descriptions.Item>
+
+                  <Descriptions.Item className='labelBG' label={language.price} labelStyle={{fontWeight: '600', color:'#000'}}>
+                    {noTaxTotalCostConverted ? `${noTaxTotalCostConverted} ${currancyValue}` : `${totalOrderData?.totalCost - Math.ceil(totalOrderData?.totalCost / 100 * totalOrderData?.tax)} ${currancyValue}`}
+                  </Descriptions.Item>
+
+                  <Descriptions.Item className='labelBG' label={language.tax} labelStyle={{fontWeight: '600', color:'#000'}}>
+                    {withTaxTotalCostConverted ? `${withTaxTotalCostConverted} ${currancyValue}` : `${Math.ceil(totalOrderData?.totalCost / 100 * totalOrderData?.tax)} ${currancyValue}`}
+                  </Descriptions.Item>
+
+                  <Descriptions.Item className='labelBG' label={`${language.discount} %`} labelStyle={{fontWeight: '600', color:'#000'}}>
+                    {totalOrderData?.discount ? totalOrderData?.discount: 0}
+                  </Descriptions.Item>
+
+                  <Descriptions.Item className='labelBG' label={language.totalCost} labelStyle={{fontWeight: '600', color:'#000'}}>
+                    {totalCostConverted ? `${totalCostConverted} ${currancyValue}` : `${totalOrderData?.totalCost} ${currancyValue}`}
+                  </Descriptions.Item>
+
+              </Descriptions>
+            </div>
+           </>
+          )}
         
         {presentation === 'full' && (
           <p style={{margin: '30px 15px 15px', textAlign: 'left' }}> 

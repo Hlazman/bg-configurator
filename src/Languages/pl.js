@@ -176,6 +176,11 @@ const pl = {
   shortPresentation: "Krótka prezentacja",
 
   duplicate: "Duplikat",
+  cost: "Koszt",
+  lacquer_1: 'Kategoria 1',
+  lacquer_2: 'Kategoria 2',
+  lacquer_3: 'Kategoria 3',
+  natural: 'Naturalny',
 
 // Products Frame
   'hidden_standard Hidden': 'Ukryty standard',

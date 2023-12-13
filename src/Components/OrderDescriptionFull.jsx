@@ -465,7 +465,7 @@ export const OrderDescriptionFull = ({
       {/* ORDER INFORMATION */}
       <div style={{padding: '5px', backgroundColor: '#FFF', borderRadius: '15px'}}>
         <p style={{fontWeight: '500', padding: '10px', backgroundColor: '#f06d20', color: '#FFF'}}> 
-          {language.Order} {language.information}
+          {language.Order} {language.cost}
         </p>
 
         <Descriptions

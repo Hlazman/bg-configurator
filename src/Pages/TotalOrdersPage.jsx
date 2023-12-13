@@ -8,6 +8,7 @@ import { useSelectedCompany } from '../Context/CompanyContext';
 import { useNavigate } from 'react-router-dom';
 import { useLanguage } from '../Context/LanguageContext';
 import languageMap from '../Languages/language';
+import { deleteTotalOrderWithOrders } from '../api/deleteTotalOrderWithOrders'
 
 export const TotalOrdersPage = () => {
   const { selectedLanguage } = useLanguage();
@@ -26,6 +27,7 @@ export const TotalOrdersPage = () => {
   const { selectedCompany } = useSelectedCompany();
   const navigate = useNavigate();
   const { setTotalOrderId } = useTotalOrder();
+  const [messageApi, contextHolder] = message.useMessage();
 
   const handlePaginationChange = (current, pageSize) => {
     setPagination({ ...pagination, current, pageSize });
@@ -119,36 +121,12 @@ const handleOpenTotalOrder = (totalOrderID) => {
 
   const deleteTotalOrder = async (totalOrderId) => {
     try {
-      const response = await axios.post(
-        'https://api.boki.fortesting.com.ua/graphql',
-        {
-          query: `
-            mutation Mutation($deleteTotalOrderId: ID!) {
-              deleteTotalOrder(id: $deleteTotalOrderId) {
-                data {
-                  id
-                }
-              }
-            }
-          `,
-          variables: {
-            deleteTotalOrderId: totalOrderId,
-          },
-        },
-        {
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${jwtToken}`,
-          },
-        }
-      );
+      await deleteTotalOrderWithOrders(totalOrderId, jwtToken);
+      messageApi.success(`${language.successDelete}`);
+      await fetchData();
 
-      if (response.data.data.deleteTotalOrder) {
-        message.success(`${language.successDelete}`);
-        fetchData();
-      }
     } catch (error) {
-      message.error(`${language.errorDelete}`);
+      messageApi.error(`${language.errorDelete}`);
       console.log(error)
     } finally {
       setDeleteTotalOrderId(null);
@@ -611,6 +589,7 @@ const handleOpenTotalOrder = (totalOrderID) => {
   return (
     <>
       <Spin spinning={loading} size="large">
+        {contextHolder}
         <Table
           rowSelection={{}}
           expandable={{

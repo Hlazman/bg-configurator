@@ -176,6 +176,11 @@ const es = {
   shortPresentation: "Presentación breve",
 
   duplicate: "Duplicado",
+  cost: "Costo",
+  lacquer_1: 'Categoría 1',
+  lacquer_2: 'Categoría 2',
+  lacquer_3: 'Categoría 3',
+  natural: 'Natural',
 
 // Products Frame
   'hidden_standard Hidden': 'Estándar oculto',

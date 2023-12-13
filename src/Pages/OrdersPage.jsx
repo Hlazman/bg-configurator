@@ -12,6 +12,7 @@ import { useLanguage } from '../Context/LanguageContext';
 import languageMap from '../Languages/language';
 import { useTotalOrder } from '../Context/TotalOrderContext';
 import { dublicateOrder } from '../api/dublicateOrder'
+import { deleteOrderWithSuborders } from '../api/deleteOrderWithSuborders'
 
 export const OrdersPage = () => {
   const { selectedLanguage } = useLanguage();
@@ -131,34 +132,10 @@ const handleOpenOrder = (orderID) => {
 
   const deleteOrder = async (orderId) => {
     try {
-      const response = await axios.post(
-        'https://api.boki.fortesting.com.ua/graphql',
-        {
-          query: `
-            mutation Mutation($deleteOrderId: ID!) {
-              deleteOrder(id: $deleteOrderId) {
-                data {
-                  id
-                }
-              }
-            }
-          `,
-          variables: {
-            deleteOrderId: orderId,
-          },
-        },
-        {
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${jwtToken}`,
-          },
-        }
-      );
+      await deleteOrderWithSuborders(orderId, jwtToken);
+      messageApi.success(`${language.successDelete}`);
+      await fetchData();
 
-      if (response.data.data.deleteOrder) {
-        messageApi.success(`${language.successDelete}`);
-        fetchData();
-      }
     } catch (error) {
       messageApi.error(`${language.errorDelete}`);
       console.log(error)

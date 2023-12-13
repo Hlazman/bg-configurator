@@ -176,6 +176,11 @@ const ua = {
   shortPresentation: "Коротка презентація",
 
   duplicate: "Дублікат",
+  cost: "Вартість",
+  lacquer_1: 'Категорія 1',
+  lacquer_2: 'Категорія 2',
+  lacquer_3: 'Категорія 3',
+  natural: 'Натуральний',
 
 // Products Frame
   'hidden_standard Hidden': 'Прихований стандарт',

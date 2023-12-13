@@ -176,7 +176,12 @@ const de = {
   shortPresentation: "Kurzpräsentation",
 
   duplicate: "Duplikat",
-
+  cost: "Kosten",
+  lacquer_1: 'Kategorie 1',
+  lacquer_2: 'Kategorie 2',
+  lacquer_3: 'Kategorie 3',
+  natural: 'Natürlich',
+  
 // Products Frame
   'hidden_standard Hidden': 'Versteckter Standard',
   'type 1 outside Neo Classic': 'Neo Classic außen',

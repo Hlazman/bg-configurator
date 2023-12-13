@@ -176,6 +176,11 @@ const cs = {
   shortPresentation: "Krátká prezentace",
 
   duplicate: "Duplikát",
+  cost: "Náklady",
+  lacquer_1: 'Kategorie 1',
+  lacquer_2: 'Kategorie 2',
+  lacquer_3: 'Kategorie 3',
+  natural: 'Přírodní',
 
 // Products Frame
   'hidden_standard Hidden': 'Skrytý standard',

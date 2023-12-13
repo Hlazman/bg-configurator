@@ -179,6 +179,11 @@ const en = {
   shortPresentation: "Short presentation",
 
   dublicate: 'Dublicate',
+  cost: 'Cost',
+  lacquer_1: 'Category 1',
+  lacquer_2: 'Category 2',
+  lacquer_3: 'Category 3',
+  natural: 'Natural',
 
 // Products Options
   'cat_door': 'Cat Door',

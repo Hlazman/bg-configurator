@@ -148,7 +148,8 @@ const VeneerStep = ({ fetchOrderData, fetchDecorData, checkDecor, sendDecorForm 
         >
           {categoryOptions.map((category, index) => (
             <Select.Option key={index} value={category}>
-              {category}
+              {/* {category} */}
+              {languageMap[selectedLanguage][category]}
             </Select.Option>
           ))}
         </Select>

@@ -47,7 +47,7 @@ th.labelBG {
   /* border-color: #FFF!important; */
 }
 
-.ant-back-top-icon {
+.ant-float-btn-default .ant-float-btn-body {
   background-color: #f06d20;
 }
 
