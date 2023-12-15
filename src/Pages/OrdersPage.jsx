@@ -13,6 +13,7 @@ import languageMap from '../Languages/language';
 import { useTotalOrder } from '../Context/TotalOrderContext';
 import { dublicateOrder } from '../api/dublicateOrder'
 import { deleteOrderWithSuborders } from '../api/deleteOrderWithSuborders'
+import {updateTotalOrder} from '../api/updateTotalOrder'
 
 export const OrdersPage = () => {
   const { selectedLanguage } = useLanguage();
@@ -133,6 +134,7 @@ const handleOpenOrder = (orderID) => {
   const deleteOrder = async (orderId) => {
     try {
       await deleteOrderWithSuborders(orderId, jwtToken);
+      await updateTotalOrder(totalOrderId, jwtToken, selectedCompany);
       messageApi.success(`${language.successDelete}`);
       await fetchData();
 

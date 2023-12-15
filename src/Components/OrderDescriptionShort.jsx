@@ -358,7 +358,7 @@ export const OrderDescriptionShort = ({
       <div style={{padding: '5px', backgroundColor: '#FFF', borderRadius: '15px'}}>
         
         <p style={{fontWeight: '500', padding: '10px', backgroundColor: '#f06d20', color: '#FFF'}}> 
-          {language.Order} {language.totalCost}
+          {language.cost} {language.order} # {orderName} 
         </p>
 
         <Descriptions
@@ -366,7 +366,7 @@ export const OrderDescriptionShort = ({
           size='default'
           >
             <Descriptions.Item>
-              {convertedPriceTotal ? `${convertedPriceTotal} ${currency}` : `${orderData?.price} ${orderData?.currency}`}
+              {convertedPriceTotal ? `${convertedPriceTotal} ${currency}` : `${orderData?.totalCost} ${orderData?.currency}`}
             </Descriptions.Item>
 
           </Descriptions>

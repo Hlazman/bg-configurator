@@ -5,6 +5,9 @@ import { useOrder } from '../../Context/OrderContext';
 import { useEffect, useState } from 'react';
 import { useLanguage } from '../../Context/LanguageContext';
 import languageMap from '../../Languages/language';
+import { useTotalOrder } from '../../Context/TotalOrderContext';
+import { useSelectedCompany } from '../../Context/CompanyContext';
+import {updateTotalOrder} from '../../api/updateTotalOrder'
 
 const StartDataStep = ({ setCurrentStepSend }) => {
   const { orderId } = useOrder();
@@ -15,6 +18,38 @@ const StartDataStep = ({ setCurrentStepSend }) => {
   const [orderData, setOrderData] = useState(null);
   const { selectedLanguage } = useLanguage();
   const language = languageMap[selectedLanguage];
+  const { totalOrderId } = useTotalOrder();
+  const { selectedCompany } = useSelectedCompany();
+
+  // const handleUpdateTotalOrder = async () => {
+  //   await axios.post('https://api.boki.fortesting.com.ua/graphql',
+  //     {
+  //       query: `
+  //         mutation Mutation($updateTotalOrderId: ID!, $data: TotalOrderInput!) {
+  //           updateTotalOrder(id: $updateTotalOrderId, data: $data) {
+  //             data {
+  //               id
+  //             }
+  //           }
+  //         }
+  //       `,
+  //       variables: {
+  //         updateTotalOrderId: totalOrderId,
+  //         data: {
+  //           company: selectedCompany,
+  //         }
+  //       },
+  //     },
+  //     {
+  //       headers: {
+  //         'Content-Type': 'application/json',
+  //         Authorization: `Bearer ${jwtToken}`,
+  //       },
+  //     }
+  //     ).catch((error) => {
+  //       console.log('Error update Total Order', error)
+  //   });
+  // };
 
   const fetchOrderData = async () => {
     try {
@@ -89,6 +124,10 @@ const StartDataStep = ({ setCurrentStepSend }) => {
           },
         }
       );
+      
+      // await handleUpdateTotalOrder();
+      await updateTotalOrder(totalOrderId, jwtToken, selectedCompany);
+
       messageApi.success(language.successQuery);
       if (setCurrentStepSend) {
         setCurrentStepSend(prevState => {

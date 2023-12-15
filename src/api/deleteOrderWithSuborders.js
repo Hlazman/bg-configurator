@@ -254,6 +254,4 @@ export const deleteOrderWithSuborders = async (orderId, jwtToken) => {
   } catch (error) {
     console.error('Error query Order', error);
   }
-
-
 }

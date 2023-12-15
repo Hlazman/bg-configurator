@@ -465,7 +465,7 @@ export const OrderDescriptionFull = ({
       {/* ORDER INFORMATION */}
       <div style={{padding: '5px', backgroundColor: '#FFF', borderRadius: '15px'}}>
         <p style={{fontWeight: '500', padding: '10px', backgroundColor: '#f06d20', color: '#FFF'}}> 
-          {language.Order} {language.cost}
+          {language.cost} {language.order} # {orderName} 
         </p>
 
         <Descriptions
@@ -474,27 +474,7 @@ export const OrderDescriptionFull = ({
           bordered
           size='default'
           >
-            {/* <Descriptions.Item span={2} className='labelBG' label={language.shippingAddress} labelStyle={{fontWeight: '600', color:'#000'}}>
-              {`${orderData?.shippingAddress?.address}, ${orderData?.shippingAddress?.country}, ${orderData?.shippingAddress?.city}, ${orderData?.shippingAddress?.zipCode}`}
-            </Descriptions.Item>
-
-            <Descriptions.Item span={2} className='labelBG' label={language.deliveryAt} labelStyle={{fontWeight: '600', color:'#000'}}>
-              {dayjs(orderData?.deliveryAt).format('YYYY-MM-DD HH:mm:ss')}
-            </Descriptions.Item> */}
-
-            <Descriptions.Item className='labelBG' label={language.price} labelStyle={{fontWeight: '600', color:'#000'}}>
-              {convertedPriceNOTax ? `${convertedPriceNOTax} ${currency}` : `${orderData?.totalCost - Math.ceil(orderData?.totalCost / 100 * orderData?.tax)} ${orderData?.currency}`}
-            </Descriptions.Item>
-
-            <Descriptions.Item className='labelBG' label={language.tax} labelStyle={{fontWeight: '600', color:'#000'}}>
-              {convertedPriceWithTax ? `${convertedPriceWithTax} ${currency}` : `${Math.ceil(orderData?.totalCost / 100 * orderData?.tax)} ${orderData?.currency}`}
-            </Descriptions.Item>
-
-            <Descriptions.Item className='labelBG' label={`${language.discount} %`} labelStyle={{fontWeight: '600', color:'#000'}}>
-              {orderData?.discount ? orderData?.discount: 0}
-            </Descriptions.Item>
-
-            <Descriptions.Item className='labelBG' label={language.totalCost} labelStyle={{fontWeight: '600', color:'#000'}}>
+            <Descriptions.Item>
               {convertedPriceTotal ? `${convertedPriceTotal} ${currency}` : `${orderData?.totalCost} ${orderData?.currency}`}
             </Descriptions.Item>
 

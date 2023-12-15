@@ -88,8 +88,7 @@ export const TotalOrderDetailsPage = () => {
       const totalOrderData = response?.data?.data?.totalOrder?.data?.attributes;
       setOrdersCount(orders);
       setTotalOrderData(totalOrderData);
-      console.log(totalOrderData)
-      
+
     } catch (error) {
       console.error('Error loading data:', error);
     }
@@ -131,8 +130,6 @@ export const TotalOrderDetailsPage = () => {
       setIsCreatingTotalPdf(false);
   };
 
-
-  // CONVERTION FUNCTION +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ START
   const [noTaxTotalCostConverted, setNoTaxTotalCostConverted] = useState('');
   const [withTaxTotalCostConverted, setWithTaxTotalCostConverted] = useState('');
   const [totalCostConverted, setTotalCostConverted] = useState('');
@@ -178,23 +175,21 @@ export const TotalOrderDetailsPage = () => {
     setInstallationPriceConverted(installationPrice)
   };
 
-  useEffect(() => {
-    fetchExchangeRates();
-  }, []);
-
-  // CONVERTION FUNCTION +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ END
-
-  useEffect(() => {
-    fetchData();
-  }, [totalOrderId]);
-
-
   const [currancyValue, setCurrancyValue] = useState('EUR');
   
   const totalCurrencyChange = (value) => {
     setCurrancyValue(value);
-    handleCurrencyChange(value); // NEW
+    handleCurrencyChange(value);
   }
+
+  useEffect(() => {
+    fetchExchangeRates();
+  }, []);
+
+  
+  useEffect(() => {
+    fetchData();
+  }, [totalOrderId]);
 
   return (
     <>
@@ -317,7 +312,7 @@ export const TotalOrderDetailsPage = () => {
         </p>
         )}
 
-        {presentation === 'factoru' && (
+        {presentation === 'factory' && (
           <>
           <div style={{padding: '15px', backgroundColor: '#FFF', borderRadius: '15px', width: '900px', margin: '0 auto'}}>
             <p style={{fontWeight: '500', padding: '10px', backgroundColor: '#f06d20', color: '#FFF'}}> 
@@ -331,7 +326,7 @@ export const TotalOrderDetailsPage = () => {
               size='default'
               >
                 <Descriptions.Item className='labelBG' label={language.totalCost} labelStyle={{fontWeight: '600', color:'#000'}}>
-                  {basicCostConverted ? `${basicCostConverted} ${currancyValue}` : `${totalOrderData?.basicTotalCost} ${currancyValue}`}
+                  {basicCostConverted ? `${basicCostConverted} ${currancyValue}` : `${totalOrderData?.basicTotalPrice} ${currancyValue}`}
                 </Descriptions.Item>
 
             </Descriptions>
