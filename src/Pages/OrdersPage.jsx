@@ -19,7 +19,7 @@ export const OrdersPage = () => {
   const language = languageMap[selectedLanguage];
   const [selectedFilters, setSelectedFilters] = useState();
   const [data, setData] = useState([]);
-    const [pagination, setPagination] = useState({
+  const [pagination, setPagination] = useState({
     current: 1,
     pageSize: 5,
   });
@@ -144,10 +144,20 @@ const handleOpenOrder = (orderID) => {
     }
   };
 
+  // const [selectedRowKeys, setSelectedRowKeys] = useState([]);
+
+  // const checkNewOrder = async () => {
+  //   console.log('selectedRowKeys', selectedRowKeys);
+  //   const lastAddedRow = data[data.length-1]; 
+  //   const lastAddedRowKey = lastAddedRow.id;
+  //   setSelectedRowKeys([lastAddedRowKey]);
+  // }
+
   const handleDublicate = async (id) => {
     setLoading(true);
     await dublicateOrder(id, jwtToken, totalOrderId, selectedCompany, user);
     await fetchData();
+    // await checkNewOrder();
     setLoading(false);
   };
 
@@ -499,6 +509,13 @@ const handleOpenOrder = (orderID) => {
       <Spin spinning={loading} size="large">
         <Table
           rowSelection={{}}
+          // rowSelection={{
+          //   type: 'checkbox',
+          //   selectedRowKeys,
+          //   onChange: (keys) => {
+          //     setSelectedRowKeys(keys);
+          //   },
+          // }}
           expandable={{
             expandedRowRender,
             rowExpandable: isExpandable,

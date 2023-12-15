@@ -60,6 +60,7 @@ export const TotalOrderDetailsPage = () => {
                   discount
                   installationCost
                   installation
+                  basicTotalPrice
                   tax
                   orders {
                     data {
@@ -135,7 +136,7 @@ export const TotalOrderDetailsPage = () => {
   const [noTaxTotalCostConverted, setNoTaxTotalCostConverted] = useState('');
   const [withTaxTotalCostConverted, setWithTaxTotalCostConverted] = useState('');
   const [totalCostConverted, setTotalCostConverted] = useState('');
-  // const [basicCostConverted, setBasicCostConverted] = useState('');
+  const [basicCostConverted, setBasicCostConverted] = useState('');
   const [installationPriceConverted, setInstallationPriceConverted] = useState('');
   const [exchangeRates, setExchangeRates] = useState(null);
 
@@ -167,13 +168,13 @@ export const TotalOrderDetailsPage = () => {
     const priceNoTax = convertCurrency(totalOrderData?.totalCost - Math.ceil(totalOrderData?.totalCost / 100 * totalOrderData?.tax), value);
     const priceWithTax = convertCurrency(Math.ceil(totalOrderData?.totalCost / 100 * totalOrderData?.tax), value);
     const totalPrice = convertCurrency(totalOrderData.totalCost, value);
-    // const basicPrice = convertCurrency(orderData.basicPrice, value);
+    const basicPrice = convertCurrency(totalOrderData.basicTotalPrice, value);
     const installationPrice = convertCurrency(totalOrderData.installationCost, value);
   
     setNoTaxTotalCostConverted(priceNoTax)
     setWithTaxTotalCostConverted(priceWithTax);
     setTotalCostConverted(totalPrice);
-    // setBasicCostConverted(basicPrice);
+    setBasicCostConverted(basicPrice);
     setInstallationPriceConverted(installationPrice)
   };
 
@@ -314,6 +315,28 @@ export const TotalOrderDetailsPage = () => {
           <p style={{margin: '30px 15px 15px', textAlign: 'left' }}> 
           <span style={{color: 'red', fontWeight: 'bold'}}> * </span> {language.colorWarn}
         </p>
+        )}
+
+        {presentation === 'factoru' && (
+          <>
+          <div style={{padding: '15px', backgroundColor: '#FFF', borderRadius: '15px', width: '900px', margin: '0 auto'}}>
+            <p style={{fontWeight: '500', padding: '10px', backgroundColor: '#f06d20', color: '#FFF'}}> 
+              {language.Order} {language.information}
+            </p>
+
+            <Descriptions
+              column={1}
+              layout="vertical"
+              bordered
+              size='default'
+              >
+                <Descriptions.Item className='labelBG' label={language.totalCost} labelStyle={{fontWeight: '600', color:'#000'}}>
+                  {basicCostConverted ? `${basicCostConverted} ${currancyValue}` : `${totalOrderData?.basicTotalCost} ${currancyValue}`}
+                </Descriptions.Item>
+
+            </Descriptions>
+          </div>
+          </>
         )}
 
       </div>
