@@ -178,12 +178,20 @@ const handleOpenTotalOrder = (totalOrderID) => {
         },
       });
 
-      const updatedTotalOrder = response.data.data.updateTotalOrder.data;
+      // const updatedTotalOrder = response.data.data.updateTotalOrder.data;
+      // setData((prevData) =>
+      //   prevData.map((totalOrder) =>
+      //     totalOrder.id === updatedTotalOrder.id ? { ...totalOrder, attributes: { ...totalOrder.attributes, status: newStatus } } : totalOrder
+      //   )
+      // );
+      
+      console.log(totalOrderId)
       setData((prevData) =>
-        prevData.map((totalOrder) =>
-          totalOrder.id === updatedTotalOrder.id ? { ...totalOrder, attributes: { ...totalOrder.attributes, status: newStatus } } : totalOrder
-        )
-      );
+      prevData.map((totalOrder) =>
+        totalOrderId === totalOrder.id ? { ...totalOrder, attributes: { ...totalOrder.attributes, status: newStatus } } : totalOrder
+      )
+    );
+
     } catch (error) {
       console.error('Error updating totalOrder status:', error);
     }

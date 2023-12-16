@@ -976,6 +976,7 @@ export const dublicateOrder = async (orderId, jwtToken, totalOrderId, selectedCo
       
           const hingeFittingData = hingeFittingResponse?.data?.data?.frameFitting?.data?.attributes;
           hingeData = hingeFittingData;
+          console.log('hingeData', hingeData)
 
           // CREATE HINGE
           try {
@@ -1009,7 +1010,7 @@ export const dublicateOrder = async (orderId, jwtToken, totalOrderId, selectedCo
             
             // UPDATE HINGE
             try {
-              await axios.post(
+              const response = await axios.post(
                 'https://api.boki.fortesting.com.ua/graphql',
                 {
                   query: `
@@ -1025,11 +1026,12 @@ export const dublicateOrder = async (orderId, jwtToken, totalOrderId, selectedCo
                     updateFrameFittingId: newFittingSuborderId,
                     data: {
                       hinge: hingeData.hinge.data.id,
+                      // amount: hingeData.amount,
+                      custom_amount: hingeData.amount,
                       type: hingeData.type,
                       title: hingeData.title,
                       price: hingeData.price,
                       basicPrice: hingeData.basicPrice,
-                      amount: hingeData.amount,
                     }
                   }
                 },
@@ -1040,6 +1042,7 @@ export const dublicateOrder = async (orderId, jwtToken, totalOrderId, selectedCo
                   },
                 }
               )
+              console.log('response', response.data)
             } catch (error) {
               console.error('Error update Hinge', error);
             }
@@ -1230,7 +1233,6 @@ export const dublicateOrder = async (orderId, jwtToken, totalOrderId, selectedCo
         }
 
         optionsData = optionsDataArray;
-        console.log('optionsData', optionsData)
 
         // CREATE OPTIONS
         for (let i = 0; i < optionsData.length; i++) {
@@ -1260,7 +1262,6 @@ export const dublicateOrder = async (orderId, jwtToken, totalOrderId, selectedCo
                 },
               }
             );
-            console.log('create',response);
             const createdOptionSuborderId = response.data.data.createOptionSuborder.data.id;
 
               // UPDATE OPTIONS
@@ -1296,7 +1297,6 @@ export const dublicateOrder = async (orderId, jwtToken, totalOrderId, selectedCo
                     },
                   }
                 );
-                console.log('update',response);
               } catch (error) {
                 console.error('Error updating Option', error);
               }
