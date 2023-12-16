@@ -772,7 +772,8 @@ export const dublicateOrder = async (orderId, jwtToken, totalOrderId, selectedCo
                   variables: {
                     updateElementSuborderId: newElementId,
                     data: {
-                      decor: elementsData[i].decor.data.id,
+                      // decor: elementsData[i].decor.data.id,
+                      decor: elementsData[i]?.decor?.data?.id ? elementsData[i].decor.data.id : null,
                       element: elementsData[i].element.data.id,
                       amount: elementsData[i].amount,
                       basicPrice: elementsData[i].basicPrice,
@@ -1229,9 +1230,10 @@ export const dublicateOrder = async (orderId, jwtToken, totalOrderId, selectedCo
         }
 
         optionsData = optionsDataArray;
+        console.log('optionsData', optionsData)
 
         // CREATE OPTIONS
-        for (let i = 0; i< optionsData.length; i++) {
+        for (let i = 0; i < optionsData.length; i++) {
           try {
             const response = await axios.post(
               'https://api.boki.fortesting.com.ua/graphql',
@@ -1258,7 +1260,7 @@ export const dublicateOrder = async (orderId, jwtToken, totalOrderId, selectedCo
                 },
               }
             );
-            
+            console.log('create',response);
             const createdOptionSuborderId = response.data.data.createOptionSuborder.data.id;
 
               // UPDATE OPTIONS
@@ -1281,7 +1283,8 @@ export const dublicateOrder = async (orderId, jwtToken, totalOrderId, selectedCo
                         title: optionsData[i].title,
                         price: optionsData[i].price,
                         basicPrice: optionsData[i].price,
-                        option: optionsData[i].option.data.id,
+                        // option: optionsData[i].option.data.id,
+                        option: optionsData[i]?.option?.data?.id ? optionsData[i].option.data.id : null,
                         custom: optionsData[i].custom,
                       },
                     },
@@ -1293,7 +1296,7 @@ export const dublicateOrder = async (orderId, jwtToken, totalOrderId, selectedCo
                     },
                   }
                 );
-            
+                console.log('update',response);
               } catch (error) {
                 console.error('Error updating Option', error);
               }
