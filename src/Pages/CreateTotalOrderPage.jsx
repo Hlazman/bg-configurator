@@ -286,7 +286,7 @@ const CreateTotalOrderPage = () => {
 
         <Form.Item wrapperCol={{ offset: 4, span: 16 }}>
           <Button style={{backgroundColor: '#1677ff', color: 'white' }} htmlType="submit" icon={<SendOutlined />}>
-            {`${language.submit} ${language.frame}`}
+            {`${language.submit} ${language.order}`}
           </Button>
         </Form.Item>
       </Form>

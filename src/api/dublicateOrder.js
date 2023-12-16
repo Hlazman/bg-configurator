@@ -976,8 +976,7 @@ export const dublicateOrder = async (orderId, jwtToken, totalOrderId, selectedCo
       
           const hingeFittingData = hingeFittingResponse?.data?.data?.frameFitting?.data?.attributes;
           hingeData = hingeFittingData;
-          console.log('hingeData', hingeData)
-
+          
           // CREATE HINGE
           try {
             const fittingSuborderHinge = await axios.post(
@@ -1042,7 +1041,6 @@ export const dublicateOrder = async (orderId, jwtToken, totalOrderId, selectedCo
                   },
                 }
               )
-              console.log('response', response.data)
             } catch (error) {
               console.error('Error update Hinge', error);
             }

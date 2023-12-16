@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../Context/AuthContext';
 import { useLanguage } from '../Context/LanguageContext';
 import languageMap from '../Languages/language';
+import { useSelectedCompany } from '../Context/CompanyContext';
 
 export const ClientsPage = () => {
   const [loading, setLoading] = useState(true);
@@ -20,7 +21,7 @@ export const ClientsPage = () => {
   const { user } = useContext(AuthContext);
   const { selectedLanguage } = useLanguage();
   const language = languageMap[selectedLanguage];
-
+  const { selectedCompany } = useSelectedCompany();
   const jwtToken = localStorage.getItem('token');
 
   const handleDeleteClient = async () => {
@@ -67,43 +68,55 @@ export const ClientsPage = () => {
         'https://api.boki.fortesting.com.ua/graphql',
         {
           query: `
-            query Query {
-              clients (pagination: { limit: 200 },) {
-                data {
-                  id
-                  attributes {
-                    addresses {
-                      address
-                      city
-                      country
-                      zipCode
-                    }
-                    client_company
-                    client_name
-                    company {
-                      data {
-                        attributes {
-                          name
-                        }
+          query Query($filters: ClientFiltersInput, $pagination: PaginationArg) {
+            clients(filters: $filters, pagination: $pagination) {
+              data {
+                id
+                attributes {
+                  addresses {
+                    address
+                    city
+                    country
+                    zipCode
+                  }
+                  client_company
+                  client_name
+                  company {
+                    data {
+                      attributes {
+                        name
                       }
                     }
-                    contacts {
-                      email
-                      phone
-                      phone_2
-                    }
-                    manager {
-                      data {
-                        attributes {
-                          username
-                        }
+                  }
+                  contacts {
+                    email
+                    phone
+                    phone_2
+                  }
+                  manager {
+                    data {
+                      attributes {
+                        username
                       }
                     }
                   }
                 }
               }
             }
-          `,
+          }
+        `,
+          variables: {
+            pagination: {
+              limit: 400,
+            },
+            filters: {
+              company: {
+                id: {
+                  eq: selectedCompany,
+                }
+              }
+            },
+          },
         },
         {
           headers: {
@@ -113,7 +126,7 @@ export const ClientsPage = () => {
         }
       );
 
-      const clientsWithKeys = response.data.data.clients.data.map((client) => ({
+      const clientsWithKeys = response?.data?.data?.clients?.data?.map((client) => ({
         ...client,
         key: client.id,
       }));
@@ -124,7 +137,7 @@ export const ClientsPage = () => {
     } finally {
       setLoading(false);
     }
-  }, [jwtToken]);
+  }, [jwtToken, selectedCompany]);
 
   useEffect(() => {
     if (jwtToken) {

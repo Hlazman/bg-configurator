@@ -5,6 +5,7 @@ import axios from 'axios';
 import { AuthContext } from '../Context/AuthContext';
 import { useLanguage } from '../Context/LanguageContext';
 import languageMap from '../Languages/language';
+import { useSelectedCompany } from '../Context/CompanyContext';
 
 export const CreateClientPage = () => {
   const { user } = useContext(AuthContext);
@@ -13,6 +14,7 @@ export const CreateClientPage = () => {
   const [loading, setLoading] = useState(false);
   const { selectedLanguage } = useLanguage();
   const language = languageMap[selectedLanguage];
+  const { selectedCompany } = useSelectedCompany();
 
   const onFinish = () => {
     setLoading(true);  
@@ -20,6 +22,7 @@ export const CreateClientPage = () => {
     
     const data = {
       client_name: formValues.client_name,
+      company: selectedCompany,
       addresses: [{
         country: formValues.country,
         city: formValues.city,
