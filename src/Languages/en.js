@@ -185,6 +185,9 @@ const en = {
   lacquer_3: 'Category 3',
   natural: 'Natural',
 
+  deliveryCost: 'Delivery cost',
+  delivery: 'Delivery',
+
 // Products Options
   'cat_door': 'Cat Door',
   'vent_grille': 'Vent Grille',

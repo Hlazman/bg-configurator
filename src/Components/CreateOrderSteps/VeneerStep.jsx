@@ -6,7 +6,7 @@ import { useOrder } from '../../Context/OrderContext';
 import { useLanguage } from '../../Context/LanguageContext';
 import languageMap from '../../Languages/language';
 
-const VeneerStep = ({ fetchOrderData, fetchDecorData, checkDecor, sendDecorForm }) => {
+const VeneerStep = ({ fetchOrderData, fetchDecorData, checkDecor, sendDecorForm, currentStepSend }) => {
   const [veneerData, setVeneerData] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('');
@@ -19,6 +19,7 @@ const VeneerStep = ({ fetchOrderData, fetchDecorData, checkDecor, sendDecorForm 
   const language = languageMap[selectedLanguage];
   const { orderId, dorSuborderId} = useOrder();
   const orderIdToUse = orderId;
+  const [btnColor, setBtnColor] = useState('#ff0505');
 
   const [form] = Form.useForm();
   const onFinish = async () => {
@@ -118,13 +119,18 @@ const VeneerStep = ({ fetchOrderData, fetchDecorData, checkDecor, sendDecorForm 
     fetchData();
     fetchDecorData(setDecorData);
     fetchOrderData(orderIdToUse, setPreviousVeneerTitle, 'veneer');
+
+    if (currentStepSend && currentStepSend.decorSend) {
+      setBtnColor('#4BB543');
+    }
+
   }, [jwtToken, orderIdToUse, fetchDecorData, fetchOrderData]);
 
   return (
     <Form onFinish={onFinish} form={form}> 
 
       <Affix style={{ position: 'absolute', top: '-60px', right: '20px'}} offsetTop={60}>
-        <Button style={{backgroundColor: '#1677ff', color: 'white' }} htmlType="submit" icon={<SendOutlined />}>
+        <Button style={{backgroundColor: currentStepSend ? btnColor : '#1677ff', color: 'white' }} htmlType="submit" icon={<SendOutlined />}>
           {`${language.submit} ${language.decor}`}
         </Button>
       </Affix>

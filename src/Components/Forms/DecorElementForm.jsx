@@ -9,7 +9,7 @@ import languageMap from '../../Languages/language';
 
 const { Option } = Select;
 
-const DecorElementForm = ({setCurrentStepSend, elementID}) => {
+const DecorElementForm = ({setCurrentStepSend, elementID, currentStepSend}) => {
   const [elementOptions, setElementOptions] = useState([]);
   const [isloading, setIsLoading] = useState(true);
   const jwtToken = localStorage.getItem('token');
@@ -19,7 +19,8 @@ const DecorElementForm = ({setCurrentStepSend, elementID}) => {
   const [form] = Form.useForm();
   const [messageApi, contextHolder] = message.useMessage();
   const [currentElementField, setCurrentElementField] = useState('');
-  const [showDecor, setShowDecor] = useState(false); 
+  const [showDecor, setShowDecor] = useState(false);
+  const [btnColor, setBtnColor] = useState('#ff0505');
 
   const noWidth = ['anotherSideColor', 'skirting', 'moulding'];
   const noHeigt = ['anotherSideColor', 'skirting', 'moulding', 'platband', 'threadedPlatband', 'kapitel', 'extender',];
@@ -117,7 +118,6 @@ const DecorElementForm = ({setCurrentStepSend, elementID}) => {
         isDecorRequired(false)
       }
 
-
     })
     .catch(error => {
       console.error('Error fetching element suborder data:', error);
@@ -162,6 +162,11 @@ const DecorElementForm = ({setCurrentStepSend, elementID}) => {
       console.error('Error fetching elements data:', error);
       setIsLoading(false);
     });
+
+    if (currentStepSend && currentStepSend.elementSend) {
+      setBtnColor('#4BB543');
+    }
+
   }, [jwtToken, form]);
 
   const handleFormSubmit = values => {
@@ -214,6 +219,7 @@ const DecorElementForm = ({setCurrentStepSend, elementID}) => {
             };
           });
         }
+        setBtnColor('#4BB543');
       })
       .catch(error => {
         messageApi.error(language.errorQuery);
@@ -310,7 +316,7 @@ const DecorElementForm = ({setCurrentStepSend, elementID}) => {
     }
   };
 
-  const uniqueTypesSet = new Set()
+  const uniqueTypesSet = new Set();
 
   return (
     <Spin spinning={isloading}>
@@ -318,7 +324,7 @@ const DecorElementForm = ({setCurrentStepSend, elementID}) => {
       {contextHolder}
 
       <Affix style={{ position: 'absolute', top: '-60px', right: '20px'}} offsetTop={20}>
-        <Button style={{backgroundColor: '#1677ff', color: 'white' }} htmlType="submit" icon={<SendOutlined />}>
+        <Button style={{backgroundColor: currentStepSend ? btnColor : '#1677ff', color: 'white' }} htmlType="submit" icon={<SendOutlined />}>
         {`${language.submit} ${language.element}`}
         </Button>
       </Affix>
@@ -443,7 +449,7 @@ const DecorElementForm = ({setCurrentStepSend, elementID}) => {
             <>
               <Divider/>
               <h3 style={{textAlign: 'left', paddingBottom: '15px'}}> {language.element} {language.elementGetDecor} </h3>
-              <GroupDecorElementStep elementID={elementID} />
+              <GroupDecorElementStep elementID={elementID}/>
             </>
           }
         </div>

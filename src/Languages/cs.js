@@ -182,6 +182,9 @@ const cs = {
   lacquer_3: 'Kategorie 3',
   natural: 'Přírodní',
 
+  deliveryCost: 'Náklady na doručení',
+  delivery: 'Doručení',
+
 // Products Frame
   'hidden_standard Hidden': 'Skrytý standard',
   'type 1 outside Neo Classic': 'Neo Classic venku',

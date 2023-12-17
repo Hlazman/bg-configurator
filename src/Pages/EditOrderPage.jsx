@@ -87,7 +87,7 @@ export const EditOrderPage = () => {
         }
       );
   
-      const orderData = response.data.data.order.data.attributes;
+      const orderData = response?.data?.data?.order?.data?.attributes;
   
       const doorSuborderId = orderData.door_suborder.data.id;
       setDoorSuborderId(doorSuborderId);

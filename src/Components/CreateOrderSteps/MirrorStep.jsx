@@ -6,7 +6,7 @@ import { useOrder } from '../../Context/OrderContext';
 import { useLanguage } from '../../Context/LanguageContext';
 import languageMap from '../../Languages/language';
 
-const MirrorStep = ({fetchOrderData, fetchDecorData, checkDecor, sendDecorForm }) => {
+const MirrorStep = ({fetchOrderData, fetchDecorData, checkDecor, sendDecorForm, currentStepSend }) => {
   const [mirrorData, setMirrorData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [previousMirrorTitle, setPreviousMirrorTitle] = useState(null);
@@ -18,6 +18,7 @@ const MirrorStep = ({fetchOrderData, fetchDecorData, checkDecor, sendDecorForm }
   const language = languageMap[selectedLanguage];
   const { orderId, dorSuborderId } = useOrder();
   const orderIdToUse = orderId;
+  const [btnColor, setBtnColor] = useState('#ff0505');
 
   const filteredMirrorData = mirrorData.filter(mirror =>
     mirror.attributes.title.toLowerCase().includes(searchQuery.toLowerCase())
@@ -75,13 +76,17 @@ const MirrorStep = ({fetchOrderData, fetchDecorData, checkDecor, sendDecorForm }
     fetchData();
     fetchDecorData(setDecorData);
     fetchOrderData(orderIdToUse, setPreviousMirrorTitle, 'mirror');
+
+    if (currentStepSend && currentStepSend.decorSend) {
+      setBtnColor('#4BB543');
+    }
   }, [jwtToken, orderIdToUse, fetchDecorData, fetchOrderData]);
 
   return (
     <Form onFinish={onFinish} form={form}>
 
       <Affix style={{ position: 'absolute', top: '-50px', right: '20px'}} offsetTop={60}>
-        <Button style={{backgroundColor: '#1677ff', color: 'white' }} htmlType="submit" icon={<SendOutlined />}>
+        <Button style={{backgroundColor: currentStepSend ? btnColor : '#1677ff', color: 'white' }} htmlType="submit" icon={<SendOutlined />}>
           {`${language.submit} ${language.decor}`}
         </Button>
       </Affix>

@@ -8,7 +8,7 @@ import languageMap from '../../Languages/language';
 
 const { Option } = Select;
 
-const FrameStep = ({ setCurrentStepSend }) => {
+const FrameStep = ({ setCurrentStepSend, currentStepSend }) => {
   const jwtToken = localStorage.getItem('token');
   const { selectedLanguage } = useLanguage();
   const language = languageMap[selectedLanguage];
@@ -18,6 +18,7 @@ const FrameStep = ({ setCurrentStepSend }) => {
   const [frames, setFrames] = useState([]);
   const [orderData, setOrderData] = useState({});
   const [form] = Form.useForm();
+  const [btnColor, setBtnColor] = useState('#ff0505');
 
   useEffect(() => {
     axios.post(
@@ -122,6 +123,10 @@ const FrameStep = ({ setCurrentStepSend }) => {
       const data = response.data?.data?.frames?.data || [];
       setFrames(data);
     });
+
+    if (currentStepSend && currentStepSend.frameSend) {
+      setBtnColor('#4BB543');
+    }
   }, [jwtToken, orderData]);
   
   const handleFormSubmit = () => {
@@ -170,6 +175,7 @@ const FrameStep = ({ setCurrentStepSend }) => {
           };
         });
       }
+      setBtnColor('#4BB543');
     }).catch(error => {
       messageApi.error(language.errorQuery);
     });
@@ -197,7 +203,7 @@ const FrameStep = ({ setCurrentStepSend }) => {
         </Form.Item>
 
         <Form.Item wrapperCol={{ offset: 4, span: 16 }}>
-        <Button style={{backgroundColor: '#1677ff', color: 'white' }} htmlType="submit" icon={<SendOutlined />}>
+        <Button style={{backgroundColor: currentStepSend ? btnColor : '#1677ff', color: 'white' }} htmlType="submit" icon={<SendOutlined />}>
           {`${language.submit} ${language.frame}`}
         </Button>
         </Form.Item>

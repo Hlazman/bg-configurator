@@ -6,7 +6,7 @@ import { useOrder } from '../../Context/OrderContext';
 import { useLanguage } from '../../Context/LanguageContext';
 import languageMap from '../../Languages/language';
 
-const HingeStep = ({ setCurrentStepSend }) => {
+const HingeStep = ({ setCurrentStepSend, currentStepSend }) => {
   const [hingeData, setHingeData] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedBrand, setSelectedBrand] = useState('Anselmi');
@@ -18,6 +18,7 @@ const HingeStep = ({ setCurrentStepSend }) => {
   const [hingeAmount, setHingeAmount] = useState(1)
   const { hingeSuborderId } = useOrder();
   const jwtToken = localStorage.getItem('token');
+  const [btnColor, setBtnColor] = useState('#ff0505');
 
   const handleHingeAmount = (value) => {
     setHingeAmount(value)
@@ -82,6 +83,10 @@ const HingeStep = ({ setCurrentStepSend }) => {
     setSearchQuery(storedSearchQuery);
 
     fetchData();
+
+    if (currentStepSend && currentStepSend.fittingHingeSend) {
+      setBtnColor('#4BB543');
+    }
   }, [jwtToken, hingeSuborderId]);
 
   const brandOptions = [...new Set(hingeData.map(hinge => hinge.attributes.brand)), language.all];
@@ -151,7 +156,7 @@ const HingeStep = ({ setCurrentStepSend }) => {
             };
           });
         }
-
+        setBtnColor('#4BB543');
       })
       .catch((error) => {
         messageApi.error(language.errorQuery);
@@ -214,7 +219,7 @@ const HingeStep = ({ setCurrentStepSend }) => {
       {contextHolder}
 
       <Affix style={{ position: 'absolute', top: '-60px', right: '20px'}} offsetTop={20}>
-        <Button style={{backgroundColor: '#1677ff', color: 'white' }} htmlType="submit" icon={<SendOutlined />}>
+        <Button style={{backgroundColor: currentStepSend ? btnColor : '#1677ff', color: 'white' }} htmlType="submit" icon={<SendOutlined />}>
           {`${language.submit} ${language.hinges}`}
         </Button>
       </Affix>

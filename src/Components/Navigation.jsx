@@ -46,12 +46,12 @@ export const Navigation = () => {
       'label': (<NavLink to="/files">{language.files} </NavLink>)
     }, 
     { type: "divider" },
-    {
-      'key': "adminPanel", 
-      'icon': <SettingOutlined />,
-      'label': (<a href="https://api.boki.fortesting.com.ua/admin/content-manager/" target="_blank" rel="noopener noreferrer"> {language.AdminPanel} </a>),
-    }, 
-    { type: "divider" },
+    // {
+    //   'key': "adminPanel", 
+    //   'icon': <SettingOutlined />,
+    //   'label': (<a href="https://api.boki.fortesting.com.ua/admin/content-manager/" target="_blank" rel="noopener noreferrer"> {language.AdminPanel} </a>),
+    // }, 
+    // { type: "divider" },
     {
       'key': "subLang", 
       'icon': <TranslationOutlined />,

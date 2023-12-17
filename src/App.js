@@ -186,12 +186,14 @@ const getHeaderTitle = (location, Id) => {
       );
   
       setCompanies(response?.data?.data?.companies?.data);
-      
+
       if (!localStorage.getItem('selectedCompanyId')) {
         if (user?.id === '4') {
           setSelectedCompany('1');
         } else if (user?.id === '5') {
           setSelectedCompany('2');
+        } else if (user?.id === '6' || user?.id === '7') {
+          setSelectedCompany('4');
         } else {
           setSelectedCompany('3');
         }
@@ -260,7 +262,7 @@ const getHeaderTitle = (location, Id) => {
                     <Select
                       value={selectedCompany}
                       onChange={handleSelectChange}
-                      style={{ width: 150 }}
+                      style={{ minWidth: 130 }}
                       size='large'
                     >
                       {companies.map((company) => (

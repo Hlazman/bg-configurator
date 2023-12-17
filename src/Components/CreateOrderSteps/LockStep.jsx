@@ -6,7 +6,7 @@ import { useOrder } from '../../Context/OrderContext';
 import { useLanguage } from '../../Context/LanguageContext';
 import languageMap from '../../Languages/language';
 
-const LockStep = ({ setCurrentStepSend }) => {
+const LockStep = ({ setCurrentStepSend, currentStepSend }) => {
   const [lockData, setLockData] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
   const [messageApi, contextHolder] = message.useMessage();
@@ -17,6 +17,7 @@ const LockStep = ({ setCurrentStepSend }) => {
   const language = languageMap[selectedLanguage];
   const { lockSuborderId } = useOrder();
   const jwtToken = localStorage.getItem('token');
+  const [btnColor, setBtnColor] = useState('#ff0505');
 
   useEffect(() => {
     const fetchData = async () => {
@@ -77,6 +78,10 @@ const LockStep = ({ setCurrentStepSend }) => {
     setSearchQuery(storedSearchQuery);
 
     fetchData();
+
+    if (currentStepSend && currentStepSend.fittingLockSend) {
+      setBtnColor('#4BB543');
+    }
   }, [jwtToken]);
 
   const brandOptions = [...new Set(lockData.map(lock => lock.attributes.brand)), 'ALL',];
@@ -144,6 +149,7 @@ const LockStep = ({ setCurrentStepSend }) => {
           };
         });
       }
+      setBtnColor('#4BB543');
     })
     .catch((error) => {
       messageApi.error(language.errorQuery);
@@ -200,7 +206,7 @@ const LockStep = ({ setCurrentStepSend }) => {
       {contextHolder}
 
       <Affix style={{ position: 'absolute', top: '-60px', right: '20px'}} offsetTop={20}>
-        <Button style={{backgroundColor: '#1677ff', color: 'white' }} htmlType="submit" icon={<SendOutlined />}>
+        <Button style={{backgroundColor: currentStepSend ? btnColor : '#1677ff', color: 'white' }} htmlType="submit" icon={<SendOutlined />}>
           {`${language.submit} ${language.lock}`}
         </Button>
       </Affix>

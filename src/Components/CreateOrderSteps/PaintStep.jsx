@@ -6,7 +6,7 @@ import { useOrder } from '../../Context/OrderContext';
 import { useLanguage } from '../../Context/LanguageContext';
 import languageMap from '../../Languages/language';
 
-const PaintStep = ({ orderID, fetchOrderData, fetchDecorData, checkDecor, sendDecorForm, isPaintDecor }) => {
+const PaintStep = ({ orderID, fetchOrderData, fetchDecorData, checkDecor, sendDecorForm, isPaintDecor, currentStepSend }) => {
   const [paintData, setPaintData] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
   const [messageApi, contextHolder] = message.useMessage();
@@ -27,6 +27,7 @@ const PaintStep = ({ orderID, fetchOrderData, fetchDecorData, checkDecor, sendDe
   const { orderId, dorSuborderId } = useOrder();
   const orderIdToUse = orderId;
   const paintForSelectRef = useRef(null);
+  const [btnColor, setBtnColor] = useState('#ff0505');
 
   const [form] = Form.useForm();
 
@@ -136,6 +137,10 @@ const PaintStep = ({ orderID, fetchOrderData, fetchDecorData, checkDecor, sendDe
     fetchData();
     fetchDecorData(setDecorData);
     fetchOrderData(orderIdToUse, setPreviousColorTitle, selectedPaintFor, setSelectedPaintFor, isPaintType);
+
+    if (currentStepSend && currentStepSend.decorSend) {
+      setBtnColor('#4BB543');
+    }
   }, [jwtToken, orderIdToUse, fetchDecorData, fetchOrderData, selectedPaintFor, isPaintType]);
 
 
@@ -144,7 +149,7 @@ const PaintStep = ({ orderID, fetchOrderData, fetchDecorData, checkDecor, sendDe
       {contextHolder}
 
       <Affix style={{ position: 'absolute', top: '-60px', right: '20px'}} offsetTop={60}>
-        <Button style={{backgroundColor: '#1677ff', color: 'white' }} htmlType="submit" icon={<SendOutlined />}>
+        <Button style={{backgroundColor: currentStepSend ? btnColor : '#1677ff', color: 'white' }} htmlType="submit" icon={<SendOutlined />}>
           {`${language.submit} ${language.decor}`}
         </Button>
       </Affix>

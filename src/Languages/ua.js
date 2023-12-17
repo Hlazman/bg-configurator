@@ -182,6 +182,9 @@ const ua = {
   lacquer_3: 'Категорія 3',
   natural: 'Натуральний',
 
+  deliveryCost: 'Вартість доставки',
+  delivery: 'Доставка',
+
 // Products Frame
   'hidden_standard Hidden': 'Прихований стандарт',
   'type 1 outside Neo Classic': 'Neo Classic ззовні',

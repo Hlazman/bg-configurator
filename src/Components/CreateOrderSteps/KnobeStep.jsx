@@ -6,7 +6,7 @@ import { useOrder } from '../../Context/OrderContext';
 import { useLanguage } from '../../Context/LanguageContext';
 import languageMap from '../../Languages/language';
 
-const KnobesStep = ({ setCurrentStepSend }) => {
+const KnobesStep = ({ setCurrentStepSend, currentStepSend }) => {
   const [knobesData, setKnobesData] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
   const [messageApi, contextHolder] = message.useMessage();
@@ -18,6 +18,7 @@ const KnobesStep = ({ setCurrentStepSend }) => {
   const language = languageMap[selectedLanguage];
   const { knobeSuborderId } = useOrder();
   const jwtToken = localStorage.getItem('token');
+  const [btnColor, setBtnColor] = useState('#ff0505');
 
   const handleKnobeVariant = (value) => {
     setKnobeVariant(value)
@@ -79,6 +80,10 @@ const KnobesStep = ({ setCurrentStepSend }) => {
     setSearchQuery(storedSearchQuery);
 
     fetchData();
+
+    if (currentStepSend && currentStepSend.fittingKnobeSend) {
+      setBtnColor('#4BB543');
+    }
   }, [jwtToken]);
 
   const brandOptions = [...new Set(knobesData.map(knob => knob.attributes.brand)), 'ALL'];
@@ -148,6 +153,7 @@ const KnobesStep = ({ setCurrentStepSend }) => {
             };
           });
         }
+        setBtnColor('#4BB543');
       })
       .catch((error) => {
         messageApi.error(language.errorQuery);
@@ -209,7 +215,7 @@ const KnobesStep = ({ setCurrentStepSend }) => {
       {contextHolder}
 
       <Affix style={{ position: 'absolute', top: '-60px', right: '20px'}} offsetTop={20}>
-        <Button style={{backgroundColor: '#1677ff', color: 'white' }} htmlType="submit" icon={<SendOutlined />}>
+        <Button style={{backgroundColor: currentStepSend ? btnColor : '#1677ff', color: 'white' }} htmlType="submit" icon={<SendOutlined />}>
           {`${language.submit} ${language.knobe}`}
         </Button>
       </Affix>

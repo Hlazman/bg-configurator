@@ -182,6 +182,9 @@ const pl = {
   lacquer_3: 'Kategoria 3',
   natural: 'Naturalny',
 
+  deliveryCost: 'Koszt dostawy',
+  delivery: 'Dostawa',
+
 // Products Frame
   'hidden_standard Hidden': 'Ukryty standard',
   'type 1 outside Neo Classic': 'Neo Classic poza',

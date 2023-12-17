@@ -9,7 +9,7 @@ import { useTotalOrder } from '../../Context/TotalOrderContext';
 import { useSelectedCompany } from '../../Context/CompanyContext';
 import {updateTotalOrder} from '../../api/updateTotalOrder'
 
-const StartDataStep = ({ setCurrentStepSend }) => {
+const StartDataStep = ({ setCurrentStepSend, currentStepSend }) => {
   const { orderId } = useOrder();
   const jwtToken = localStorage.getItem('token');
   const orderIdToUse = orderId;
@@ -21,35 +21,7 @@ const StartDataStep = ({ setCurrentStepSend }) => {
   const { totalOrderId } = useTotalOrder();
   const { selectedCompany } = useSelectedCompany();
 
-  // const handleUpdateTotalOrder = async () => {
-  //   await axios.post('https://api.boki.fortesting.com.ua/graphql',
-  //     {
-  //       query: `
-  //         mutation Mutation($updateTotalOrderId: ID!, $data: TotalOrderInput!) {
-  //           updateTotalOrder(id: $updateTotalOrderId, data: $data) {
-  //             data {
-  //               id
-  //             }
-  //           }
-  //         }
-  //       `,
-  //       variables: {
-  //         updateTotalOrderId: totalOrderId,
-  //         data: {
-  //           company: selectedCompany,
-  //         }
-  //       },
-  //     },
-  //     {
-  //       headers: {
-  //         'Content-Type': 'application/json',
-  //         Authorization: `Bearer ${jwtToken}`,
-  //       },
-  //     }
-  //     ).catch((error) => {
-  //       console.log('Error update Total Order', error)
-  //   });
-  // };
+  const [btnColor, setBtnColor] = useState('#ff0505');
 
   const fetchOrderData = async () => {
     try {
@@ -84,8 +56,8 @@ const StartDataStep = ({ setCurrentStepSend }) => {
         }
       );
 
-      if (response.data.data && response.data.data.order) {
-        const orderData = response.data.data.order.data.attributes;
+      if (response?.data?.data && response?.data?.data?.order) {
+        const orderData = response?.data?.data?.order?.data?.attributes;
         setOrderData(orderData);
         form.setFieldsValue(orderData);
       }
@@ -96,6 +68,10 @@ const StartDataStep = ({ setCurrentStepSend }) => {
 
   useEffect(() => {
     fetchOrderData();
+
+    if (currentStepSend && currentStepSend.startDataSend) {
+      setBtnColor('#4BB543');
+    }
   }, [orderIdToUse, jwtToken, form]);
 
   const handleFormSubmit = async (values) => {
@@ -125,7 +101,6 @@ const StartDataStep = ({ setCurrentStepSend }) => {
         }
       );
       
-      // await handleUpdateTotalOrder();
       await updateTotalOrder(totalOrderId, jwtToken, selectedCompany);
 
       messageApi.success(language.successQuery);
@@ -137,6 +112,7 @@ const StartDataStep = ({ setCurrentStepSend }) => {
           };
         });
       }
+      setBtnColor('#4BB543');
     } catch (error) {
       messageApi.error(language.errorQuery);
     }
@@ -148,7 +124,7 @@ const StartDataStep = ({ setCurrentStepSend }) => {
       {contextHolder}
 
       <Affix style={{ position: 'absolute', top: '-50px', right: '20px'}} offsetTop={20}>
-        <Button style={{backgroundColor: '#1677ff', color: 'white' }} htmlType="submit" icon={<SendOutlined />}>
+        <Button style={{backgroundColor: currentStepSend ? btnColor : '#1677ff', color: 'white' }} htmlType="submit" icon={<SendOutlined />}>
         {`${language.submit} ${language.startData}`}
         </Button>
       </Affix>

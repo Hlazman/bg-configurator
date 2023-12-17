@@ -84,7 +84,7 @@ export const CreateOrderPage = () => {
         }
       );
   
-      const createdOrderId = response.data.data.createOrder.data.id;  
+      const createdOrderId = response?.data?.data?.createOrder?.data?.id;
       setOrderId(createdOrderId);
   
       const doorSuborderData = {
@@ -220,48 +220,56 @@ export const CreateOrderPage = () => {
         return (
           <GroupDoorStep
             setCurrentStepSend={setCurrentStepSend}
+            currentStepSend={currentStepSend}
           />
         );
       case 1:
         return (
           <GroupDecorStep
             setCurrentStepSend={setCurrentStepSend}
+            currentStepSend={currentStepSend}
         />
         );
         case 2:
         return (
           <FrameStep
             setCurrentStepSend={setCurrentStepSend}
+            currentStepSend={currentStepSend}
           />
         );
       case 3:
         return (
           <ElementsStep
             setCurrentStepSend={setCurrentStepSend}
+            currentStepSend={currentStepSend}
           />
         );
       case 4:
         return (
           <GroupAccessoriesStep
             setCurrentStepSend={setCurrentStepSend}
+            currentStepSend={currentStepSend}
         />
         );
         case 5:
         return (
           <OptionsStep
             setCurrentStepSend={setCurrentStepSend}
+            currentStepSend={currentStepSend}
         />
         );
         case 6:
         return (
           <OptionsAdditionalStep
             setCurrentStepSend={setCurrentStepSend}
+            currentStepSend={currentStepSend}
         />
         );
         case 7:
         return (
           <InformationStep
             setCurrentStepSend={setCurrentStepSend}
+            currentStepSend={currentStepSend}
         />
         );
       default:

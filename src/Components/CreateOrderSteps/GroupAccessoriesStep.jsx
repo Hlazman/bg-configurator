@@ -6,7 +6,7 @@ import LockStep from './LockStep';
 import { useLanguage } from '../../Context/LanguageContext';
 import languageMap from '../../Languages/language';
 
-const GroupAccessoriesStep = ({ setCurrentStepSend }) => {
+const GroupAccessoriesStep = ({ setCurrentStepSend, currentStepSend }) => {
   const [activeTab, setActiveTab] = useState('knobe');
   const { selectedLanguage } = useLanguage();
   const language = languageMap[selectedLanguage];
@@ -24,17 +24,17 @@ const GroupAccessoriesStep = ({ setCurrentStepSend }) => {
       {
         label: language.knobe,
         key: 'knobe',
-        children: <KnobeStep setCurrentStepSend={setCurrentStepSend} />,
+        children: <KnobeStep setCurrentStepSend={setCurrentStepSend} currentStepSend={currentStepSend}/>,
       },
       {
         label: language.hinges,
         key: 'hinges',
-        children: <HingesStep setCurrentStepSend={setCurrentStepSend} />,
+        children: <HingesStep setCurrentStepSend={setCurrentStepSend} currentStepSend={currentStepSend}/>,
       },
       {
         label: language.lock,
         key: 'lock',
-        children: <LockStep setCurrentStepSend={setCurrentStepSend} />,
+        children: <LockStep setCurrentStepSend={setCurrentStepSend} currentStepSend={currentStepSend}/>,
       },
     ]}
   />

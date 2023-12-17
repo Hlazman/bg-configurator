@@ -94,6 +94,8 @@ const EditTotalOrderPage = () => {
                   }
                   deliveryAt
                   discount
+                  deliveryCost
+                  tax
                   title
                   status
                   installation
@@ -138,6 +140,8 @@ const EditTotalOrderPage = () => {
           comment: totalOrderData?.comment || '',
           currency: totalOrderData?.currency || 'EUR',
           client: totalOrderData?.client ? totalOrderData?.client?.data?.id : '',
+          tax: totalOrderData?.tax || null,
+          deliveryCost: totalOrderData?.deliveryCost || null,
         });
       }
 
@@ -163,6 +167,8 @@ const EditTotalOrderPage = () => {
       installation: values.installation,
       deliveryAt: values.deliveryAt ? values.deliveryAt.toISOString() : null,
       discount: values.discount || null,
+      tax: values.tax || null,
+      deliveryCost: values.deliveryCost || null,
     };
 
     await handleUpdateTotalOrder(data);
@@ -236,7 +242,7 @@ const EditTotalOrderPage = () => {
             name="discount" 
             style={{ width: '100%' }}
           >
-            <InputNumber addonBefore={language.discount}/>
+            <InputNumber addonBefore={language.discount} addonAfter={'%'}/>
           </Form.Item>
 
           <Form.Item label={language.client} name="client" style={{ width: '100%' }}>
@@ -293,17 +299,25 @@ const EditTotalOrderPage = () => {
         </div>
 
         <div style={{ display: 'flex', gap: '30px' }}>
-        <Form.Item label={language.status} name="status">
-            <Radio.Group buttonStyle="solid">
-              <Radio.Button value="Draft">Draft</Radio.Button>
-              <Radio.Button value="Active">Active</Radio.Button>
-            </Radio.Group>
+        <Form.Item name="deliveryCost">
+            <InputNumber addonBefore={language.deliveryCost} addonAfter={'€'}/>
+          </Form.Item>
+
+          <Form.Item name="tax">
+            <InputNumber addonBefore={language.tax} addonAfter={'%'}/>
           </Form.Item>
 
           <Form.Item label={language.installation} name="installation">
             <Radio.Group buttonStyle="solid">
               <Radio.Button value={true}>{language.yes}</Radio.Button>
               <Radio.Button value={false}>{language.no}</Radio.Button>
+            </Radio.Group>
+          </Form.Item>
+
+          <Form.Item label={language.status} name="status">
+            <Radio.Group buttonStyle="solid">
+              <Radio.Button value="Draft">Draft</Radio.Button>
+              <Radio.Button value="Active">Active</Radio.Button>
             </Radio.Group>
           </Form.Item>
         </div>

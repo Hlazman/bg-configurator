@@ -261,7 +261,7 @@ const GroupDecorElementStep = ({elementID}) => {
             fetchDecorData={fetchDecorData}
             fetchOrderData={fetchOrderData}
             checkDecor={checkDecor}
-            sendDecorForm={sendDecorForm} 
+            sendDecorForm={sendDecorForm}
           />,
         },
         {

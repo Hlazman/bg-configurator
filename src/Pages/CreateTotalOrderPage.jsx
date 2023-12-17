@@ -132,6 +132,8 @@ const CreateTotalOrderPage = () => {
       installation: values.installation,
       deliveryAt: values.deliveryAt ? values.deliveryAt.toISOString() : null,
       discount: values.discount || null,
+      tax: values.tax,
+      deliveryCost: values.deliveryCost,
     };
 
     await handleUpdateTotalOrder(data);
@@ -208,7 +210,7 @@ const CreateTotalOrderPage = () => {
             name="discount" 
             style={{ width: '100%' }}
           >
-            <InputNumber addonBefore={language.discount}/>
+            <InputNumber addonBefore={language.discount} addonAfter={'%'}/>
           </Form.Item>
 
           <Form.Item label={language.client} name="client" style={{ width: '100%' }}>
@@ -265,17 +267,25 @@ const CreateTotalOrderPage = () => {
         </div>
 
         <div style={{ display: 'flex', gap: '30px' }}>
-        <Form.Item label={language.status} name="status">
-            <Radio.Group buttonStyle="solid">
-              <Radio.Button value="Draft">Draft</Radio.Button>
-              <Radio.Button value="Active">Active</Radio.Button>
-            </Radio.Group>
-          </Form.Item>
+          <Form.Item name="tax" rules={[{ required: true, message: language.requiredField }]}>
+              <InputNumber addonBefore={language.tax} addonAfter={'%'}/>
+            </Form.Item>
+
+            <Form.Item name="deliveryCost">
+              <InputNumber addonBefore={language.deliveryCost} addonAfter={'€'}/>
+            </Form.Item>
 
           <Form.Item label={language.installation} name="installation">
             <Radio.Group buttonStyle="solid">
               <Radio.Button value={true}>{language.yes}</Radio.Button>
               <Radio.Button value={false}>{language.no}</Radio.Button>
+            </Radio.Group>
+          </Form.Item>
+
+          <Form.Item label={language.status} name="status">
+            <Radio.Group buttonStyle="solid">
+              <Radio.Button value="Draft">Draft</Radio.Button>
+              <Radio.Button value="Active">Active</Radio.Button>
             </Radio.Group>
           </Form.Item>
         </div>

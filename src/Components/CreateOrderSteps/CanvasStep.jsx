@@ -6,7 +6,7 @@ import { useOrder } from '../../Context/OrderContext';
 import { useLanguage } from '../../Context/LanguageContext';
 import languageMap from '../../Languages/language';
 
-const CanvasStep = ({ setCurrentStepSend}) => {
+const CanvasStep = ({ setCurrentStepSend, currentStepSend}) => {
   const [messageApi, contextHolder] = message.useMessage();
   const { selectedLanguage } = useLanguage();
   const language = languageMap[selectedLanguage];
@@ -19,6 +19,7 @@ const CanvasStep = ({ setCurrentStepSend}) => {
   const [isLoading, setIsLoading] = useState(true);
   const [previousDoorId, setPreviousDoorId] = useState(null);
   const [form] = Form.useForm();
+  const [btnColor, setBtnColor] = useState('#ff0505');
 
   useEffect(() => {
     const fetchOrderData = async () => {
@@ -85,6 +86,10 @@ const CanvasStep = ({ setCurrentStepSend}) => {
     };
   
     fetchOrderData();
+
+    if (currentStepSend && currentStepSend.canvasSend) {
+      setBtnColor('#4BB543');
+    }
   }, [orderId, jwtToken, form, orderIdToUse]);
 
   const onFinish = async (values) => {
@@ -142,6 +147,7 @@ const CanvasStep = ({ setCurrentStepSend}) => {
           };
         });
       }
+      setBtnColor('#4BB543');
     } catch (error) {
       console.error(error);
       messageApi.error(`${language.errorQuery}. ${language.wrongSize}`); 
@@ -234,7 +240,8 @@ const CanvasStep = ({ setCurrentStepSend}) => {
     >
       {contextHolder}
       <Affix style={{ position: 'absolute', top: '-60px', right: '20px'}} offsetTop={20}>
-        <Button style={{backgroundColor: '#1677ff', color: 'white' }} htmlType="submit" icon={<SendOutlined />}>
+        <Button
+         style={{backgroundColor: currentStepSend ? btnColor : '#1677ff', color: 'white' }} htmlType="submit" icon={<SendOutlined />}>
         {`${language.submit} ${language.canvas}`}
         </Button>
       </Affix>

@@ -420,45 +420,45 @@ export const OrderDescriptionFull = ({
       {/* OPTIONS */}
       {optionsData && optionsData.length > 0 && (
         <>
-              <div style={{padding: '5px', backgroundColor: '#FFF', borderRadius: '15px'}}>
-        
-        <p style={{fontWeight: '500', padding: '10px', backgroundColor: '#f06d20', color: '#FFF'}}> 
-          {language.Order} {language.options}
-        </p>
+          <div style={{padding: '5px', backgroundColor: '#FFF', borderRadius: '15px'}}>
+      
+            <p style={{fontWeight: '500', padding: '10px', backgroundColor: '#f06d20', color: '#FFF'}}> 
+              {language.Order} {language.options}
+            </p>
 
-        <Descriptions
-          column={2}
-          layout="vertical"
-          bordered
-          size='default'
-          >
-            {optionsData && optionsData.length > 0 && optionsData.map((option, index) => (
-              <React.Fragment key={index}>
+            <Descriptions
+              column={2}
+              layout="vertical"
+              bordered
+              size='default'
+              >
+                {optionsData && optionsData.length > 0 && optionsData.map((option, index) => (
+                  <React.Fragment key={index}>
 
-                <Descriptions.Item className='labelBG' label={language.title} labelStyle={{fontWeight: '600', color:'#000'}}>
-                  {languageMap[selectedLanguage][option.title] ? languageMap[selectedLanguage][option.title] : option.title}
-                </Descriptions.Item>
+                    <Descriptions.Item className='labelBG' label={language.title} labelStyle={{fontWeight: '600', color:'#000'}}>
+                      {languageMap[selectedLanguage][option.title] ? languageMap[selectedLanguage][option.title] : option.title}
+                    </Descriptions.Item>
 
-                <Descriptions.Item className='labelBG' label={language.price} labelStyle={{fontWeight: '600', color:'#000'}}>
-                  {convertedOptionPrice[index] ? `${convertedOptionPrice[index].convertedPrice} ${currency}` : `${option.price} ${orderData?.currency}`}
-                </Descriptions.Item>
-              </React.Fragment>
-            ))}
+                    <Descriptions.Item className='labelBG' label={language.price} labelStyle={{fontWeight: '600', color:'#000'}}>
+                      {convertedOptionPrice[index] ? `${convertedOptionPrice[index].convertedPrice} ${currency}` : `${option.price} ${orderData?.currency}`}
+                    </Descriptions.Item>
+                  </React.Fragment>
+                ))}
 
-              {orderData?.horizontal_veneer && (
-                <Descriptions.Item className='labelBG' label={language.title} labelStyle={{fontWeight: '600', color:'#000'}}>
-                  {orderData?.horizontal_veneer ? language.horizontalVeneer : ''}
-                </Descriptions.Item>
-              )}
+                  {orderData?.horizontal_veneer && (
+                    <Descriptions.Item className='labelBG' label={language.title} labelStyle={{fontWeight: '600', color:'#000'}}>
+                      {orderData?.horizontal_veneer ? language.horizontalVeneer : ''}
+                    </Descriptions.Item>
+                  )}
 
-              {orderData?.super_gloss && (
-                <Descriptions.Item className='labelBG' label={language.title} labelStyle={{fontWeight: '600', color:'#000'}}>
-                  {orderData?.horizontal_veneer ? language.superGloss : ''}
-                </Descriptions.Item>
-              )}
+                  {orderData?.super_gloss && (
+                    <Descriptions.Item className='labelBG' label={language.title} labelStyle={{fontWeight: '600', color:'#000'}}>
+                      {orderData?.horizontal_veneer ? language.superGloss : ''}
+                    </Descriptions.Item>
+                  )}
 
-          </Descriptions>
-      </div>
+            </Descriptions>
+          </div>
         </>
       )}
 

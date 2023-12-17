@@ -181,6 +181,9 @@ const de = {
   lacquer_2: 'Kategorie 2',
   lacquer_3: 'Kategorie 3',
   natural: 'Natürlich',
+
+  deliveryCost: 'Lieferkosten',
+  delivery: 'Lieferung',
   
 // Products Frame
   'hidden_standard Hidden': 'Versteckter Standard',

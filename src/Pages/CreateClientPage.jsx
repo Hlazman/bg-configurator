@@ -162,7 +162,7 @@ export const CreateClientPage = () => {
           </Form.Item>
 
           <Form.Item>
-            <Button type="primary" htmlType="submit">
+            <Button style={{backgroundColor: '#1677ff', color: 'white' }} type="primary" htmlType="submit">
               {language.submit}
             </Button>
           </Form.Item>

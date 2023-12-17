@@ -62,6 +62,7 @@ export const TotalOrderDetailsPage = () => {
                   installation
                   basicTotalPrice
                   tax
+                  deliveryCost
                   orders {
                     data {
                       id
@@ -135,6 +136,7 @@ export const TotalOrderDetailsPage = () => {
   const [totalCostConverted, setTotalCostConverted] = useState('');
   const [basicCostConverted, setBasicCostConverted] = useState('');
   const [installationPriceConverted, setInstallationPriceConverted] = useState('');
+  const [deliveryPriceConverted, setDeliveryPriceConverted] = useState('');
   const [exchangeRates, setExchangeRates] = useState(null);
 
   const fetchExchangeRates = async () => {
@@ -167,12 +169,14 @@ export const TotalOrderDetailsPage = () => {
     const totalPrice = convertCurrency(totalOrderData.totalCost, value);
     const basicPrice = convertCurrency(totalOrderData.basicTotalPrice, value);
     const installationPrice = convertCurrency(totalOrderData.installationCost, value);
+    const deliveryPrice = convertCurrency(totalOrderData.deliveryCost, value);
   
     setNoTaxTotalCostConverted(priceNoTax)
     setWithTaxTotalCostConverted(priceWithTax);
     setTotalCostConverted(totalPrice);
     setBasicCostConverted(basicPrice);
     setInstallationPriceConverted(installationPrice)
+    setDeliveryPriceConverted(deliveryPrice)
   };
 
   const [currancyValue, setCurrancyValue] = useState('EUR');
@@ -243,13 +247,15 @@ export const TotalOrderDetailsPage = () => {
           )}
 
           {
-            ordersCount.map(order => (
+            // ordersCount.map(order => (
+            ordersCount.map((order, index) => (
             <div key={order.id} style={{marginBottom: '20px'}}>
-              <OrderDetailsPage 
+              <OrderDetailsPage
                 fromTotalOrder={order.id}
                 isCreatingTotalPdf={isCreatingTotalPdf}
                 orderName={order.id}
                 currancyValue={currancyValue}
+                imageIndex={index}
               />
             </div>
             ))
@@ -258,7 +264,7 @@ export const TotalOrderDetailsPage = () => {
 
         {(presentation === 'full' || presentation === 'short') && (
            <>
-            <div style={{padding: '15px', backgroundColor: '#FFF', borderRadius: '15px', width: '900px', margin: '0 auto'}}>
+            <div style={{padding: '15px', backgroundColor: '#FFF', borderRadius: '15px', maxWidth: '900px', margin: '0 auto'}}>
               <p style={{fontWeight: '500', padding: '10px', backgroundColor: '#f06d20', color: '#FFF'}}> 
                 {language.Order} {language.information}
               </p>
@@ -277,11 +283,11 @@ export const TotalOrderDetailsPage = () => {
                     {dayjs(totalOrderData?.deliveryAt).format('YYYY-MM-DD HH:mm:ss')}
                   </Descriptions.Item>
 
-                  <Descriptions.Item span={2} className='labelBG' label={language.installation} labelStyle={{fontWeight: '600', color:'#000'}}>
-                    {`${totalOrderData?.installation ? language.yes : language.no}`}
+                  <Descriptions.Item span={2} className='labelBG' label={`${language.delivery} ${language.cost}`} labelStyle={{fontWeight: '600', color:'#000'}}>
+                  {deliveryPriceConverted ? `${deliveryPriceConverted} ${currancyValue}` : `${totalOrderData?.deliveryCost} ${currancyValue}`}
                   </Descriptions.Item>
 
-                  <Descriptions.Item span={2} className='labelBG' label={`${language.installation} ${language.price}`} labelStyle={{fontWeight: '600', color:'#000'}}>
+                  <Descriptions.Item span={2} className='labelBG' label={`${language.installation} ${language.cost}`} labelStyle={{fontWeight: '600', color:'#000'}}>
                     {installationPriceConverted ? `${installationPriceConverted} ${currancyValue}` : `${totalOrderData?.installationCost} ${currancyValue}`}
                   </Descriptions.Item>
 
@@ -289,7 +295,7 @@ export const TotalOrderDetailsPage = () => {
                     {noTaxTotalCostConverted ? `${noTaxTotalCostConverted} ${currancyValue}` : `${totalOrderData?.totalCost - Math.ceil(totalOrderData?.totalCost / 100 * totalOrderData?.tax)} ${currancyValue}`}
                   </Descriptions.Item>
 
-                  <Descriptions.Item className='labelBG' label={language.tax} labelStyle={{fontWeight: '600', color:'#000'}}>
+                  <Descriptions.Item className='labelBG' label={`${language.tax}: ${totalOrderData?.tax}%`} labelStyle={{fontWeight: '600', color:'#000'}}>
                     {withTaxTotalCostConverted ? `${withTaxTotalCostConverted} ${currancyValue}` : `${Math.ceil(totalOrderData?.totalCost / 100 * totalOrderData?.tax)} ${currancyValue}`}
                   </Descriptions.Item>
 
@@ -314,7 +320,7 @@ export const TotalOrderDetailsPage = () => {
 
         {presentation === 'factory' && (
           <>
-          <div style={{padding: '15px', backgroundColor: '#FFF', borderRadius: '15px', width: '900px', margin: '0 auto'}}>
+          <div style={{padding: '15px', backgroundColor: '#FFF', borderRadius: '15px', maxWidth: '900px', margin: '0 auto'}}>
             <p style={{fontWeight: '500', padding: '10px', backgroundColor: '#f06d20', color: '#FFF'}}> 
               {language.Order} {language.information}
             </p>

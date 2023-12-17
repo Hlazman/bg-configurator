@@ -7,7 +7,7 @@ import { useLanguage } from '../../Context/LanguageContext';
 import languageMap from '../../Languages/language';
 import { AuthContext } from '../../Context/AuthContext';
 
-const OptionsAdditionalStep = ({ setCurrentStepSend }) => {
+const OptionsAdditionalStep = ({ setCurrentStepSend, currentStepSend }) => {
   const { user } = useContext(AuthContext);
   const { orderId } = useOrder();
   const jwtToken = localStorage.getItem('token');
@@ -16,6 +16,7 @@ const OptionsAdditionalStep = ({ setCurrentStepSend }) => {
   const [form] = Form.useForm();
   const { selectedLanguage } = useLanguage();
   const language = languageMap[selectedLanguage];
+  const [btnColor, setBtnColor] = useState('#ff0505');
 
   const [optionsSuborderData, setOptionsSuborderData] = useState(null);
 
@@ -127,6 +128,7 @@ const OptionsAdditionalStep = ({ setCurrentStepSend }) => {
           ...prevState,
           optionsAdditionalSend: true
         }));
+        setBtnColor('#4BB543');
       }
     } catch (error) {
       messageApi.error(language.errorQuery);
@@ -248,8 +250,11 @@ const OptionsAdditionalStep = ({ setCurrentStepSend }) => {
   };
   
   useEffect(()=> {
-    fetchOrderData()
-    console.log('go')
+    fetchOrderData(); 
+    
+    if (currentStepSend && currentStepSend.optionsAdditionalSend) {
+      setBtnColor('#4BB543');
+    }
   },[trigger]);
 
 
@@ -269,7 +274,7 @@ const OptionsAdditionalStep = ({ setCurrentStepSend }) => {
       {contextHolder}
 
         <Affix style={{ position: 'absolute', top: '20px', right: '20px'}} offsetTop={20}>
-          <Button style={{backgroundColor: '#1677ff', color: 'white' }} htmlType="submit" icon={<SendOutlined />}>
+          <Button style={{backgroundColor: currentStepSend ? btnColor : '#1677ff', color: 'white' }} htmlType="submit" icon={<SendOutlined />}>
             {`${language.submit} ${language.options}`}
           </Button>
         </Affix>

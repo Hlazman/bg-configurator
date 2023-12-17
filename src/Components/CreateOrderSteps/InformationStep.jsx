@@ -1,4 +1,4 @@
-import React, {useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Form, Input, Button, message, Card } from 'antd';
 import { SendOutlined } from '@ant-design/icons';
@@ -8,13 +8,14 @@ import languageMap from '../../Languages/language';
 
 const { TextArea } = Input;
 
-const InformationStep = ({ setCurrentStepSend }) => {
+const InformationStep = ({ setCurrentStepSend, currentStepSend }) => {
   const { orderId } = useOrder();
   const jwtToken = localStorage.getItem('token');
   const { selectedLanguage } = useLanguage();
   const language = languageMap[selectedLanguage];
   const [form] = Form.useForm();
   const [messageApi, contextHolder] = message.useMessage();
+  const [btnColor, setBtnColor] = useState('#ff0505');
 
   const onFinish = (values) => {
     const data = {
@@ -55,6 +56,7 @@ const InformationStep = ({ setCurrentStepSend }) => {
               informationSend: true
             };
           });
+          setBtnColor('#4BB543');
         }
       }).catch((error) => {
         messageApi.error(language.errorQuery);
@@ -101,6 +103,10 @@ const InformationStep = ({ setCurrentStepSend }) => {
       .catch((error) => {
         console.error('Error while fetching order data:', error);
       });
+
+      if (currentStepSend && currentStepSend.informationSend) {
+        setBtnColor('#4BB543');
+      }
   }, [jwtToken, orderId, form]);
 
   return (
@@ -114,7 +120,7 @@ const InformationStep = ({ setCurrentStepSend }) => {
 
         <Form.Item wrapperCol={{ offset: 4, span: 16 }}>
 
-          <Button style={{backgroundColor: '#1677ff', color: 'white' }} htmlType="submit" icon={<SendOutlined />}>
+          <Button style={{backgroundColor: currentStepSend ? btnColor : '#1677ff', color: 'white' }} htmlType="submit" icon={<SendOutlined />}>
             {`${language.submit} ${language.frame}`}
           </Button>
         </Form.Item>

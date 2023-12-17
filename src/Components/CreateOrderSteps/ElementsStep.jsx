@@ -7,7 +7,7 @@ import DecorElementForm from '../Forms/DecorElementForm';
 import { useLanguage } from '../../Context/LanguageContext';
 import languageMap from '../../Languages/language';
 
-const ElementsStep = ({ setCurrentStepSend }) => {
+const ElementsStep = ({ setCurrentStepSend, currentStepSend }) => {
   const jwtToken = localStorage.getItem('token');
   const { selectedLanguage } = useLanguage();
   const language = languageMap[selectedLanguage];
@@ -59,7 +59,7 @@ const ElementsStep = ({ setCurrentStepSend }) => {
               return {
                 label: newActiveKey,
                 elemID: data.id,
-                children: (<DecorElementForm elementID={data.id} setCurrentStepSend={setCurrentStepSend}/>),
+                children: (<DecorElementForm elementID={data.id} setCurrentStepSend={setCurrentStepSend} currentStepSend={currentStepSend }/>),
                 key: newActiveKey,
               };
             });
@@ -178,7 +178,7 @@ const ElementsStep = ({ setCurrentStepSend }) => {
     newPanes.push({
       label: newActiveKey,
       elemID: suborderId,
-      children: (<DecorElementForm elementID={suborderId} setCurrentStepSend={setCurrentStepSend}/>),
+      children: (<DecorElementForm elementID={suborderId} setCurrentStepSend={setCurrentStepSend} currentStepSend={currentStepSend }/>),
       key: newActiveKey,
       closable: false,
     });

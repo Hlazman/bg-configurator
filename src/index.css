@@ -47,6 +47,10 @@ th.labelBG {
   /* border-color: #FFF!important; */
 }
 
+th.labelNone {
+  display: none;
+}
+
 .ant-float-btn-default .ant-float-btn-body {
   background-color: #f06d20;
 }

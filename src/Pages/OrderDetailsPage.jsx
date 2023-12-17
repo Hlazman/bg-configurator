@@ -15,7 +15,7 @@ import { OrderDescriptionShort } from '../Components/OrderDescriptionShort';
 import { OrderDescriptionFull } from '../Components/OrderDescriptionFull';
 
 
-export const OrderDetailsPage = ({fromTotalOrder, isCreatingTotalPdf, orderName, currancyValue}) => {
+export const OrderDetailsPage = ({fromTotalOrder, isCreatingTotalPdf, orderName, currancyValue, imageIndex}) => {
   const { user } = useContext(AuthContext);
   const jwtToken = localStorage.getItem('token');
   const { orderId, setOrderId } = useOrder();
@@ -864,6 +864,7 @@ const fetchOptionsData = async (optionIds) => {
               isCreatingPdf={isCreatingTotalPdf}
               orderName={orderName}
               currancyValue={currancyValue}
+              imageIndex={imageIndex}
             />
         )}
 

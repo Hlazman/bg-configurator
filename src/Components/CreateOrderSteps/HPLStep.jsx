@@ -6,7 +6,7 @@ import { useOrder } from '../../Context/OrderContext';
 import { useLanguage } from '../../Context/LanguageContext';
 import languageMap from '../../Languages/language';
 
-const HPLStep = ({ fetchOrderData, fetchDecorData, checkDecor, sendDecorForm }) => {
+const HPLStep = ({ fetchOrderData, fetchDecorData, checkDecor, sendDecorForm, currentStepSend }) => {
   const [HPLData, setHPLData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
@@ -18,6 +18,7 @@ const HPLStep = ({ fetchOrderData, fetchDecorData, checkDecor, sendDecorForm }) 
   const language = languageMap[selectedLanguage];
   const { orderId, dorSuborderId } = useOrder();
   const orderIdToUse = orderId;
+  const [btnColor, setBtnColor] = useState('#ff0505');
 
   const [form] = Form.useForm();
   
@@ -72,6 +73,10 @@ const HPLStep = ({ fetchOrderData, fetchDecorData, checkDecor, sendDecorForm }) 
     fetchData();
     fetchDecorData(setDecorData);
     fetchOrderData(orderIdToUse, setPreviousHPLTitle, 'HPL');
+
+    if (currentStepSend && currentStepSend.decorSend) {
+      setBtnColor('#4BB543');
+    }
   }, [jwtToken, orderIdToUse, fetchDecorData, fetchOrderData]);
 
   const filteredHplData = HPLData.filter(hpl =>
@@ -82,7 +87,7 @@ const HPLStep = ({ fetchOrderData, fetchDecorData, checkDecor, sendDecorForm }) 
     <Form onFinish={onFinish} form={form}>
 
       <Affix style={{ position: 'absolute', top: '-50px', right: '20px'}} offsetTop={60}>
-        <Button style={{backgroundColor: '#1677ff', color: 'white' }} htmlType="submit" icon={<SendOutlined />}>
+        <Button style={{backgroundColor: currentStepSend ? btnColor : '#1677ff', color: 'white' }} htmlType="submit" icon={<SendOutlined />}>
           {`${language.submit} ${language.decor}`}
         </Button>
       </Affix>

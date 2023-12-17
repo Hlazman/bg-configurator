@@ -10,12 +10,13 @@ import PrimerStep from './PrimerStep';
 import { useLanguage } from '../../Context/LanguageContext';
 import languageMap from '../../Languages/language';
 
-const GroupDecorStep = ({ setCurrentStepSend }) => {
+const GroupDecorStep = ({ setCurrentStepSend, currentStepSend }) => {
   const [activeTab, setActiveTab] = useState('veneer');
   const jwtToken = localStorage.getItem('token');
   const { selectedLanguage } = useLanguage();
   const language = languageMap[selectedLanguage];
   const [messageApi, contextHolder] = message.useMessage();
+  const [btnColor, setBtnColor] = useState('#ff0505');
 
   const handleTabChange = tabKey => {
     setActiveTab(tabKey);
@@ -228,16 +229,17 @@ const GroupDecorStep = ({ setCurrentStepSend }) => {
         throw new Error()
       } else {
         messageApi.success(language.successQuery);
+
+        if (setCurrentStepSend) {
+          setCurrentStepSend(prevState => {
+            return {
+              ...prevState,
+              decorSend: true
+            };
+          });
+        }
       }
-      
-      if (setCurrentStepSend) {
-        setCurrentStepSend(prevState => {
-          return {
-            ...prevState,
-            decorSend: true
-          };
-        });
-      }
+
     } catch (error) {
       console.error('Error sending data:', error);
       messageApi.error(`${language.errorQuery}. ${language.wrongDecor}`);
@@ -262,6 +264,7 @@ const GroupDecorStep = ({ setCurrentStepSend }) => {
                 fetchOrderData={fetchOrderData}
                 checkDecor={checkDecor}
                 sendDecorForm={sendDecorForm}
+                currentStepSend={currentStepSend}
               />,
           },
           {
@@ -273,6 +276,7 @@ const GroupDecorStep = ({ setCurrentStepSend }) => {
               fetchOrderData={fetchOrderData}
               checkDecor={checkDecor}
               sendDecorForm={sendDecorForm}
+              currentStepSend={currentStepSend}
               />,
           },
           {
@@ -283,7 +287,8 @@ const GroupDecorStep = ({ setCurrentStepSend }) => {
               fetchDecorData={fetchDecorData}
               fetchOrderData={fetchOrderData}
               checkDecor={checkDecor}
-              sendDecorForm={sendDecorForm} 
+              sendDecorForm={sendDecorForm}
+              currentStepSend={currentStepSend}
             />,
           },
           {
@@ -295,6 +300,7 @@ const GroupDecorStep = ({ setCurrentStepSend }) => {
                 fetchOrderData={fetchOrderData}
                 checkDecor={checkDecor}
                 sendDecorForm={sendDecorForm}
+                currentStepSend={currentStepSend}
             />,
           },
           {
@@ -305,7 +311,8 @@ const GroupDecorStep = ({ setCurrentStepSend }) => {
               fetchDecorData={fetchDecorData}
               fetchOrderData={fetchOrderData}
               checkDecor={checkDecor}
-              sendDecorForm={sendDecorForm} 
+              sendDecorForm={sendDecorForm}
+              currentStepSend={currentStepSend}
               />,
           },
           {
@@ -316,7 +323,8 @@ const GroupDecorStep = ({ setCurrentStepSend }) => {
               fetchDecorData={fetchDecorData}
               fetchOrderData={fetchOrderData}
               checkDecor={checkDecor}
-              sendDecorForm={sendDecorForm} 
+              sendDecorForm={sendDecorForm}
+              currentStepSend={currentStepSend}
               />,
           },
         ]}

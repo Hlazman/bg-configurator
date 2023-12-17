@@ -6,7 +6,7 @@ import { useEffect, useState } from 'react';
 import { useLanguage } from '../../Context/LanguageContext';
 import languageMap from '../../Languages/language';
 
-const OptionsStep = ({ setCurrentStepSend }) => {
+const OptionsStep = ({ setCurrentStepSend, currentStepSend }) => {
   const { orderId } = useOrder();
   const jwtToken = localStorage.getItem('token');
   const orderIdToUse = orderId;
@@ -17,6 +17,7 @@ const OptionsStep = ({ setCurrentStepSend }) => {
 
   const [optionsData, setOptionsData] = useState(null);
   const [optionsSuborderData, setOptionsSuborderData] = useState(null);
+  const [btnColor, setBtnColor] = useState('#ff0505');
 
   const fetchOptionsData = async () => {
     try {
@@ -166,6 +167,7 @@ const OptionsStep = ({ setCurrentStepSend }) => {
             optionsSend: true
           };
         });
+        setBtnColor('#4BB543');
       }
     } catch (error) {
       messageApi.error(language.errorQuery);
@@ -286,8 +288,12 @@ const OptionsStep = ({ setCurrentStepSend }) => {
   
 
   useEffect(()=> {
-    fetchOptionsData()
-    fetchOrderData()
+    fetchOptionsData();
+    fetchOrderData();
+
+    if (currentStepSend && currentStepSend.optionsSend) {
+      setBtnColor('#4BB543');
+    }
   },[]);
 
   return (
@@ -296,7 +302,7 @@ const OptionsStep = ({ setCurrentStepSend }) => {
       {contextHolder}
 
       <Affix style={{ position: 'absolute', top: '20px', right: '20px'}} offsetTop={20}>
-        <Button style={{backgroundColor: '#1677ff', color: 'white' }} htmlType="submit" icon={<SendOutlined />}>
+        <Button style={{backgroundColor: currentStepSend ? btnColor : '#1677ff', color: 'white' }} htmlType="submit" icon={<SendOutlined />}>
           {`${language.submit} ${language.options}`}
         </Button>
       </Affix>
