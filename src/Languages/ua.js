@@ -268,7 +268,7 @@ saveElementsWarning: (
   platbandWarning: (
     <ul>
       <li>Максимальна <strong>ширина</strong> не повинна бути більше <strong>200 мм</strong>. y протилежному випадку вам потрібно вибрати <strong>Стінові панелі</strong>.</li>
-      <li>Якщо вам потрібно вибрати <strong>лист</strong> тільки для одного боку, виберіть <strong>Кількість 0.5</strong>.</li>
+      <li>Якщо вам потрібно вибрати <strong>Лиштву</strong> тільки для одного боку, виберіть <strong>Кількість 0.5</strong>.</li>
     </ul>
   ),
 
