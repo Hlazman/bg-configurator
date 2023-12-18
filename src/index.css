@@ -55,3 +55,22 @@ th.labelNone {
   background-color: #f06d20;
 }
 
+
+@keyframes blink {
+  0% {
+    /* opacity: 1; */
+    transform: scale(1);
+  }
+  50% {
+    /* opacity: 0.5; */
+    transform: scale(1.1);
+  }
+  100% {
+    /* opacity: 1; */
+    transform: scale(1);
+  }
+}
+
+.blinking {
+  animation: blink 2s linear infinite;
+}

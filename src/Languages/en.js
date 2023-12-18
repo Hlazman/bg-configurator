@@ -253,6 +253,40 @@ const en = {
   replaceGlass: "Replace glass",
   anotherSideColor: "Another side color",
 
+  // Elements Warnings
+  saveElementsWarning: (
+    <div>
+      <p>
+        If you want to choose the same decor that was chosen for the canvas, press the <strong>button: Decor like in door</strong>. 
+        And after that click the <strong>button: Submit Element</strong>.
+      </p>
+      <p>
+        If you need to choose individual decor, click the <strong>button: Individual decor</strong>.
+        After selecting this option, you will be able to choose a decor and after that you need to click the <strong>button: Submit Decor</strong>. 
+        And then press the <strong>button: Submit Element</strong>.
+      </p>
+  </div>
+  ),
+
+  platbandWarning: (
+    <ul>
+      <li>The maximum <strong>width</strong> should not be more than <strong>200mm</strong>. Otherwise you need to select <strong>Wall panels</strong>.</li>
+      <li>If you need to select a <strong>platband</strong> for only one side, select <strong>Amount 0.5</strong></li>
+  </ul>
+  ),
+
+  coverWarning: (
+    <ul>
+      <li>If you do not need decor painting for the <strong>cover</strong> , do not click on the buttons: <strong>Individual decor</strong> and <strong>Decor like in door</strong>.</li>
+  </ul>
+  ),
+
+  mouldingWarning: (
+    <ul>
+      <li>If you do not need decor painting for the <strong>moulding</strong>, do not click on the buttons: <strong>Individual decor</strong> and <strong>Decor like in door</strong>.</li>
+  </ul>
+  ),
+
 // Instructions
   InstructionCreateOrderHeader: (
     <div style={{fontSize: '15px'}}>

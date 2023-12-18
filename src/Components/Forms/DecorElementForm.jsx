@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Form, Button, Select, InputNumber, Spin, Radio, Space, message, Affix, Divider } from 'antd';
-import { SendOutlined } from '@ant-design/icons';
+import { Form, Button, Select, InputNumber, Spin, Radio, Space, message, Affix, Divider, Alert, Modal } from 'antd';
+import { SendOutlined, IssuesCloseOutlined } from '@ant-design/icons';
 import axios from 'axios';
 import { useOrder } from '../../Context/OrderContext';
 import GroupDecorElementStep from '../CreateOrderSteps/GroupDecorElementStep';
@@ -38,8 +38,15 @@ const DecorElementForm = ({setCurrentStepSend, elementID, currentStepSend}) => {
   const [isLengthDisabled, setIsLengthDisabled] = useState(false);
   const [isDecorRequired, setIsDecorRequired] = useState(false); 
   
-
-
+  const [step, setStep] = useState(1);
+  const handleAmountChange = (value) => {
+    if (value <= 0.5) {
+      setStep(0.5); 
+    } else {
+      setStep(1);
+    }
+  };
+  
   const handleShowDecorClick = () => {
     setShowDecor(true);
   }
@@ -115,7 +122,7 @@ const DecorElementForm = ({setCurrentStepSend, elementID, currentStepSend}) => {
         setIsLengthRequired(false)
       }
       if (noDecor.includes(elementSuborderData?.attributes?.type)) {
-        isDecorRequired(false)
+        setIsDecorRequired(false)
       }
 
     })
@@ -318,6 +325,34 @@ const DecorElementForm = ({setCurrentStepSend, elementID, currentStepSend}) => {
 
   const uniqueTypesSet = new Set();
 
+  const infoModal = () => {
+    Modal.info({
+      title: language.information,
+      content: (
+        language.saveElementsWarning
+      ),
+      onOk() {},
+    });
+  };
+
+  const [alert, setAlert] = useState(false);  
+  const [alertMessage, setAlertMessae] = useState('');
+  
+  useEffect(() => {
+    if (currentElementField === 'platband') {
+      setAlert(true);
+      setAlertMessae(language.platbandWarning);
+    } else if (currentElementField === 'cover') {
+      setAlert(true);
+      setAlertMessae(language.coverWarning);
+    } else if (currentElementField === 'moulding') {
+      setAlert(true);
+      setAlertMessae(language.mouldingWarning);
+    } else {
+      setAlert(false);
+    }
+  },[alert, currentElementField, language]);
+
   return (
     <Spin spinning={isloading}>
       <Form form={form} onFinish={handleFormSubmit} >
@@ -364,13 +399,14 @@ const DecorElementForm = ({setCurrentStepSend, elementID, currentStepSend}) => {
           style={{margin: '10px 0', flex: '1', 'minWidth': "300px", textAlign: 'left'}}
           name="radioOption"
           label={language.elementDecor}
-          // rules={[{ required: true, message: language.requiredField }]}
           rules={[{ required: !noDecor.includes(currentElementField) || isDecorRequired, message: language.requiredField }]}
         >
           <Radio.Group type="dashed" buttonStyle="solid" onChange={handleRadioChange}>
             <Radio.Button value="choose">{language.elementGetDecor}</Radio.Button>
             <Radio.Button value="get">{language.elementGetDoor}</Radio.Button>
           </Radio.Group>
+
+          <Button className="blinking" style={{marginLeft: '10px'}} icon={<IssuesCloseOutlined />} danger type="primary" onClick={infoModal} />
         </Form.Item>
       </div>
 
@@ -437,10 +473,22 @@ const DecorElementForm = ({setCurrentStepSend, elementID, currentStepSend}) => {
               style={{margin: '0 5px'}} 
               addonBefore={language.amount} 
               addonAfter={language.count}
+              min={0.5}
+              step={step}
+              onChange={handleAmountChange}
             />
           </Form.Item>
 
         </Space.Compact>
+
+        {alert && (
+          <Alert
+            message={alertMessage}
+            type="warning"
+            showIcon
+            style={{textAlign: 'left'}}
+          />
+        )}
 
       </Form>
 
@@ -453,6 +501,7 @@ const DecorElementForm = ({setCurrentStepSend, elementID, currentStepSend}) => {
             </>
           }
         </div>
+
     </Spin>
   );
 };

@@ -250,7 +250,41 @@ const cs = {
   replaceGlass: "Výměna skla",
   anotherSideColor: "Barva druhé strany",
 
-  // Instructions
+// Elements Warnings
+  saveElementsWarning: (
+    <div>
+      <p>
+        Pokud chcete vybrat stejný dekor jako ten, který byl vybrán pro plátno, stiskněte <strong>tlačítko: Dekor jako u dveří</strong>. 
+        A poté klikněte na <strong>tlačítko: Odeslat prvek</strong>.
+      </p>
+      <p>
+        Pokud potřebujete vybrat individuální dekor, klikněte na <strong>tlačítko: Individuální dekor</strong>.
+        Po vybrání této možnosti budete moci vybrat dekor a poté kliknout na <strong>tlačítko: Odeslat dekor</strong>. 
+        A poté stiskněte <strong>tlačítko: Odeslat prvek</strong>.
+      </p>
+    </div>
+  ),
+
+  platbandWarning: (
+    <ul>
+      <li>Maximální <strong>šířka</strong> by neměla být větší než <strong>200 mm</strong>. V opačném případě je nutné zvolit <strong>Stěnové panely</strong>.</li>
+      <li>Pokud potřebujete vybrat <strong>lištu</strong> pouze pro jednu stranu, vyberte <strong>Množství 0.5</strong>.</li>
+    </ul>
+  ),
+
+  coverWarning: (
+    <ul>
+      <li>Pokud nepotřebujete malování dekoru pro <strong>kryt</strong>, neklikejte na tlačítka: <strong>Individuální dekor</strong> a <strong>Dekor jako u dveří</strong>.</li>
+    </ul>
+  ),
+
+  mouldingWarning: (
+    <ul>
+      <li>Pokud nepotřebujete malování dekoru pro <strong>lištu</strong>, neklikejte na tlačítka: <strong>Individuální dekor</strong> a <strong>Dekor jako u dveří</strong>.</li>
+    </ul>
+  ),
+
+// Instructions
     InstructionCreateOrderHeader: (
       <div style={{fontSize: '15px'}}>
         <p> 

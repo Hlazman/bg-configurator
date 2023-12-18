@@ -113,7 +113,6 @@ const KnobesStep = ({ setCurrentStepSend, currentStepSend }) => {
     const [form] = Form.useForm();
 
     const handleSbmitForm = async () => {
-      console.log('knobeVariant from Form', knobeVariant)
       const variables = {
         "updateFrameFittingId": knobeSuborderId,
         "data": {

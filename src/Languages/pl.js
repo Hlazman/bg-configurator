@@ -250,6 +250,40 @@ const pl = {
   replaceGlass: "Wymiana szkła",
   anotherSideColor: "Kolor z drugiej strony",
 
+// Elements Warnings
+  saveElementsWarning: (
+    <div>
+      <p>
+        Jeśli chcesz wybrać ten sam dekor, który został wybrany do płótna, naciśnij <strong>przycisk: Dekor jak w drzwiach</strong>. 
+        Następnie kliknij <strong>przycisk: Prześlij element</strong>.
+      </p>
+      <p>
+        Jeśli potrzebujesz wybrać indywidualny dekor, kliknij <strong>przycisk: Indywidualny dekor</strong>.
+        Po wybraniu tej opcji będziesz mógł wybrać dekor, a następnie kliknąć <strong>przycisk: Prześlij dekor</strong>. 
+        A następnie naciśnij <strong>przycisk: Prześlij element</strong>.
+      </p>
+    </div>
+  ),
+
+  platbandWarning: (
+    <ul>
+      <li>Maksymalna <strong>szerokość</strong> nie powinna przekraczać <strong>200 mm</strong>. W przeciwnym razie należy wybrać <strong>Panele ścienne</strong>.</li>
+      <li>Jeśli potrzebujesz wybrać <strong>listwę</strong> tylko dla jednej strony, wybierz <strong>Ilość 0.5</strong>.</li>
+    </ul>
+  ),
+
+  coverWarning: (
+    <ul>
+      <li>Jeśli nie potrzebujesz malowania dekoracyjnego dla <strong>okładki</strong>, nie klikaj w przyciski: <strong>Indywidualny dekor</strong> i <strong>Dekor jak w drzwiach</strong>.</li>
+    </ul>
+  ),
+
+  mouldingWarning: (
+    <ul>
+      <li>Jeśli nie potrzebujesz malowania dekoracyjnego dla <strong>listwy</strong>, nie klikaj w przyciski: <strong>Indywidualny dekor</strong> i <strong>Dekor jak w drzwiach</strong>.</li>
+    </ul>
+  ),
+
 // Instructions
   InstructionCreateOrderHeader: (
     <div style={{fontSize: '15px'}}>

@@ -250,6 +250,40 @@ const es = {
   replaceGlass: "Reemplazar cristal",
   anotherSideColor: "Color del otro lado",
 
+// Elements Warnings
+  saveElementsWarning: (
+    <div>
+      <p>
+        Si desea elegir el mismo decorado que se eligió para el lienzo, presione el <strong>botón: Decoración como en la puerta</strong>. 
+        Y después haga clic en el <strong>botón: Enviar elemento</strong>.
+      </p>
+      <p>
+        Si necesita elegir una decoración individual, haga clic en el <strong>botón: Decoración individual</strong>.
+        Después de seleccionar esta opción, podrá elegir una decoración y después de eso, haga clic en el <strong>botón: Enviar decoración</strong>. 
+        Y luego presione el <strong>botón: Enviar elemento</strong>.
+      </p>
+    </div>
+  ),
+
+  platbandWarning: (
+    <ul>
+      <li>El <strong>ancho</strong> máximo no debe ser superior a <strong>200 mm</strong>. De lo contrario, debe seleccionar <strong>Paneles de pared</strong>.</li>
+      <li>Si necesita seleccionar un <strong>plinto</strong> solo para un lado, seleccione <strong>Cantidad 0.5</strong>.</li>
+    </ul>
+  ),
+
+  coverWarning: (
+    <ul>
+      <li>Si no necesita pintura decorativa para la <strong>tapadera</strong>, no haga clic en los botones: <strong>Decoración individual</strong> y <strong>Decoración como en la puerta</strong>.</li>
+    </ul>
+  ),
+
+  mouldingWarning: (
+    <ul>
+      <li>Si no necesita pintura decorativa para el <strong>revestimiento</strong>, no haga clic en los botones: <strong>Decoración individual</strong> y <strong>Decoración como en la puerta</strong>.</li>
+    </ul>
+  ),
+
 // Instructions
   InstructionCreateOrderHeader: (
     <div style={{fontSize: '15px'}}>

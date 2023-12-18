@@ -250,6 +250,40 @@ const de = {
   replaceGlass: "Glas austauschen",
   anotherSideColor: "Farbe der anderen Seite",
 
+// Elements Warnings
+  saveElementsWarning: (
+    <div>
+      <p>
+        Wenn Sie denselben Dekor wie für die Leinwand wählen möchten, drücken Sie die <strong>Schaltfläche: Dekor wie in der Tür</strong>. 
+        Klicken Sie dann auf die <strong>Schaltfläche: Element übermitteln</strong>.
+      </p>
+      <p>
+        Wenn Sie einen individuellen Dekor auswählen müssen, klicken Sie auf die <strong>Schaltfläche: Individueller Dekor</strong>.
+        Nach Auswahl dieser Option können Sie einen Dekor auswählen und anschließend auf die <strong>Schaltfläche: Dekor übermitteln</strong> klicken. 
+        Und dann drücken Sie die <strong>Schaltfläche: Element übermitteln</strong>.
+      </p>
+    </div>
+  ),
+
+  platbandWarning: (
+    <ul>
+      <li>Die maximale <strong>Breite</strong> sollte nicht mehr als <strong>200 mm</strong> betragen. Andernfalls müssen Sie <strong>Wandpaneele</strong> auswählen.</li>
+      <li>Wenn Sie nur eine <strong>Liste</strong> für eine Seite auswählen müssen, wählen Sie <strong>Menge 0.5</strong>.</li>
+    </ul>
+  ),
+
+  coverWarning: (
+    <ul>
+      <li>Wenn Sie keine Dekormalerei für die <strong>Abdeckung</strong> benötigen, klicken Sie nicht auf die Schaltflächen: <strong>Individueller Dekor</strong> und <strong>Dekor wie in der Tür</strong>.</li>
+    </ul>
+  ),
+
+  mouldingWarning: (
+    <ul>
+      <li>Wenn Sie keine Dekormalerei für die <strong>Leiste</strong> benötigen, klicken Sie nicht auf die Schaltflächen: <strong>Individueller Dekor</strong> und <strong>Dekor wie in der Tür</strong>.</li>
+    </ul>
+  ),
+
 // Instructions
   InstructionCreateOrderHeader: (
     <div style={{fontSize: '15px'}}>
