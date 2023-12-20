@@ -218,16 +218,33 @@ export const OrderDescriptionFactory = ({
             </Descriptions.Item>
 
             <Descriptions.Item className='labelBG' label={language.knobe} labelStyle={{fontWeight: '600', color:'#000'}}>
-              {knobeData?.knobe?.data?.attributes?.title} / {languageMap[selectedLanguage][knobeData.knobe_variant]}
+              {/* {knobeData?.knobe?.data?.attributes?.title} / {languageMap[selectedLanguage][knobeData.knobe_variant]} */}
+              {
+                knobeData?.knobe?.data?.attributes?.title
+                ? `${knobeData?.knobe?.data?.attributes?.title} / ${languageMap[selectedLanguage][knobeData.knobe_variant]}`
+                : '-'
+                }
             </Descriptions.Item>
 
             <Descriptions.Item className='labelBG' label={language.brand} labelStyle={{fontWeight: '600', color:'#000'}}>
-              {knobeData?.knobe?.data?.attributes?.brand}
+              {/* {knobeData?.knobe?.data?.attributes?.brand} */}
+              {
+                knobeData?.knobe?.data?.attributes?.brand
+                ? knobeData?.knobe?.data?.attributes?.brand
+                : '-'
+              }
             </Descriptions.Item>
 
             
             <Descriptions.Item className='labelBG' label={`${language.price}`} labelStyle={{fontWeight: '600', color:'#000'}}>
-              {convertedKnobePrice ? `${convertedKnobePrice} ${currency}` : `${knobeData.basicPrice} ${orderData?.currency}`}
+              {/* {convertedKnobePrice ? `${convertedKnobePrice} ${currency}` : `${knobeData.basicPrice} ${orderData?.currency}`} */}
+              {
+                convertedKnobePrice !== null
+                  ? `${convertedKnobePrice} ${currency}` 
+                  : knobeData?.price !== null && knobeData?.price !== 0
+                    ? `${knobeData?.price} ${orderData?.currency}`
+                    : '-'
+                }
             </Descriptions.Item>
           </>
           )}
@@ -366,6 +383,7 @@ export const OrderDescriptionFactory = ({
           size='default'
           >
             <Descriptions.Item>
+              {/* {convertedPriceTotal ? `${convertedPriceTotal} ${currency}` : `${orderData?.basicTotalCost} ${orderData?.currency}`} */}
               {convertedPriceTotal ? `${convertedPriceTotal} ${currency}` : `${orderData?.basicTotalCost} ${orderData?.currency}`}
             </Descriptions.Item>
 

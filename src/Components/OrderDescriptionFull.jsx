@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import {Descriptions, Select } from 'antd';
 import { PictureOutlined } from '@ant-design/icons';
-import dayjs from 'dayjs';
+// import dayjs from 'dayjs';
 import { useLanguage } from '../Context/LanguageContext';
 import languageMap from '../Languages/language';
 
@@ -20,8 +20,8 @@ export const OrderDescriptionFull = ({
   const [convertedHingePrice, setConvertedHingePrice] = useState(null);
   const [convertedOptionPrice, setConvertedOptionPrice] = useState([]);
   const [convertedElementPrice, setConvertedElementPrice] = useState([]);
-  const [convertedPriceNOTax, setConvertedPriceNOTax] = useState('');
-  const [convertedPriceWithTax, setConvertedPriceWithTax] = useState('');
+  // const [convertedPriceNOTax, setConvertedPriceNOTax] = useState('');
+  // const [convertedPriceWithTax, setConvertedPriceWithTax] = useState('');
   const [convertedPriceTotal, setConvertedPriceTotal] = useState('');
   const [exchangeRates, setExchangeRates] = useState(null);
 
@@ -54,7 +54,7 @@ export const OrderDescriptionFull = ({
   
     const convertedDoorPrice = convertCurrency(doorData.price, value);
     const convertedFramePrice = convertCurrency(frameData.price, value);
-    const convertedKnobePrice = convertCurrency(knobeData.price, value);
+    const convertedKnobePrice = convertCurrency(knobeData?.price, value);
     const convertedHingePrice = convertCurrency(hingeData.price, value);
     const convertedLockPrice = convertCurrency(lockData.price, value);
     
@@ -68,8 +68,8 @@ export const OrderDescriptionFull = ({
       return { ...option, convertedPrice: updatedPrice };
     });
 
-    const convertedPriceNOTax = convertCurrency(orderData?.totalCost - Math.ceil(orderData?.totalCost / 100 * orderData?.tax), value);
-    const convertedPriceWithTax = convertCurrency(Math.ceil(orderData?.totalCost / 100 * orderData?.tax), value);
+    // const convertedPriceNOTax = convertCurrency(orderData?.totalCost - Math.ceil(orderData?.totalCost / 100 * orderData?.tax), value);
+    // const convertedPriceWithTax = convertCurrency(Math.ceil(orderData?.totalCost / 100 * orderData?.tax), value);
     const convertedPriceTotal = convertCurrency(orderData.totalCost, value);
   
     setConvertedDoorPrice(convertedDoorPrice);
@@ -79,8 +79,8 @@ export const OrderDescriptionFull = ({
     setConvertedLockPrice(convertedLockPrice);
     setConvertedElementPrice(convertedElementPrice)
     setConvertedOptionPrice(convertedOptionPrice)
-    setConvertedPriceNOTax(convertedPriceNOTax)
-    setConvertedPriceWithTax(convertedPriceWithTax);
+    // setConvertedPriceNOTax(convertedPriceNOTax)
+    // setConvertedPriceWithTax(convertedPriceWithTax);
     setConvertedPriceTotal(convertedPriceTotal);
   };
   
@@ -238,7 +238,8 @@ export const OrderDescriptionFull = ({
           bordered
           size='default'
           >
-          {frameData && lockData && hingeData && knobeData && (
+          {/* {frameData && lockData && hingeData && knobeData && ( */}
+          {frameData && lockData && hingeData && (
           <>
             <Descriptions.Item className='labelBG' span={2} label={`${language.frame} ${language.type}`} labelStyle={{fontWeight: '600', color:'#000'}}>
               {languageMap[selectedLanguage][frameData.frame?.data?.attributes?.title]}
@@ -257,7 +258,12 @@ export const OrderDescriptionFull = ({
             </Descriptions.Item>
 
             <Descriptions.Item className='labelBG' label={language.title} labelStyle={{fontWeight: '600', color:'#000'}}>
-              {knobeData?.knobe?.data?.attributes?.title} / {languageMap[selectedLanguage][knobeData.knobe_variant]}
+              {/* {knobeData?.knobe?.data?.attributes?.title} / {languageMap[selectedLanguage][knobeData.knobe_variant]} */}
+              {
+                knobeData?.knobe?.data?.attributes?.title
+                ? `${knobeData?.knobe?.data?.attributes?.title} / ${languageMap[selectedLanguage][knobeData.knobe_variant]}`
+                : '-'
+                }
             </Descriptions.Item>
 
             <Descriptions.Item className='labelBG' label={`${language.image} (${language.lock})`} labelStyle={{fontWeight: '600', color:'#000'}}>
@@ -295,7 +301,8 @@ export const OrderDescriptionFull = ({
                     height={isCreatingPdf ? '80px' : '100px'}
                     style={{ display: 'block', margin: '0 auto' }}
                   />
-                : <PictureOutlined style={{fontSize: '150px'}}/>
+                // : <PictureOutlined style={{fontSize: '150px'}}/>
+                :  '-'
               }
             </Descriptions.Item>
 
@@ -308,7 +315,12 @@ export const OrderDescriptionFull = ({
             </Descriptions.Item>
 
             <Descriptions.Item className='labelBG' label={language.brand} labelStyle={{fontWeight: '600', color:'#000'}}>
-              {knobeData?.knobe?.data?.attributes?.brand}
+              {/* {knobeData?.knobe?.data?.attributes?.brand} */}
+              {
+                knobeData?.knobe?.data?.attributes?.brand
+                ? knobeData?.knobe?.data?.attributes?.brand
+                : '-'
+              }
             </Descriptions.Item>
 
             <Descriptions.Item className='labelBG' label={`${language.price} (${language.lock})`} labelStyle={{fontWeight: '600', color:'#000'}}>
@@ -320,7 +332,14 @@ export const OrderDescriptionFull = ({
             </Descriptions.Item>
 
             <Descriptions.Item className='labelBG' label={`${language.price} (${language.knobe})`} labelStyle={{fontWeight: '600', color:'#000'}}>
-              {convertedKnobePrice ? `${convertedKnobePrice} ${currency}` : `${knobeData.price} ${orderData?.currency}`}
+              {/* {convertedKnobePrice ? `${convertedKnobePrice} ${currency}` : `${knobeData?.price} ${orderData?.currency}`} */}
+              {
+                convertedKnobePrice !== null
+                  ? `${convertedKnobePrice} ${currency}` 
+                  : knobeData?.price !== null
+                    ? `${knobeData?.price} ${orderData?.currency}`
+                    : '-'
+                }
             </Descriptions.Item>
           </>
           )}
