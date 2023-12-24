@@ -246,6 +246,7 @@ const ua = {
   extender: "Добірна планка",
   kapitel: "Капітель",
   skirting: "Плінтус",
+  skirtingAluminium: "Плінтус (Алюміній)",
   moulding: "Молдинг",
   replaceGlass: "Заміна скла",
   anotherSideColor: "Колір з іншого боку",

@@ -246,6 +246,7 @@ const es = {
   extender: "Barra de selección",
   kapitel: "Capitel",
   skirting: "Zócalo",
+  skirtingAluminium: "Zócalo (Aluminio)",
   moulding: "Moldura",
   replaceGlass: "Reemplazar cristal",
   anotherSideColor: "Color del otro lado",

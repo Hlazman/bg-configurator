@@ -249,6 +249,7 @@ const en = {
   extender: "Extender", 
   kapitel: "Kapitel", 
   skirting: "Skirting", 
+  skirtingAluminium: "Skirting (Aluminium)", 
   moulding: "Moulding",
   replaceGlass: "Replace glass",
   anotherSideColor: "Another side color",

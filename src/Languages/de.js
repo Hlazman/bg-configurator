@@ -246,6 +246,7 @@ const de = {
   extender: "Auswahlleiste",
   kapitel: "Kapitel",
   skirting: "Sockelleiste",
+  skirtingAluminium: "Sockelleiste (Aluminium)",
   moulding: "Leiste",
   replaceGlass: "Glas austauschen",
   anotherSideColor: "Farbe der anderen Seite",

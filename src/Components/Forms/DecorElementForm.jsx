@@ -22,8 +22,8 @@ const DecorElementForm = ({setCurrentStepSend, elementID, currentStepSend}) => {
   const [showDecor, setShowDecor] = useState(false);
   const [btnColor, setBtnColor] = useState('#ff0505');
 
-  const noWidth = ['anotherSideColor', 'skirting', 'moulding'];
-  const noHeigt = ['anotherSideColor', 'skirting', 'moulding', 'platband', 'threadedPlatband', 'kapitel', 'extender',];
+  const noWidth = ['anotherSideColor', 'skirting', 'skirtingAluminium', 'moulding'];
+  const noHeigt = ['anotherSideColor', 'skirting', 'skirtingAluminium', 'moulding', 'platband', 'threadedPlatband', 'kapitel', 'extender'];
   const noThickness = ['anotherSideColor', 'platband', 'threadedPlatband', 'kapitel', 'extender', 'decorInsert', 'wallplate', 'cover', 'replaceGlass'];
   const noLength = ['anotherSideColor', 'platband', 'threadedPlatband', 'kapitel', 'extender', 'decorInsert', 'wallplate', 'cover', 'replaceGlass'];
   const noDecor = ['cover', 'moulding'];

@@ -246,6 +246,7 @@ const pl = {
   extender: "Listwa wyboru",
   kapitel: "Kapitel",
   skirting: "Listwa przypodłogowa",
+  skirtingAluminium: "Listwa przypodłogowa (Aluminium)",
   moulding: "Listwa",
   replaceGlass: "Wymiana szkła",
   anotherSideColor: "Kolor z drugiej strony",
