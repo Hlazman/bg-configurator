@@ -36,7 +36,7 @@ const DecorElementForm = ({setCurrentStepSend, elementID, currentStepSend}) => {
   const [isThicknessDisabled, setIsThicknessDisabled] = useState(false); 
   const [isLengthRequired, setIsLengthRequired] = useState(false); 
   const [isLengthDisabled, setIsLengthDisabled] = useState(false);
-  const [isDecorRequired, setIsDecorRequired] = useState(false); 
+  const [isDecorRequired, setIsDecorRequired] = useState(true); 
   
   const [step, setStep] = useState(1);
   const handleAmountChange = (value) => {
@@ -122,7 +122,7 @@ const DecorElementForm = ({setCurrentStepSend, elementID, currentStepSend}) => {
         setIsLengthRequired(false)
       }
       if (noDecor.includes(elementSuborderData?.attributes?.type)) {
-        setIsDecorRequired(false)
+        setIsDecorRequired(false);
       }
 
     })
@@ -318,7 +318,8 @@ const DecorElementForm = ({setCurrentStepSend, elementID, currentStepSend}) => {
     if (value === 'choose') {
       handleShowDecorClick();
     } else if (value === 'get') {
-      setShowDecor(false)
+      setIsDecorRequired(false);
+      setShowDecor(false);
       getDecorFromSuborder();
     }
   };
@@ -399,14 +400,15 @@ const DecorElementForm = ({setCurrentStepSend, elementID, currentStepSend}) => {
           style={{margin: '10px 0', flex: '1', 'minWidth': "300px", textAlign: 'left'}}
           name="radioOption"
           label={language.elementDecor}
-          rules={[{ required: !noDecor.includes(currentElementField) || isDecorRequired, message: language.requiredField }]}
+          // rules={[{ required: !noDecor.includes(currentElementField) || isDecorRequired, message: language.requiredField }]}
+          rules={[{ required: !noDecor.includes(currentElementField) && isDecorRequired, message: language.requiredField }]}
         >
           <Radio.Group type="dashed" buttonStyle="solid" onChange={handleRadioChange}>
             <Radio.Button value="choose">{language.elementGetDecor}</Radio.Button>
             <Radio.Button value="get">{language.elementGetDoor}</Radio.Button>
           </Radio.Group>
 
-          <Button className="blinking" style={{marginLeft: '10px'}} icon={<IssuesCloseOutlined />} danger type="primary" onClick={infoModal} />
+          <Button className="blinking" style={{marginLeft: '10px'}} icon={<IssuesCloseOutlined />} type="primary" onClick={infoModal} />
         </Form.Item>
       </div>
 
