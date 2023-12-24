@@ -26,7 +26,7 @@ const DecorElementForm = ({setCurrentStepSend, elementID, currentStepSend}) => {
   const noHeigt = ['anotherSideColor', 'skirting', 'skirtingAluminium', 'moulding', 'platband', 'threadedPlatband', 'kapitel', 'extender'];
   const noThickness = ['anotherSideColor', 'platband', 'threadedPlatband', 'kapitel', 'extender', 'decorInsert', 'wallplate', 'cover', 'replaceGlass'];
   const noLength = ['anotherSideColor', 'platband', 'threadedPlatband', 'kapitel', 'extender', 'decorInsert', 'wallplate', 'cover', 'replaceGlass'];
-  const noDecor = ['cover', 'moulding'];
+  const noDecor = ['cover', 'moulding', 'skirtingAluminium'];
 
   const [isWidthDisabled, setIsWidthDisabled] = useState(false); 
   const [isWidthRequired, setIsWidthRequired] = useState(false); 
@@ -315,10 +315,11 @@ const DecorElementForm = ({setCurrentStepSend, elementID, currentStepSend}) => {
 
   const handleRadioChange = (e) => {
     const value = e.target.value;
+    setIsDecorRequired(false);
+    
     if (value === 'choose') {
       handleShowDecorClick();
     } else if (value === 'get') {
-      setIsDecorRequired(false);
       setShowDecor(false);
       getDecorFromSuborder();
     }
