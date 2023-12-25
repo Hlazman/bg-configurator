@@ -5,6 +5,7 @@ import axios from 'axios';
 import { useOrder } from '../../Context/OrderContext';
 import { useLanguage } from '../../Context/LanguageContext';
 import languageMap from '../../Languages/language';
+import {queryLink} from '../../api/variables'
 
 const LockStep = ({ setCurrentStepSend, currentStepSend }) => {
   const [lockData, setLockData] = useState([]);
@@ -23,7 +24,8 @@ const LockStep = ({ setCurrentStepSend, currentStepSend }) => {
     const fetchData = async () => {
       try {
         const response = await axios.post(
-          'https://api.boki.fortesting.com.ua/graphql',
+          // 'https://api.boki.fortesting.com.ua/graphql',
+          queryLink,
           {
             query: `
               query Locks($pagination: PaginationArg) {
@@ -119,7 +121,8 @@ const LockStep = ({ setCurrentStepSend, currentStepSend }) => {
     };
 
     axios.post(
-      'https://api.boki.fortesting.com.ua/graphql',
+      // 'https://api.boki.fortesting.com.ua/graphql',
+      queryLink,
       {
         query: `
           mutation UpdateFrameFitting($updateFrameFittingId: ID!, $data: FrameFittingInput!) {
@@ -164,7 +167,8 @@ const LockStep = ({ setCurrentStepSend, currentStepSend }) => {
       frameFittingId: lockSuborderId
     };
 
-    axios.post('https://api.boki.fortesting.com.ua/graphql', {
+    // axios.post('https://api.boki.fortesting.com.ua/graphql', {
+    axios.post(queryLink, {
       query: `
         query GetFrameFitting($frameFittingId: ID) {
           frameFitting(id: $frameFittingId) {

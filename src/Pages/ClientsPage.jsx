@@ -7,6 +7,7 @@ import { AuthContext } from '../Context/AuthContext';
 import { useLanguage } from '../Context/LanguageContext';
 import languageMap from '../Languages/language';
 import { useSelectedCompany } from '../Context/CompanyContext';
+import {queryLink} from '../api/variables'
 
 export const ClientsPage = () => {
   const [loading, setLoading] = useState(true);
@@ -27,7 +28,7 @@ export const ClientsPage = () => {
   const handleDeleteClient = async () => {
     try {
       const response = await axios.post(
-        'https://api.boki.fortesting.com.ua/graphql',
+        queryLink,
         {
           query: `
             mutation Mutation($deleteClientId: ID!) {
@@ -65,7 +66,7 @@ export const ClientsPage = () => {
     try {
       setLoading(true);
       const response = await axios.post(
-        'https://api.boki.fortesting.com.ua/graphql',
+        queryLink,
         {
           query: `
           query Query($filters: ClientFiltersInput, $pagination: PaginationArg) {

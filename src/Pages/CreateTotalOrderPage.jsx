@@ -7,6 +7,7 @@ import { useLanguage } from '../Context/LanguageContext';
 import languageMap from '../Languages/language';
 import { useSelectedCompany } from '../Context/CompanyContext';
 import { useNavigate, useParams } from 'react-router-dom';
+import {queryLink} from '../api/variables'
 
 const { Option } = Select;
 const { TextArea } = Input;
@@ -48,7 +49,7 @@ const CreateTotalOrderPage = () => {
   const handleCreateTotalOrder = async () => {
     try {
       const response = await axios.post(
-        'https://api.boki.fortesting.com.ua/graphql',
+        queryLink,
         {
           query: `
             mutation CreateTotalOrder($data: TotalOrderInput!) {
@@ -85,7 +86,7 @@ const CreateTotalOrderPage = () => {
   };
 
   const handleUpdateTotalOrder = async (data) => {
-    await axios.post('https://api.boki.fortesting.com.ua/graphql',
+    await axios.post(queryLink,
       {
         query: `
           mutation Mutation($updateTotalOrderId: ID!, $data: TotalOrderInput!) {
@@ -142,7 +143,7 @@ const CreateTotalOrderPage = () => {
   useEffect(() => {
     axios
       .post(
-        'https://api.boki.fortesting.com.ua/graphql',
+        queryLink,
         {
           query: `
             query Query($pagination: PaginationArg) {

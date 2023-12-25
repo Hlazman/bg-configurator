@@ -6,6 +6,7 @@ import { AuthContext } from '../Context/AuthContext';
 import { useLanguage } from '../Context/LanguageContext';
 import languageMap from '../Languages/language';
 import { useSelectedCompany } from '../Context/CompanyContext';
+import {queryLink} from '../api/variables'
 
 export const CreateClientPage = () => {
   const { user } = useContext(AuthContext);
@@ -39,7 +40,7 @@ export const CreateClientPage = () => {
     };
   
     axios
-      .post('https://api.boki.fortesting.com.ua/graphql', { query: 'mutation Mutation($data: ClientInput!) { createClient(data: $data) { data { id } } }', variables: { data } }, {
+      .post(queryLink, { query: 'mutation Mutation($data: ClientInput!) { createClient(data: $data) { data { id } } }', variables: { data } }, {
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${jwtToken}`,

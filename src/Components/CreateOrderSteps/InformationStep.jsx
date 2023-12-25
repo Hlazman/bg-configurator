@@ -5,6 +5,7 @@ import { SendOutlined } from '@ant-design/icons';
 import { useOrder } from '../../Context/OrderContext';
 import { useLanguage } from '../../Context/LanguageContext';
 import languageMap from '../../Languages/language';
+import {queryLink} from '../../api/variables'
 
 const { TextArea } = Input;
 
@@ -24,7 +25,8 @@ const InformationStep = ({ setCurrentStepSend, currentStepSend }) => {
 
     axios
       .post(
-        'https://api.boki.fortesting.com.ua/graphql',
+        // 'https://api.boki.fortesting.com.ua/graphql',
+        queryLink,
         {
           query: `
             mutation Mutation($updateOrderId: ID!, $data: OrderInput!) {
@@ -66,7 +68,8 @@ const InformationStep = ({ setCurrentStepSend, currentStepSend }) => {
   useEffect(() => {
     axios
       .post(
-        'https://api.boki.fortesting.com.ua/graphql',
+        // 'https://api.boki.fortesting.com.ua/graphql',
+        queryLink,
         {
           query: `
             query Order($orderId: ID) {

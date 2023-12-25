@@ -9,6 +9,7 @@ import { useNavigate } from 'react-router-dom';
 import { useLanguage } from '../Context/LanguageContext';
 import languageMap from '../Languages/language';
 import { deleteTotalOrderWithOrders } from '../api/deleteTotalOrderWithOrders'
+import {queryLink} from '../api/variables'
 
 export const TotalOrdersPage = () => {
   const { selectedLanguage } = useLanguage();
@@ -47,7 +48,7 @@ const handleOpenTotalOrder = (totalOrderID) => {
   const fetchData = async () => {
     try {
       setLoading(true);
-      const response = await axios.post('https://api.boki.fortesting.com.ua/graphql', {
+      const response = await axios.post(queryLink, {
         query: `
           query TotalOrders($pagination: PaginationArg, $filters: TotalOrderFiltersInput) {
             totalOrders(pagination: $pagination, filters: $filters) {
@@ -155,7 +156,7 @@ const handleOpenTotalOrder = (totalOrderID) => {
 
   const handleStatusClick = async (totalOrderId, newStatus) => {
     try {
-      const response = await axios.post('https://api.boki.fortesting.com.ua/graphql', {
+      const response = await axios.post(queryLink, {
         query: `
           mutation Mutation($updateTotalOrderId: ID!, $data: TotalOrderInput!) {
             updateTotalOrder(id: $updateTotalOrderId, data: $data) {

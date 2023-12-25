@@ -6,6 +6,7 @@ import { useEffect, useState, useContext } from 'react';
 import { useLanguage } from '../../Context/LanguageContext';
 import languageMap from '../../Languages/language';
 import { AuthContext } from '../../Context/AuthContext';
+import {queryLink} from '../../api/variables'
 
 const OptionsAdditionalStep = ({ setCurrentStepSend, currentStepSend }) => {
   const { user } = useContext(AuthContext);
@@ -47,7 +48,8 @@ const OptionsAdditionalStep = ({ setCurrentStepSend, currentStepSend }) => {
       if (!orderIdToUse) return;
 
       const response = await axios.post(
-        'https://api.boki.fortesting.com.ua/graphql',
+        // 'https://api.boki.fortesting.com.ua/graphql',
+        queryLink,
         {
           query: `
             query Query($orderId: ID, $pagination: PaginationArg) {
@@ -139,7 +141,8 @@ const OptionsAdditionalStep = ({ setCurrentStepSend, currentStepSend }) => {
     try {
       const { title, price } = item;
       const response = await axios.post(
-        'https://api.boki.fortesting.com.ua/graphql',
+        // 'https://api.boki.fortesting.com.ua/graphql',
+        queryLink,
         {
           query: `
             mutation Mutation($data: OptionSuborderInput!) {
@@ -181,7 +184,8 @@ const OptionsAdditionalStep = ({ setCurrentStepSend, currentStepSend }) => {
       try {
         await updateOptionSuborder(optionSuborder, option, true)
         await axios.post(
-          'https://api.boki.fortesting.com.ua/graphql',
+          // 'https://api.boki.fortesting.com.ua/graphql',
+          queryLink,
           {
             query: `
               mutation Mutation($deleteOptionSuborderId: ID!) {
@@ -215,7 +219,8 @@ const OptionsAdditionalStep = ({ setCurrentStepSend, currentStepSend }) => {
   const updateOptionSuborder = async (updateOptionSuborderId, option, remove) => {
     try {
       await axios.post(
-        'https://api.boki.fortesting.com.ua/graphql',
+        // 'https://api.boki.fortesting.com.ua/graphql',
+        queryLink,
         {
           query: `
             mutation Mutation($updateOptionSuborderId: ID!, $data: OptionSuborderInput!) {

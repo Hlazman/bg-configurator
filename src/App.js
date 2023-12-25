@@ -27,6 +27,7 @@ import { useSelectedCompany } from './Context/CompanyContext';
 import CreateTotalOrderPage from './Pages/CreateTotalOrderPage';
 import EditTotalOrderPage from './Pages/EditTotalOrderPage';
 import { TotalOrdersPage } from './Pages/TotalOrdersPage';
+import {queryLink} from './api/variables'
 
 const { Header, Content, Footer, Sider } = Layout;
 const { Option } = Select;
@@ -148,7 +149,8 @@ const getHeaderTitle = (location, Id) => {
   const fetchData = async () => {
     try {
       const response = await axios.post(
-        'https://api.boki.fortesting.com.ua/graphql',
+        // 'https://api.boki.fortesting.com.ua/graphql',
+        queryLink,
         {
           query: `
             query Query($filters: CompanyFiltersInput) {

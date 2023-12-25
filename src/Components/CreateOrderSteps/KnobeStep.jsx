@@ -5,6 +5,7 @@ import axios from 'axios';
 import { useOrder } from '../../Context/OrderContext';
 import { useLanguage } from '../../Context/LanguageContext';
 import languageMap from '../../Languages/language';
+import {queryLink} from '../../api/variables'
 
 const KnobesStep = ({ setCurrentStepSend, currentStepSend }) => {
   const [knobesData, setKnobesData] = useState([]);
@@ -28,7 +29,8 @@ const KnobesStep = ({ setCurrentStepSend, currentStepSend }) => {
     const fetchData = async () => {
       try {
         const response = await axios.post(
-          'https://api.boki.fortesting.com.ua/graphql',
+          // 'https://api.boki.fortesting.com.ua/graphql',
+          queryLink,
           {
             query: `
               query Knobes($pagination: PaginationArg) {
@@ -122,7 +124,8 @@ const KnobesStep = ({ setCurrentStepSend, currentStepSend }) => {
       };
   
       axios.post(
-        'https://api.boki.fortesting.com.ua/graphql',
+        // 'https://api.boki.fortesting.com.ua/graphql',
+        queryLink,
         {
           query: `
             mutation UpdateFrameFitting($updateFrameFittingId: ID!, $data: FrameFittingInput!) {
@@ -168,7 +171,8 @@ const KnobesStep = ({ setCurrentStepSend, currentStepSend }) => {
         'knobe_variant': knobeVariant, 
       };
   
-      axios.post('https://api.boki.fortesting.com.ua/graphql', {
+      // axios.post('https://api.boki.fortesting.com.ua/graphql', {
+      axios.post(queryLink, {
         query: `
           query GetFrameFitting($frameFittingId: ID) {
             frameFitting(id: $frameFittingId) {

@@ -1,0 +1,1 @@
+export const queryLink = 'https://api.boki.fortesting.com.ua/graphql';

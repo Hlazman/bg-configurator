@@ -5,6 +5,7 @@ import { useOrder } from '../../Context/OrderContext';
 import { useEffect, useState } from 'react';
 import { useLanguage } from '../../Context/LanguageContext';
 import languageMap from '../../Languages/language';
+import {queryLink} from '../../api/variables'
 
 const OptionsStep = ({ setCurrentStepSend, currentStepSend }) => {
   const { orderId } = useOrder();
@@ -22,7 +23,8 @@ const OptionsStep = ({ setCurrentStepSend, currentStepSend }) => {
   const fetchOptionsData = async () => {
     try {
       const optionsResponse = await axios.post(
-        'https://api.boki.fortesting.com.ua/graphql',
+        // 'https://api.boki.fortesting.com.ua/graphql',
+        queryLink,
         {
           query: `
             query Query($pagination: PaginationArg) {
@@ -65,7 +67,8 @@ const OptionsStep = ({ setCurrentStepSend, currentStepSend }) => {
       if (!orderIdToUse) return;
   
       const response = await axios.post(
-        'https://api.boki.fortesting.com.ua/graphql',
+        // 'https://api.boki.fortesting.com.ua/graphql',
+        queryLink,
         {
           query: `
             query Query($orderId: ID, $pagination: PaginationArg) {
@@ -136,7 +139,8 @@ const OptionsStep = ({ setCurrentStepSend, currentStepSend }) => {
     const data = {'horizontal_veneer': values.horizontal_veneer, 'super_gloss': values.super_gloss,}
     try {
       const response = await axios.post(
-        'https://api.boki.fortesting.com.ua/graphql',
+        // 'https://api.boki.fortesting.com.ua/graphql',
+        queryLink,
         {
           query: `
             mutation Mutation($data: OrderInput!, $updateOrderId: ID!) {
@@ -177,7 +181,8 @@ const OptionsStep = ({ setCurrentStepSend, currentStepSend }) => {
   const createSubOrder = async (option) => {
     try {
       const response = await axios.post(
-        'https://api.boki.fortesting.com.ua/graphql',
+        // 'https://api.boki.fortesting.com.ua/graphql',
+        queryLink,
         {
           query: `
             mutation Mutation($data: OptionSuborderInput!) {
@@ -221,7 +226,8 @@ const OptionsStep = ({ setCurrentStepSend, currentStepSend }) => {
       try {
         await updateOptionSuborder(optionSuborder, null)
         const response = await axios.post(
-          'https://api.boki.fortesting.com.ua/graphql',
+          // 'https://api.boki.fortesting.com.ua/graphql',
+          queryLink,
           {
             query: `
               mutation Mutation($deleteOptionSuborderId: ID!) {
@@ -255,7 +261,8 @@ const OptionsStep = ({ setCurrentStepSend, currentStepSend }) => {
   const updateOptionSuborder = async (updateOptionSuborderId, option) => {
     try {
       await axios.post(
-        'https://api.boki.fortesting.com.ua/graphql',
+        // 'https://api.boki.fortesting.com.ua/graphql',
+        queryLink,
         {
           query: `
             mutation Mutation($updateOptionSuborderId: ID!, $data: OptionSuborderInput!) {

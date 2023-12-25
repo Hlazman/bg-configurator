@@ -5,6 +5,7 @@ import { UserOutlined } from '@ant-design/icons';
 import axios from 'axios';
 import { useLanguage } from '../Context/LanguageContext';
 import languageMap from '../Languages/language';
+import {queryLink} from '../api/variables'
 
 export const EditClientPage = () => {
   const jwtToken = localStorage.getItem('token');
@@ -18,7 +19,7 @@ export const EditClientPage = () => {
   useEffect(() => {
     axios
       .post(
-        'https://api.boki.fortesting.com.ua/graphql',
+        queryLink,
         {
           query: `
             query Query($clientId: ID) {
@@ -99,7 +100,7 @@ export const EditClientPage = () => {
 
     axios
       .post(
-        'https://api.boki.fortesting.com.ua/graphql',
+        queryLink,
         {
           query: `
             mutation UpdateClient($data: ClientInput!, $updateClientId: ID!) {

@@ -6,6 +6,7 @@ import { useOrder } from '../../Context/OrderContext';
 import DecorElementForm from '../Forms/DecorElementForm';
 import { useLanguage } from '../../Context/LanguageContext';
 import languageMap from '../../Languages/language';
+import {queryLink} from '../../api/variables'
 
 const ElementsStep = ({ setCurrentStepSend, currentStepSend }) => {
   const jwtToken = localStorage.getItem('token');
@@ -21,7 +22,8 @@ const ElementsStep = ({ setCurrentStepSend, currentStepSend }) => {
         if (!orderIdToUse) return;
 
         const response = await axios.post(
-          'https://api.boki.fortesting.com.ua/graphql',
+          // 'https://api.boki.fortesting.com.ua/graphql',
+          queryLink,
           {
             query: `
               query Query($orderId: ID) {
@@ -82,7 +84,8 @@ const ElementsStep = ({ setCurrentStepSend, currentStepSend }) => {
   const createElementSuborder = async () => {
     try {
       const response = await axios.post(
-        'https://api.boki.fortesting.com.ua/graphql',
+        // 'https://api.boki.fortesting.com.ua/graphql',
+        queryLink,
         {
           query: `
             mutation Mutation($data: ElementSuborderInput!) {
@@ -131,7 +134,8 @@ const ElementsStep = ({ setCurrentStepSend, currentStepSend }) => {
     const currentElementID = getCurrentElementID();
   
     try {
-      const response = await axios.post('https://api.boki.fortesting.com.ua/graphql', {
+      // const response = await axios.post('https://api.boki.fortesting.com.ua/graphql', {
+      const response = await axios.post(queryLink, {
         query: `
           mutation DeleteElementSuborder($deleteElementSuborderId: ID!) {
             deleteElementSuborder(id: $deleteElementSuborderId) {

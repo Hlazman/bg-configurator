@@ -4,6 +4,7 @@ import { UploadOutlined } from '@ant-design/icons';
 import axios from 'axios';
 import { useLanguage } from '../Context/LanguageContext';
 import languageMap from '../Languages/language';
+import {queryLink} from '../api/variables'
 
 const { Option } = Select;
 
@@ -68,7 +69,8 @@ export const CreateColorDrawer = () => {
       formData.append('0', values.image[0].originFileObj);
   
       const uploadResponse = await axios.post(
-        'https://api.boki.fortesting.com.ua/graphql', 
+        // 'https://api.boki.fortesting.com.ua/graphql', 
+        queryLink, 
         formData,
         {
           headers: {
@@ -80,7 +82,8 @@ export const CreateColorDrawer = () => {
       const imageId = uploadResponse.data.data.upload.data.id;
   
       const response = await axios.post(
-        'https://api.boki.fortesting.com.ua/graphql',
+        // 'https://api.boki.fortesting.com.ua/graphql',
+        queryLink,
         {
           query: `
             mutation CreatePaint($data: PaintInput!) {

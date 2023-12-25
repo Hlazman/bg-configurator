@@ -8,6 +8,7 @@ import languageMap from '../../Languages/language';
 import { useTotalOrder } from '../../Context/TotalOrderContext';
 import { useSelectedCompany } from '../../Context/CompanyContext';
 import {updateTotalOrder} from '../../api/updateTotalOrder'
+import {queryLink} from '../../api/variables'
 
 const StartDataStep = ({ setCurrentStepSend, currentStepSend }) => {
   const { orderId } = useOrder();
@@ -28,7 +29,8 @@ const StartDataStep = ({ setCurrentStepSend, currentStepSend }) => {
       if (!orderIdToUse) return;
 
       const response = await axios.post(
-        'https://api.boki.fortesting.com.ua/graphql',
+        // 'https://api.boki.fortesting.com.ua/graphql',
+        queryLink,
         {
           query: `
             query Query($orderId: ID) {
@@ -77,7 +79,8 @@ const StartDataStep = ({ setCurrentStepSend, currentStepSend }) => {
   const handleFormSubmit = async (values) => {
     try {
       const response = await axios.post(
-        'https://api.boki.fortesting.com.ua/graphql',
+        // 'https://api.boki.fortesting.com.ua/graphql',
+        queryLink,
         {
           query: `
             mutation Mutation($data: OrderInput!, $updateOrderId: ID!) {

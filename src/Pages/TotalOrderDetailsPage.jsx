@@ -12,6 +12,7 @@ import { AuthContext } from '../Context/AuthContext';
 import { useSelectedCompany } from '../Context/CompanyContext';
 import dayjs from 'dayjs';
 import logo from '../logo.svg';
+import {queryLink} from '../api/variables'
 
 export const TotalOrderDetailsPage = () => {
   const { Option } = Select;
@@ -42,7 +43,7 @@ export const TotalOrderDetailsPage = () => {
 
   const fetchData = async () => {
     try {
-      const response = await axios.post('https://api.boki.fortesting.com.ua/graphql', {
+      const response = await axios.post(queryLink, {
         query: `
           query TotalOrder($totalOrderId: ID) {
             totalOrder(id: $totalOrderId) {

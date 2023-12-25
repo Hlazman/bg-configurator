@@ -5,6 +5,7 @@ import axios from 'axios';
 import { useOrder } from '../../Context/OrderContext';
 import { useLanguage } from '../../Context/LanguageContext';
 import languageMap from '../../Languages/language';
+import {queryLink} from '../../api/variables'
 
 const HPLStep = ({ fetchOrderData, fetchDecorData, checkDecor, sendDecorForm, currentStepSend }) => {
   const [HPLData, setHPLData] = useState([]);
@@ -31,7 +32,8 @@ const HPLStep = ({ fetchOrderData, fetchDecorData, checkDecor, sendDecorForm, cu
       setIsLoading(true);
       try {
         const response = await axios.post(
-          'https://api.boki.fortesting.com.ua/graphql',
+          // 'https://api.boki.fortesting.com.ua/graphql',
+          queryLink,
           {
             query: `
             query Query {

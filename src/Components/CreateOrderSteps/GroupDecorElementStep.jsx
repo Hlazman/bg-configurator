@@ -9,6 +9,7 @@ import axios from 'axios';
 import PrimerStep from './PrimerStep';
 import { useLanguage } from '../../Context/LanguageContext';
 import languageMap from '../../Languages/language';
+import {queryLink} from '../../api/variables'
 
 const GroupDecorElementStep = ({elementID}) => {
   const [activeTab, setActiveTab] = useState('paint');
@@ -24,7 +25,8 @@ const GroupDecorElementStep = ({elementID}) => {
   const fetchOrderData = async (orderIdToUse, setPreviousTitle, type, setSelectedPaintFor, isPaintType) => {
     try {
       const response = await axios.post(
-        'https://api.boki.fortesting.com.ua/graphql',
+        // 'https://api.boki.fortesting.com.ua/graphql',
+        queryLink,
         {
           query: `
           query ElementSuborder($elementSuborderId: ID) {
@@ -82,7 +84,8 @@ const GroupDecorElementStep = ({elementID}) => {
   const fetchDecorData = async (setDecorData) => {
     try {
       const decorResponse = await axios.post(
-        'https://api.boki.fortesting.com.ua/graphql',
+        // 'https://api.boki.fortesting.com.ua/graphql',
+        queryLink,
         {
           query: `
             query Decors($pagination: PaginationArg) {
@@ -129,7 +132,8 @@ const GroupDecorElementStep = ({elementID}) => {
 
     try {
       const response = await axios.post(
-        'https://api.boki.fortesting.com.ua/graphql',
+        // 'https://api.boki.fortesting.com.ua/graphql',
+        queryLink,
         {
           query: `
             mutation CreateDecor($data: DecorInput!) {
@@ -192,7 +196,8 @@ const GroupDecorElementStep = ({elementID}) => {
 
     try {
       await axios.post(
-        'https://api.boki.fortesting.com.ua/graphql',
+        // 'https://api.boki.fortesting.com.ua/graphql',
+        queryLink,
         {
           query: `
             mutation Mutation($updateElementSuborderId: ID!, $data: ElementSuborderInput!) {

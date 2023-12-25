@@ -7,6 +7,7 @@ import dayjs from 'dayjs';
 import { useLanguage } from '../Context/LanguageContext';
 import languageMap from '../Languages/language';
 import { useNavigate, useParams } from 'react-router-dom';
+import {queryLink} from '../api/variables'
 
 const { Option } = Select;
 const { TextArea } = Input;
@@ -46,7 +47,7 @@ const EditTotalOrderPage = () => {
   };
 
   const handleUpdateTotalOrder = async (data) => {
-    await axios.post('https://api.boki.fortesting.com.ua/graphql',
+    await axios.post(queryLink,
       {
         query: `
           mutation Mutation($updateTotalOrderId: ID!, $data: TotalOrderInput!) {
@@ -79,7 +80,7 @@ const EditTotalOrderPage = () => {
   const fetchTotalOrderData = async () => {
     await axios
     .post(
-      'https://api.boki.fortesting.com.ua/graphql',
+      queryLink,
       {
         query: `
           query TotalOrder($totalOrderId: ID) {
@@ -177,7 +178,7 @@ const EditTotalOrderPage = () => {
   useEffect(() => {
     axios
       .post(
-        'https://api.boki.fortesting.com.ua/graphql',
+        queryLink,
         {
           query: `
             query Query($pagination: PaginationArg) {

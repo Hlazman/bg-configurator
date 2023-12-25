@@ -1,4 +1,5 @@
 import axios from 'axios';
+import {queryLink} from './variables'
 
 export const deleteOrderWithSuborders = async (orderId, jwtToken) => {
   
@@ -10,7 +11,7 @@ export const deleteOrderWithSuborders = async (orderId, jwtToken) => {
 
   try {
     const response = await axios.post(
-      'https://api.boki.fortesting.com.ua/graphql',
+      queryLink,
       {
         query: `
           query Query($orderId: ID) {
@@ -73,7 +74,7 @@ export const deleteOrderWithSuborders = async (orderId, jwtToken) => {
  // DELETE ORDER +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
   try {
     const response = await axios.post(
-      'https://api.boki.fortesting.com.ua/graphql',
+      queryLink,
       {
         query: `
           mutation Mutation($deleteOrderId: ID!) {
@@ -102,7 +103,7 @@ export const deleteOrderWithSuborders = async (orderId, jwtToken) => {
   // DELETE DOOR SUBORDER +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
   try {
     const response = await axios.post(
-      'https://api.boki.fortesting.com.ua/graphql',
+      queryLink,
       {
         query: `
           mutation DeleteFrameSuborder($deleteDoorSuborderId: ID!) {
@@ -131,7 +132,7 @@ export const deleteOrderWithSuborders = async (orderId, jwtToken) => {
   // DELETE FRAME SUBORDER ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
   try {
     const response = await axios.post(
-      'https://api.boki.fortesting.com.ua/graphql',
+      queryLink,
       {
         query: `
           mutation DeleteFrameSuborder($deleteFrameSuborderId: ID!) {
@@ -161,7 +162,7 @@ export const deleteOrderWithSuborders = async (orderId, jwtToken) => {
   for (let i = 0; i< fittingSuborders.length; i++) {
     try {
       const response = await axios.post(
-        'https://api.boki.fortesting.com.ua/graphql',
+        queryLink,
         {
           query: `
             mutation DeleteFrameSuborder($deleteFrameFittingId: ID!) {
@@ -192,7 +193,7 @@ export const deleteOrderWithSuborders = async (orderId, jwtToken) => {
   for (let i = 0; i< elementsSuborder.length; i++) {
     try {
       const response = await axios.post(
-        'https://api.boki.fortesting.com.ua/graphql',
+        queryLink,
         {
           query: `
             mutation DeleteFrameSuborder($deleteElementSuborderId: ID!) {
@@ -224,7 +225,7 @@ export const deleteOrderWithSuborders = async (orderId, jwtToken) => {
     for (let i = 0; i< optionSuborders.length; i++) {
       try {
         const response = await axios.post(
-          'https://api.boki.fortesting.com.ua/graphql',
+          queryLink,
           {
             query: `
               mutation DeleteFrameSuborder($deleteOptionSuborderId: ID!) {

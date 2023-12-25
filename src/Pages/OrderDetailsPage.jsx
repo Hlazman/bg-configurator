@@ -13,6 +13,7 @@ import { useNavigate } from 'react-router-dom';
 import { LeftCircleOutlined } from '@ant-design/icons';
 import { OrderDescriptionShort } from '../Components/OrderDescriptionShort';
 import { OrderDescriptionFull } from '../Components/OrderDescriptionFull';
+import {queryLink} from '../api/variables'
 
 
 export const OrderDetailsPage = ({fromTotalOrder, isCreatingTotalPdf, orderName, currancyValue, imageIndex}) => {
@@ -75,7 +76,7 @@ export const OrderDetailsPage = ({fromTotalOrder, isCreatingTotalPdf, orderName,
   const fetchData = async () => {
     try {
       const response = await axios.post(
-        'https://api.boki.fortesting.com.ua/graphql',
+        queryLink,
         {
           query: `
             query Order($orderId: ID) {
@@ -191,7 +192,7 @@ export const OrderDetailsPage = ({fromTotalOrder, isCreatingTotalPdf, orderName,
 const fetchFrameData = async (frameId) => {
   try {
       const frameSuborderResponse = await axios.post(
-        'https://api.boki.fortesting.com.ua/graphql',
+        queryLink,
         {
           query: `
             query Query($frameSuborderId: ID) {
@@ -236,7 +237,7 @@ const fetchFrameData = async (frameId) => {
 const fetchDoorData = async (doorId) => {
   try {
     const doorSuborderResponse = await axios.post(
-      'https://api.boki.fortesting.com.ua/graphql',
+      queryLink,
       {
         query: `
           query DoorSuborder($doorSuborderId: ID) {
@@ -407,7 +408,7 @@ const fetchElementsData = async (elementIds) => {
   for (const elementId of elementIds) {
     try {
       const elementSuborderResponse = await axios.post(
-        'https://api.boki.fortesting.com.ua/graphql',
+        queryLink,
         {
           query: `
             query ElementSuborders($elementSuborderId: ID) {
@@ -571,7 +572,7 @@ const fetchElementsData = async (elementIds) => {
 const fetchHingeData = async (hingeId) => {
   try {
     const hingeFittingResponse = await axios.post(
-      'https://api.boki.fortesting.com.ua/graphql',
+      queryLink,
       {
         query: `
           query Query($frameFittingId: ID) {
@@ -625,7 +626,7 @@ const fetchHingeData = async (hingeId) => {
 const fetchKnobeData = async (knobeid) => {
   try {
     const knobeFittingResponse = await axios.post(
-      'https://api.boki.fortesting.com.ua/graphql',
+      queryLink,
       {
         query: `
           query Query($frameFittingId: ID) {
@@ -679,7 +680,7 @@ const fetchKnobeData = async (knobeid) => {
 const fetchLockData = async (lockId) => {
   try {
     const lockFittingResponse = await axios.post(
-      'https://api.boki.fortesting.com.ua/graphql',
+      queryLink,
       {
         query: `
           query Query($frameFittingId: ID) {
@@ -747,7 +748,7 @@ const fetchOptionsData = async (optionIds) => {
   for (const optionId of optionIds) {
     try {
       const optionSuborderResponse = await axios.post(
-        'https://api.boki.fortesting.com.ua/graphql',
+        queryLink,
         {
           query: `
             query Query($optionSuborderId: ID) {

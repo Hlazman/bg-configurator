@@ -1,7 +1,9 @@
 import axios from 'axios';
+import {queryLink} from './variables'
 
 export const updateTotalOrder = async (totalOrderId, jwtToken, selectedCompany) => {
-  await axios.post('https://api.boki.fortesting.com.ua/graphql',
+  // await axios.post('https://api.boki.fortesting.com.ua/graphql',
+  await axios.post(queryLink,
     {
       query: `
         mutation Mutation($updateTotalOrderId: ID!, $data: TotalOrderInput!) {

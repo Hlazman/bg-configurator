@@ -14,6 +14,7 @@ import { useTotalOrder } from '../Context/TotalOrderContext';
 import { dublicateOrder } from '../api/dublicateOrder'
 import { deleteOrderWithSuborders } from '../api/deleteOrderWithSuborders'
 import {updateTotalOrder} from '../api/updateTotalOrder'
+import {queryLink} from '../api/variables'
 
 export const OrdersPage = () => {
   const { selectedLanguage } = useLanguage();
@@ -56,7 +57,7 @@ const handleOpenOrder = (orderID) => {
   const fetchData = async () => {
     try {
       setLoading(true);
-      const response = await axios.post('https://api.boki.fortesting.com.ua/graphql', {
+      const response = await axios.post(queryLink, {
         query: `
           query Orders($pagination: PaginationArg, $filters: OrderFiltersInput) {
             orders(pagination: $pagination, filters: $filters) {

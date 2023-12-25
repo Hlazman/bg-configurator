@@ -5,6 +5,7 @@ import axios from 'axios';
 import { useOrder } from '../../Context/OrderContext';
 import { useLanguage } from '../../Context/LanguageContext';
 import languageMap from '../../Languages/language';
+import {queryLink} from '../../api/variables'
 
 const MirrorStep = ({fetchOrderData, fetchDecorData, checkDecor, sendDecorForm, currentStepSend }) => {
   const [mirrorData, setMirrorData] = useState([]);
@@ -35,7 +36,8 @@ const MirrorStep = ({fetchOrderData, fetchDecorData, checkDecor, sendDecorForm, 
       setIsLoading(true);
       try {
         const response = await axios.post(
-          'https://api.boki.fortesting.com.ua/graphql',
+          // 'https://api.boki.fortesting.com.ua/graphql',
+          queryLink,
           {
             query: `
               query Mirrors {

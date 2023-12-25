@@ -5,6 +5,7 @@ import axios from 'axios';
 import { useOrder } from '../../Context/OrderContext';
 import { useLanguage } from '../../Context/LanguageContext';
 import languageMap from '../../Languages/language';
+import {queryLink} from '../../api/variables'
 
 const CanvasStep = ({ setCurrentStepSend, currentStepSend}) => {
   const [messageApi, contextHolder] = message.useMessage();
@@ -25,7 +26,8 @@ const CanvasStep = ({ setCurrentStepSend, currentStepSend}) => {
     const fetchOrderData = async () => {
       try {
         const response = await axios.post(
-          'https://api.boki.fortesting.com.ua/graphql',
+          // 'https://api.boki.fortesting.com.ua/graphql',
+          queryLink,
           {
             query: `
               query Query($orderId: ID) {
@@ -108,7 +110,8 @@ const CanvasStep = ({ setCurrentStepSend, currentStepSend}) => {
 
     try {
       const response = await axios.post(
-        'https://api.boki.fortesting.com.ua/graphql',
+        // 'https://api.boki.fortesting.com.ua/graphql',
+        queryLink,
         {
           query: `
             mutation Mutation($updateDoorSuborderId: ID!, $data: DoorSuborderInput!) {
@@ -160,7 +163,8 @@ const CanvasStep = ({ setCurrentStepSend, currentStepSend}) => {
       setIsLoading(true);
       try {
         const response = await axios.post(
-          'https://api.boki.fortesting.com.ua/graphql',
+          // 'https://api.boki.fortesting.com.ua/graphql',
+          queryLink,
           {
             query: `
               query Doors {

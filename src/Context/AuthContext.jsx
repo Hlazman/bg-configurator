@@ -1,6 +1,7 @@
 import React, { createContext, useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import {queryLink} from '../api/variables'
 
 export const AuthContext = createContext();
 
@@ -37,7 +38,8 @@ export const AuthProvider = ({ children }) => {
   const loginUserWithApi = async (email, password, rememberMe) => {
     try {
       const response = await axios.post(
-        'https://api.boki.fortesting.com.ua/graphql',
+        // 'https://api.boki.fortesting.com.ua/graphql',
+        queryLink,
         {
           query: `
             mutation {

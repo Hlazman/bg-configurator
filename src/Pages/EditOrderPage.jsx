@@ -16,6 +16,7 @@ import { useLanguage } from '../Context/LanguageContext';
 import languageMap from '../Languages/language';
 import OptionsStep from '../Components/CreateOrderSteps/OptionsStep';
 import OptionsAdditionalStep from '../Components/CreateOrderSteps/OptionsAdditionalStep';
+import {queryLink} from '../api/variables'
 
 export const EditOrderPage = () => {
   const { selectedLanguage } = useLanguage();
@@ -44,7 +45,7 @@ export const EditOrderPage = () => {
   const handleEditOrder = async () => {
     try {
       const response = await axios.post(
-        'https://api.boki.fortesting.com.ua/graphql',
+        queryLink,
         {
           query: `
             query Query($orderId: ID) {

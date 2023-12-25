@@ -1,4 +1,5 @@
 import axios from 'axios';
+import {queryLink} from './variables'
 
 export const dublicateOrder = async (orderId, jwtToken, totalOrderId, selectedCompany, user ) => {
    let orderData = {};
@@ -15,7 +16,7 @@ export const dublicateOrder = async (orderId, jwtToken, totalOrderId, selectedCo
     try {
       // QUERY ORDER
       const response = await axios.post(
-        'https://api.boki.fortesting.com.ua/graphql',
+        queryLink,
         {
           query: `
             query Order($orderId: ID) {
@@ -99,7 +100,7 @@ export const dublicateOrder = async (orderId, jwtToken, totalOrderId, selectedCo
       // CREATE NEW ORDER
       try {
         const response = await axios.post(
-          'https://api.boki.fortesting.com.ua/graphql',
+          queryLink,
           {
             query: `
               mutation CreateOrder($data: OrderInput!) {
@@ -135,7 +136,7 @@ export const dublicateOrder = async (orderId, jwtToken, totalOrderId, selectedCo
       // UPDATE NEW ORDER
       try {
         const response = await axios.post(
-          'https://api.boki.fortesting.com.ua/graphql',
+          queryLink,
           {
             query: `
               mutation Mutation($data: OrderInput!, $updateOrderId: ID!) {
@@ -194,7 +195,7 @@ export const dublicateOrder = async (orderId, jwtToken, totalOrderId, selectedCo
         // QUERY DOOR
         try {
           const doorSuborderResponse = await axios.post(
-            'https://api.boki.fortesting.com.ua/graphql',
+            queryLink,
             {
               query: `
                 query DoorSuborder($doorSuborderId: ID) {
@@ -363,7 +364,7 @@ export const dublicateOrder = async (orderId, jwtToken, totalOrderId, selectedCo
         // CREATE NEW DOOR
         try {
           const doorSuborderResponse = await axios.post(
-            'https://api.boki.fortesting.com.ua/graphql',
+            queryLink,
             {
               query: `
                 mutation CreateDoorSuborder($data: DoorSuborderInput!) {
@@ -393,7 +394,7 @@ export const dublicateOrder = async (orderId, jwtToken, totalOrderId, selectedCo
           // UPDATE NEW DOOR
           try {
             const response = await axios.post(
-              'https://api.boki.fortesting.com.ua/graphql',
+              queryLink,
               {
                 query: `
                   mutation Mutation($updateDoorSuborderId: ID!, $data: DoorSuborderInput!) {
@@ -438,7 +439,7 @@ export const dublicateOrder = async (orderId, jwtToken, totalOrderId, selectedCo
         // QUERY FRAME
           try {
             const frameSuborderResponse = await axios.post(
-              'https://api.boki.fortesting.com.ua/graphql',
+              queryLink,
               {
                 query: `
                   query Query($frameSuborderId: ID) {
@@ -484,7 +485,7 @@ export const dublicateOrder = async (orderId, jwtToken, totalOrderId, selectedCo
         // CREATE NEW FRAME
           try {
             const frameSuborderResponse = await axios.post(
-              'https://api.boki.fortesting.com.ua/graphql',
+              queryLink,
               {
                 query: `
                   mutation CreateFrameSuborder($data: FrameSuborderInput!) {
@@ -514,7 +515,7 @@ export const dublicateOrder = async (orderId, jwtToken, totalOrderId, selectedCo
             // UPDATE NEW FRAME
             try {
               const response = await axios.post(
-                'https://api.boki.fortesting.com.ua/graphql',
+                queryLink,
                 {
                   query: `
                     mutation Mutation($updateFrameSuborderId: ID!, $data: FrameSuborderInput!) {
@@ -562,7 +563,7 @@ export const dublicateOrder = async (orderId, jwtToken, totalOrderId, selectedCo
         for (const elementId of subordersId.elements) {
           try {
             const elementSuborderResponse = await axios.post(
-              'https://api.boki.fortesting.com.ua/graphql',
+              queryLink,
               {
                 query: `
                   query ElementSuborders($elementSuborderId: ID) {
@@ -728,7 +729,7 @@ export const dublicateOrder = async (orderId, jwtToken, totalOrderId, selectedCo
         for (let i = 0; i< elementsData.length; i++) {
           try {
             const response = await axios.post(
-              'https://api.boki.fortesting.com.ua/graphql',
+              queryLink,
               {
                 query: `
                   mutation Mutation($data: ElementSuborderInput!) {
@@ -758,7 +759,7 @@ export const dublicateOrder = async (orderId, jwtToken, totalOrderId, selectedCo
           // UPDATE NEW ELEMENTS
             try {
               const response = await axios.post(
-                'https://api.boki.fortesting.com.ua/graphql',
+                queryLink,
                 {
                   query: `
                     mutation Mutation($updateElementSuborderId: ID!, $data: ElementSuborderInput!) {
@@ -806,7 +807,7 @@ export const dublicateOrder = async (orderId, jwtToken, totalOrderId, selectedCo
         // QUERY LOCK
         try {
           const lockFittingResponse = await axios.post(
-            'https://api.boki.fortesting.com.ua/graphql',
+            queryLink,
             {
               query: `
                 query Query($frameFittingId: ID) {
@@ -860,7 +861,7 @@ export const dublicateOrder = async (orderId, jwtToken, totalOrderId, selectedCo
         // CREATE LOCK
         try {
           const fittingSuborderLock = await axios.post(
-            'https://api.boki.fortesting.com.ua/graphql',
+            queryLink,
             {
               query: `
                 mutation CreateFrameFitting($data: FrameFittingInput!) {
@@ -890,7 +891,7 @@ export const dublicateOrder = async (orderId, jwtToken, totalOrderId, selectedCo
           // UPDATE LOCK
           try {
             await axios.post(
-              'https://api.boki.fortesting.com.ua/graphql',
+              queryLink,
               {
                 query: `
                   mutation UpdateFrameFitting($updateFrameFittingId: ID!, $data: FrameFittingInput!) {
@@ -929,7 +930,7 @@ export const dublicateOrder = async (orderId, jwtToken, totalOrderId, selectedCo
         // QUERY HINGE
         try {
           const hingeFittingResponse = await axios.post(
-            'https://api.boki.fortesting.com.ua/graphql',
+            queryLink,
             {
               query: `
                 query Query($frameFittingId: ID) {
@@ -980,7 +981,7 @@ export const dublicateOrder = async (orderId, jwtToken, totalOrderId, selectedCo
           // CREATE HINGE
           try {
             const fittingSuborderHinge = await axios.post(
-              'https://api.boki.fortesting.com.ua/graphql',
+              queryLink,
               {
                 query: `
                   mutation CreateFrameFitting($data: FrameFittingInput!) {
@@ -1010,7 +1011,7 @@ export const dublicateOrder = async (orderId, jwtToken, totalOrderId, selectedCo
             // UPDATE HINGE
             try {
               const response = await axios.post(
-                'https://api.boki.fortesting.com.ua/graphql',
+                queryLink,
                 {
                   query: `
                     mutation UpdateFrameFitting($updateFrameFittingId: ID!, $data: FrameFittingInput!) {
@@ -1055,7 +1056,7 @@ export const dublicateOrder = async (orderId, jwtToken, totalOrderId, selectedCo
         // QUERY KNOBE
         try {
           const knobeFittingResponse = await axios.post(
-            'https://api.boki.fortesting.com.ua/graphql',
+            queryLink,
             {
               query: `
                 query Query($frameFittingId: ID) {
@@ -1106,7 +1107,7 @@ export const dublicateOrder = async (orderId, jwtToken, totalOrderId, selectedCo
           // CREATE KNOBE
           try {
             const fittingSuborderKnobe = await axios.post(
-              'https://api.boki.fortesting.com.ua/graphql',
+              queryLink,
               {
                 query: `
                   mutation CreateFrameFitting($data: FrameFittingInput!) {
@@ -1136,7 +1137,7 @@ export const dublicateOrder = async (orderId, jwtToken, totalOrderId, selectedCo
             // UPDATE KNOBE
             try {
               await axios.post(
-                'https://api.boki.fortesting.com.ua/graphql',
+                queryLink,
                 {
                   query: `
                     mutation UpdateFrameFitting($updateFrameFittingId: ID!, $data: FrameFittingInput!) {
@@ -1189,7 +1190,7 @@ export const dublicateOrder = async (orderId, jwtToken, totalOrderId, selectedCo
         for (const optionId of subordersId.options) {
           try {
             const optionSuborderResponse = await axios.post(
-              'https://api.boki.fortesting.com.ua/graphql',
+              queryLink,
               {
                 query: `
                   query Query($optionSuborderId: ID) {
@@ -1236,7 +1237,7 @@ export const dublicateOrder = async (orderId, jwtToken, totalOrderId, selectedCo
         for (let i = 0; i < optionsData.length; i++) {
           try {
             const response = await axios.post(
-              'https://api.boki.fortesting.com.ua/graphql',
+              queryLink,
               {
                 query: `
                   mutation Mutation($data: OptionSuborderInput!) {
@@ -1265,7 +1266,7 @@ export const dublicateOrder = async (orderId, jwtToken, totalOrderId, selectedCo
               // UPDATE OPTIONS
               try {
                 const response = await axios.post(
-                  'https://api.boki.fortesting.com.ua/graphql',
+                  queryLink,
                   {
                     query: `
                       mutation Mutation($updateOptionSuborderId: ID!, $data: OptionSuborderInput!) {

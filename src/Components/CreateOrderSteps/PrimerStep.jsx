@@ -5,6 +5,7 @@ import axios from 'axios';
 import { useOrder } from '../../Context/OrderContext';
 import { useLanguage } from '../../Context/LanguageContext';
 import languageMap from '../../Languages/language';
+import {queryLink} from '../../api/variables'
 
 const PrimerStep = ({orderID, fetchOrderData, fetchDecorData, checkDecor, sendDecorForm, currentStepSend }) => {
   const [primerData, setPrimerData] = useState([]);
@@ -34,7 +35,8 @@ const PrimerStep = ({orderID, fetchOrderData, fetchDecorData, checkDecor, sendDe
       setIsLoading(true);
       try {
         const response = await axios.post(
-          'https://api.boki.fortesting.com.ua/graphql',
+          // 'https://api.boki.fortesting.com.ua/graphql',
+          queryLink,
           {
             query: `
               query Primers {

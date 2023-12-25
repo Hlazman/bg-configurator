@@ -18,6 +18,7 @@ import languageMap from '../Languages/language';
 import OptionsStep from '../Components/CreateOrderSteps/OptionsStep';
 import OptionsAdditionalStep from '../Components/CreateOrderSteps/OptionsAdditionalStep';
 import { useTotalOrder } from '../Context/TotalOrderContext';
+import {queryLink} from '../api/variables'
 
 export const CreateOrderPage = () => {
   const { selectedLanguage } = useLanguage();
@@ -58,7 +59,7 @@ export const CreateOrderPage = () => {
   const handleCreateOrder = async () => {
     try {
       const response = await axios.post(
-        'https://api.boki.fortesting.com.ua/graphql',
+        queryLink,
         {
           query: `
             mutation CreateOrder($data: OrderInput!) {
@@ -101,7 +102,7 @@ export const CreateOrderPage = () => {
       };
 
       const doorSuborderResponse = await axios.post(
-        'https://api.boki.fortesting.com.ua/graphql',
+        queryLink,
         {
           query: `
             mutation CreateDoorSuborder($data: DoorSuborderInput!) {
@@ -132,7 +133,7 @@ export const CreateOrderPage = () => {
       };
   
       const frameSuborderResponse = await axios.post(
-        'https://api.boki.fortesting.com.ua/graphql',
+        queryLink,
         {
           query: `
             mutation CreateFrameSuborder($data: FrameSuborderInput!) {
@@ -168,7 +169,7 @@ export const CreateOrderPage = () => {
         };
   
         const fittingSuborderResponse = await axios.post(
-          'https://api.boki.fortesting.com.ua/graphql',
+          queryLink,
           {
             query: `
               mutation CreateFrameFitting($data: FrameFittingInput!) {

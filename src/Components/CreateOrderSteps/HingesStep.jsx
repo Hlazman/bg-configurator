@@ -5,6 +5,7 @@ import axios from 'axios';
 import { useOrder } from '../../Context/OrderContext';
 import { useLanguage } from '../../Context/LanguageContext';
 import languageMap from '../../Languages/language';
+import {queryLink} from '../../api/variables'
 
 const HingeStep = ({ setCurrentStepSend, currentStepSend }) => {
   const [hingeData, setHingeData] = useState([]);
@@ -28,7 +29,8 @@ const HingeStep = ({ setCurrentStepSend, currentStepSend }) => {
     const fetchData = async () => {
       try {
         const response = await axios.post(
-          'https://api.boki.fortesting.com.ua/graphql',
+          // 'https://api.boki.fortesting.com.ua/graphql',
+          queryLink,
           {
             query: `
               query Hinges($pagination: PaginationArg) {
@@ -126,7 +128,8 @@ const HingeStep = ({ setCurrentStepSend, currentStepSend }) => {
       };
   
       axios.post(
-        'https://api.boki.fortesting.com.ua/graphql',
+        // 'https://api.boki.fortesting.com.ua/graphql',
+        queryLink,
         {
           query: `
             mutation UpdateFrameFitting($updateFrameFittingId: ID!, $data: FrameFittingInput!) {
@@ -170,7 +173,8 @@ const HingeStep = ({ setCurrentStepSend, currentStepSend }) => {
         frameFittingId: hingeSuborderId,
       };
   
-      axios.post('https://api.boki.fortesting.com.ua/graphql', {
+      // axios.post('https://api.boki.fortesting.com.ua/graphql', {
+      axios.post(queryLink, {
         query: `
           query GetFrameFitting($frameFittingId: ID) {
             frameFitting(id: $frameFittingId) {

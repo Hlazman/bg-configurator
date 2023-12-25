@@ -5,6 +5,7 @@ import { useOrder } from '../../Context/OrderContext';
 import { useEffect, useState } from 'react';
 import { useLanguage } from '../../Context/LanguageContext';
 import languageMap from '../../Languages/language';
+import {queryLink} from '../../api/variables'
 
 const { Option } = Select;
 
@@ -22,7 +23,8 @@ const FrameStep = ({ setCurrentStepSend, currentStepSend }) => {
 
   useEffect(() => {
     axios.post(
-      'https://api.boki.fortesting.com.ua/graphql',
+      // 'https://api.boki.fortesting.com.ua/graphql',
+      queryLink,
       {
         query: `
           query Query($orderId: ID) {
@@ -93,7 +95,8 @@ const FrameStep = ({ setCurrentStepSend, currentStepSend }) => {
   
   useEffect(() => {
     axios.post(
-      'https://api.boki.fortesting.com.ua/graphql',
+      // 'https://api.boki.fortesting.com.ua/graphql',
+      queryLink,
       {
         query: `
           query Frames($pagination: PaginationArg, $filters: FrameFiltersInput) {
@@ -143,7 +146,8 @@ const FrameStep = ({ setCurrentStepSend, currentStepSend }) => {
     };
 
     axios.post(
-      'https://api.boki.fortesting.com.ua/graphql',
+      // 'https://api.boki.fortesting.com.ua/graphql',
+      queryLink,
       {
         query: `
           mutation Mutation($updateFrameSuborderId: ID!, $data: FrameSuborderInput!) {

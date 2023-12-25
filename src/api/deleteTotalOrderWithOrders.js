@@ -1,11 +1,12 @@
 import axios from 'axios';
 import { deleteOrderWithSuborders } from './deleteOrderWithSuborders'
+import {queryLink} from './variables'
 
 export const deleteTotalOrderWithOrders = async (totalOrderId, jwtToken) => {
   let ordersId = [];
 
   try {
-    const response = await axios.post('https://api.boki.fortesting.com.ua/graphql', {
+    const response = await axios.post(queryLink, {
       query: `
         query TotalOrder($totalOrderId: ID) {
           totalOrder(id: $totalOrderId) {
@@ -42,7 +43,7 @@ export const deleteTotalOrderWithOrders = async (totalOrderId, jwtToken) => {
 
   try {
     const response = await axios.post(
-      'https://api.boki.fortesting.com.ua/graphql',
+      queryLink,
       {
         query: `
           mutation Mutation($deleteTotalOrderId: ID!) {
