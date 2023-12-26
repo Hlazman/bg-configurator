@@ -288,6 +288,12 @@ const en = {
   </ul>
   ),
 
+  skirtingWarning: (
+    <ul>
+      <li>If you have hidden doors, you need to choose <strong>Skirting (Aluminum)</strong>.</li>
+  </ul>
+  ),
+
 // Instructions
   InstructionCreateOrderHeader: (
     <div style={{fontSize: '15px'}}>

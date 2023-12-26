@@ -7,13 +7,14 @@ import logo from '../logo.svg';
 import { useLanguage } from '../Context/LanguageContext';
 import languageMap from '../Languages/language';
 
-
 export const OrderDescription = (
   {orderData, orderId, frameData, doorData, elementData, lockData, hingeData, knobeData, optionsData, isCreatingPdf}
   ) => {
   const { user } = useContext(AuthContext);
   const { selectedLanguage } = useLanguage();
   const language = languageMap[selectedLanguage];
+
+  const standartRAL = ['1013', '1015', '7045', '7047', '9001', '9002', '9003', '9010', '9016', '9018'];;
 
   const { Option } = Select;
   
@@ -242,6 +243,14 @@ export const OrderDescription = (
             <Descriptions.Item className='labelBG' label={`${language.decor} ${language.title}`} labelStyle={{fontWeight: '600', color:'#000'}}>
               {doorData.decor?.data?.attributes?.paint.data?.attributes?.color_range} &nbsp;
               {doorData.decor?.data?.attributes?.title}
+              <br/>
+              {
+                doorData.decor?.data?.attributes?.paint?.data?.attributes?.color_range !== 'RAL' 
+                ? ''
+                : standartRAL.includes(doorData.decor?.data?.attributes?.title) 
+                  ? '' 
+                  : `${language.cost} + 10%`
+              }
 
             </Descriptions.Item>
 
@@ -400,7 +409,8 @@ export const OrderDescription = (
                 size='middle'
               >
                 <Descriptions.Item className='labelBG' label={`${language.element} ${language.title}`} labelStyle={{fontWeight: '600', color:'#000'}}>
-                  {languageMap[selectedLanguage][element.type]}: {languageMap[selectedLanguage][element.element?.data?.attributes?.title]}
+                  {/* {languageMap[selectedLanguage][element.type]}: {languageMap[selectedLanguage][element.element?.data?.attributes?.title]} */}
+                  {languageMap[selectedLanguage][element.element?.data?.attributes?.title]}
                 </Descriptions.Item>
 
                 {element?.sizes?.height && (
@@ -459,7 +469,12 @@ export const OrderDescription = (
                 )}
 
                 <Descriptions.Item className='labelBG' label={language.price} labelStyle={{fontWeight: '600', color:'#000'}}>
-                  {convertedElementPrice[index] ? `${convertedElementPrice[index].convertedPrice} ${currency}` : `${element.price} ${orderData?.currency}`}
+                  {/* {convertedElementPrice[index] ? `${convertedElementPrice[index].convertedPrice} ${currency}` : `${element.price} ${orderData?.currency}`} */}
+                  {
+                    languageMap[selectedLanguage][element.type] === language.anotherSideColor 
+                    ? '+25%' 
+                    : convertedElementPrice[index] ? `${convertedElementPrice[index].convertedPrice} ${currency}` : `${element.price} ${orderData?.currency}`
+                  }
                 </Descriptions.Item>
               </Descriptions>
               </React.Fragment>

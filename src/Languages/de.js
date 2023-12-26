@@ -285,6 +285,12 @@ const de = {
     </ul>
   ),
 
+  skirtingWarning: (
+    <ul>
+      <li>Wenn Sie versteckte Türen haben, müssen Sie <strong>Sockelleiste (Aluminium)</strong> wählen.</li>
+    </ul>
+  ),
+
 // Instructions
   InstructionCreateOrderHeader: (
     <div style={{fontSize: '15px'}}>

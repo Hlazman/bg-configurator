@@ -285,6 +285,12 @@ saveElementsWarning: (
     </ul>
   ),
 
+  skirtingWarning: (
+    <ul>
+      <li>Якщо y вас приховані двері, вам потрібно вибрати <strong>Плінтус (Алюміній)</strong>.</li>
+    </ul>
+  ),
+
 // Instructions
   InstructionCreateOrderHeader: (
     <div style={{fontSize: '15px'}}>

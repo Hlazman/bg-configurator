@@ -25,6 +25,8 @@ export const OrderDescriptionFull = ({
   const [convertedPriceTotal, setConvertedPriceTotal] = useState('');
   const [exchangeRates, setExchangeRates] = useState(null);
 
+  const standartRAL = ['1013', '1015', '7045', '7047', '9001', '9002', '9003', '9010', '9016', '9018'];
+
   const fetchExchangeRates = async () => {
     try {
       const response = await fetch(`https://open.er-api.com/v6/latest/${currency}`);
@@ -209,8 +211,16 @@ export const OrderDescriptionFull = ({
             </Descriptions.Item>
 
             <Descriptions.Item className='labelBG' label={`${language.decor} ${language.title}`} labelStyle={{fontWeight: '600', color:'#000'}}>
-              {doorData.decor?.data?.attributes?.paint.data?.attributes?.color_range} &nbsp;
+              {doorData.decor?.data?.attributes?.paint?.data?.attributes?.color_range} &nbsp;
               {doorData.decor?.data?.attributes?.title}
+              <br/>
+              {
+                doorData.decor?.data?.attributes?.paint?.data?.attributes?.color_range !== 'RAL' 
+                ? ''
+                : standartRAL.includes(doorData.decor?.data?.attributes?.title) 
+                  ? '' 
+                  : `${language.cost} + 10%`
+              }
 
             </Descriptions.Item>
 
@@ -368,7 +378,8 @@ export const OrderDescriptionFull = ({
                 size='middle'
               >
                 <Descriptions.Item className='labelBG' label={`${language.element} ${language.title}`} labelStyle={{fontWeight: '600', color:'#000'}}>
-                  {languageMap[selectedLanguage][element.type]}: {languageMap[selectedLanguage][element.element?.data?.attributes?.title]}
+                  {/* {languageMap[selectedLanguage][element.type]}: {languageMap[selectedLanguage][element.element?.data?.attributes?.title]} */}
+                  {languageMap[selectedLanguage][element.element?.data?.attributes?.title]}
                 </Descriptions.Item>
 
                 {element?.sizes?.height && (
@@ -427,7 +438,12 @@ export const OrderDescriptionFull = ({
                 )}
 
                 <Descriptions.Item className='labelBG' label={language.price} labelStyle={{fontWeight: '600', color:'#000'}}>
-                  {convertedElementPrice[index] ? `${convertedElementPrice[index].convertedPrice} ${currency}` : `${element.price} ${orderData?.currency}`}
+                  {/* {convertedElementPrice[index] ? `${convertedElementPrice[index].convertedPrice} ${currency}` : `${element.price} ${orderData?.currency}`} */}
+                  {
+                    languageMap[selectedLanguage][element.type] === language.anotherSideColor 
+                    ? '+25%' 
+                    : convertedElementPrice[index] ? `${convertedElementPrice[index].convertedPrice} ${currency}` : `${element.price} ${orderData?.currency}`
+                  }
                 </Descriptions.Item>
               </Descriptions>
               </React.Fragment>
@@ -493,7 +509,7 @@ export const OrderDescriptionFull = ({
           bordered
           size='default'
           >
-            <Descriptions.Item>
+            <Descriptions.Item className='labelNone'>
               {convertedPriceTotal ? `${convertedPriceTotal} ${currency}` : `${orderData?.totalCost} ${orderData?.currency}`}
             </Descriptions.Item>
 

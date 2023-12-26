@@ -285,6 +285,12 @@ const pl = {
     </ul>
   ),
 
+  skirtingWarning: (
+    <ul>
+      <li>Jeśli masz ukryte drzwi, musisz wybrać <strong>Listwa przypodłogowa (Aluminium)</strong>.</li>
+    </ul>
+  ),
+
 // Instructions
   InstructionCreateOrderHeader: (
     <div style={{fontSize: '15px'}}>

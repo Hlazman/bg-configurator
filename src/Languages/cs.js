@@ -285,6 +285,12 @@ const cs = {
     </ul>
   ),
 
+  skirtingWarning: (
+    <ul>
+      <li>Pokud máte skryté dveře, musíte vybrat <strong>Příčník (Hliník)</strong>.</li>
+    </ul>
+  ),
+
 // Instructions
     InstructionCreateOrderHeader: (
       <div style={{fontSize: '15px'}}>

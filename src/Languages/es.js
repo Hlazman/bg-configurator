@@ -285,6 +285,12 @@ const es = {
     </ul>
   ),
 
+  skirtingWarning: (
+    <ul>
+      <li>Si tienes puertas ocultas, debes elegir <strong>Zócalo (Aluminio)</strong>.</li>
+    </ul>
+  ),
+
 // Instructions
   InstructionCreateOrderHeader: (
     <div style={{fontSize: '15px'}}>

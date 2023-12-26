@@ -356,6 +356,9 @@ const DecorElementForm = ({setCurrentStepSend, elementID, currentStepSend}) => {
     } else if (currentElementField === 'moulding') {
       setAlert(true);
       setAlertMessae(language.mouldingWarning);
+    } else if (currentElementField === 'skirting') {
+      setAlert(true);
+      setAlertMessae(language.skirtingWarning);
     } else {
       setAlert(false);
     }
