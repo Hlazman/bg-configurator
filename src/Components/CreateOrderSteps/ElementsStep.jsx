@@ -7,6 +7,9 @@ import DecorElementForm from '../Forms/DecorElementForm';
 import { useLanguage } from '../../Context/LanguageContext';
 import languageMap from '../../Languages/language';
 import {queryLink} from '../../api/variables'
+import {updateTotalOrder} from '../../api/updateTotalOrder'
+import {useSelectedCompany} from '../../Context/CompanyContext'
+import { useTotalOrder } from '../../Context/TotalOrderContext';
 
 const ElementsStep = ({ setCurrentStepSend, currentStepSend }) => {
   const jwtToken = localStorage.getItem('token');
@@ -15,6 +18,8 @@ const ElementsStep = ({ setCurrentStepSend, currentStepSend }) => {
   const { orderId } = useOrder();
   const orderIdToUse = orderId;
   const [isLoading, setIsLoading] = useState(false);
+  const { selectedCompany } = useSelectedCompany();
+  const { totalOrderId } = useTotalOrder();
 
   useEffect(() => {
     const fetchElementSuborders = async () => {
@@ -227,6 +232,7 @@ const ElementsStep = ({ setCurrentStepSend, currentStepSend }) => {
       await add();
     } else {
       await remove(targetKey);
+      await updateTotalOrder(totalOrderId, jwtToken, selectedCompany)
     }
 
     setIsLoading(false);
