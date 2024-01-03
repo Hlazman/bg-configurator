@@ -196,8 +196,8 @@ const ua = {
   'type 3 inside Loft': 'Loft всередині',
 
 // Products Elements
-  'aluminium cover': 'Алюмінієвий кришка',
-  'aluminium cover painting': 'Алюмінієва кришка (фарбування)',
+  'aluminium cover': 'Алюмінієвий обклад',
+  'aluminium cover painting': 'Алюмінієвий обклад (фарбування)',
   'aluminium moulding': 'Алюмінієвий молдинг',
   'aluminium moulding painting': 'Алюмінієвий молдинг (фарбування)',
   'another side color': 'Інший колір з іншого боку',
