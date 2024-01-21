@@ -14,6 +14,8 @@ import { LeftCircleOutlined } from '@ant-design/icons';
 import { OrderDescriptionShort } from '../Components/OrderDescriptionShort';
 import { OrderDescriptionFull } from '../Components/OrderDescriptionFull';
 import {queryLink} from '../api/variables'
+import {getCompanyData} from '../api/getCompanyData'
+import { useSelectedCompany } from '../Context/CompanyContext';
 
 
 export const OrderDetailsPage = ({fromTotalOrder, isCreatingTotalPdf, orderName, currancyValue, imageIndex}) => {
@@ -24,6 +26,7 @@ export const OrderDetailsPage = ({fromTotalOrder, isCreatingTotalPdf, orderName,
   const [subordersId, setSubordersId] = useState(null);
   const { selectedLanguage } = useLanguage();
   const language = languageMap[selectedLanguage];
+  const { selectedCompany } = useSelectedCompany();
 
   const [isCreatingPdf, setIsCreatingPdf] = useState(false);
   const navigate = useNavigate();
@@ -36,6 +39,8 @@ export const OrderDetailsPage = ({fromTotalOrder, isCreatingTotalPdf, orderName,
   const [knobeData, setKnobeData] = useState(null);
   const [optionsData, setOptionsData] = useState(null);
   const presentation = localStorage.getItem('presentation');
+
+  const [companyData, setCompanyData] = useState(null);
 
   const embedImages = async () => {
     const images = document.querySelectorAll('img');
@@ -736,10 +741,12 @@ useEffect(() => {
   if (!orderId) {
     setOrderId(urlOrderId);
     fetchData();
+    getCompanyData(jwtToken, selectedCompany, setCompanyData);
   } else {
     fetchData();
-  }  
-}, [jwtToken, orderId, urlOrderId]);
+    getCompanyData(jwtToken, selectedCompany, setCompanyData);
+  }
+}, [jwtToken, orderId, urlOrderId, selectedCompany]);
 
 
 const fetchOptionsData = async (optionIds) => {
@@ -809,6 +816,7 @@ const fetchOptionsData = async (optionIds) => {
               lockData={lockData}
               optionsData={optionsData}
               isCreatingPdf={isCreatingPdf}
+              companyData={companyData}
             />
           </div>
         </div>

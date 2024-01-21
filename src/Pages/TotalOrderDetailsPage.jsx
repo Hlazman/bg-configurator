@@ -11,8 +11,8 @@ import { LeftCircleOutlined } from '@ant-design/icons';
 import { AuthContext } from '../Context/AuthContext';
 import { useSelectedCompany } from '../Context/CompanyContext';
 import dayjs from 'dayjs';
-import logo from '../logo.svg';
-import {queryLink} from '../api/variables'
+import {queryLink, imageLink} from '../api/variables'
+import {getCompanyData} from '../api/getCompanyData'
 
 export const TotalOrderDetailsPage = () => {
   const { Option } = Select;
@@ -27,19 +27,7 @@ export const TotalOrderDetailsPage = () => {
   const { user } = useContext(AuthContext);
   const { selectedCompany } = useSelectedCompany();
   const navigate = useNavigate();
-
-  const getCompanyName = () => {
-    switch (selectedCompany) {
-      case '1':
-        return 'Boki Group';
-      case '2':
-        return 'rsu4.u';
-      case '3':
-        return 'Super Admin';
-      default:
-        return;
-    }
-  }
+  const [companyData, setCompanyData] = useState(null);
 
   const fetchData = async () => {
     try {
@@ -194,7 +182,8 @@ export const TotalOrderDetailsPage = () => {
   
   useEffect(() => {
     fetchData();
-  }, [totalOrderId]);
+    getCompanyData(jwtToken, selectedCompany, setCompanyData);
+  }, [totalOrderId, selectedCompany]);
 
   return (
     <>
@@ -229,26 +218,7 @@ export const TotalOrderDetailsPage = () => {
 
       <div id="pdf-content" style={{margin: '0 20px'}}>
         <>
-          {(presentation === 'full' || presentation === 'short') && (
-            <div style={{display: 'flex', justifyContent: 'space-around', alignItems: 'center', gap: '20px', backgroundColor: '#FFF', maxWidth: '900px', margin: '0 auto'}}>
-            <Image width={70} src={`${logo}`} preview={false}/>
-
-            <Descriptions
-              column={3}
-              layout="vertical"
-              bordered
-              size='small'
-              style={{width: '50%'}}
-            >
-            <Descriptions.Item label={language.company}> {getCompanyName()} </Descriptions.Item>
-            <Descriptions.Item label={language.manager}> {`${user.username}`}</Descriptions.Item>
-            <Descriptions.Item label={`${language.order} #`} labelStyle={{fontWeight: '600', color:'#f06d20'}}> {`${localStorage.getItem('TotalOrderId')}`}</Descriptions.Item>
-            </Descriptions>
-          </div>
-          )}
-
           {
-            // ordersCount.map(order => (
             ordersCount.map((order, index) => (
             <div key={order.id} style={{marginBottom: '20px'}}>
               <OrderDetailsPage
@@ -340,6 +310,32 @@ export const TotalOrderDetailsPage = () => {
           </div>
           </>
         )}
+
+        <div style={{padding: '15px', backgroundColor: '#FFF', borderRadius: '15px', maxWidth: '900px', margin: '0 auto'}}>
+          {(presentation === 'full' || presentation === 'short') && (
+          <div style={{display: 'flex', justifyContent: 'space-around', alignItems: 'center', gap: '20px'}}>
+            <Image width={100} src={imageLink + companyData?.logo?.data?.attributes?.url} preview={false}/>
+
+            <Descriptions
+              column={4}
+              layout="vertical"
+              bordered
+              size='small'
+              style={{width: '75%'}}
+            >
+              <Descriptions.Item label={language.company}> {companyData?.name} </Descriptions.Item>
+              <Descriptions.Item label={language.manager}> {`${user.username}`}</Descriptions.Item>
+              <Descriptions.Item label={language.contacts}>
+                <div>{companyData?.contacts?.phone}</div>
+                <div>{companyData?.contacts?.phone_2}</div>
+                <div>{companyData?.contacts?.email}</div>
+                <div><a href={companyData?.contacts?.website}>{companyData?.contacts?.website}</a></div>
+              </Descriptions.Item>
+              <Descriptions.Item label={`${language.order} #`} labelStyle={{fontWeight: '600', color:'#f06d20'}}> {`${localStorage.getItem('TotalOrderId')}`}</Descriptions.Item>
+            </Descriptions>
+          </div>
+          )}
+        </div>
 
       </div>
     </>

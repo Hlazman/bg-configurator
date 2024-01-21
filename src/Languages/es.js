@@ -175,7 +175,7 @@ const es = {
   fullPresentation: "Presentación completa",
   shortPresentation: "Presentación breve",
 
-  duplicate: "Duplicado",
+  dublicate: "Duplicado",
   cost: "Costo",
   lacquer_1: 'Categoría 1',
   lacquer_2: 'Categoría 2',
@@ -184,6 +184,8 @@ const es = {
 
   deliveryCost: 'Costo de envío',
   delivery: 'Entrega',
+
+  contacts: "Contactos",
 
 // Products Frame
   'hidden_standard Hidden': 'Estándar oculto',

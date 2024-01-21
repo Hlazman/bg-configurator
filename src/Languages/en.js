@@ -188,6 +188,8 @@ const en = {
   deliveryCost: 'Delivery cost',
   delivery: 'Delivery',
 
+  contacts: 'Contacts', 
+
 // Products Options
   'cat_door': 'Cat Door',
   'vent_grille': 'Vent Grille',

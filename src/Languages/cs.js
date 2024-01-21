@@ -175,7 +175,7 @@ const cs = {
   fullPresentation: "Úplná prezentace",
   shortPresentation: "Krátká prezentace",
 
-  duplicate: "Duplikát",
+  dublicate: "Duplikát",
   cost: "Náklady",
   lacquer_1: 'Kategorie 1',
   lacquer_2: 'Kategorie 2',
@@ -184,6 +184,8 @@ const cs = {
 
   deliveryCost: 'Náklady na doručení',
   delivery: 'Doručení',
+
+  contacts: "Kontakty",
 
 // Products Frame
   'hidden_standard Hidden': 'Skrytý standard',

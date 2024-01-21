@@ -175,7 +175,7 @@ const ua = {
   fullPresentation: "Повна презентація",
   shortPresentation: "Коротка презентація",
 
-  duplicate: "Дублікат",
+  dublicate: "Дублікат",
   cost: "Вартість",
   lacquer_1: 'Категорія 1',
   lacquer_2: 'Категорія 2',
@@ -184,6 +184,8 @@ const ua = {
 
   deliveryCost: 'Вартість доставки',
   delivery: 'Доставка',
+
+  contacts: "Контакти",
 
 // Products Frame
   'hidden_standard Hidden': 'Прихований стандарт',

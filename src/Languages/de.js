@@ -175,7 +175,7 @@ const de = {
   fullPresentation: "Vollständige Präsentation",
   shortPresentation: "Kurzpräsentation",
 
-  duplicate: "Duplikat",
+  dublicate: "Duplikat",
   cost: "Kosten",
   lacquer_1: 'Kategorie 1',
   lacquer_2: 'Kategorie 2',
@@ -184,6 +184,8 @@ const de = {
 
   deliveryCost: 'Lieferkosten',
   delivery: 'Lieferung',
+
+  contacts: "Kontakte",
   
 // Products Frame
   'hidden_standard Hidden': 'Versteckter Standard',
