@@ -164,6 +164,7 @@ const en = {
   subOrder: 'Sub order',
   addSubOrder: 'add Sub order',
   subOrderDetails: 'Sub order details',
+  subOrderList: "Sub orders list",
   
   exchangeRate: "The database stores the price only in Euros. You can convert to another currency, but this data will only be saved in PDF files. Be careful, information about exchange rates is updated every day. And if you wish to adjust the Order, the prices may be different.",
   firstPainFor: 'First you need to choose field "Pait for"',

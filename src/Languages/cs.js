@@ -162,6 +162,7 @@ const cs = {
   subOrder: "Podobjednávka",
   addSubOrder: "Přidat podobjednávku",
   subOrderDetails: "Podrobnosti podobjednávky",
+  subOrderList: "Seznam podobjednávek",
 
   exchangeRate: "Databáze ukládá cenu pouze v eurech. Můžete převádět na jinou měnu, ale tyto údaje budou uloženy pouze v souborech PDF. Buďte opatrní, informace o směnných kurzech se aktualizují každý den. A pokud si přejete upravit objednávku, ceny se mohou lišit.",
   'firstPainFor': 'Nejprve musíte vybrat pole pro barvu "Barva pro"',

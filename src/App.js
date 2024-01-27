@@ -110,7 +110,7 @@ const getHeaderTitle = (location, Id) => {
     case '/':
       return language.orders;
     case '/orders':
-      return language.orderList;
+      return language.subOrderList;
     case '/clients':
       return language.clients;
     case '/createclient':
