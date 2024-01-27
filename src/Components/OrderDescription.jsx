@@ -13,7 +13,7 @@ export const OrderDescription = (
   const { selectedLanguage } = useLanguage();
   const language = languageMap[selectedLanguage];
 
-  const standartRAL = ['1013', '1015', '7045', '7047', '9001', '9002', '9003', '9010', '9016', '9018'];;
+  const standartRAL = ['1013', '1015', '7045', '7047', '9001', '9002', '9003', '9010', '9016', '9018'];
 
   const { Option } = Select;
   

@@ -54,7 +54,7 @@ const KnobesStep = ({ setCurrentStepSend, currentStepSend }) => {
             `,
             variables: {
               pagination: {
-                limit: 100
+                limit: 400
               }
             }
           },
@@ -107,9 +107,9 @@ const KnobesStep = ({ setCurrentStepSend, currentStepSend }) => {
       knob.attributes.title.toLowerCase().includes(searchQuery.toLowerCase())
     )
     .map(knob => ({
-      imgSrc: knob.attributes.image.data.attributes.url,
-      title: knob.attributes.title,
-      id: knob.id,
+      imgSrc: knob?.attributes?.image?.data?.attributes?.url,
+      title: knob?.attributes?.title,
+      id: knob?.id,
     }));
 
     const [form] = Form.useForm();
@@ -244,6 +244,7 @@ const KnobesStep = ({ setCurrentStepSend, currentStepSend }) => {
           >
             <Select.Option value="standard">{language.simple}</Select.Option>
             <Select.Option value="cylinder">{language.cylinder}</Select.Option>
+            <Select.Option value="key">{language.key}</Select.Option>
             <Select.Option value="wc">{language.wc}</Select.Option>
           </Select>
         </Form.Item>

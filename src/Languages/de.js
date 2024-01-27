@@ -153,9 +153,10 @@ const de = {
   wrongDecor: 'Dieser Dekor passt wahrscheinlich nicht zu dieser Tür',
 
   installation: 'Installation',
-  simple: 'Einfacher Knauf',
-  cylinder: 'Mit einer Überlagerung unter dem Zylinder',
-  wc: 'Mit einer Überlagerung unter der Toilette',
+  simple: "Standard",
+  cylinder: "Zylinder",
+  key: "Schlüssel",
+  wc: "WC",
 
   exchangeRate: "Die Datenbank speichert den Preis nur in Euro. Sie können in eine andere Währung umrechnen, aber diese Daten werden nur in PDF-Dateien gespeichert. Seien Sie vorsichtig, die Informationen zu Wechselkursen werden täglich aktualisiert. Und wenn Sie die Bestellung anpassen möchten, können die Preise unterschiedlich sein.",
   firstPainFor: 'Zuerst müssen Sie das Feld "Farbe für" auswählen',

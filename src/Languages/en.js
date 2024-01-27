@@ -58,7 +58,7 @@ const en = {
   submit: 'Submit',
   element: 'Element',
   frame: 'Frame',
-  knobe: 'Knobe',
+  knobe: 'Knob',
   hinges: 'Hinges',
   lock: 'Lock',
   veneer: 'Veneer',
@@ -154,11 +154,11 @@ const en = {
   wrongSize: "You probably entered the wrong dimensions",
   wrongDecor: "This decor probably doesn't match this door",
 
-
   installation: "Installation",
-  simple: "Simple knobe",
-  cylinder: "With an overlay under the cylinder",
-  wc: "With an overlay under the WC",
+  simple: "Standard",
+  cylinder: "Cylinder",
+  key: "Key",
+  wc: "WC",
   
   exchangeRate: "The database stores the price only in Euros. You can convert to another currency, but this data will only be saved in PDF files. Be careful, information about exchange rates is updated every day. And if you wish to adjust the Order, the prices may be different.",
   firstPainFor: 'First you need to choose field "Pait for"',
@@ -417,7 +417,7 @@ const en = {
 
   InstructionFitting: (
     <div style={{fontSize: '15px'}}>
-      <p>In this step, <strong> Knobe, Hinges</strong> and <strong> Lock</strong> are selected.</p>
+      <p>In this step, <strong> Knob, Hinges</strong> and <strong> Lock</strong> are selected.</p>
       <p> For convenience, it is possible to search for a product by name and sort by brand.</p>
       <p> 
         All have the same operating principle. 

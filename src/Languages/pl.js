@@ -153,9 +153,10 @@ const pl = {
   wrongDecor: 'Wybrane dekoracje nie są stosowane w wybranym modelu drzwi',
 
   installation: 'Montaż',
-  simple: 'Klamka zwykła',
-  cylinder: 'Szyld PZ',
-  wc: 'Szyld WC',
+  simple: "Standard",
+  cylinder: "Cylinder",
+  key: "Klucz",
+  wc: "WC",
 
   exchangeRate: "Baza danych przechowuje cenę tylko w euro. Możesz przeliczyć na inną walutę, ale te dane będą zapisane tylko w plikach PDF. Bądź ostrożny, informacje o kursach wymiany są aktualizowane codziennie. Jeśli chcesz dostosować zamówienie, ceny mogą być inne.",
   firstPainFor: 'Najpierw musisz wybrać pole "Farba do"',
