@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect } from 'react';
-import {Descriptions, Image, Select, Space, Alert} from 'antd';
+import {Descriptions, Image, Select, Space, Alert, Divider} from 'antd';
 import { PictureOutlined } from '@ant-design/icons';
 import { AuthContext } from '../Context/AuthContext';
 import { useLanguage } from '../Context/LanguageContext';
@@ -7,7 +7,7 @@ import languageMap from '../Languages/language';
 import {imageLink} from '../api/variables'
 
 export const OrderDescription = (
-  {orderData, orderId, frameData, doorData, elementData, lockData, hingeData, knobeData, optionsData, isCreatingPdf, companyData}
+  {orderData, orderId, frameData, doorData, elementData, lockData, hingeData, knobeData, optionsData, companyData}
   ) => {
   const { user } = useContext(AuthContext);
   const { selectedLanguage } = useLanguage();
@@ -47,6 +47,10 @@ export const OrderDescription = (
     fetchExchangeRates();
   }, []);
   
+  useEffect(() => {
+  console.log(knobeData)
+  });
+
   const convertCurrency = (price, selectedCurrency) => {
     if (!exchangeRates || !selectedCurrency || !price) {
       return null;
@@ -98,10 +102,9 @@ export const OrderDescription = (
   }
 
   return (
-    
-    <div style={{maxWidth: isCreatingPdf ? 'auto' : '900px', margin: '0 auto'}}>
+    <div style={{maxWidth: '900px', margin: '0 auto'}}>
 
-    <Space style={{display: isCreatingPdf ? 'none' : 'flex', marginBottom: '20px', alignItems: 'baseline'}}>
+    <Space style={{display: 'flex', marginBottom: '20px', alignItems: 'baseline'}}>
       <p> {language.currency} </p>
       <Select
         defaultValue={currency}
@@ -115,7 +118,7 @@ export const OrderDescription = (
     </Space>
 
     <Alert
-      style={{display: isCreatingPdf ? 'none' : 'block', marginBottom: '10px'}}
+      style={{display: 'block', marginBottom: '10px'}}
       description={language.exchangeRate}
       type="warning"
     />
@@ -132,13 +135,13 @@ export const OrderDescription = (
           column={4}
           layout="vertical"
           bordered
-          size={isCreatingPdf ? 'small' : 'default'}
+          size={'default'}
         >
           {doorData && (
           <>
             <Descriptions.Item 
               span={2} 
-              style={{ width: isCreatingPdf ? '55%' : '60%'}} 
+              style={{ width: '60%'}} 
               label={`${language.product} ${language.image}`}
               labelStyle={{fontWeight: '600', color:'#000'}}
               className='labelBG'
@@ -147,7 +150,7 @@ export const OrderDescription = (
                 {
                   doorData.door?.data?.attributes?.product_properties?.image?.data?.attributes?.url
                   ? <img 
-                  src={`https://api.boki.fortesting.com.ua${doorData.door?.data?.attributes?.product_properties?.image?.data?.attributes?.url}`} 
+                  src={`${imageLink}${doorData.door?.data?.attributes?.product_properties?.image?.data?.attributes?.url}`} 
                   alt="Product"
                   style={{height: '100%'}}
                     />
@@ -159,7 +162,7 @@ export const OrderDescription = (
             <Descriptions.Item 
               className='labelBG'
               span={2} 
-              style={{ width: isCreatingPdf ? '45%' : '40%'}} 
+              style={{ width: '40%'}} 
               label={language.data}
               labelStyle={{fontWeight: '600', color:'#000'}}
             >
@@ -167,7 +170,7 @@ export const OrderDescription = (
                 column={1}
                 layout="horizontal"
                 bordered
-                size={isCreatingPdf ? 'small' : 'default'}
+                size={'default'}
               >
                 <Descriptions.Item label={language.collection}>
                 {doorData.door?.data?.attributes?.collection}
@@ -208,21 +211,19 @@ export const OrderDescription = (
               </Descriptions>
             </Descriptions.Item>
 
-            <Descriptions.Item className='labelBG' span={2} label={`${language.decor} ${language.image}`} labelStyle={{fontWeight: '600', color:'#000'}}>
+            <Descriptions.Item className='labelBG' label={`${language.decor} ${language.image}`} labelStyle={{fontWeight: '600', color:'#000'}}>
               {
                 doorData?.decor?.img
                 ? <img 
-                    src={`https://api.boki.fortesting.com.ua${doorData?.decor?.img}`} 
+                    src={`${imageLink}${doorData?.decor?.img}`} 
                     alt="Decor"
-                    height={240}
-                    width={'100%'}
-                    style={{ display: 'block', textAlign: 'center' }}
+                    height={200}
                   />
                 : <PictureOutlined style={{fontSize: '150px'}}/>
               }
             </Descriptions.Item>
 
-            <Descriptions.Item className='labelBG' label={`${language.decor} ${language.title}`} labelStyle={{fontWeight: '600', color:'#000'}}>
+            <Descriptions.Item span={2} className='labelBG' label={`${language.decor} ${language.descr}`} labelStyle={{fontWeight: '600', color:'#000'}}>
               {doorData.decor?.data?.attributes?.paint.data?.attributes?.color_range} &nbsp;
               {doorData.decor?.data?.attributes?.title}
               <br/>
@@ -233,10 +234,7 @@ export const OrderDescription = (
                   ? '' 
                   : `${language.cost} + 10%`
               }
-
-            </Descriptions.Item>
-
-            <Descriptions.Item className='labelBG' label={`${language.decor} ${language.type}`}labelStyle={{fontWeight: '600', color:'#000'}} >
+              <br/>
               {doorData.decor?.data?.attributes?.type}
             </Descriptions.Item>
 
@@ -270,83 +268,73 @@ export const OrderDescription = (
               {convertedFramePrice ? `${convertedFramePrice} ${currency}` : `${frameData.price} ${orderData?.currency}`}
             </Descriptions.Item>
 
-            <Descriptions.Item className='labelBG' label={language.title} labelStyle={{fontWeight: '600', color:'#000'}}>
-              {lockData?.lock?.data?.attributes?.title}
-            </Descriptions.Item>
-
-            <Descriptions.Item className='labelBG' label={language.title} labelStyle={{fontWeight: '600', color:'#000'}}>
-              {hingeData?.hinge?.data?.attributes?.title}
-            </Descriptions.Item>
-
-            <Descriptions.Item className='labelBG' label={language.title} labelStyle={{fontWeight: '600', color:'#000'}}>
-              {
-                knobeData?.knobe?.data?.attributes?.title
-                ? knobeData?.knobe?.data?.attributes?.title / languageMap[selectedLanguage][knobeData.knobe_variant]
-                : '-'
-                }
-            </Descriptions.Item>
-
-            <Descriptions.Item className='labelBG' label={`${language.image} (${language.lock})`} labelStyle={{fontWeight: '600', color:'#000'}}>
+            <Descriptions.Item className='labelBG' label={language.lock} labelStyle={{fontWeight: '600', color:'#000'}}>
+              {language.title} : {lockData?.lock?.data?.attributes?.title}
+              <br/>
+              {language.brand} : {lockData?.lock?.data?.attributes?.brand}
+              <Divider/>
               {
                 lockData?.lock?.data?.attributes?.image?.data?.attributes?.url
                 ? <img
-                    src={`https://api.boki.fortesting.com.ua${lockData?.lock?.data?.attributes?.image?.data?.attributes?.url}`}
+                    src={`${imageLink}${lockData?.lock?.data?.attributes?.image?.data?.attributes?.url}`}
                     alt="Lock"
-                    height={200}
+                    height={150}
                     style={{ display: 'block', margin: '0 auto' }}
                   />
                 : <PictureOutlined style={{fontSize: '150px'}}/>
                 
               }
+
             </Descriptions.Item>
 
-            <Descriptions.Item className='labelBG' label={`${language.image} (${language.hinges})`} labelStyle={{fontWeight: '600', color:'#000'}}>
+            <Descriptions.Item className='labelBG' label={language.hinges} labelStyle={{fontWeight: '600', color:'#000'}}>
+              {language.title} : {hingeData?.hinge?.data?.attributes?.title}
+              <br/>
+              {language.brand} : {hingeData?.hinge?.data?.attributes?.brand}
+              <Divider/>
               {
                 hingeData?.hinge?.data?.attributes?.image?.data?.attributes?.url
                 ? <img
-                    src={`https://api.boki.fortesting.com.ua${hingeData?.hinge?.data?.attributes?.image?.data?.attributes?.url}`}
+                    src={`${imageLink}${hingeData?.hinge?.data?.attributes?.image?.data?.attributes?.url}`}
                     alt="hinge"
-                    height={200}
+                    height={150}
                     style={{ display: 'block', margin: '0 auto' }}
                   />
                 : <PictureOutlined style={{fontSize: '150px'}}/>
               }
+
             </Descriptions.Item>
 
-            <Descriptions.Item className='labelBG' label={`${language.image} (${language.knobe})`} labelStyle={{fontWeight: '600', color:'#000'}}>
-              {
-                knobeData?.knobe?.data?.attributes?.image?.data?.attributes?.url
-                ? <img
-                    src={`https://api.boki.fortesting.com.ua${knobeData?.knobe?.data?.attributes?.image?.data?.attributes?.url}`}
-                    alt="knobe"
-                    height={isCreatingPdf ? '80px' : '100px'}
-                    style={{ display: 'block', margin: '0 auto' }}
-                  />
-                :  '-'
-              }
-            </Descriptions.Item>
-
-            <Descriptions.Item className='labelBG' label={language.brand} labelStyle={{fontWeight: '600', color:'#000'}}>
-              {lockData?.lock?.data?.attributes?.brand}
-            </Descriptions.Item>
-
-            <Descriptions.Item className='labelBG' label={language.brand} labelStyle={{fontWeight: '600', color:'#000'}}>
-              {hingeData?.hinge?.data?.attributes?.brand}
-            </Descriptions.Item>
-
-            <Descriptions.Item className='labelBG' label={language.brand} labelStyle={{fontWeight: '600', color:'#000'}}>
-              {
-                knobeData?.knobe?.data?.attributes?.brand
-                ? knobeData?.knobe?.data?.attributes?.brand
-                : '-'
-              }
+            <Descriptions.Item className='labelBG' label={language.knobe} labelStyle={{fontWeight: '600', color:'#000'}}>
+              {language.title} : {
+                  knobeData?.knobe?.data?.attributes?.title
+                  ? `${knobeData?.knobe?.data?.attributes?.title} / ${languageMap[selectedLanguage][knobeData.knobe_variant]}`
+                  : '-'
+                  }
+                  <br/>
+                  {language.brand} :{
+                    knobeData?.knobe?.data?.attributes?.brand
+                    ? knobeData?.knobe?.data?.attributes?.brand
+                    : '-'
+                  }
+                  <Divider/>
+                  {
+                    knobeData?.knobe?.data?.attributes?.image?.data?.attributes?.url
+                    ? <img
+                        src={`${imageLink}${knobeData?.knobe?.data?.attributes?.image?.data?.attributes?.url}`}
+                        alt="knobe"
+                        height={'100px'}
+                        style={{ display: 'block', margin: '25px auto'}}
+                      />
+                    :  '-'
+                  }
             </Descriptions.Item>
 
             <Descriptions.Item className='labelBG' label={`${language.price} (${language.lock})`} labelStyle={{fontWeight: '600', color:'#000'}}>
               {convertedLockPrice ? `${convertedLockPrice} ${currency}` : `${lockData.price} ${orderData?.currency}`} 
             </Descriptions.Item>
 
-            <Descriptions.Item className='labelBG' label={`${language.price} (${language.hinges}) / ${language.amount}`} labelStyle={{fontWeight: '600', color:'#000'}}>
+            <Descriptions.Item className='labelBG' label={`${language.price} (${language.hinges})`} labelStyle={{fontWeight: '600', color:'#000'}}>
               {convertedHingePrice ? `${convertedHingePrice} ${currency}` : `${hingeData.price} ${orderData?.currency}`} / {language.amount}: {hingeData?.amount}
             </Descriptions.Item>
 
@@ -408,7 +396,7 @@ export const OrderDescription = (
                 )}
 
                 {element?.sizes?.length && (
-                  <Descriptions.Item span={3} className='labelBG' label="Lenght" labelStyle={{fontWeight: '600', color:'#000'}}>
+                  <Descriptions.Item span={3} className='labelBG' label={language.len} labelStyle={{fontWeight: '600', color:'#000'}}>
                     {`${element?.sizes?.length} mm`}
                   </Descriptions.Item>
                 )}
@@ -423,23 +411,17 @@ export const OrderDescription = (
                         {
                           element?.decor?.img
                           ? <img 
-                              src={`https://api.boki.fortesting.com.ua${element?.decor?.img}`}
+                              src={`${imageLink}${element?.decor?.img}`}
                               alt="Decor"
-                              height={200}
-                              width={'100%'}
-                              style={{ display: 'block', textAlign: 'center' }}
+                              height={100}
                             />
                           : <PictureOutlined style={{fontSize: '150px'}}/>
                         }
                     </Descriptions.Item>
 
-                    <Descriptions.Item className='labelBG' label={`${language.decor} ${language.title}`} span={2} labelStyle={{fontWeight: '600', color:'#000'}}>
-                      {element.decor?.data?.attributes?.paint.data?.attributes?.color_range} &nbsp;
+                    <Descriptions.Item className='labelBG' label={`${language.decor}`} span={3} labelStyle={{fontWeight: '600', color:'#000'}}>
+                      {element.decor?.data?.attributes?.type} : {element.decor?.data?.attributes?.paint.data?.attributes?.color_range} &nbsp;
                       {element.decor?.data?.attributes?.title}
-                    </Descriptions.Item>
-
-                    <Descriptions.Item className='labelBG' label={`${language.decor} ${language.type}`} labelStyle={{fontWeight: '600', color:'#000'}} >
-                      {element.decor?.data?.attributes?.type}
                     </Descriptions.Item>
                   </>
                 )}

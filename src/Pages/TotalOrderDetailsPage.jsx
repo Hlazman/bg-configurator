@@ -244,7 +244,7 @@ export const TotalOrderDetailsPage = () => {
                 column={4}
                 layout="vertical"
                 bordered
-                size='default'
+                size='small'
                 >
                   <Descriptions.Item span={2} className='labelBG' label={language.shippingAddress} labelStyle={{fontWeight: '600', color:'#000'}}>
                     {`${totalOrderData?.contacts?.address}, ${totalOrderData?.contacts?.country}, ${totalOrderData?.contacts?.city}, ${totalOrderData?.contacts?.zipCode}`}
@@ -300,7 +300,7 @@ export const TotalOrderDetailsPage = () => {
               column={1}
               layout="vertical"
               bordered
-              size='default'
+              size='small'
               >
                 <Descriptions.Item className='labelBG' label={language.totalCost} labelStyle={{fontWeight: '600', color:'#000'}}>
                   {basicCostConverted ? `${basicCostConverted} ${currancyValue}` : `${totalOrderData?.basicTotalPrice} ${currancyValue}`}
@@ -311,9 +311,10 @@ export const TotalOrderDetailsPage = () => {
           </>
         )}
 
-        <div style={{padding: '15px', backgroundColor: '#FFF', borderRadius: '15px', maxWidth: '900px', margin: '0 auto'}}>
+        <Divider/>
+        <div style={{maxWidth: '900px', margin: '0 auto'}}>
           {(presentation === 'full' || presentation === 'short') && (
-          <div style={{display: 'flex', justifyContent: 'space-around', alignItems: 'center', gap: '20px'}}>
+          <div style={{display: 'flex', justifyContent: 'space-around', alignItems: 'center', gap: '20px', backgroundColor: '#FFF', padding: '15px', borderRadius: '15px'}}>
             <Image width={100} src={imageLink + companyData?.logo?.data?.attributes?.url} preview={false}/>
 
             <Descriptions
@@ -336,7 +337,6 @@ export const TotalOrderDetailsPage = () => {
           </div>
           )}
         </div>
-
       </div>
     </>
   );

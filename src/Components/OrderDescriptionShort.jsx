@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import {Descriptions} from 'antd';
 import { useLanguage } from '../Context/LanguageContext';
 import languageMap from '../Languages/language';
+import {imageLink} from '../api/variables'
 
 
 export const OrderDescriptionShort = ({
@@ -65,7 +66,7 @@ export const OrderDescriptionShort = ({
 
   return (
     <div style={{maxWidth: isCreatingPdf ? 'auto' : '900px', margin: '0 auto'}}>
-      <div style={{padding: '5px', backgroundColor: '#FFF'}}>
+      <div style={{padding: '5px'}}>
         {imageIndex === 0 && (
           <Descriptions
             column={4}
@@ -77,15 +78,17 @@ export const OrderDescriptionShort = ({
           <>
             <Descriptions.Item 
               span={4} 
-              style={{ width: isCreatingPdf ? '55%' : '60%'}} 
+              style={{ width: isCreatingPdf ? '55%' : '60%', backgroundColor: '#FFF'}} 
               className='labelNone'
             >
-            <div>
+            <div style={{height: '400px', textAlign: 'center'}}>
               <img 
-                src={`https://api.boki.fortesting.com.ua${doorData.door?.data?.attributes?.product_properties?.image?.data?.attributes?.url}`} 
+                src={`${imageLink}${doorData.door?.data?.attributes?.product_properties?.image?.data?.attributes?.url}`} 
                 alt="Product"
-                style={{width: '100%'}}
-                  />
+                style={{height: '100%'}}
+                // style={{width: '100%'}}
+                // style={{maxHeight: '500px'}}
+                />
             </div>
           </Descriptions.Item>
           </>
@@ -98,7 +101,7 @@ export const OrderDescriptionShort = ({
           layout="vertical"
           bordered
           size={isCreatingPdf ? 'small' : 'default'}
-          style={{ marginTop: '20px'}} 
+          style={{ marginTop: '20px', backgroundColor: '#FFF'}} 
         >
           {doorData && (
           <>
@@ -106,8 +109,8 @@ export const OrderDescriptionShort = ({
               {++imageIndex}
             </Descriptions.Item>
 
-            <Descriptions.Item label={language.order} labelStyle={{fontWeight: '600', color:'#000'}}>
-              <h4> {language.order} # {orderName} </h4>
+            <Descriptions.Item label={language.subOrder} labelStyle={{fontWeight: '600', color:'#000'}}>
+              <h4> {language.subOrder} # {orderName} </h4>
             </Descriptions.Item>
 
             <Descriptions.Item label={`${language.product} ${language.title}`} labelStyle={{fontWeight: '600', color:'#000'}}>

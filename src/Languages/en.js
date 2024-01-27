@@ -159,6 +159,11 @@ const en = {
   cylinder: "Cylinder",
   key: "Key",
   wc: "WC",
+
+  len: 'lenght',
+  subOrder: 'Sub order',
+  addSubOrder: 'add Sub order',
+  subOrderDetails: 'Sub order details',
   
   exchangeRate: "The database stores the price only in Euros. You can convert to another currency, but this data will only be saved in PDF files. Be careful, information about exchange rates is updated every day. And if you wish to adjust the Order, the prices may be different.",
   firstPainFor: 'First you need to choose field "Pait for"',
@@ -188,7 +193,8 @@ const en = {
   deliveryCost: 'Delivery cost',
   delivery: 'Delivery',
 
-  contacts: 'Contacts', 
+  contacts: 'Contacts',
+  descr: 'Description',
 
 // Products Options
   'cat_door': 'Cat Door',

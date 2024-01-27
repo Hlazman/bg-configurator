@@ -234,6 +234,15 @@ const handleOpenTotalOrder = (totalOrderID) => {
 
   const columns = [
     {
+      title: `ID`,
+      dataIndex: ['id'],
+      key: 'totalOrderId',
+      width: '100px',
+      fixed: 'left',
+      sorter: (a, b) => a.id - b.id,
+      render: (text) => `# ${text}`,
+    },
+    {
       title: `${language.order}`,
       dataIndex: ['attributes', 'title'],
       key: 'title',
@@ -325,7 +334,7 @@ const handleOpenTotalOrder = (totalOrderID) => {
       dataIndex: ['attributes', 'createdAt'],
       key: 'totalOrderCreatedAt',
       width: '150px',
-      defaultSortToatlOrder: 'desc',
+      defaultSortOrder: 'desc',
       sorter: (a, b) => (a.attributes.createdAt || '').localeCompare(b.attributes.createdAt || ''),
       render: (text) => {
         if (!text) return '';

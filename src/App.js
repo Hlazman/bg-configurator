@@ -79,7 +79,7 @@ const App = () => {
 
 const getHeaderTitle = (location, Id) => {
   if (location.pathname.startsWith('/createorder/') || location.pathname.startsWith('/editorder/')) {
-    return `${language.order} #${Id}`;
+    return `${language.subOrder} #${Id}`;
   }
 
   if (location.pathname.startsWith('/createtotalorder/') || location.pathname.startsWith('/edittotalorder/')) {
@@ -91,19 +91,19 @@ const getHeaderTitle = (location, Id) => {
   }
 
   if (location.pathname.startsWith('/order/')) {
-    return `${language.orderDetails} #${Id}`;
+    return `${language.subOrderDetails} #${Id}`;
   }
 
   if (location.pathname.startsWith('/totalorderdetails') && localStorage.getItem('presentation') === 'factory') {
-    return `${language.factory}`;
+    return `${language.factory} ${language.order} # ${localStorage.getItem('TotalOrderId')}`;
   }
 
   if (location.pathname.startsWith('/totalorderdetails') && localStorage.getItem('presentation') === 'full') {
-    return `${language.fullPresentation}`;
+    return `${language.fullPresentation} ${language.order} # ${localStorage.getItem('TotalOrderId')}`;
   }
 
   if (location.pathname.startsWith('/totalorderdetails') && localStorage.getItem('presentation') === 'short') {
-    return `${language.shortPresentation}`;
+    return `${language.shortPresentation} ${language.order} # ${localStorage.getItem('TotalOrderId')}`;
   }
 
   switch (location.pathname) {

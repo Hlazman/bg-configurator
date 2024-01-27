@@ -1,6 +1,5 @@
-import React, { useState, useContext, useEffect, useRef } from 'react';
-import {Descriptions, Select, Space, Alert} from 'antd';
-import { AuthContext } from '../Context/AuthContext';
+import React, { useState, useEffect, useRef } from 'react';
+import {Descriptions} from 'antd';
 import { useLanguage } from '../Context/LanguageContext';
 import languageMap from '../Languages/language';
 
@@ -8,12 +7,8 @@ import languageMap from '../Languages/language';
 export const OrderDescriptionFactory = ({
   orderData, orderId, frameData, doorData, elementData, lockData, hingeData, knobeData, optionsData, isCreatingPdf, orderName, currancyValue
 }) => {
-  const { user } = useContext(AuthContext);
   const { selectedLanguage } = useLanguage();
-  const language = languageMap[selectedLanguage];
-
-  const { Option } = Select;
-  
+  const language = languageMap[selectedLanguage];  
   const [currency, setCurrency] = useState('EUR');
   const [convertedDoorPrice, setConvertedDoorPrice] = useState(null);
   const [convertedFramePrice, setConvertedFramePrice] = useState(null);
@@ -102,7 +97,7 @@ export const OrderDescriptionFactory = ({
 
       {/* HEADER */}
       <div style={{padding: '15px', backgroundColor: '#FFF', borderRadius: '15px'}}>
-        <h2> {language.order} # {orderName} </h2>
+        <h2> {language.subOrder} # {orderName} </h2>
       {/* DOOR DETAILS */}
         <p style={{fontWeight: '500', padding: '10px', backgroundColor: '#f06d20', color: '#FFF'}}> 
           {language.door}
@@ -181,7 +176,7 @@ export const OrderDescriptionFactory = ({
           column={3}
           layout="vertical"
           bordered
-          size='default'
+          size={isCreatingPdf ? 'small' : 'default'}
           >
           {frameData && lockData && hingeData && knobeData && (
           <>
@@ -193,51 +188,37 @@ export const OrderDescriptionFactory = ({
               {convertedFramePrice ? `${convertedFramePrice} ${currency}` : `${frameData.basicPrice} ${orderData?.currency}`}
             </Descriptions.Item>
 
-            <Descriptions.Item className='labelBG' label={language.lock} labelStyle={{fontWeight: '600', color:'#000'}}>
-              {lockData?.lock?.data?.attributes?.title}
-            </Descriptions.Item>
-
-            <Descriptions.Item className='labelBG' label={language.brand} labelStyle={{fontWeight: '600', color:'#000'}}>
-              {lockData?.lock?.data?.attributes?.brand}
+            <Descriptions.Item className='labelBG' span={2} label={language.lock} labelStyle={{fontWeight: '600', color:'#000'}}>
+              {lockData?.lock?.data?.attributes?.title} ({lockData?.lock?.data?.attributes?.brand})
             </Descriptions.Item>
 
             <Descriptions.Item className='labelBG' label={`${language.price}`} labelStyle={{fontWeight: '600', color:'#000'}}>
               {convertedLockPrice ? `${convertedLockPrice} ${currency}` : `${lockData.basicPrice} ${orderData?.currency}`} 
             </Descriptions.Item>
 
-            <Descriptions.Item className='labelBG' label={language.hinges} labelStyle={{fontWeight: '600', color:'#000'}}>
-              {hingeData?.hinge?.data?.attributes?.title}
+            <Descriptions.Item className='labelBG' span={2} label={language.hinges} labelStyle={{fontWeight: '600', color:'#000'}}>
+              {hingeData?.hinge?.data?.attributes?.title} ({hingeData?.hinge?.data?.attributes?.brand})
             </Descriptions.Item>
 
-            <Descriptions.Item className='labelBG' label={language.brand} labelStyle={{fontWeight: '600', color:'#000'}}>
-              {hingeData?.hinge?.data?.attributes?.brand}
-            </Descriptions.Item>
-
-            <Descriptions.Item className='labelBG' label={`${language.price} / ${language.amount}`} labelStyle={{fontWeight: '600', color:'#000'}}>
+            <Descriptions.Item className='labelBG' label={`${language.price}`} labelStyle={{fontWeight: '600', color:'#000'}}>
               {convertedHingePrice ? `${convertedHingePrice} ${currency}` : `${hingeData.basicPrice} ${orderData?.currency}`} / {language.amount}: {hingeData?.amount}
             </Descriptions.Item>
 
-            <Descriptions.Item className='labelBG' label={language.knobe} labelStyle={{fontWeight: '600', color:'#000'}}>
-              {/* {knobeData?.knobe?.data?.attributes?.title} / {languageMap[selectedLanguage][knobeData.knobe_variant]} */}
+            <Descriptions.Item className='labelBG' span={2} label={language.knobe} labelStyle={{fontWeight: '600', color:'#000'}}>
               {
                 knobeData?.knobe?.data?.attributes?.title
                 ? `${knobeData?.knobe?.data?.attributes?.title} / ${languageMap[selectedLanguage][knobeData.knobe_variant]}`
                 : '-'
                 }
-            </Descriptions.Item>
-
-            <Descriptions.Item className='labelBG' label={language.brand} labelStyle={{fontWeight: '600', color:'#000'}}>
-              {/* {knobeData?.knobe?.data?.attributes?.brand} */}
-              {
+                &nbsp; /
+                ({
                 knobeData?.knobe?.data?.attributes?.brand
                 ? knobeData?.knobe?.data?.attributes?.brand
                 : '-'
-              }
+              })
             </Descriptions.Item>
-
             
             <Descriptions.Item className='labelBG' label={`${language.price}`} labelStyle={{fontWeight: '600', color:'#000'}}>
-              {/* {convertedKnobePrice ? `${convertedKnobePrice} ${currency}` : `${knobeData.basicPrice} ${orderData?.currency}`} */}
               {
                 convertedKnobePrice !== null
                   ? `${convertedKnobePrice} ${currency}` 
@@ -270,7 +251,7 @@ export const OrderDescriptionFactory = ({
                 layout="vertical"
                 bordered
                 style={{margin: '10px 0'}}
-                size='middle'
+                size={isCreatingPdf ? 'small' : 'default'}
               >
                 <Descriptions.Item className='labelBG' label={`${language.element} ${language.title}`} labelStyle={{fontWeight: '600', color:'#000'}}>
                   {languageMap[selectedLanguage][element.type]}: {languageMap[selectedLanguage][element.element?.data?.attributes?.title]}
@@ -306,13 +287,9 @@ export const OrderDescriptionFactory = ({
 
                 {element.decor?.data?.attributes && (
                   <>
-                    <Descriptions.Item className='labelBG' label={`${language.decor} ${language.title}`} span={2} labelStyle={{fontWeight: '600', color:'#000'}}>
-                      {element.decor?.data?.attributes?.paint.data?.attributes?.color_range} &nbsp;
+                    <Descriptions.Item className='labelBG' label={`${language.decor}`} span={2} labelStyle={{fontWeight: '600', color:'#000'}}>
+                    {element.decor?.data?.attributes?.type} : {element.decor?.data?.attributes?.paint.data?.attributes?.color_range} &nbsp;
                       {element.decor?.data?.attributes?.title}
-                    </Descriptions.Item>
-
-                    <Descriptions.Item className='labelBG' label={`${language.decor} ${language.type}`} labelStyle={{fontWeight: '600', color:'#000'}} >
-                      {element.decor?.data?.attributes?.type}
                     </Descriptions.Item>
                   </>
                 )}
@@ -333,14 +310,14 @@ export const OrderDescriptionFactory = ({
               <div style={{padding: '15px', backgroundColor: '#FFF', borderRadius: '15px'}}>
         
         <p style={{fontWeight: '500', padding: '10px', backgroundColor: '#f06d20', color: '#FFF'}}> 
-          {language.Order} {language.options}
+          {language.subOrder} {language.options}
         </p>
 
         <Descriptions
           column={2}
           layout="vertical"
           bordered
-          size='default'
+          size={isCreatingPdf ? 'small' : 'default'}
           >
             {optionsData && optionsData.length > 0 && optionsData.map((option, index) => (
               <React.Fragment key={index}>
@@ -375,15 +352,14 @@ export const OrderDescriptionFactory = ({
       <div style={{padding: '15px', backgroundColor: '#FFF', borderRadius: '15px'}}>
         
         <p style={{fontWeight: '500', padding: '10px', backgroundColor: '#f06d20', color: '#FFF'}}> 
-          {language.cost} {language.order} # {orderName} 
+          {language.cost} {language.subOrder} # {orderName} 
         </p>
 
         <Descriptions
           bordered
-          size='default'
+          size={isCreatingPdf ? 'small' : 'default'}
           >
             <Descriptions.Item>
-              {/* {convertedPriceTotal ? `${convertedPriceTotal} ${currency}` : `${orderData?.basicTotalCost} ${orderData?.currency}`} */}
               {convertedPriceTotal ? `${convertedPriceTotal} ${currency}` : `${orderData?.basicTotalCost} ${orderData?.currency}`}
             </Descriptions.Item>
 

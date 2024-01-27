@@ -158,6 +158,11 @@ const pl = {
   key: "Klucz",
   wc: "WC",
 
+  len: "Długość",
+  subOrder: "Podzamówienie",
+  addSubOrder: "Dodaj podzamówienie",
+  subOrderDetails: "Szczegóły podzamówienia",
+
   exchangeRate: "Baza danych przechowuje cenę tylko w euro. Możesz przeliczyć na inną walutę, ale te dane będą zapisane tylko w plikach PDF. Bądź ostrożny, informacje o kursach wymiany są aktualizowane codziennie. Jeśli chcesz dostosować zamówienie, ceny mogą być inne.",
   firstPainFor: 'Najpierw musisz wybrać pole "Farba do"',
 

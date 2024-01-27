@@ -1,6 +1,7 @@
-import React, { useEffect, useState, useContext } from 'react';
+// import React, { useEffect, useState, useContext } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Button, Divider } from 'antd';
-import html2pdf from 'html2pdf.js';
+// import html2pdf from 'html2pdf.js';
 import axios from 'axios';
 import { useOrder } from '../Context/OrderContext';
 import { OrderDescription } from '../Components/OrderDescription';
@@ -8,7 +9,7 @@ import { OrderDescriptionFactory } from '../Components/OrderDescriptionFactory';
 import { useParams } from 'react-router-dom';
 import { useLanguage } from '../Context/LanguageContext';
 import languageMap from '../Languages/language';
-import { AuthContext } from '../Context/AuthContext';
+// import { AuthContext } from '../Context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import { LeftCircleOutlined } from '@ant-design/icons';
 import { OrderDescriptionShort } from '../Components/OrderDescriptionShort';
@@ -19,7 +20,7 @@ import { useSelectedCompany } from '../Context/CompanyContext';
 
 
 export const OrderDetailsPage = ({fromTotalOrder, isCreatingTotalPdf, orderName, currancyValue, imageIndex}) => {
-  const { user } = useContext(AuthContext);
+  // const { user } = useContext(AuthContext);
   const jwtToken = localStorage.getItem('token');
   const { orderId, setOrderId } = useOrder();
   const [orderData, setOrderData] = useState(null);
@@ -28,7 +29,7 @@ export const OrderDetailsPage = ({fromTotalOrder, isCreatingTotalPdf, orderName,
   const language = languageMap[selectedLanguage];
   const { selectedCompany } = useSelectedCompany();
 
-  const [isCreatingPdf, setIsCreatingPdf] = useState(false);
+  // const [isCreatingPdf, setIsCreatingPdf] = useState(false);
   const navigate = useNavigate();
 
   const [doorData, setDoorData] = useState(null);
@@ -42,41 +43,41 @@ export const OrderDetailsPage = ({fromTotalOrder, isCreatingTotalPdf, orderName,
 
   const [companyData, setCompanyData] = useState(null);
 
-  const embedImages = async () => {
-    const images = document.querySelectorAll('img');
-    const promises = Array.from(images).map(async (img) => {
-      const src = img.src;
-      const response = await fetch(src);
-      const blob = await response.blob();
-      const dataUrl = await new Promise((resolve) => {
-        const reader = new FileReader();
-        reader.onloadend = () => resolve(reader.result);
-        reader.readAsDataURL(blob);
-      });
-      img.src = dataUrl;
-    });
+  // const embedImages = async () => {
+  //   const images = document.querySelectorAll('img');
+  //   const promises = Array.from(images).map(async (img) => {
+  //     const src = img.src;
+  //     const response = await fetch(src);
+  //     const blob = await response.blob();
+  //     const dataUrl = await new Promise((resolve) => {
+  //       const reader = new FileReader();
+  //       reader.onloadend = () => resolve(reader.result);
+  //       reader.readAsDataURL(blob);
+  //     });
+  //     img.src = dataUrl;
+  //   });
 
-    await Promise.all(promises);
-  };
+  //   await Promise.all(promises);
+  // };
 
-  const handlePdfExport = async () => {
-    setIsCreatingPdf(true);
-    const element = document.getElementById('pdf-content');
-    await embedImages();
+  // const handlePdfExport = async () => {
+  //   setIsCreatingPdf(true);
+  //   const element = document.getElementById('pdf-content');
+  //   await embedImages();
   
-    await html2pdf()
-      .from(element)
-      .set({
-        margin: [5, 0, 5, 0], 
-        filename: `Order ${fromTotalOrder ? fromTotalOrder : orderId}.pdf`,
-        image: { type: 'jpeg', quality: 0.98 },
-        html2canvas: { scale: 2 },
-        jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
-        pagebreak: { mode: 'avoid-all', after: '#nextpage' }
-      })
-      .save();
-      setIsCreatingPdf(false);
-  };
+  //   await html2pdf()
+  //     .from(element)
+  //     .set({
+  //       margin: [5, 0, 5, 0], 
+  //       filename: `Order ${fromTotalOrder ? fromTotalOrder : orderId}.pdf`,
+  //       image: { type: 'jpeg', quality: 0.98 },
+  //       html2canvas: { scale: 2 },
+  //       jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
+  //       pagebreak: { mode: 'avoid-all', after: '#nextpage' }
+  //     })
+  //     .save();
+  //     setIsCreatingPdf(false);
+  // };
   
   const fetchData = async () => {
     try {
@@ -801,7 +802,7 @@ const fetchOptionsData = async (optionIds) => {
           
           <div style={{display: 'flex', gap: '20px', justifyContent: 'space-between', margin: '20px 50px'}}>
             <Button icon={<LeftCircleOutlined />} type="dashed" onClick={()=> navigate(`/orders`)}> {language.orderList} </Button>
-            <Button type="primary" size={'large'} onClick={handlePdfExport}>{language.save} PDF</Button>
+            {/* <Button type="primary" size={'large'} onClick={handlePdfExport}>{language.save} PDF</Button> */}
           </div>
 
           <div id="pdf-content">
@@ -815,7 +816,7 @@ const fetchOptionsData = async (optionIds) => {
               knobeData={knobeData}
               lockData={lockData}
               optionsData={optionsData}
-              isCreatingPdf={isCreatingPdf}
+              // isCreatingPdf={isCreatingPdf}
               companyData={companyData}
             />
           </div>

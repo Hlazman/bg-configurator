@@ -211,13 +211,13 @@ const handleOpenOrder = (orderID) => {
 
   const columns = [
     {
-      title: `${language.order}`,
+      title: `${language.subOrder}`,
       dataIndex: 'id',
       key: 'id',
       width: '150px',
       fixed: 'left',
       sorter: (a, b) => (a.id || '').localeCompare(b.id || ''),
-      render: (text) => `BG Order # ${text || ''}`,
+      render: (text) => `${language.subOrder} # ${text || ''}`,
       filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters }) => (
         <div style={{ padding: 8 }}>
           <Input
@@ -466,7 +466,7 @@ const handleOpenOrder = (orderID) => {
       {contextHolder}
 
       <Button type="primary" icon={<PlusCircleOutlined />} onClick={() => navigate(`/createorder/`)}>
-          {language.addOrder}
+          {language.addSubOrder}
       </Button>
       
       <div style={{display: 'flex', gap: '20px'}}>
@@ -512,23 +512,12 @@ const handleOpenOrder = (orderID) => {
       <Spin spinning={loading} size="large">
         <Table
           rowSelection={{}}
-          // rowSelection={{
-          //   type: 'checkbox',
-          //   selectedRowKeys,
-          //   onChange: (keys) => {
-          //     setSelectedRowKeys(keys);
-          //   },
-          // }}
           expandable={{
             expandedRowRender,
             rowExpandable: isExpandable,
           }}
           columns={columns}
           dataSource={data}
-          // scroll={{
-          //   x: 1500,
-          // }}
-          // sticky
           pagination={{
             ...pagination,
             position: ['topRight'],
