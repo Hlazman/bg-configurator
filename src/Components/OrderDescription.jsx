@@ -25,8 +25,8 @@ export const OrderDescription = (
   const [convertedHingePrice, setConvertedHingePrice] = useState(null);
   const [convertedOptionPrice, setConvertedOptionPrice] = useState([]);
   const [convertedElementPrice, setConvertedElementPrice] = useState([]);
-  const [convertedPriceNOTax, setConvertedPriceNOTax] = useState('');
-  const [convertedPriceWithTax, setConvertedPriceWithTax] = useState('');
+  // const [convertedPriceNOTax, setConvertedPriceNOTax] = useState('');
+  // const [convertedPriceWithTax, setConvertedPriceWithTax] = useState('');
   const [convertedPriceTotal, setConvertedPriceTotal] = useState('');
   const [exchangeRates, setExchangeRates] = useState(null);
 
@@ -81,8 +81,8 @@ export const OrderDescription = (
       return { ...option, convertedPrice: updatedPrice };
     });
 
-    const convertedPriceNOTax = convertCurrency(orderData?.totalCost - Math.ceil(orderData?.totalCost / 100 * orderData?.tax), value);
-    const convertedPriceWithTax = convertCurrency(Math.ceil(orderData?.totalCost / 100 * orderData?.tax), value);
+    // const convertedPriceNOTax = convertCurrency(orderData?.totalCost - Math.ceil(orderData?.totalCost / 100 * orderData?.tax), value);
+    // const convertedPriceWithTax = convertCurrency(Math.ceil(orderData?.totalCost / 100 * orderData?.tax), value);
     const convertedPriceTotal = convertCurrency(orderData.totalCost, value);
   
     setConvertedDoorPrice(convertedDoorPrice);
@@ -92,8 +92,8 @@ export const OrderDescription = (
     setConvertedLockPrice(convertedLockPrice);
     setConvertedElementPrice(convertedElementPrice)
     setConvertedOptionPrice(convertedOptionPrice)
-    setConvertedPriceNOTax(convertedPriceNOTax)
-    setConvertedPriceWithTax(convertedPriceWithTax);
+    // setConvertedPriceNOTax(convertedPriceNOTax)
+    // setConvertedPriceWithTax(convertedPriceWithTax);
     setConvertedPriceTotal(convertedPriceTotal);
   };
 
@@ -488,7 +488,7 @@ export const OrderDescription = (
       {/* ORDER INFORMATION */}
       <div style={{padding: '15px', backgroundColor: '#FFF', borderRadius: '15px'}}>
         <p style={{fontWeight: '500', padding: '10px', backgroundColor: '#f06d20', color: '#FFF'}}> 
-          {language.Order} {language.cost}
+          {language.Order} {language.totalCost}
         </p>
 
         <Descriptions
@@ -497,19 +497,20 @@ export const OrderDescription = (
           bordered
           size='default'
           >
-            <Descriptions.Item className='labelBG' label={language.price} labelStyle={{fontWeight: '600', color:'#000'}}>
+            {/* <Descriptions.Item className='labelBG' label={language.price} labelStyle={{fontWeight: '600', color:'#000'}}>
               {convertedPriceNOTax ? `${convertedPriceNOTax} ${currency}` : `${orderData?.totalCost - Math.ceil(orderData?.totalCost / 100 * orderData?.tax)} ${orderData?.currency}`}
             </Descriptions.Item>
 
             <Descriptions.Item className='labelBG' label={language.tax} labelStyle={{fontWeight: '600', color:'#000'}}>
               {convertedPriceWithTax ? `${convertedPriceWithTax} ${currency}` : `${Math.ceil(orderData?.totalCost / 100 * orderData?.tax)} ${orderData?.currency}`}
-            </Descriptions.Item>
+            </Descriptions.Item> */}
 
-            <Descriptions.Item className='labelBG' label={`${language.discount} %`} labelStyle={{fontWeight: '600', color:'#000'}}>
+            {/* <Descriptions.Item className='labelBG' label={`${language.discount} %`} labelStyle={{fontWeight: '600', color:'#000'}}>
               {orderData?.discount ? orderData?.discount: 0}
-            </Descriptions.Item>
+            </Descriptions.Item> */}
 
-            <Descriptions.Item className='labelBG' label={language.totalCost} labelStyle={{fontWeight: '600', color:'#000'}}>
+            {/* <Descriptions.Item className='labelBG' label={language.totalCost} labelStyle={{fontWeight: '600', color:'#000'}}> */}
+            <Descriptions.Item className='labelNone'>
               {convertedPriceTotal ? `${convertedPriceTotal} ${currency}` : `${orderData?.totalCost} ${orderData?.currency}`}
             </Descriptions.Item>
 

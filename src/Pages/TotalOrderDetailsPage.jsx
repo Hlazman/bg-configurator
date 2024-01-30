@@ -52,6 +52,8 @@ export const TotalOrderDetailsPage = () => {
                   basicTotalPrice
                   tax
                   deliveryCost
+                  totalCostWithoutTax
+                  totalTax
                   orders {
                     data {
                       id
@@ -120,8 +122,10 @@ export const TotalOrderDetailsPage = () => {
       setIsCreatingTotalPdf(false);
   };
 
-  const [noTaxTotalCostConverted, setNoTaxTotalCostConverted] = useState('');
-  const [withTaxTotalCostConverted, setWithTaxTotalCostConverted] = useState('');
+  const [totalCostWithoutTaxConverted, setTotalCostWithoutTaxConverted] = useState('');
+  const [totalTaxConverted, seTotalTaxConverted] = useState('');
+  // const [noTaxTotalCostConverted, setNoTaxTotalCostConverted] = useState('');
+  // const [withTaxTotalCostConverted, setWithTaxTotalCostConverted] = useState('');
   const [totalCostConverted, setTotalCostConverted] = useState('');
   const [basicCostConverted, setBasicCostConverted] = useState('');
   const [installationPriceConverted, setInstallationPriceConverted] = useState('');
@@ -153,15 +157,19 @@ export const TotalOrderDetailsPage = () => {
   };
   
   const handleCurrencyChange = async (value) => {
-    const priceNoTax = convertCurrency(totalOrderData?.totalCost - Math.ceil(totalOrderData?.totalCost / 100 * totalOrderData?.tax), value);
-    const priceWithTax = convertCurrency(Math.ceil(totalOrderData?.totalCost / 100 * totalOrderData?.tax), value);
+    const totalTax = convertCurrency(totalOrderData.totalTax, value);
+    const CostWithoutTax = convertCurrency(totalOrderData.totalCostWithoutTax, value);
+    // const priceNoTax = convertCurrency(totalOrderData?.totalCost - Math.ceil(totalOrderData?.totalCost / 100 * totalOrderData?.tax), value);
+    // const priceWithTax = convertCurrency(Math.ceil(totalOrderData?.totalCost / 100 * totalOrderData?.tax), value);
     const totalPrice = convertCurrency(totalOrderData.totalCost, value);
     const basicPrice = convertCurrency(totalOrderData.basicTotalPrice, value);
     const installationPrice = convertCurrency(totalOrderData.installationCost, value);
     const deliveryPrice = convertCurrency(totalOrderData.deliveryCost, value);
   
-    setNoTaxTotalCostConverted(priceNoTax)
-    setWithTaxTotalCostConverted(priceWithTax);
+    seTotalTaxConverted(totalTax)
+    setTotalCostWithoutTaxConverted(CostWithoutTax)
+    // setNoTaxTotalCostConverted(priceNoTax)
+    // setWithTaxTotalCostConverted(priceWithTax);
     setTotalCostConverted(totalPrice);
     setBasicCostConverted(basicPrice);
     setInstallationPriceConverted(installationPrice)
@@ -255,26 +263,28 @@ export const TotalOrderDetailsPage = () => {
                   </Descriptions.Item>
 
                   <Descriptions.Item span={2} className='labelBG' label={`${language.delivery} ${language.cost}`} labelStyle={{fontWeight: '600', color:'#000'}}>
-                  {deliveryPriceConverted ? `${deliveryPriceConverted} ${currancyValue}` : `${totalOrderData?.deliveryCost} ${currancyValue}`}
+                    {deliveryPriceConverted ? `${deliveryPriceConverted} ${currancyValue}` : `${totalOrderData?.deliveryCost} ${currancyValue}`}
                   </Descriptions.Item>
 
                   <Descriptions.Item span={2} className='labelBG' label={`${language.installation} ${language.cost}`} labelStyle={{fontWeight: '600', color:'#000'}}>
                     {installationPriceConverted ? `${installationPriceConverted} ${currancyValue}` : `${totalOrderData?.installationCost} ${currancyValue}`}
                   </Descriptions.Item>
 
-                  <Descriptions.Item className='labelBG' label={language.price} labelStyle={{fontWeight: '600', color:'#000'}}>
-                    {noTaxTotalCostConverted ? `${noTaxTotalCostConverted} ${currancyValue}` : `${totalOrderData?.totalCost - Math.ceil(totalOrderData?.totalCost / 100 * totalOrderData?.tax)} ${currancyValue}`}
+                  <Descriptions.Item className='labelBG' label={`${language.price} ${language.net}`} labelStyle={{fontWeight: '600', color:'#000'}}>
+                    {/* {noTaxTotalCostConverted ? `${noTaxTotalCostConverted} ${currancyValue}` : `${totalOrderData?.totalCost - Math.ceil(totalOrderData?.totalCost / 100 * totalOrderData?.tax)} ${currancyValue}`} */}
+                    {`${totalCostWithoutTaxConverted} ${currancyValue}`}
                   </Descriptions.Item>
 
                   <Descriptions.Item className='labelBG' label={`${language.tax}: ${totalOrderData?.tax}%`} labelStyle={{fontWeight: '600', color:'#000'}}>
-                    {withTaxTotalCostConverted ? `${withTaxTotalCostConverted} ${currancyValue}` : `${Math.ceil(totalOrderData?.totalCost / 100 * totalOrderData?.tax)} ${currancyValue}`}
+                  {`${totalTaxConverted} ${currancyValue}`}
+                    {/* {withTaxTotalCostConverted ? `${withTaxTotalCostConverted} ${currancyValue}` : `${Math.ceil(totalOrderData?.totalCost / 100 * totalOrderData?.tax)} ${currancyValue}`} */}
                   </Descriptions.Item>
 
                   <Descriptions.Item className='labelBG' label={`${language.discount} %`} labelStyle={{fontWeight: '600', color:'#000'}}>
                     {totalOrderData?.discount ? totalOrderData?.discount: 0}
                   </Descriptions.Item>
 
-                  <Descriptions.Item className='labelBG' label={language.totalCost} labelStyle={{fontWeight: '600', color:'#000'}}>
+                  <Descriptions.Item className='labelBG' label={`${language.price} ${language.gross}`} labelStyle={{fontWeight: '600', color:'#000'}}>
                     {totalCostConverted ? `${totalCostConverted} ${currancyValue}` : `${totalOrderData?.totalCost} ${currancyValue}`}
                   </Descriptions.Item>
 

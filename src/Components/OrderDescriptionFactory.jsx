@@ -178,7 +178,8 @@ export const OrderDescriptionFactory = ({
           bordered
           size={isCreatingPdf ? 'small' : 'default'}
           >
-          {frameData && lockData && hingeData && knobeData && (
+          {/* {frameData && lockData && hingeData && knobeData && ( */}
+          {frameData && lockData && hingeData && (
           <>
             <Descriptions.Item className='labelBG' span={2} label={`${language.frame} ${language.type}`} labelStyle={{fontWeight: '600', color:'#000'}}>
               {languageMap[selectedLanguage][frameData.frame?.data?.attributes?.title]}
@@ -204,7 +205,7 @@ export const OrderDescriptionFactory = ({
               {convertedHingePrice ? `${convertedHingePrice} ${currency}` : `${hingeData.basicPrice} ${orderData?.currency}`} / {language.amount}: {hingeData?.amount}
             </Descriptions.Item>
 
-            <Descriptions.Item className='labelBG' span={2} label={language.knobe} labelStyle={{fontWeight: '600', color:'#000'}}>
+            {/* <Descriptions.Item className='labelBG' span={2} label={language.knobe} labelStyle={{fontWeight: '600', color:'#000'}}>
               {
                 knobeData?.knobe?.data?.attributes?.title
                 ? `${knobeData?.knobe?.data?.attributes?.title} / ${languageMap[selectedLanguage][knobeData.knobe_variant]}`
@@ -226,7 +227,7 @@ export const OrderDescriptionFactory = ({
                     ? `${knobeData?.price} ${orderData?.currency}`
                     : '-'
                 }
-            </Descriptions.Item>
+            </Descriptions.Item> */}
           </>
           )}
           </Descriptions>

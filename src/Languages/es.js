@@ -164,6 +164,9 @@ const es = {
   subOrderDetails: "Detalles de la suborden",
   subOrderList: "Lista de subórdenes",
 
+  gross: 'bruto',
+  net: 'neto',
+
   exchangeRate: "La base de datos almacena el precio solo en euros. Puede convertirlo a otra moneda, pero estos datos solo se guardarán en archivos PDF. Tenga cuidado, la información sobre los tipos de cambio se actualiza todos los días. Y si desea ajustar el pedido, los precios pueden ser diferentes.",
   firstPainFor: 'Primero debes elegir el campo "Pintura para"',
 

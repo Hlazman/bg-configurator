@@ -164,6 +164,9 @@ const de = {
   subOrderDetails: "Details zur Teilbestellung",
   subOrderList: "Liste der Teilbestellungen",
 
+  gross: 'brutto',
+  net: 'netto',
+
   exchangeRate: "Die Datenbank speichert den Preis nur in Euro. Sie können in eine andere Währung umrechnen, aber diese Daten werden nur in PDF-Dateien gespeichert. Seien Sie vorsichtig, die Informationen zu Wechselkursen werden täglich aktualisiert. Und wenn Sie die Bestellung anpassen möchten, können die Preise unterschiedlich sein.",
   firstPainFor: 'Zuerst müssen Sie das Feld "Farbe für" auswählen',
 

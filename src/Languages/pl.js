@@ -194,6 +194,9 @@ const pl = {
 
   contacts: "Kontakty",
 
+  gross: 'brutto',
+  net: 'netto',
+
 // Products Frame
   'hidden_standard Hidden': 'Ukryty standard',
   'type 1 outside Neo Classic': 'Neo classic zewnętrzne',

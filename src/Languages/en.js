@@ -197,6 +197,9 @@ const en = {
   contacts: 'Contacts',
   descr: 'Description',
 
+  gross: 'gross',
+  net: 'net',
+
 // Products Options
   'cat_door': 'Cat Door',
   'vent_grille': 'Vent Grille',
