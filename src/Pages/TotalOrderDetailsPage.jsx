@@ -191,7 +191,7 @@ export const TotalOrderDetailsPage = () => {
   useEffect(() => {
     fetchData();
     getCompanyData(jwtToken, selectedCompany, setCompanyData);
-  }, [totalOrderId, selectedCompany]);
+  }, [totalOrderId, selectedCompany, totalOrderData.totalTax]);
 
   return (
     <>
@@ -272,12 +272,13 @@ export const TotalOrderDetailsPage = () => {
 
                   <Descriptions.Item className='labelBG' label={`${language.price} ${language.net}`} labelStyle={{fontWeight: '600', color:'#000'}}>
                     {/* {noTaxTotalCostConverted ? `${noTaxTotalCostConverted} ${currancyValue}` : `${totalOrderData?.totalCost - Math.ceil(totalOrderData?.totalCost / 100 * totalOrderData?.tax)} ${currancyValue}`} */}
-                    {`${totalCostWithoutTaxConverted} ${currancyValue}`}
+                    {/* {`${totalCostWithoutTaxConverted} ${currancyValue}`} */}
+                    {totalCostWithoutTaxConverted ? `${totalCostWithoutTaxConverted} ${currancyValue}` : `${totalOrderData?.totalCostWithoutTax} ${currancyValue}`}
                   </Descriptions.Item>
 
                   <Descriptions.Item className='labelBG' label={`${language.tax}: ${totalOrderData?.tax}%`} labelStyle={{fontWeight: '600', color:'#000'}}>
-                  {`${totalTaxConverted} ${currancyValue}`}
                     {/* {withTaxTotalCostConverted ? `${withTaxTotalCostConverted} ${currancyValue}` : `${Math.ceil(totalOrderData?.totalCost / 100 * totalOrderData?.tax)} ${currancyValue}`} */}
+                    {totalTaxConverted ? `${totalTaxConverted} ${currancyValue}` : `${totalOrderData?.totalTax} ${currancyValue}`}
                   </Descriptions.Item>
 
                   <Descriptions.Item className='labelBG' label={`${language.discount} %`} labelStyle={{fontWeight: '600', color:'#000'}}>
