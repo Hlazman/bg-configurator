@@ -253,7 +253,7 @@ const pl = {
 // Products Elements TYPE
   decorInsert: "Dekoracyjna wstawka",
   wallplate: "Panel ścienny",
-  cover: "Opaska maskująca",
+  border: "Ramka aluminiowa",
   platband: "Listwa",
   threadedPlatband: "Listwa ornamentowana",
   extender: "Listwa dodatkowa",
@@ -286,9 +286,9 @@ const pl = {
     </ul>
   ),
 
-  coverWarning: (
+  borderWarning: (
     <ul>
-      <li>Jeśli nie potrzebujesz malowania dekoracyjnego dla <strong>okładki</strong>, nie klikaj w przyciski: <strong>Indywidualny dekor</strong> i <strong>Dekor jak w drzwiach</strong>.</li>
+      <li>Jeśli nie potrzebujesz malowania dekoracyjnego dla <strong>Ramka aluminiowa</strong>, nie klikaj w przyciski: <strong>Indywidualny dekor</strong> i <strong>Dekor jak w drzwiach</strong>.</li>
     </ul>
   ),
 

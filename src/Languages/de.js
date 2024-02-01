@@ -253,7 +253,7 @@ const de = {
 // Products Elements TYPE
   decorInsert: "Dekoreinsatz",
   wallplate: "Wandpaneel",
-  cover: "Überlagerung",
+  border: "Aluminiumrahmen",
   platband: "Leisten",
   threadedPlatband: "Gewindeplatte",
   extender: "Auswahlleiste",
@@ -286,9 +286,9 @@ const de = {
     </ul>
   ),
 
-  coverWarning: (
+  borderWarning: (
     <ul>
-      <li>Wenn Sie keine Dekormalerei für die <strong>Abdeckung</strong> benötigen, klicken Sie nicht auf die Schaltflächen: <strong>Individueller Dekor</strong> und <strong>Dekor wie in der Tür</strong>.</li>
+      <li>Wenn Sie keine Dekormalerei für die <strong>Aluminiumrahmen</strong> benötigen, klicken Sie nicht auf die Schaltflächen: <strong>Individueller Dekor</strong> und <strong>Dekor wie in der Tür</strong>.</li>
     </ul>
   ),
 

@@ -102,7 +102,7 @@ const GroupDecorElementStep = ({elementID}) => {
           `,
           variables: {
             pagination: {
-              limit: 100
+              limit: 2000
             }
           }
         },

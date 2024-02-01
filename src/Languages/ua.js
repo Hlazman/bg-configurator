@@ -253,7 +253,7 @@ const ua = {
 // Products Elements TYPE
   decorInsert: "Вставка декору",
   wallplate: "Cтiнoвa панель",
-  cover: "Накладка",
+  border: "Алюмінієвий обклад",
   platband: "Лиштва",
   threadedPlatband: "Лиштва з різьбленням",
   extender: "Добірна планка",
@@ -286,9 +286,9 @@ saveElementsWarning: (
     </ul>
   ),
 
-  coverWarning: (
+  borderWarning: (
     <ul>
-      <li>Якщо вам не потрібен декор покраски для <strong> Накладки </strong>, не натискайте на кнопки: <strong>Індивідуальний декор</strong> i <strong>Декор, як y дверях</strong>.</li>
+      <li>Якщо вам не потрібен декор покраски для <strong> Алюмінієвий обклад </strong>, не натискайте на кнопки: <strong>Індивідуальний декор</strong> i <strong>Декор, як y дверях</strong>.</li>
     </ul>
   ),
 

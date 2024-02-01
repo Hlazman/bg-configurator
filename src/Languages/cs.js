@@ -253,7 +253,7 @@ const cs = {
 // Products Elements TYPE
   decorInsert: "Vložit dekor",
   wallplate: "Stěnový panel",
-  cover: "Překryv",
+  border: "Hliníkový rám",
   platband: "Lišty",
   threadedPlatband: "Víceřadý lištový panel",
   extender: "Výběrová lišta",
@@ -286,9 +286,9 @@ const cs = {
     </ul>
   ),
 
-  coverWarning: (
+  borderWarning: (
     <ul>
-      <li>Pokud nepotřebujete malování dekoru pro <strong>kryt</strong>, neklikejte na tlačítka: <strong>Individuální dekor</strong> a <strong>Dekor jako u dveří</strong>.</li>
+      <li>Pokud nepotřebujete malování dekoru pro <strong>Hliníkový rám</strong>, neklikejte na tlačítka: <strong>Individuální dekor</strong> a <strong>Dekor jako u dveří</strong>.</li>
     </ul>
   ),
 

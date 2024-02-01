@@ -109,7 +109,7 @@ const GroupDecorStep = ({ setCurrentStepSend, currentStepSend }) => {
           `,
           variables: {
             pagination: {
-              limit: 100
+              limit: 2000
             }
           }
         },
@@ -180,7 +180,7 @@ const GroupDecorStep = ({ setCurrentStepSend, currentStepSend }) => {
   
     if (foundDecor) {
       setSelectedDecorId(foundDecor.id);
-      console.log(`Found ${type}  ${title}`);
+      console.log(`Found ${type} ${title}`);
     } else {
       console.log(`Not found ${type}  ${title} . Creating...`);
   
@@ -196,7 +196,7 @@ const GroupDecorStep = ({ setCurrentStepSend, currentStepSend }) => {
   };
 
   const sendDecorForm = async (orderIdToUse, doorSuborder, selectedDecorId) => {
-    const updateDoorSuborderId = doorSuborder; 
+    const updateDoorSuborderId = doorSuborder;
 
     const data = {
       decor: selectedDecorId,

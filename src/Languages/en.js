@@ -256,7 +256,7 @@ const en = {
 // Products Elements TYPE
   decorInsert: "Insert decor", 
   wallplate: "Wall panel",
-  cover: "Cover",
+  border: "Aluminum frame",
   platband: "Platband",
   threadedPlatband: "Threaded Platband",
   extender: "Extender", 
@@ -289,9 +289,9 @@ const en = {
   </ul>
   ),
 
-  coverWarning: (
+  borderWarning: (
     <ul>
-      <li>If you do not need decor painting for the <strong>cover</strong> , do not click on the buttons: <strong>Individual decor</strong> and <strong>Decor like in door</strong>.</li>
+      <li>If you do not need decor painting for the <strong>Aluminum frame</strong> , do not click on the buttons: <strong>Individual decor</strong> and <strong>Decor like in door</strong>.</li>
   </ul>
   ),
 

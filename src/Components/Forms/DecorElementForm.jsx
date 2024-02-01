@@ -23,11 +23,11 @@ const DecorElementForm = ({setCurrentStepSend, elementID, currentStepSend}) => {
   const [showDecor, setShowDecor] = useState(false);
   const [btnColor, setBtnColor] = useState('#ff0505');
 
-  const noWidth = ['anotherSideColor', 'skirting', 'skirtingAluminium', 'moulding'];
-  const noHeigt = ['anotherSideColor', 'skirting', 'skirtingAluminium', 'moulding', 'platband', 'threadedPlatband', 'kapitel', 'extender'];
-  const noThickness = ['anotherSideColor', 'platband', 'threadedPlatband', 'kapitel', 'extender', 'decorInsert', 'wallplate', 'cover', 'replaceGlass'];
-  const noLength = ['anotherSideColor', 'platband', 'threadedPlatband', 'kapitel', 'extender', 'decorInsert', 'wallplate', 'cover', 'replaceGlass'];
-  const noDecor = ['cover', 'moulding', 'skirtingAluminium'];
+  const noWidth = ['anotherSideColor', 'skirting', 'skirtingAluminium', 'moulding', 'border'];
+  const noHeigt = ['anotherSideColor', 'skirting', 'skirtingAluminium', 'moulding', 'platband', 'threadedPlatband', 'kapitel', 'extender', 'border'];
+  const noThickness = ['anotherSideColor', 'platband', 'threadedPlatband', 'kapitel', 'extender', 'decorInsert', 'wallplate', 'border', 'replaceGlass'];
+  const noLength = ['anotherSideColor', 'platband', 'threadedPlatband', 'kapitel', 'extender', 'decorInsert', 'wallplate', 'border', 'replaceGlass'];
+  const noDecor = ['border', 'moulding', 'skirtingAluminium'];
 
   const [isWidthDisabled, setIsWidthDisabled] = useState(false); 
   const [isWidthRequired, setIsWidthRequired] = useState(false); 
@@ -350,9 +350,9 @@ const DecorElementForm = ({setCurrentStepSend, elementID, currentStepSend}) => {
     if (currentElementField === 'platband') {
       setAlert(true);
       setAlertMessae(language.platbandWarning);
-    } else if (currentElementField === 'cover') {
+    } else if (currentElementField === 'border') {
       setAlert(true);
-      setAlertMessae(language.coverWarning);
+      setAlertMessae(language.borderWarning);
     } else if (currentElementField === 'moulding') {
       setAlert(true);
       setAlertMessae(language.mouldingWarning);

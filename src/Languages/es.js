@@ -253,7 +253,7 @@ const es = {
 // Products Elements TYPE
   decorInsert: "Inserto decorativo",
   wallplate: "Panel de pared",
-  cover: "Cubierta",
+  border: "Marco de aluminio",
   platband: "Listones",
   threadedPlatband: "Listón roscado",
   extender: "Barra de selección",
@@ -286,9 +286,9 @@ const es = {
     </ul>
   ),
 
-  coverWarning: (
+  borderWarning: (
     <ul>
-      <li>Si no necesita pintura decorativa para la <strong>tapadera</strong>, no haga clic en los botones: <strong>Decoración individual</strong> y <strong>Decoración como en la puerta</strong>.</li>
+      <li>Si no necesita pintura decorativa para la <strong>Marco de aluminio</strong>, no haga clic en los botones: <strong>Decoración individual</strong> y <strong>Decoración como en la puerta</strong>.</li>
     </ul>
   ),
 
