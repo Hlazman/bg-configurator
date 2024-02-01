@@ -248,6 +248,7 @@ const cs = {
   'sandblasting': 'Pískování',
   'spindle set': 'Souprava hřídelek',
   'cutting for decor': 'Řezání pro dekor',
+  'filling with PU foam': 'Výplň PU pěnou',
 
 // Products Elements TYPE
   decorInsert: "Vložit dekor",

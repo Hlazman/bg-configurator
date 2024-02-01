@@ -248,6 +248,7 @@ const pl = {
   'sandblasting': 'Piaskowanie',
   'spindle set': 'Kantrygiel zestaw',
   'cutting for decor': 'Wycinanie w celu dopasowanie dekoru',
+  'filling with PU foam': 'Pianka poliuretanowa',
 
 // Products Elements TYPE
   decorInsert: "Dekoracyjna wstawka",

@@ -248,6 +248,7 @@ const ua = {
   'sandblasting': 'Піскоструйна обробка',
   'spindle set': 'Комплект шпинделя',
   'cutting for decor': 'Вирізання під декор',
+  'filling with PU foam': 'Наповнення пінополіуретановою піною',
 
 // Products Elements TYPE
   decorInsert: "Вставка декору",

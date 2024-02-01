@@ -248,6 +248,7 @@ const es = {
   'sandblasting': 'Chorreado de arena',
   'spindle set': 'Juego de husillos',
   'cutting for decor': 'Corte para decoración',
+  'filling with PU foam': 'Relleno con espuma de PU',
 
 // Products Elements TYPE
   decorInsert: "Inserto decorativo",

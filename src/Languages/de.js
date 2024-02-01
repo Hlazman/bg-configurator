@@ -248,6 +248,7 @@ const de = {
   'sandblasting': 'Sandstrahlen',
   'spindle set': 'Spindel-Set',
   'cutting for decor': 'Schnitt für Dekor',
+  'filling with PU foam': 'Füllung mit PU-Schaum',
 
 // Products Elements TYPE
   decorInsert: "Dekoreinsatz",

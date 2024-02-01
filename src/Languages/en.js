@@ -214,6 +214,7 @@ const en = {
   'sandblasting': 'Sandblasting',
   'spindle set': 'Spindle set',
   'cutting for decor': 'Cutting for decor',
+  'filling with PU foam': 'Filling with PU foam',
 
 // Products Frame
   'hidden_standard Hidden': 'Hidden standart',

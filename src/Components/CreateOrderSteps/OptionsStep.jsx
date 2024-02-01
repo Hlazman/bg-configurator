@@ -27,13 +27,14 @@ const OptionsStep = ({ setCurrentStepSend, currentStepSend }) => {
         queryLink,
         {
           query: `
-            query Query($pagination: PaginationArg) {
-              options(pagination: $pagination) {
+            query Query($pagination: PaginationArg, $sort: [String]) {
+              options(pagination: $pagination, sort: $sort) {
                 data {
                   id
                   attributes {
                     title
                     price
+                    actuality
                   }
                 }
               }
@@ -42,7 +43,8 @@ const OptionsStep = ({ setCurrentStepSend, currentStepSend }) => {
           variables: {
             pagination: {
               limit: 30
-            }
+            },
+            sort: "actuality"
           },
         },
         {
@@ -314,7 +316,7 @@ const OptionsStep = ({ setCurrentStepSend, currentStepSend }) => {
         </Button>
       </Affix>
 
-      <div style={{ display: 'flex', gap: '30px' }}>
+      {/* <div style={{ display: 'flex', gap: '30px' }}>
           <Form.Item
             label={language.horizontalVeneer}
             name="horizontal_veneer"
@@ -336,7 +338,7 @@ const OptionsStep = ({ setCurrentStepSend, currentStepSend }) => {
               <Radio.Button value={false}>{language.no}</Radio.Button>
             </Radio.Group>
           </Form.Item>
-        </div>
+        </div> */}
 
         {optionsData && optionsData.map(option => (
           <div key={option.id} style={{ display: 'flex', gap: '30px' }}>
@@ -362,6 +364,31 @@ const OptionsStep = ({ setCurrentStepSend, currentStepSend }) => {
             </Form.Item>
           </div>
         ))}
+
+        <div style={{ display: 'flex', gap: '30px' }}>
+          <Form.Item
+            label={language.horizontalVeneer}
+            name="horizontal_veneer"
+          >
+            <Radio.Group buttonStyle="solid">
+              <Radio.Button value={true}>{language.yes}</Radio.Button>
+              <Radio.Button value={false}>{language.no}</Radio.Button>
+            </Radio.Group>
+          </Form.Item>
+        </div>
+
+        <div style={{ display: 'flex', gap: '30px' }}>
+          <Form.Item
+            label={language.superGloss}
+            name="super_gloss"
+          >
+            <Radio.Group buttonStyle="solid">
+              <Radio.Button value={true}>{language.yes}</Radio.Button>
+              <Radio.Button value={false}>{language.no}</Radio.Button>
+            </Radio.Group>
+          </Form.Item>
+        </div>
+
       </Form>
     </Card>
   );
