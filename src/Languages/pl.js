@@ -199,7 +199,7 @@ const pl = {
   gross: 'brutto',
   net: 'netto',
 
-  descr: "Opis",
+  descr: "Opis dekoracji",
 
 // Decor Types
 painted_veneer: 'Pomalowany fornir',

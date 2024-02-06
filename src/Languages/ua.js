@@ -199,7 +199,7 @@ const ua = {
 
   contacts: "Контакти",
 
-  descr: "Опис",
+  descr: "Опис декору",
 
 // Decor Types
 painted_veneer: 'Фарбований шпон',

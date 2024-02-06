@@ -285,7 +285,8 @@ const CanvasStep = ({ setCurrentStepSend, currentStepSend}) => {
           },
         ]}
         >
-          <InputNumber addonBefore={language.width} addonAfter="mm"/>
+          {/* <InputNumber addonBefore={language.width} addonAfter="mm"/> */}
+          <InputNumber addonBefore={`${language.width} (${language.canvas})`} addonAfter="mm"/>
         </Form.Item>
         
         <Form.Item
@@ -298,7 +299,8 @@ const CanvasStep = ({ setCurrentStepSend, currentStepSend}) => {
           },
         ]}
         >
-          <InputNumber addonBefore={language.height} addonAfter="mm"/>
+          {/* <InputNumber addonBefore={language.height} addonAfter="mm"/> */}
+          <InputNumber addonBefore={`${language.height} (${language.canvas})`} addonAfter="mm"/>
         </Form.Item>
 
         <Form.Item

@@ -199,7 +199,7 @@ const cs = {
 
   contacts: "Kontakty",
 
-  descr: "Popis",
+  descr: "Popis dekoru",
 
 // Decor Types
 painted_veneer: 'Natřená dýha',

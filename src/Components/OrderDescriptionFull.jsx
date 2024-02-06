@@ -202,7 +202,7 @@ export const OrderDescriptionFull = ({
               }
             </Descriptions.Item>
 
-            <Descriptions.Item className='labelBG' label={`${language.decor} ${language.descr}`} labelStyle={{fontWeight: '600', color:'#000'}}>
+            <Descriptions.Item className='labelBG' label={`${language.descr}`} labelStyle={{fontWeight: '600', color:'#000'}}>
               {doorData.decor?.data?.attributes?.paint?.data?.attributes?.color_range} &nbsp;
               {doorData.decor?.data?.attributes?.title}
               <br/>

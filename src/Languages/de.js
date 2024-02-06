@@ -199,7 +199,7 @@ const de = {
 
   contacts: "Kontakte",
 
-  descr: "Beschreibung",
+  descr: "Dekorbeschreibung",
 
 // Decor Types
 painted_veneer: 'Lackiertes Furnier',

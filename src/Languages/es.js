@@ -199,7 +199,7 @@ const es = {
 
   contacts: "Contactos",
 
-  descr: "Descripción",
+  descr: "Descripción del decorado",
 
 // Decor Types
 painted_veneer: 'Chapa pintada',

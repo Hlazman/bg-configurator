@@ -197,7 +197,7 @@ const en = {
   delivery: 'Delivery',
 
   contacts: 'Contacts',
-  descr: 'Description',
+  descr: 'Decor description',
 
   gross: 'gross',
   net: 'net',
