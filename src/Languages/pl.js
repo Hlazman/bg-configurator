@@ -49,7 +49,9 @@ const pl = {
   stoneware: 'Płyta ceramiczna',
   mirror: 'Lustro',
   primers: 'Grunt',
+  primer: 'Grunt',
   hpl: 'Panele HPL',
+  HPL: 'HPL',
   startData: 'Dane początkowe',
   canvas: 'Skrzydło',
   comment: 'Komentarz',
@@ -196,6 +198,13 @@ const pl = {
 
   gross: 'brutto',
   net: 'netto',
+
+  descr: "Opis",
+
+// Decor Types
+painted_veneer: 'Pomalowany fornir',
+painted_glass: 'Pomalowane szkło',
+ceramogranite: 'Ceramogranit',
 
 // Products Frame
   'hidden_standard Hidden': 'Ukryty standard',

@@ -49,7 +49,9 @@ const de = {
   stoneware: 'Steingut',
   mirror: 'Spiegel',
   primers: 'Grundierung',
+  primer: 'Grundierung',
   hpl: 'HPL-Platten',
+  HPL: 'HPL',
   startData: 'Startdatum',
   canvas: 'Leinwand',
   comment: 'Kommentar',
@@ -196,6 +198,13 @@ const de = {
   delivery: 'Lieferung',
 
   contacts: "Kontakte",
+
+  descr: "Beschreibung",
+
+// Decor Types
+painted_veneer: 'Lackiertes Furnier',
+painted_glass: 'Lackiertes Glas',
+ceramogranite: 'Keramogranit',
   
 // Products Frame
   'hidden_standard Hidden': 'Versteckter Standard',

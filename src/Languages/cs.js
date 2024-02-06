@@ -49,7 +49,9 @@ const cs = {
   stoneware: 'Keramická dlažba',
   mirror: 'Zrcadlo',
   primers: 'Grund',
+  primer: 'Grund',
   hpl: 'HPL Panely',
+  HPL: 'HPL',
   startData: 'Počáteční údaje',
   canvas: 'Plátno',
   comment: 'Komentář',
@@ -196,6 +198,13 @@ const cs = {
   delivery: 'Doručení',
 
   contacts: "Kontakty",
+
+  descr: "Popis",
+
+// Decor Types
+painted_veneer: 'Natřená dýha',
+painted_glass: 'Natřené sklo',
+ceramogranite: 'Ceramogranit',
 
 // Products Frame
   'hidden_standard Hidden': 'Skrytý standard',

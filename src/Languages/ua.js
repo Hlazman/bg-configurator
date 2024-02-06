@@ -49,7 +49,9 @@ const ua = {
   stoneware: 'Керамічна плитка',
   mirror: 'Дзеркало',
   primers: 'Грунт',
+  primer: 'Грунт',
   hpl: 'HPL Панелі',
+  HPL: 'HPL',
   startData: 'Початкові дані',
   canvas: 'Полотно',
   comment: 'Коментар',
@@ -196,6 +198,13 @@ const ua = {
   delivery: 'Доставка',
 
   contacts: "Контакти",
+
+  descr: "Опис",
+
+// Decor Types
+painted_veneer: 'Фарбований шпон',
+painted_glass: 'Фарбоване скло',
+ceramogranite: 'Керамограніт',
 
 // Products Frame
   'hidden_standard Hidden': 'Прихований стандарт',

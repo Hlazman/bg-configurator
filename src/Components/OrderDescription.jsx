@@ -235,7 +235,8 @@ export const OrderDescription = (
                   : `${language.cost} + 10%`
               }
               <br/>
-              {doorData.decor?.data?.attributes?.type}
+              {/* {doorData.decor?.data?.attributes?.type} */}
+              {languageMap[selectedLanguage][doorData.decor?.data?.attributes?.type]}
             </Descriptions.Item>
 
             <Descriptions.Item className='labelBG' label={language.price} labelStyle={{fontWeight: '600', color:'#000'}}>
@@ -420,7 +421,8 @@ export const OrderDescription = (
                     </Descriptions.Item>
 
                     <Descriptions.Item className='labelBG' label={`${language.decor}`} span={3} labelStyle={{fontWeight: '600', color:'#000'}}>
-                      {element.decor?.data?.attributes?.type} : {element.decor?.data?.attributes?.paint.data?.attributes?.color_range} &nbsp;
+                      {/* {element.decor?.data?.attributes?.type} : {element.decor?.data?.attributes?.paint.data?.attributes?.color_range} &nbsp; */}
+                      {languageMap[selectedLanguage][element.decor?.data?.attributes?.type]} : {element.decor?.data?.attributes?.paint.data?.attributes?.color_range} &nbsp;
                       {element.decor?.data?.attributes?.title}
                     </Descriptions.Item>
                   </>

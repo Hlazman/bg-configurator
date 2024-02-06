@@ -49,7 +49,9 @@ const es = {
   stoneware: 'Gres',
   mirror: 'Espejo',
   primers: 'Imprimaciones',
+  primer: 'Imprimaciones',
   hpl: 'Paneles HPL',
+  HPL: 'HPL',
   startData: 'Fecha de inicio',
   canvas: 'Lienzo',
   comment: 'Comentario',
@@ -196,6 +198,14 @@ const es = {
   delivery: 'Entrega',
 
   contacts: "Contactos",
+
+  descr: "Descripción",
+
+// Decor Types
+painted_veneer: 'Chapa pintada',
+painted_glass: 'Vidrio pintado',
+ceramogranite: 'Ceramogranito',
+
 
 // Products Frame
   'hidden_standard Hidden': 'Estándar oculto',

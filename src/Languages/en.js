@@ -66,7 +66,9 @@ const en = {
   stoneware: 'Stoneware',
   mirror: 'Mirror',
   primers: 'Primers',
+  primer: 'Primer',
   hpl: 'HPL Panels',
+  HPL: 'HPL',
   startData: 'Start data',
   canvas: 'Canvas',
   comment: 'Comment',
@@ -199,6 +201,11 @@ const en = {
 
   gross: 'gross',
   net: 'net',
+
+// Decor Types
+painted_veneer : 'Painted veneer',
+painted_glass : 'Painted glass',
+ceramogranite : 'Ceramogranite',
 
 // Products Options
   'cat_door': 'Cat Door',
