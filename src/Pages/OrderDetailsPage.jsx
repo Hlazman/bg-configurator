@@ -261,6 +261,7 @@ const fetchDoorData = async (doorId) => {
                     data {
                       attributes {
                         collection
+                        warranty
                         product_properties {
                           title
                           image {

@@ -201,10 +201,15 @@ const pl = {
 
   descr: "Opis dekoracji",
 
+  doorFilling: 'Wypełnienie drzwi',
+  honeycombs: 'Plaster miodu',
+  guarantee: 'Gwarancja',
+  years: 'lat',
+
 // Decor Types
-painted_veneer: 'Pomalowany fornir',
-painted_glass: 'Pomalowane szkło',
-ceramogranite: 'Ceramogranit',
+  painted_veneer: 'Pomalowany fornir',
+  painted_glass: 'Pomalowane szkło',
+  ceramogranite: 'Ceramogranit',
 
 // Products Frame
   'hidden_standard Hidden': 'Ukryty standard',

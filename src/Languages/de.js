@@ -201,10 +201,15 @@ const de = {
 
   descr: "Dekorbeschreibung",
 
+  doorFilling: 'Türfüllung',
+  honeycombs: 'Pappwaben',
+  guarantee: 'Garantie',
+  years: 'Jahre',
+
 // Decor Types
-painted_veneer: 'Lackiertes Furnier',
-painted_glass: 'Lackiertes Glas',
-ceramogranite: 'Keramogranit',
+  painted_veneer: 'Lackiertes Furnier',
+  painted_glass: 'Lackiertes Glas',
+  ceramogranite: 'Keramogranit',
   
 // Products Frame
   'hidden_standard Hidden': 'Versteckter Standard',

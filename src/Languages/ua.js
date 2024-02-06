@@ -201,10 +201,15 @@ const ua = {
 
   descr: "Опис декору",
 
+  doorFilling: 'Наповнення дверей',
+  honeycombs: 'Картонні соти',
+  guarantee: 'Гарантія',
+  years: 'роки',
+
 // Decor Types
-painted_veneer: 'Фарбований шпон',
-painted_glass: 'Фарбоване скло',
-ceramogranite: 'Керамограніт',
+  painted_veneer: 'Фарбований шпон',
+  painted_glass: 'Фарбоване скло',
+  ceramogranite: 'Керамограніт',
 
 // Products Frame
   'hidden_standard Hidden': 'Прихований стандарт',

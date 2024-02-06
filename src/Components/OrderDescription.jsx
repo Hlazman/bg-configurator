@@ -46,10 +46,18 @@ export const OrderDescription = (
   useEffect(() => {
     fetchExchangeRates();
   }, []);
-  
+
+  const [doorFilling, setDoorFilling] = useState([]);
+
   useEffect(() => {
-  console.log(knobeData)
-  });
+    if (optionsData) {
+        const x = optionsData.filter(option => {
+            return option.title === "filling with PU foam" || option.title === "filling with mineral wool";
+        });
+        setDoorFilling(x);
+    }
+}, [optionsData]);
+
 
   const convertCurrency = (price, selectedCurrency) => {
     if (!exchangeRates || !selectedCurrency || !price) {
@@ -97,6 +105,8 @@ export const OrderDescription = (
     setConvertedPriceTotal(convertedPriceTotal);
   };
 
+  // languageMap[selectedLanguage][option.title]
+  
     if (!orderData) {
     return null;
   }
@@ -208,8 +218,18 @@ export const OrderDescription = (
                 {`${doorData.sizes.thickness} mm`}
                 </Descriptions.Item>
 
+                <Descriptions.Item label={language.guarantee}>
+                {`${doorData.door?.data?.attributes?.warranty} ${language.years}`}
+                </Descriptions.Item>
+
               </Descriptions>
             </Descriptions.Item>
+
+            {doorFilling.length === 0 && (
+              <Descriptions.Item span={4} className='labelBG' label={language.doorFilling} labelStyle={{fontWeight: '600', color:'#000'}}>
+                {language.honeycombs}
+              </Descriptions.Item>
+            )}
 
             <Descriptions.Item className='labelBG' label={`${language.decor} ${language.image}`} labelStyle={{fontWeight: '600', color:'#000'}}>
               {
@@ -316,7 +336,7 @@ export const OrderDescription = (
                   {language.brand} :{
                     knobeData?.knobe?.data?.attributes?.brand
                     ? knobeData?.knobe?.data?.attributes?.brand
-                    : '-'
+                    : ' -'
                   }
                   <Divider/>
                   {
@@ -327,7 +347,7 @@ export const OrderDescription = (
                         height={'100px'}
                         style={{ display: 'block', margin: '25px auto'}}
                       />
-                    :  '-'
+                    : '-'
                   }
             </Descriptions.Item>
 
@@ -445,45 +465,44 @@ export const OrderDescription = (
       {/* OPTIONS */}
       {optionsData && optionsData.length > 0 && (
         <>
-              <div style={{padding: '15px', backgroundColor: '#FFF', borderRadius: '15px'}}>
-        
-        <p style={{fontWeight: '500', padding: '10px', backgroundColor: '#f06d20', color: '#FFF'}}> 
-          {language.Order} {language.options}
-        </p>
+          <div style={{padding: '15px', backgroundColor: '#FFF', borderRadius: '15px'}}>
+            <p style={{fontWeight: '500', padding: '10px', backgroundColor: '#f06d20', color: '#FFF'}}> 
+              {language.Order} {language.options}
+            </p>
 
-        <Descriptions
-          column={2}
-          layout="vertical"
-          bordered
-          size='default'
-          >
-            {optionsData && optionsData.length > 0 && optionsData.map((option, index) => (
-              <React.Fragment key={index}>
+            <Descriptions
+              column={2}
+              layout="vertical"
+              bordered
+              size='default'
+              >
+                {optionsData && optionsData.length > 0 && optionsData.map((option, index) => (
+                  <React.Fragment key={index}>
 
-                <Descriptions.Item className='labelBG' label={language.title} labelStyle={{fontWeight: '600', color:'#000'}}>
-                  {languageMap[selectedLanguage][option.title] ? languageMap[selectedLanguage][option.title] : option.title}
-                </Descriptions.Item>
+                    <Descriptions.Item className='labelBG' label={language.title} labelStyle={{fontWeight: '600', color:'#000'}}>
+                      {languageMap[selectedLanguage][option.title] ? languageMap[selectedLanguage][option.title] : option.title}
+                    </Descriptions.Item>
 
-                <Descriptions.Item className='labelBG' label={language.price} labelStyle={{fontWeight: '600', color:'#000'}}>
-                  {convertedOptionPrice[index] ? `${convertedOptionPrice[index].convertedPrice} ${currency}` : `${option.price} ${orderData?.currency}`}
-                </Descriptions.Item>
-              </React.Fragment>
-            ))}
+                    <Descriptions.Item className='labelBG' label={language.price} labelStyle={{fontWeight: '600', color:'#000'}}>
+                      {convertedOptionPrice[index] ? `${convertedOptionPrice[index].convertedPrice} ${currency}` : `${option.price} ${orderData?.currency}`}
+                    </Descriptions.Item>
+                  </React.Fragment>
+                ))}
 
-              {orderData?.horizontal_veneer && (
-                <Descriptions.Item className='labelBG' label={language.title} labelStyle={{fontWeight: '600', color:'#000'}}>
-                  {orderData?.horizontal_veneer ? language.horizontalVeneer : ''}
-                </Descriptions.Item>
-              )}
+                  {orderData?.horizontal_veneer && (
+                    <Descriptions.Item className='labelBG' label={language.title} labelStyle={{fontWeight: '600', color:'#000'}}>
+                      {orderData?.horizontal_veneer ? language.horizontalVeneer : ''}
+                    </Descriptions.Item>
+                  )}
 
-              {orderData?.super_gloss && (
-                <Descriptions.Item className='labelBG' label={language.title} labelStyle={{fontWeight: '600', color:'#000'}}>
-                  {orderData?.horizontal_veneer ? language.superGloss : ''}
-                </Descriptions.Item>
-              )}
+                  {orderData?.super_gloss && (
+                    <Descriptions.Item className='labelBG' label={language.title} labelStyle={{fontWeight: '600', color:'#000'}}>
+                      {orderData?.horizontal_veneer ? language.superGloss : ''}
+                    </Descriptions.Item>
+                  )}
 
-          </Descriptions>
-      </div>
+              </Descriptions>
+          </div>
         </>
       )}
 

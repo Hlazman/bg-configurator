@@ -92,6 +92,17 @@ export const OrderDescriptionFull = ({
       prevCurrencyValue.current = currancyValue;
     }
   }, [currancyValue]);
+
+  const [doorFilling, setDoorFilling] = useState([]);
+
+  useEffect(() => {
+    if (optionsData) {
+        const x = optionsData.filter(option => {
+            return option.title === "filling with PU foam" || option.title === "filling with mineral wool";
+        });
+        setDoorFilling(x);
+    }
+}, [optionsData]);
   
 
     if (!orderData) {
@@ -180,15 +191,25 @@ export const OrderDescriptionFull = ({
                   </Descriptions.Item>
 
                 <Descriptions.Item label={language.width}>
-                {`${doorData.sizes.width} mm`}
+                  {`${doorData.sizes.width} mm`}
                 </Descriptions.Item>
 
                 <Descriptions.Item label={language.thickness}>
-                {`${doorData.sizes.thickness} mm`}
+                  {`${doorData.sizes.thickness} mm`}
+                </Descriptions.Item>
+
+                <Descriptions.Item label={language.guarantee}>
+                  {`${doorData.door?.data?.attributes?.warranty} ${language.years}`}
                 </Descriptions.Item>
 
               </Descriptions>
             </Descriptions.Item>
+
+            {doorFilling.length === 0 && (
+              <Descriptions.Item span={4} className='labelBG' label={language.doorFilling} labelStyle={{fontWeight: '600', color:'#000'}}>
+                {language.honeycombs}
+              </Descriptions.Item>
+            )}
 
             <Descriptions.Item className='labelBG' span={2} label={`${language.decor} ${language.image}`} labelStyle={{fontWeight: '600', color:'#000'}}>
               {
@@ -296,7 +317,7 @@ export const OrderDescriptionFull = ({
                   {language.brand} :{
                     knobeData?.knobe?.data?.attributes?.brand
                     ? knobeData?.knobe?.data?.attributes?.brand
-                    : '-'
+                    : ' -'
                   }
                   <Divider/>
                   {

@@ -201,10 +201,15 @@ const cs = {
 
   descr: "Popis dekoru",
 
+  doorFilling: 'Výplň dveří',
+  honeycombs: 'Kartónové včelí plástve',
+  guarantee: 'Záruka',
+  years: 'roky',
+
 // Decor Types
-painted_veneer: 'Natřená dýha',
-painted_glass: 'Natřené sklo',
-ceramogranite: 'Ceramogranit',
+  painted_veneer: 'Natřená dýha',
+  painted_glass: 'Natřené sklo',
+  ceramogranite: 'Ceramogranit',
 
 // Products Frame
   'hidden_standard Hidden': 'Skrytý standard',

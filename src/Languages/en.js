@@ -202,6 +202,11 @@ const en = {
   gross: 'gross',
   net: 'net',
 
+  doorFilling: 'Door filling',
+  honeycombs: 'Cardboard honeycombs',
+  guarantee: 'Guarantee',
+  years: 'years',
+
 // Decor Types
 painted_veneer : 'Painted veneer',
 painted_glass : 'Painted glass',

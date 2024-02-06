@@ -201,10 +201,15 @@ const es = {
 
   descr: "Descripción del decorado",
 
+  doorFilling: 'Relleno de puerta',
+  honeycombs: 'Panal de abeja de cartón',
+  guarantee: 'Garantía',
+  years: 'años',
+
 // Decor Types
-painted_veneer: 'Chapa pintada',
-painted_glass: 'Vidrio pintado',
-ceramogranite: 'Ceramogranito',
+  painted_veneer: 'Chapa pintada',
+  painted_glass: 'Vidrio pintado',
+  ceramogranite: 'Ceramogranito',
 
 
 // Products Frame
