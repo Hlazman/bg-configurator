@@ -268,6 +268,7 @@ const ua = {
   decorInsert: "Вставка декору",
   wallplate: "Cтiнoвa панель",
   border: "Алюмінієвий обклад",
+  'aluminium border': "Алюмінієвий обклад",
   platband: "Лиштва",
   threadedPlatband: "Лиштва з різьбленням",
   extender: "Добірна планка",

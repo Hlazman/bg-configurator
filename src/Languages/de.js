@@ -267,7 +267,7 @@ const de = {
 // Products Elements TYPE
   decorInsert: "Dekoreinsatz",
   wallplate: "Wandpaneel",
-  border: "Aluminiumrahmen",
+  'aluminium border' : "Aluminiumrahmen",
   platband: "Leisten",
   threadedPlatband: "Gewindeplatte",
   extender: "Auswahlleiste",

@@ -268,6 +268,7 @@ const cs = {
   decorInsert: "Vložit dekor",
   wallplate: "Stěnový panel",
   border: "Hliníkový rám",
+  'aluminium border': "Hliníkový rám",
   platband: "Lišty",
   threadedPlatband: "Víceřadý lištový panel",
   extender: "Výběrová lišta",

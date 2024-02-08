@@ -269,6 +269,7 @@ const es = {
   decorInsert: "Inserto decorativo",
   wallplate: "Panel de pared",
   border: "Marco de aluminio",
+  'aluminium border': "Marco de aluminio",
   platband: "Listones",
   threadedPlatband: "Listón roscado",
   extender: "Barra de selección",
