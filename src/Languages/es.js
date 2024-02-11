@@ -206,6 +206,17 @@ const es = {
   guarantee: 'Garantía',
   years: 'años',
 
+  insertSeal: 'Insertar y sellar',
+  knobInsertion: 'Inserción del pomo',
+  lockInsertion: 'Inserción de la cerradura',
+  spindleInsertion: 'Inserción del husillo',
+  thresholdInsertion: 'Inserción del umbral',
+  doorSeal: 'Sellado de puerta',
+  black: 'Negro',
+  white: 'Blanco',
+  grey: 'Gris',
+  none: 'Ninguno',
+
 // Decor Types
   painted_veneer: 'Chapa pintada',
   painted_glass: 'Vidrio pintado',
@@ -264,6 +275,10 @@ const es = {
   'spindle set': 'Juego de husillos',
   'cutting for decor': 'Corte para decoración',
   'filling with PU foam': 'Relleno con espuma de PU',
+  'hidden threshold Hafele (43/51/55)': 'Umbral oculto Hafele (43/51/55)',
+  'hidden threshold cce-trend-PLUS (40/45)': 'Umbral oculto cce-trend-PLUS (40/45)',
+  'dropdown threshold (Art Decor / Neo Classic)': 'Umbral desplegable (Art Decor / Neo Classic)',
+  'dropdown threshold (Loft)': 'Umbral desplegable (Loft)',
 
 // Products Elements TYPE
   decorInsert: "Inserto decorativo",

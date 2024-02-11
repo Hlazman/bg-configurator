@@ -206,6 +206,17 @@ const cs = {
   guarantee: 'Záruka',
   years: 'roky',
 
+  insertSeal: 'Vložit a utěsnit',
+  knobInsertion: 'Vložení knoflíku',
+  lockInsertion: 'Vložení zámku',
+  spindleInsertion: 'Vložení hřídele',
+  thresholdInsertion: 'Vložení práhu',
+  doorSeal: 'Těsnění dveří',
+  black: 'Černá',
+  white: 'Bílá',
+  grey: 'Šedá',
+  none: 'Žádná',
+
 // Decor Types
   painted_veneer: 'Natřená dýha',
   painted_glass: 'Natřené sklo',
@@ -263,6 +274,10 @@ const cs = {
   'spindle set': 'Souprava hřídelek',
   'cutting for decor': 'Řezání pro dekor',
   'filling with PU foam': 'Výplň PU pěnou',
+  'hidden threshold Hafele (43/51/55)': 'Skrytý práh Hafele (43/51/55)',
+  'hidden threshold cce-trend-PLUS (40/45)': 'Skrytý práh cce-trend-PLUS (40/45)',
+  'dropdown threshold (Art Decor / Neo Classic)': 'Rozbalovací práh (Art Decor / Neo Classic)',
+  'dropdown threshold (Loft)': 'Rozbalovací práh (Loft)',
 
 // Products Elements TYPE
   decorInsert: "Vložit dekor",

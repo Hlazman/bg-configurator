@@ -207,6 +207,17 @@ const en = {
   guarantee: 'Guarantee',
   years: 'years',
 
+  insertSeal: 'Insert and seal',
+  knobInsertion : 'Insertion knob ',
+  lockInsertion : 'Insertion lock ',
+  spindleInsertion : 'Insertion spindle',
+  thresholdInsertion : 'Insertion threshold',
+  doorSeal : 'Door seal',
+  black : 'Black',
+  white : 'White',
+  grey : 'Grey',
+  none : 'None',
+
 // Decor Types
 painted_veneer : 'Painted veneer',
 painted_glass : 'Painted glass',
@@ -227,7 +238,11 @@ ceramogranite : 'Ceramogranite',
   'spindle set': 'Spindle set',
   'cutting for decor': 'Cutting for decor',
   'filling with PU foam': 'Filling with PU foam',
-
+  'hidden threshold Hafele (43/51/55)' : 'Hidden threshold Hafele (43/51/55)',
+  'hidden threshold cce-trend-PLUS (40/45)' : 'Hidden threshold cce-trend-PLUS (40/45)',
+  'dropdown threshold (Art Decor / Neo Classic)' : 'Dropdown threshold (Art Decor / Neo Classic)',
+  'dropdown threshold (Loft)' : 'Dropdown threshold (Loft)',
+ 
 // Products Frame
   'hidden_standard Hidden': 'Hidden standart',
   'type 1 outside Neo Classic': 'Neo Classic outside',

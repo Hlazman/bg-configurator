@@ -206,6 +206,17 @@ const de = {
   guarantee: 'Garantie',
   years: 'Jahre',
 
+  insertSeal: 'Einfügen und abdichten',
+  knobInsertion: 'Einsetzen des Knopfes',
+  lockInsertion: 'Einsetzen des Schlosses',
+  spindleInsertion: 'Einsetzen der Spindel',
+  thresholdInsertion: 'Einsetzen der Schwelle',
+  doorSeal: 'Türdichtung',
+  black: 'Schwarz',
+  white: 'Weiß',
+  grey: 'Grau',
+  none: 'Keine',
+
 // Decor Types
   painted_veneer: 'Lackiertes Furnier',
   painted_glass: 'Lackiertes Glas',
@@ -263,6 +274,10 @@ const de = {
   'spindle set': 'Spindel-Set',
   'cutting for decor': 'Schnitt für Dekor',
   'filling with PU foam': 'Füllung mit PU-Schaum',
+  'hidden threshold Hafele (43/51/55)': 'Versteckter Schwelle Hafele (43/51/55)',
+  'hidden threshold cce-trend-PLUS (40/45)': 'Versteckter Schwelle cce-trend-PLUS (40/45)',
+  'dropdown threshold (Art Decor / Neo Classic)': 'Dropdown-Schwelle (Art Decor / Neo Classic)',
+  'dropdown threshold (Loft)': 'Dropdown-Schwelle (Loft)',
 
 // Products Elements TYPE
   decorInsert: "Dekoreinsatz",

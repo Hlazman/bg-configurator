@@ -351,6 +351,35 @@ export const OrderDescription = (
                   }
             </Descriptions.Item>
 
+            <Descriptions.Item span={3} className='labelBG' label={`${language.insertSeal}`} labelStyle={{fontWeight: '600', color:'#000'}}>
+              <Descriptions
+                column={3}
+                bordered
+                size={'small'}
+              >
+                <Descriptions.Item label={language.knobInsertion}>
+                  {orderData?.knobInsertion ? language.yes : language.no}
+                </Descriptions.Item>
+
+                <Descriptions.Item label={language.lockInsertion}>
+                  {orderData?.lockInsertion ? language.yes : language.no}
+                </Descriptions.Item>
+
+                <Descriptions.Item label={language.spindleInsertion}>
+                  {orderData?.spindleInsertion ? language.yes : language.no}
+                </Descriptions.Item>
+
+                <Descriptions.Item label={language.thresholdInsertion}>
+                  {orderData?.thresholdInsertion ? language.yes : language.no}
+                </Descriptions.Item>
+
+                <Descriptions.Item label={language.doorSeal}>
+                  {orderData?.doorSeal}
+                </Descriptions.Item>
+
+              </Descriptions>
+            </Descriptions.Item>
+
             <Descriptions.Item className='labelBG' label={`${language.price} (${language.lock})`} labelStyle={{fontWeight: '600', color:'#000'}}>
               {convertedLockPrice ? `${convertedLockPrice} ${currency}` : `${lockData.price} ${orderData?.currency}`} 
             </Descriptions.Item>

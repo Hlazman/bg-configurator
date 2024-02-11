@@ -97,6 +97,11 @@ export const OrderDetailsPage = ({fromTotalOrder, isCreatingTotalPdf, orderName,
                     opening
                     horizontal_veneer
                     super_gloss
+                    knobInsertion
+                    lockInsertion
+                    spindleInsertion
+                    thresholdInsertion
+                    doorSeal
                     shippingAddress {
                       address
                       city

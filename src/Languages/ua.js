@@ -206,6 +206,17 @@ const ua = {
   guarantee: 'Гарантія',
   years: 'роки',
 
+  insertSeal: 'Врізка та ущільнення',
+  knobInsertion: 'Врізка ручки',
+  lockInsertion: 'Врізка замка',
+  spindleInsertion: 'Врізка шпінгалет',
+  thresholdInsertion: 'Врізка порогу',
+  doorSeal: 'Ущільнювач дверей',
+  black: 'Чорний',
+  white: 'Білий',
+  grey: 'Сірий',
+  none: 'Немає',
+
 // Decor Types
   painted_veneer: 'Фарбований шпон',
   painted_glass: 'Фарбоване скло',
@@ -263,6 +274,10 @@ const ua = {
   'spindle set': 'Комплект шпинделя',
   'cutting for decor': 'Вирізання під декор',
   'filling with PU foam': 'Наповнення пінополіуретановою піною',
+  'hidden threshold Hafele (43/51/55)': 'Прихований поріг Hafele (43/51/55)',
+  'hidden threshold cce-trend-PLUS (40/45)': 'Прихований поріг cce-trend-PLUS (40/45)',
+  'dropdown threshold (Art Decor / Neo Classic)': 'Випадаючий поріг (Art Decor / Neo Classic)',
+  'dropdown threshold (Loft)': 'Випадаючий поріг (Loft)',
 
 // Products Elements TYPE
   decorInsert: "Вставка декору",

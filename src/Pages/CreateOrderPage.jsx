@@ -45,6 +45,7 @@ export const CreateOrderPage = () => {
     fittingLockSend: false,
     fittingKnobeSend: false,
     fittingHingeSend: false,
+    fittingInsertSealSend: false,
     optionsSend: false,
     optionsAdditionalSend: false,
     informationSend: false,
@@ -326,7 +327,7 @@ export const CreateOrderPage = () => {
             status: (
               currentStep === 4
                 ? 'process'
-                : (currentStepSend.fittingLockSend && currentStepSend.fittingHingeSend && currentStepSend.fittingKnobeSend )
+                : (currentStepSend.fittingLockSend && currentStepSend.fittingHingeSend && currentStepSend.fittingKnobeSend && currentStepSend.fittingInsertSealSend )
                   ? 'finish'
                   : 'error'
             ),

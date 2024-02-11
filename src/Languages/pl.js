@@ -206,6 +206,17 @@ const pl = {
   guarantee: 'Gwarancja',
   years: 'lat',
 
+  insertSeal: 'Wstawka i uszczelka',
+  knobInsertion: 'Wstawka klamka',
+  lockInsertion: 'Wstawka zamka',
+  spindleInsertion: 'Wstawka wrzeciona',
+  thresholdInsertion: 'Wstawka progu',
+  doorSeal: 'Uszczelka drzwi',
+  black: 'Czarny',
+  white: 'Biały',
+  grey: 'Szary',
+  none: 'Brak',
+
 // Decor Types
   painted_veneer: 'Pomalowany fornir',
   painted_glass: 'Pomalowane szkło',
@@ -263,6 +274,10 @@ const pl = {
   'spindle set': 'Kantrygiel zestaw',
   'cutting for decor': 'Wycinanie w celu dopasowanie dekoru',
   'filling with PU foam': 'Pianka poliuretanowa',
+  'hidden threshold Hafele (43/51/55)': 'Ukryty próg Hafele (43/51/55)',
+  'hidden threshold cce-trend-PLUS (40/45)': 'Ukryty próg cce-trend-PLUS (40/45)',
+  'dropdown threshold (Art Decor / Neo Classic)': 'Pochylny próg (Art Decor / Neo Classic)',
+  'dropdown threshold (Loft)': 'Pochylny próg (Loft)',
 
 // Products Elements TYPE
   decorInsert: "Dekoracyjna wstawka",
