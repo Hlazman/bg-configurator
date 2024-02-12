@@ -352,6 +352,24 @@ export const OrderDescription = (
                   }
             </Descriptions.Item>
 
+            <Descriptions.Item className='labelBG' label={`${language.price} (${language.lock})`} labelStyle={{fontWeight: '600', color:'#000'}}>
+              {convertedLockPrice ? `${convertedLockPrice} ${currency}` : `${lockData.price} ${orderData?.currency}`} 
+            </Descriptions.Item>
+
+            <Descriptions.Item className='labelBG' label={`${language.price} (${language.hinges})`} labelStyle={{fontWeight: '600', color:'#000'}}>
+              {convertedHingePrice ? `${convertedHingePrice} ${currency}` : `${hingeData.price} ${orderData?.currency}`} / {language.amount}: {hingeData?.amount}
+            </Descriptions.Item>
+
+            <Descriptions.Item className='labelBG' label={`${language.price} (${language.knobe})`} labelStyle={{fontWeight: '600', color:'#000'}}>
+              {
+                convertedKnobePrice !== null
+                  ? `${convertedKnobePrice} ${currency}` 
+                  : knobeData?.price !== null
+                    ? `${knobeData?.price} ${orderData?.currency}`
+                    : '-'
+                }
+            </Descriptions.Item>
+
             <Descriptions.Item span={3} className='labelBG' label={`${language.insertSeal}`} labelStyle={{fontWeight: '600', color:'#000'}}>
               <Descriptions
                 column={2}
@@ -379,24 +397,6 @@ export const OrderDescription = (
                 </Descriptions.Item>
 
               </Descriptions>
-            </Descriptions.Item>
-
-            <Descriptions.Item className='labelBG' label={`${language.price} (${language.lock})`} labelStyle={{fontWeight: '600', color:'#000'}}>
-              {convertedLockPrice ? `${convertedLockPrice} ${currency}` : `${lockData.price} ${orderData?.currency}`} 
-            </Descriptions.Item>
-
-            <Descriptions.Item className='labelBG' label={`${language.price} (${language.hinges})`} labelStyle={{fontWeight: '600', color:'#000'}}>
-              {convertedHingePrice ? `${convertedHingePrice} ${currency}` : `${hingeData.price} ${orderData?.currency}`} / {language.amount}: {hingeData?.amount}
-            </Descriptions.Item>
-
-            <Descriptions.Item className='labelBG' label={`${language.price} (${language.knobe})`} labelStyle={{fontWeight: '600', color:'#000'}}>
-              {
-                convertedKnobePrice !== null
-                  ? `${convertedKnobePrice} ${currency}` 
-                  : knobeData?.price !== null
-                    ? `${knobeData?.price} ${orderData?.currency}`
-                    : '-'
-                }
             </Descriptions.Item>
           </>
           )}
