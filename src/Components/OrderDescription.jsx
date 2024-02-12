@@ -14,6 +14,7 @@ export const OrderDescription = (
   const language = languageMap[selectedLanguage];
 
   const standartRAL = ['1013', '1015', '7045', '7047', '9001', '9002', '9003', '9010', '9016', '9018'];
+  const noSota = ['ALUM PREMIUM 55', 'ALUM UNIQUE 43', 'ALUM UNIQUE 51'];
 
   const { Option } = Select;
   
@@ -225,7 +226,7 @@ export const OrderDescription = (
               </Descriptions>
             </Descriptions.Item>
 
-            {doorFilling.length === 0 && (
+            {doorFilling.length === 0 && !noSota.includes(doorData.door?.data?.attributes?.product_properties?.title) && (
               <Descriptions.Item span={4} className='labelBG' label={language.doorFilling} labelStyle={{fontWeight: '600', color:'#000'}}>
                 {language.honeycombs}
               </Descriptions.Item>
