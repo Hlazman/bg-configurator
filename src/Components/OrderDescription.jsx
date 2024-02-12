@@ -353,7 +353,7 @@ export const OrderDescription = (
 
             <Descriptions.Item span={3} className='labelBG' label={`${language.insertSeal}`} labelStyle={{fontWeight: '600', color:'#000'}}>
               <Descriptions
-                column={3}
+                column={2}
                 bordered
                 size={'small'}
               >
