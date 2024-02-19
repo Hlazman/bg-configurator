@@ -276,8 +276,8 @@ const pl = {
   'filling with PU foam': 'Pianka poliuretanowa',
   'hidden threshold Hafele (43/51/55)': 'Ukryty próg Hafele (43/51/55)',
   'hidden threshold cce-trend-PLUS (40/45)': 'Ukryty próg cce-trend-PLUS (40/45)',
-  'dropdown threshold (Art Decor / Neo Classic)': 'Pochylny próg (Art Decor / Neo Classic)',
-  'dropdown threshold (Loft)': 'Pochylny próg (Loft)',
+  'dropdown threshold (Art Decor / Neo Classic)': 'Próg opadający (Art Decor / Neo Classic)',
+  'dropdown threshold (Loft)': 'Próg opadający (Loft)',
 
 // Products Elements TYPE
   decorInsert: "Dekoracyjna wstawka",
