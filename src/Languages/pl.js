@@ -283,7 +283,7 @@ const pl = {
   decorInsert: "Dekoracyjna wstawka",
   wallplate: "Panel ścienny",
   border: "Ramka aluminiowa",
-  'aluminium border': "Ramka aluminiowa",
+  'aluminium border': "Okucia alumiowe",
   platband: "Listwa",
   threadedPlatband: "Listwa ornamentowana",
   extender: "Listwa dodatkowa",
