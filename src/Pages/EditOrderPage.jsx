@@ -17,6 +17,7 @@ import languageMap from '../Languages/language';
 import OptionsStep from '../Components/CreateOrderSteps/OptionsStep';
 import OptionsAdditionalStep from '../Components/CreateOrderSteps/OptionsAdditionalStep';
 import {queryLink} from '../api/variables'
+import DecorSidesGroupStep from '../Components/CreateOrderSteps/DecorSidesGroupStep';
 
 export const EditOrderPage = () => {
   const { selectedLanguage } = useLanguage();
@@ -133,7 +134,8 @@ export const EditOrderPage = () => {
         );
       case 1:
         return (
-          <GroupDecorStep />
+          // <GroupDecorStep />
+          <DecorSidesGroupStep />
         );
         case 2:
         return (

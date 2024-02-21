@@ -217,6 +217,10 @@ const pl = {
   grey: 'Szary',
   none: 'Brak',
 
+  side1: 'Strona 1',
+  side2: 'Strona 2',
+  additionally: 'Dodatkowo',
+
 // Decor Types
   painted_veneer: 'Pomalowany fornir',
   painted_glass: 'Pomalowane szkło',

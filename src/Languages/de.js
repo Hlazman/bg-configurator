@@ -217,6 +217,10 @@ const de = {
   grey: 'Grau',
   none: 'Keine',
 
+  side1: 'Seite 1',
+  side2: 'Seite 2',
+  additionally: 'zusätzlich',
+
 // Decor Types
   painted_veneer: 'Lackiertes Furnier',
   painted_glass: 'Lackiertes Glas',

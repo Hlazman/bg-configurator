@@ -217,6 +217,10 @@ const cs = {
   grey: 'Šedá',
   none: 'Žádná',
 
+  side1: 'Strana 1',
+  side2: 'Strana 2',
+  additionally: 'dodatečně',
+
 // Decor Types
   painted_veneer: 'Natřená dýha',
   painted_glass: 'Natřené sklo',

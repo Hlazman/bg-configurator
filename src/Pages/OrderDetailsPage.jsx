@@ -371,6 +371,97 @@ const fetchDoorData = async (doorId) => {
                       }
                     }
                   }
+                  otherSideDecor {
+                    data {
+                      attributes {
+                        title
+                        type
+                        veneer {
+                          data {
+                            attributes {
+                              main_properties {
+                                image {
+                                  data {
+                                    attributes {
+                                      url
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                        ceramogranite {
+                          data {
+                            attributes {
+                              image {
+                                data {
+                                  attributes {
+                                    url
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                        paint {
+                          data {
+                            attributes {
+                              main_properties {
+                                image {
+                                  data {
+                                    attributes {
+                                      url
+                                    }
+                                  }
+                                }
+                              }
+                              color_range
+                            }
+                          }
+                        }
+                        mirror {
+                          data {
+                            attributes {
+                              image {
+                                data {
+                                  attributes {
+                                    url
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                        HPL {
+                          data {
+                            attributes {
+                              image {
+                                data {
+                                  attributes {
+                                    url
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                        primer {
+                          data {
+                            attributes {
+                              image {
+                                data {
+                                  attributes {
+                                    url
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
                 }
               }
             }
@@ -391,6 +482,7 @@ const fetchDoorData = async (doorId) => {
     const doorSuborderData = doorSuborderResponse?.data?.data?.doorSuborder?.data?.attributes;
 
     let decorImg = null;
+    let decorImgSecond = null;
 
     if (doorSuborderData.decor?.data?.attributes?.veneer?.data?.attributes?.main_properties?.image?.data?.attributes?.url) {
       decorImg = doorSuborderData.decor.data.attributes.veneer.data.attributes.main_properties.image.data.attributes.url;
@@ -406,7 +498,22 @@ const fetchDoorData = async (doorId) => {
       decorImg = doorSuborderData.decor.data.attributes.primer.data.attributes.image.data.attributes.url;
     }
 
+    if (doorSuborderData.otherSideDecor?.data?.attributes?.veneer?.data?.attributes?.main_properties?.image?.data?.attributes?.url) {
+      decorImgSecond = doorSuborderData.otherSideDecor.data.attributes.veneer.data.attributes.main_properties.image.data.attributes.url;
+    } else if (doorSuborderData.otherSideDecor?.data?.attributes?.ceramogranite?.data?.attributes?.image?.data?.attributes?.url) {
+      decorImgSecond = doorSuborderData.otherSideDecor.data.attributes.ceramogranite.data.attributes.image.data.attributes.url;
+    } else if (doorSuborderData.otherSideDecor?.data?.attributes?.paint?.data?.attributes?.main_properties?.image?.data?.attributes?.url) {
+      decorImgSecond = doorSuborderData.otherSideDecor.data.attributes.paint.data.attributes.main_properties.image.data.attributes.url;
+    } else if (doorSuborderData.otherSideDecor?.data?.attributes?.mirror?.data?.attributes?.image?.data?.attributes?.url) {
+      decorImgSecond = doorSuborderData.otherSideDecor.data.attributes.mirror.data.attributes.image.data.attributes.url;
+    } else if (doorSuborderData.otherSideDecor?.data?.attributes?.HPL?.data?.attributes?.image?.data?.attributes?.url) {
+      decorImgSecond = doorSuborderData.otherSideDecor.data.attributes.HPL.data.attributes.image.data.attributes.url;
+    } else if (doorSuborderData.otherSideDecor?.data?.attributes?.primer?.data?.attributes?.image?.data?.attributes?.url) {
+      decorImgSecond = doorSuborderData.otherSideDecor.data.attributes.primer.data.attributes.image.data.attributes.url;
+    }
+
     doorSuborderData.decor.img = decorImg;
+    doorSuborderData.otherSideDecor.img = decorImgSecond;
 
     setDoorData(doorSuborderData);
   } catch (error) {

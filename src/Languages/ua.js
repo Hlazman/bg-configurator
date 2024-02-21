@@ -217,6 +217,10 @@ const ua = {
   grey: 'Сірий',
   none: 'Немає',
 
+  side1: 'Сторона 1',
+  side2: 'Сторона 2',
+  additionally: 'додатково',
+
 // Decor Types
   painted_veneer: 'Фарбований шпон',
   painted_glass: 'Фарбоване скло',

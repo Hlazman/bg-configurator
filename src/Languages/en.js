@@ -218,6 +218,10 @@ const en = {
   grey : 'Grey',
   none : 'None',
 
+  side1: 'Side 1',
+  side2: 'Side 2',
+  additionally: 'additionally',
+
 // Decor Types
 painted_veneer : 'Painted veneer',
 painted_glass : 'Painted glass',

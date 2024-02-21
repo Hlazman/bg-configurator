@@ -217,6 +217,10 @@ const es = {
   grey: 'Gris',
   none: 'Ninguno',
 
+  side1: 'Lado 1',
+  side2: 'Lado 2',
+  additionally: 'además',
+
 // Decor Types
   painted_veneer: 'Chapa pintada',
   painted_glass: 'Vidrio pintado',

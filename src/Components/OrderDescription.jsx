@@ -1,6 +1,6 @@
 import React, { useState, useContext, useEffect } from 'react';
 import {Descriptions, Image, Select, Space, Alert, Divider} from 'antd';
-import { PictureOutlined } from '@ant-design/icons';
+import { PictureOutlined, ZoomInOutlined } from '@ant-design/icons';
 import { AuthContext } from '../Context/AuthContext';
 import { useLanguage } from '../Context/LanguageContext';
 import languageMap from '../Languages/language';
@@ -235,16 +235,20 @@ export const OrderDescription = (
             <Descriptions.Item className='labelBG' label={`${language.decor} ${language.image}`} labelStyle={{fontWeight: '600', color:'#000'}}>
               {
                 doorData?.decor?.img
-                ? <img 
+                ? 
+                  <div style={{display: 'flex', justifyContent: 'center'}}>
+                    <img 
                     src={`${imageLink}${doorData?.decor?.img}`} 
                     alt="Decor"
-                    height={200}
-                  />
+                    height={100}
+                    />
+                    <div style={{margin: '15px'}}> <a href={`${imageLink}${doorData?.decor?.img}`} rel="noreferrer" target="_blank"> <ZoomInOutlined style={{fontSize: '25px'}}/> </a> </div>
+                  </div> 
                 : <PictureOutlined style={{fontSize: '150px'}}/>
               }
             </Descriptions.Item>
 
-            <Descriptions.Item span={2} className='labelBG' label={`${language.descr}`} labelStyle={{fontWeight: '600', color:'#000'}}>
+            <Descriptions.Item span={3} className='labelBG' label={`${language.descr}`} labelStyle={{fontWeight: '600', color:'#000'}}>
               {doorData.decor?.data?.attributes?.paint.data?.attributes?.color_range} &nbsp;
               {doorData.decor?.data?.attributes?.title}
               <br/>
@@ -259,6 +263,42 @@ export const OrderDescription = (
               {/* {doorData.decor?.data?.attributes?.type} */}
               {languageMap[selectedLanguage][doorData.decor?.data?.attributes?.type]}
             </Descriptions.Item>
+
+            {doorData?.otherSideDecor && (
+              <>
+                <Descriptions.Item className='labelBG' label={`${language.decor} ${language.image} (${language.side2})`} labelStyle={{fontWeight: '600', color:'#000'}}>
+                  {
+                    doorData?.otherSideDecor?.img
+                    ? 
+                      <div style={{display: 'flex', justifyContent: 'center'}}>
+                        <img 
+                        src={`${imageLink}${doorData?.otherSideDecor?.img}`} 
+                        alt="Decor"
+                        height={100}
+                        />
+                        <div style={{margin: '15px'}}> <a href={`${imageLink}${doorData?.otherSideDecor?.img}`} rel="noreferrer" target="_blank"> <ZoomInOutlined style={{fontSize: '25px'}}/> </a> </div>
+                      </div> 
+                    : <PictureOutlined style={{fontSize: '150px'}}/>
+                  }
+                </Descriptions.Item>
+
+                <Descriptions.Item span={3} className='labelBG' label={`${language.descr} (${language.side2})`} labelStyle={{fontWeight: '600', color:'#000'}}>
+                  {doorData.otherSideDecor?.data?.attributes?.paint.data?.attributes?.color_range} &nbsp;
+                  {doorData.otherSideDecor?.data?.attributes?.title}
+                  <br/>
+                  {
+                    doorData.otherSideDecor?.data?.attributes?.paint?.data?.attributes?.color_range !== 'RAL' 
+                    ? ''
+                    : standartRAL.includes(doorData.otherSideDecor?.data?.attributes?.title) 
+                      ? '' 
+                      : `${language.cost} + 10%`
+                  }
+                  <br/>
+                  {/* {doorData.decor?.data?.attributes?.type} */}
+                  {languageMap[selectedLanguage][doorData.otherSideDecor?.data?.attributes?.type]}
+                </Descriptions.Item>
+              </>
+            )}
 
             <Descriptions.Item className='labelBG' label={language.price} labelStyle={{fontWeight: '600', color:'#000'}}>
               {convertedDoorPrice ? `${convertedDoorPrice} ${currency}` : `${doorData.price} ${orderData?.currency}`}
@@ -297,12 +337,15 @@ export const OrderDescription = (
               <Divider/>
               {
                 lockData?.lock?.data?.attributes?.image?.data?.attributes?.url
-                ? <img
+                ? 
+                  <div style={{display: 'flex', justifyContent: 'center'}}>
+                    <img 
                     src={`${imageLink}${lockData?.lock?.data?.attributes?.image?.data?.attributes?.url}`}
                     alt="Lock"
                     height={150}
-                    style={{ display: 'block', margin: '0 auto' }}
-                  />
+                    />
+                    <div style={{margin: '15px'}}> <a href={`${imageLink}${lockData?.lock?.data?.attributes?.image?.data?.attributes?.url}`} rel="noreferrer" target="_blank"> <ZoomInOutlined style={{fontSize: '25px'}}/> </a> </div>
+                  </div> 
                 : <PictureOutlined style={{fontSize: '150px'}}/>
                 
               }
@@ -316,12 +359,16 @@ export const OrderDescription = (
               <Divider/>
               {
                 hingeData?.hinge?.data?.attributes?.image?.data?.attributes?.url
-                ? <img
-                    src={`${imageLink}${hingeData?.hinge?.data?.attributes?.image?.data?.attributes?.url}`}
-                    alt="hinge"
-                    height={150}
-                    style={{ display: 'block', margin: '0 auto' }}
-                  />
+                ? 
+                  <div style={{display: 'flex', justifyContent: 'center'}}>
+                    <img
+                      src={`${imageLink}${hingeData?.hinge?.data?.attributes?.image?.data?.attributes?.url}`}
+                      alt="hinge"
+                      height={150}
+                      style={{ display: 'block', margin: '0 auto' }}
+                    />
+                    <div style={{margin: '15px'}}> <a href={`${imageLink}${hingeData?.hinge?.data?.attributes?.image?.data?.attributes?.url}`} rel="noreferrer" target="_blank"> <ZoomInOutlined style={{fontSize: '25px'}}/> </a> </div>
+                  </div>
                 : <PictureOutlined style={{fontSize: '150px'}}/>
               }
 
@@ -342,12 +389,16 @@ export const OrderDescription = (
                   <Divider/>
                   {
                     knobeData?.knobe?.data?.attributes?.image?.data?.attributes?.url
-                    ? <img
-                        src={`${imageLink}${knobeData?.knobe?.data?.attributes?.image?.data?.attributes?.url}`}
-                        alt="knobe"
-                        height={'100px'}
-                        style={{ display: 'block', margin: '25px auto'}}
-                      />
+                    ? 
+                      <div style={{display: 'flex', justifyContent: 'center'}}>
+                        <img
+                          src={`${imageLink}${knobeData?.knobe?.data?.attributes?.image?.data?.attributes?.url}`}
+                          alt="knobe"
+                          height={'100px'}
+                          style={{ display: 'block', margin: '25px auto'}}
+                        />
+                        <div style={{margin: '15px'}}> <a href={`${imageLink}${knobeData?.knobe?.data?.attributes?.image?.data?.attributes?.url}`} rel="noreferrer" target="_blank"> <ZoomInOutlined style={{fontSize: '25px'}}/> </a> </div>
+                      </div>
                     : '-'
                   }
             </Descriptions.Item>
@@ -461,11 +512,15 @@ export const OrderDescription = (
                       <Descriptions.Item className='labelBG' span={2} label={`${language.decor} ${language.image}`} labelStyle={{fontWeight: '600', color:'#000'}}>
                         {
                           element?.decor?.img
-                          ? <img 
-                              src={`${imageLink}${element?.decor?.img}`}
-                              alt="Decor"
-                              height={100}
-                            />
+                          ? 
+                            <div style={{display: 'flex', justifyContent: 'center'}}>
+                              <img 
+                                src={`${imageLink}${element?.decor?.img}`}
+                                alt="Decor"
+                                height={100}
+                              />
+                              <div style={{margin: '15px'}}> <a href={`${imageLink}${element?.decor?.img}`} rel="noreferrer" target="_blank"> <ZoomInOutlined style={{fontSize: '25px'}}/> </a> </div>
+                            </div>
                           : <PictureOutlined style={{fontSize: '150px'}}/>
                         }
                     </Descriptions.Item>

@@ -19,6 +19,7 @@ import OptionsStep from '../Components/CreateOrderSteps/OptionsStep';
 import OptionsAdditionalStep from '../Components/CreateOrderSteps/OptionsAdditionalStep';
 import { useTotalOrder } from '../Context/TotalOrderContext';
 import {queryLink} from '../api/variables'
+import DecorSidesGroupStep from '../Components/CreateOrderSteps/DecorSidesGroupStep';
 
 export const CreateOrderPage = () => {
   const { selectedLanguage } = useLanguage();
@@ -227,7 +228,8 @@ export const CreateOrderPage = () => {
         );
       case 1:
         return (
-          <GroupDecorStep
+          // <GroupDecorStep
+          <DecorSidesGroupStep
             setCurrentStepSend={setCurrentStepSend}
             currentStepSend={currentStepSend}
         />
