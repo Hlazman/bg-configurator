@@ -264,7 +264,7 @@ export const OrderDescription = (
               {languageMap[selectedLanguage][doorData.decor?.data?.attributes?.type]}
             </Descriptions.Item>
 
-            {doorData?.otherSideDecor && (
+            {doorData?.otherSideDecor && doorData?.otherSideDecor?.img && (
               <>
                 <Descriptions.Item className='labelBG' label={`${language.decor} ${language.image} (${language.side2})`} labelStyle={{fontWeight: '600', color:'#000'}}>
                   {

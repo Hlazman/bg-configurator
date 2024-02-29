@@ -196,6 +196,8 @@ const getHeaderTitle = (location, Id) => {
           setSelectedCompany('2');
         } else if (user?.id === '6' || user?.id === '7') {
           setSelectedCompany('4');
+        } else if (user?.id === '8') {
+          setSelectedCompany('5');
         } else {
           setSelectedCompany('3');
         }
@@ -211,6 +213,8 @@ const getHeaderTitle = (location, Id) => {
         });
         setSelectedCompany(localStorage.getItem('selectedCompanyId'));
       }
+
+      navigate(`/`);
 
     } catch (error) {
       console.error('Error fetching companies:', error);
