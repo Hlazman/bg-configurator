@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Steps, Button} from 'antd';
-import { SearchOutlined } from '@ant-design/icons';
+import { SearchOutlined, LeftCircleOutlined } from '@ant-design/icons';
 import { OrderDrawer } from '../Components/OrderDrawer';
 import GroupDoorStep from '../Components/CreateOrderSteps/GroupDoorStep';
-import GroupDecorStep from '../Components/CreateOrderSteps/GroupDecorStep';
+// import GroupDecorStep from '../Components/CreateOrderSteps/GroupDecorStep';
 import GroupAccessoriesStep from '../Components/CreateOrderSteps/GroupAccessoriesStep';
 import ElementsStep from '../Components/CreateOrderSteps/ElementsStep';
 import InformationStep from '../Components/CreateOrderSteps/InformationStep';
@@ -170,7 +170,8 @@ export const EditOrderPage = () => {
     <div>
       
       <div style={{display: 'flex', margin: '25px 0', gap: '20px', flexWrap: 'wrap' }}>
-        <div style={{display: 'flex', flexBasis: '50%' }}>
+        <div style={{display: 'flex', flexBasis: '50%', gap: '15px' }}>
+          <Button icon={<LeftCircleOutlined />} type="dashed" onClick={()=> navigate(`/orders`)}> {language.orderList} </Button>
           <OrderDrawer/>
         </div>
         

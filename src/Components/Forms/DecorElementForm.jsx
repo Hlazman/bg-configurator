@@ -76,6 +76,11 @@ const DecorElementForm = ({setCurrentStepSend, elementID, currentStepSend}) => {
                     width
                     length
                   }
+                  decor {
+                    data {
+                      id
+                    }
+                  }
                 }
               }
             }
@@ -105,7 +110,8 @@ const DecorElementForm = ({setCurrentStepSend, elementID, currentStepSend}) => {
         });
       }
 
-      setCurrentElementField(elementSuborderData?.attributes?.element?.data?.type);
+      // setCurrentElementField(elementSuborderData?.attributes?.element?.data?.type);
+      setCurrentElementField(elementSuborderData?.attributes?.type);
 
       if (noWidth.includes(elementSuborderData?.attributes?.type)) {
         setIsWidthDisabled(true);
@@ -123,10 +129,10 @@ const DecorElementForm = ({setCurrentStepSend, elementID, currentStepSend}) => {
         setIsLengthDisabled(true);
         setIsLengthRequired(false)
       }
-      if (noDecor.includes(elementSuborderData?.attributes?.type)) {
+      // if (noDecor.includes(elementSuborderData?.attributes?.type)) {
+      if (noDecor.includes(elementSuborderData?.attributes?.type) || elementSuborderData?.attributes?.decor?.data?.id) {
         setIsDecorRequired(false);
       }
-
     })
     .catch(error => {
       console.error('Error fetching element suborder data:', error);
