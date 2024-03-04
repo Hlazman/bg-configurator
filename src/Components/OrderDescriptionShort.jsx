@@ -43,7 +43,8 @@ export const OrderDescriptionShort = ({
   const handleCurrencyChange = async (value) => {
     setCurrency(value);
 
-    const convertedPriceTotal = convertCurrency(orderData.price, value);
+    // const convertedPriceTotal = convertCurrency(orderData.price, value);
+    const convertedPriceTotal = convertCurrency(orderData.totalCost, value);
     setConvertedPriceTotal(convertedPriceTotal);
   };
 

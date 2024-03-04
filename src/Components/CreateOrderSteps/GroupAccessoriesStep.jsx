@@ -8,7 +8,7 @@ import languageMap from '../../Languages/language';
 import InsertSealStep from './InsertSealStep';
 
 const GroupAccessoriesStep = ({ setCurrentStepSend, currentStepSend }) => {
-  const [activeTab, setActiveTab] = useState('knobe');
+  const [activeTab, setActiveTab] = useState('hinges');
   const { selectedLanguage } = useLanguage();
   const language = languageMap[selectedLanguage];
 
