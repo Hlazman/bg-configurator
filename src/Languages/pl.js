@@ -273,7 +273,7 @@ const pl = {
   'door closer tapered': 'Samozamykacz stożkowy',
   'electronic lock Paladii': 'Zamek elektroniczny Paladii',
   'fall stopper Fantom': 'Ogranicznik Fantom',
-  'filling with mineral wool': 'Wypełnienie wełna mineralna mineralną',
+  'filling with mineral wool': 'Wypełnienie wełną mineralną',
   'sandblasting': 'Piaskowanie',
   'spindle set': 'Kantrygiel zestaw',
   'cutting for decor': 'Wycinanie w celu dopasowanie dekoru',
