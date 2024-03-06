@@ -33,7 +33,7 @@ export const TotalOrderDetailsPage = () => {
     try {
       const response = await axios.post(queryLink, {
         query: `
-          query TotalOrder($totalOrderId: ID) {
+          query TotalOrder($totalOrderId: ID, $pagination: PaginationArg) {
             totalOrder(id: $totalOrderId) {
               data {
                 id
@@ -54,7 +54,7 @@ export const TotalOrderDetailsPage = () => {
                   deliveryCost
                   totalCostWithoutTax
                   totalTax
-                  orders {
+                  orders(pagination: $pagination) {
                     data {
                       id
                     }
@@ -66,6 +66,9 @@ export const TotalOrderDetailsPage = () => {
         `,
         variables: {
           totalOrderId: totalOrderId ? totalOrderId : localStorage.getItem('TotalOrderId'),
+          pagination: {
+            "limit": 100
+          },
         },
       },
       {
