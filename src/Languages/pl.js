@@ -235,6 +235,10 @@ const pl = {
   'type 3 inside Neo Classic': 'Neo classic wewnętrzne',
   'type 1 outside Loft': 'Loft zewnętrzne',
   'type 3 inside Loft': 'Loft wewnętrze',
+  'hidden_standard Art Decor' : 'Ukryty standard Art Decor',
+  'hidden_standard Loft' : 'Ukryty standard Loft',
+  'hidden_universal Art Decor' : 'Ukryte uniwersalne Art Decor',
+  'hidden_universal Loft' : 'Ukryte uniwersalne Loft',
 
 // Products Elements
   'aluminium cover': 'Aluminiowa ramka',

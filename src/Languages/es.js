@@ -236,6 +236,10 @@ const es = {
   'type 3 inside Neo Classic': 'Neo Clásico interior',
   'type 1 outside Loft': 'Loft exterior',
   'type 3 inside Loft': 'Loft interior',
+  'hidden_standard Art Decor' : 'Estándar oculto Art Decor',
+  'hidden_standard Loft' : 'Estándar oculto Loft',
+  'hidden_universal Art Decor' : 'Universal oculto Art Decor',
+  'hidden_universal Loft' : 'Universal oculto Loft',
 
 // Products Elements
   'aluminium cover': 'Cubierta de aluminio',

@@ -235,6 +235,10 @@ const ua = {
   'type 3 inside Neo Classic': 'Neo Classic всередині',
   'type 1 outside Loft': 'Loft ззовні',
   'type 3 inside Loft': 'Loft всередині',
+  'hidden_standard Art Decor' : 'Прихований стандарт Art Decor',
+  'hidden_standard Loft' : 'Прихований стандарт Loft',
+  'hidden_universal Art Decor' : 'Прихований універсальний Art Decor',
+  'hidden_universal Loft' : 'Прихований універсальний Loft',
 
 // Products Elements
   'aluminium cover': 'Алюмінієвий обклад',

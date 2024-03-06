@@ -235,6 +235,10 @@ const cs = {
   'type 3 inside Neo Classic': 'Neo Classic uvnitř',
   'type 1 outside Loft': 'Loft venku',
   'type 3 inside Loft': 'Loft uvnitř',
+  'hidden_standard Art Decor' : 'Skrytý standard Art Decor',
+  'hidden_standard Loft' : 'Skrytý standard Loft',
+  'hidden_universal Art Decor' : 'Skrytý univerzální Art Decor',
+  'hidden_universal Loft' : 'Skrytý univerzální Loft',
 
 // Products Elements
   'aluminium cover': 'Hliníkový kryt',

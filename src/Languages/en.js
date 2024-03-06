@@ -256,6 +256,10 @@ ceramogranite : 'Ceramogranite',
   'type 3 inside Neo Classic': 'Neo Classic inside',
   'type 1 outside Loft': 'Loft outside',
   'type 3 inside Loft': 'Loft inside',
+  'hidden_standard Art Decor' : 'Hidden standart Art Decor',
+  'hidden_standard Loft' : 'Hidden standart Loft',
+  'hidden_universal Art Decor' : 'Hidden universal Art Decor',
+  'hidden_universal Loft' : 'Hidden universal Loft',
 
 // Products Elements
   'aluminium cover': 'Aluminium cover',
