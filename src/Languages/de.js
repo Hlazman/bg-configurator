@@ -239,6 +239,8 @@ const de = {
   'hidden_standard Loft' : 'Versteckter Standard Loft',
   'hidden_universal Art Decor' : 'Versteckter Universal Art Decor',
   'hidden_universal Loft' : 'Versteckter Universal Loft',
+  'hidden_universal Neo Classic' : 'Versteckter Universal Neo Classic',
+  'hidden_standard Neo Classic ' : 'Versteckter Standard Neo Classic',
 
 // Products Elements
   'aluminium cover': 'Aluminiumabdeckung',
@@ -279,13 +281,29 @@ const de = {
   'fall stopper Fantom': 'Fallstopper Fantom',
   'filling with mineral wool': 'Füllung mit Mineralwolle',
   'sandblasting': 'Sandstrahlen',
-  'spindle set': 'Spindel-Set',
-  'cutting for decor': 'Schnitt für Dekor',
+  'spindle set (Hafele)': 'Spindel-Set (Hafele)',
+  'spindle set (C-140)': 'Spindel-Set (C-140)',
+  'cutting for decor (2mm)': 'Schnitt für Dekor (2mm)',
+  'cutting for decor (6mm)': 'Schnitt für Dekor (6mm)',
+  'cutting for decor (10mm)': 'Schnitt für Dekor (10mm)',
   'filling with PU foam': 'Füllung mit PU-Schaum',
   'hidden threshold Hafele (43/51/55)': 'Versteckter Schwelle Hafele (43/51/55)',
   'hidden threshold cce-trend-PLUS (40/45)': 'Versteckter Schwelle cce-trend-PLUS (40/45)',
-  'dropdown threshold (Art Decor / Neo Classic)': 'Dropdown-Schwelle (Art Decor / Neo Classic)',
-  'dropdown threshold (Loft)': 'Dropdown-Schwelle (Loft)',
+  'dropdown threshold (CCE Trend Plus)': 'Dropdown-Schwelle (CCE Trend Plus)',
+  'dropdown threshold (Hafele)': 'Dropdown-Schwelle (Hafele)',
+  'Replacing the standard glass color' : 'Ersetzen der Standardglasfarbe',
+  "Magnetic stopper Verum Model": 'Magnetischer Stopper Verum Modell',
+  'Finishing the fabric in the door handle': 'Veredelung des Stoffs im Türgriff',
+  'Insertion of the client fittings': 'Einsetzen der Kundenbeschläge',
+  'Concealed self-locking JNF': 'Verdecktes selbstverriegelndes Schloss JNF',
+  'Sliding system insert': 'Einsatz des Schiebesystems',
+  'Mounting plates for remote installation of the box': 'Montageplatten für die Ferninstallation der Box',
+  'Electronic lock Omnitec Os Slim Code (chrome)': 'Elektronisches Schloss Omnitec Os Slim Code (Chrom)',
+  'Electronic lock Omnitec Os Slim Code (black)': 'Elektronisches Schloss Omnitec Os Slim Code (Schwarz)',
+  'AGB Eclipse hidden curtain with tensioner (chrome)': 'Verdeckter Vorhang AGB Eclipse mit Spanner (Chrom)',
+  'AGB Eclipse hidden curtain with tensioner (black)': 'Verdeckter Vorhang AGB Eclipse mit Spanner (Schwarz)',
+  'Hidden curtain with tensioner Anselmi (chrome)': 'Verdeckter Vorhang mit Spanner Anselmi (Chrom)',
+  'Hidden curtain with tensioner Anselmi (black)': 'Verdeckter Vorhang mit Spanner Anselmi (Schwarz)',
 
 // Products Elements TYPE
   decorInsert: "Dekoreinsatz",
@@ -300,6 +318,11 @@ const de = {
   moulding: "Leiste",
   replaceGlass: "Glas austauschen",
   anotherSideColor: "Farbe der anderen Seite",
+
+  // Errors
+  err: 'Fehler',
+  errList: 'Fehlerliste',
+  errorHinge: 'Die ausgewählten Scharniere passen nicht zu diesem Türmodell.',
 
 // Elements Warnings
   saveElementsWarning: (

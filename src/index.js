@@ -10,6 +10,7 @@ import { SelectedCompanyProvider } from './Context/CompanyContext'
 import { OrderProvider } from './Context/OrderContext'
 import { TotalOrderProvider } from './Context/TotalOrderContext'
 import { LanguageProvider  } from './Context/LanguageContext';
+import { ErrorsProvider  } from './Context/ErrorsOrderContext';
 
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
@@ -20,9 +21,11 @@ root.render(
       <AuthProvider>
         <SelectedCompanyProvider>
           <TotalOrderProvider>
-            <OrderProvider>
-              <App />
-            </OrderProvider>
+            <ErrorsProvider>
+              <OrderProvider>
+                <App />
+              </OrderProvider>
+            </ErrorsProvider>
           </TotalOrderProvider>
         </SelectedCompanyProvider>
       </AuthProvider>

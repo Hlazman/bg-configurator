@@ -240,6 +240,8 @@ const es = {
   'hidden_standard Loft' : 'Estándar oculto Loft',
   'hidden_universal Art Decor' : 'Universal oculto Art Decor',
   'hidden_universal Loft' : 'Universal oculto Loft',
+  'hidden_universal Neo Classic' : 'Universal oculto Neo Classic',
+  'hidden_standard Neo Classic ' : 'Estándar oculto Neo Classic',
 
 // Products Elements
   'aluminium cover': 'Cubierta de aluminio',
@@ -280,13 +282,29 @@ const es = {
   'fall stopper Fantom': 'Tope anticaídas Fantom',
   'filling with mineral wool': 'Relleno con lana mineral',
   'sandblasting': 'Chorreado de arena',
-  'spindle set': 'Juego de husillos',
-  'cutting for decor': 'Corte para decoración',
+  'spindle set (Hafele)': 'Juego de husillos (Hafele)',
+  'spindle set (C-140)': 'Juego de husillos (C-140)',
+  'cutting for decor (2mm)': 'Corte para decoración (2mm)',
+  'cutting for decor (6mm)': 'Corte para decoración (6mm)',
+  'cutting for decor (10mm)': 'Corte para decoración (10mm)',
   'filling with PU foam': 'Relleno con espuma de PU',
   'hidden threshold Hafele (43/51/55)': 'Umbral oculto Hafele (43/51/55)',
   'hidden threshold cce-trend-PLUS (40/45)': 'Umbral oculto cce-trend-PLUS (40/45)',
-  'dropdown threshold (Art Decor / Neo Classic)': 'Umbral desplegable (Art Decor / Neo Classic)',
-  'dropdown threshold (Loft)': 'Umbral desplegable (Loft)',
+  'dropdown threshold (CCE Trend Plus)': 'Umbral desplegable (CCE Trend Plus)',
+  'dropdown threshold (Hafele)': 'Umbral desplegable (Hafele)',
+  'Replacing the standard glass color' : 'Reemplazo del color de vidrio estándar',
+  "Magnetic stopper Verum Model": 'Tope magnético modelo Verum',
+  'Finishing the fabric in the door handle': 'Acabado de la tela en el pomo de la puerta',
+  'Insertion of the client fittings': 'Inserción del herraje del cliente',
+  'Concealed self-locking JNF': 'Cerrojo auto-bloqueante oculto JNF',
+  'Sliding system insert': 'Inserción del sistema deslizante',
+  'Mounting plates for remote installation of the box': 'Placas de montaje para instalación remota de la caja',
+  'Electronic lock Omnitec Os Slim Code (chrome)': 'Cerradura electrónica Omnitec Os Slim Code (cromo)',
+  'Electronic lock Omnitec Os Slim Code (black)': 'Cerradura electrónica Omnitec Os Slim Code (negro)',
+  'AGB Eclipse hidden curtain with tensioner (chrome)': 'Cortina oculta AGB Eclipse con tensor (cromo)',
+  'AGB Eclipse hidden curtain with tensioner (black)': 'Cortina oculta AGB Eclipse con tensor (negro)',
+  'Hidden curtain with tensioner Anselmi (chrome)': 'Cortina oculta con tensor Anselmi (cromo)',
+  'Hidden curtain with tensioner Anselmi (black)': 'Cortina oculta con tensor Anselmi (negro)',
 
 // Products Elements TYPE
   decorInsert: "Inserto decorativo",
@@ -302,6 +320,11 @@ const es = {
   moulding: "Moldura",
   replaceGlass: "Reemplazar cristal",
   anotherSideColor: "Color del otro lado",
+
+  // Errors
+  err: 'Errores',
+  errList: 'Lista de errores',
+  errorHinge: 'Las bisagras seleccionadas no coinciden con este modelo de puerta.',
 
 // Elements Warnings
   saveElementsWarning: (

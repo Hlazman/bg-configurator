@@ -6,6 +6,7 @@ import { useLanguage } from '../../Context/LanguageContext';
 import languageMap from '../../Languages/language';
 import {getHinges, getHingesData, updateHinges} from '../../api/hinge';
 import ProductImagesForm from '../Forms/ProductImagesForm';
+import {validateHinges} from '../../api/validationOrder';
 
 const HingeStep = ({ setCurrentStepSend, currentStepSend }) => {
   const [hingeData, setHingeData] = useState([]);
@@ -53,6 +54,7 @@ const HingeStep = ({ setCurrentStepSend, currentStepSend }) => {
 
     const handleSbmitForm = async () => {
       updateHinges(jwtToken, hingeSuborderId, previousHingeId, hingeAmount, messageApi, language, setCurrentStepSend, setBtnColor);
+      setTimeout(() => validateHinges(orderIdToUse, jwtToken), 100)
     }
 
     useEffect(() => {

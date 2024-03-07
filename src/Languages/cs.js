@@ -239,6 +239,8 @@ const cs = {
   'hidden_standard Loft' : 'Skrytý standard Loft',
   'hidden_universal Art Decor' : 'Skrytý univerzální Art Decor',
   'hidden_universal Loft' : 'Skrytý univerzální Loft',
+  'hidden_universal Neo Classic' : 'Skrytý univerzální Neo Classic',
+  'hidden_standard Neo Classic ' : 'Skrytý standard Neo Classic',
 
 // Products Elements
   'aluminium cover': 'Hliníkový kryt',
@@ -279,13 +281,29 @@ const cs = {
   'fall stopper Fantom': 'Zarážka Fantom',
   'filling with mineral wool': 'Naplnění minerální vlnou',
   'sandblasting': 'Pískování',
-  'spindle set': 'Souprava hřídelek',
-  'cutting for decor': 'Řezání pro dekor',
+  'spindle set (Hafele)': 'Souprava hřídelek (Hafele)',
+  'spindle set (C-140)': 'Souprava hřídelek (C-140)',
+  'cutting for decor (2mm)': 'Řezání pro dekor (2mm)',
+  'cutting for decor (6mm)': 'Řezání pro dekor (6mm)',
+  'cutting for decor (10mm)': 'Řezání pro dekor (10mm)',
   'filling with PU foam': 'Výplň PU pěnou',
   'hidden threshold Hafele (43/51/55)': 'Skrytý práh Hafele (43/51/55)',
   'hidden threshold cce-trend-PLUS (40/45)': 'Skrytý práh cce-trend-PLUS (40/45)',
-  'dropdown threshold (Art Decor / Neo Classic)': 'Rozbalovací práh (Art Decor / Neo Classic)',
-  'dropdown threshold (Loft)': 'Rozbalovací práh (Loft)',
+  'dropdown threshold (CCE Trend Plus)': 'Rozbalovací práh (CCE Trend Plus)',
+  'dropdown threshold (Hafele)': 'Rozbalovací práh (Hafele)',
+  'Replacing the standard glass color' : 'Výměna standardní barvy skla',
+  "Magnetic stopper Verum Model": 'Magnetický zastavovač modelu Verum',
+  'Finishing the fabric in the door handle': 'Dokončení látky v kování dveřního křídla',
+  'Insertion of the client fittings': 'Vložení montážního kování zákazníka',
+  'Concealed self-locking JNF': 'Skrytý samočinný zámek JNF',
+  'Sliding system insert': 'Vložení posuvného systému',
+  'Mounting plates for remote installation of the box': 'Montážní desky pro dálkovou instalaci boxu',
+  'Electronic lock Omnitec Os Slim Code (chrome)': 'Elektronický zámek Omnitec Os Slim Code (chrom),',
+  'Electronic lock Omnitec Os Slim Code (black)': 'Elektronický zámek Omnitec Os Slim Code (černý)',
+  'AGB Eclipse hidden curtain with tensioner (chrome)': 'Skrytá závěsová lišta AGB Eclipse s napínákem (chrom)',
+  'AGB Eclipse hidden curtain with tensioner (black)': 'Skrytá závěsová lišta AGB Eclipse s napínákem (černá)',
+  'Hidden curtain with tensioner Anselmi (chrome)': 'Skrytá závěsová lišta s napínákem Anselmi (chrom)',
+  'Hidden curtain with tensioner Anselmi (black)': 'Skrytá závěsová lišta s napínákem Anselmi (černá)',
 
 // Products Elements TYPE
   decorInsert: "Vložit dekor",
@@ -301,6 +319,11 @@ const cs = {
   moulding: "Lícovka",
   replaceGlass: "Výměna skla",
   anotherSideColor: "Barva druhé strany",
+
+  // Errors
+  err: 'Chyby',
+  errList: 'Seznam chyb',
+  errorHinge: 'Vybrané panty neodpovídají tomuto modelu dveří.',
 
 // Elements Warnings
   saveElementsWarning: (

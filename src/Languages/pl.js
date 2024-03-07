@@ -239,6 +239,8 @@ const pl = {
   'hidden_standard Loft' : 'Ukryty standard Loft',
   'hidden_universal Art Decor' : 'Ukryte uniwersalne Art Decor',
   'hidden_universal Loft' : 'Ukryte uniwersalne Loft',
+  'hidden_universal Neo Classic' : 'Ukryte uniwersalne Neo Classic',
+  'hidden_standard Neo Classic ' : 'Ukryty standard Neo Classic',
 
 // Products Elements
   'aluminium cover': 'Aluminiowa ramka',
@@ -279,13 +281,29 @@ const pl = {
   'fall stopper Fantom': 'Ogranicznik Fantom',
   'filling with mineral wool': 'Wypełnienie wełną mineralną',
   'sandblasting': 'Piaskowanie',
-  'spindle set': 'Kantrygiel zestaw',
-  'cutting for decor': 'Wycinanie w celu dopasowanie dekoru',
+  'spindle set (Hafele)': 'Kantrygiel zestaw (Hafele)',
+  'spindle set (C-140)': 'Kantrygiel zestaw (C-140)',
+  'cutting for decor (2mm)': 'Wycinanie w celu dopasowanie dekoru (2mm)',
+  'cutting for decor (6mm)': 'Wycinanie w celu dopasowanie dekoru (6mm)',
+  'cutting for decor (10mm)': 'Wycinanie w celu dopasowanie dekoru (10mm)',
   'filling with PU foam': 'Pianka poliuretanowa',
   'hidden threshold Hafele (43/51/55)': 'Ukryty próg Hafele (43/51/55)',
   'hidden threshold cce-trend-PLUS (40/45)': 'Ukryty próg cce-trend-PLUS (40/45)',
-  'dropdown threshold (Art Decor / Neo Classic)': 'Próg opadający (Art Decor / Neo Classic)',
-  'dropdown threshold (Loft)': 'Próg opadający (Loft)',
+  'dropdown threshold (CCE Trend Plus)': 'Próg opadający (CCE Trend Plus)',
+  'dropdown threshold (Hafele)': 'Próg opadający (Hafele)',
+  'Replacing the standard glass color' : 'Wymiana standardowego koloru szkła',
+  "Magnetic stopper Verum Model": 'Magnetyczny zatrzask modelu Verum',
+  'Finishing the fabric in the door handle': 'Wykończenie tkaniny w klamce drzwiowej',
+  'Insertion of the client fittings': 'Wstawienie klienta osprzęt',
+  'Concealed self-locking JNF': 'Ukryty samozamykający zamek JNF',
+  'Sliding system insert': 'Wkładka systemu przesuwnego',
+  'Mounting plates for remote installation of the box': 'Płyty montażowe do zdalnej instalacji skrzynki',
+  'Electronic lock Omnitec Os Slim Code (chrome)': 'Elektroniczny zamek Omnitec Os Slim Code (chrom)',
+  'Electronic lock Omnitec Os Slim Code (black)': 'Elektroniczny zamek Omnitec Os Slim Code (czarny)',
+  'AGB Eclipse hidden curtain with tensioner (chrome)': 'Ukryta karniszowa taśma AGB Eclipse z naciągaczem (chrom)',
+  'AGB Eclipse hidden curtain with tensioner (black)': 'Ukryta karniszowa taśma AGB Eclipse z naciągaczem (czarna)',
+  'Hidden curtain with tensioner Anselmi (chrome)': 'Ukryta karniszowa taśma z naciągaczem Anselmi (chrom)',
+  'Hidden curtain with tensioner Anselmi (black)': 'Ukryta karniszowa taśma z naciągaczem Anselmi (czarna)',
 
 // Products Elements TYPE
   decorInsert: "Dekoracyjna wstawka",
@@ -301,6 +319,11 @@ const pl = {
   moulding: "Moulding",
   replaceGlass: "Wymiana szkła",
   anotherSideColor: "Kolor z drugiej strony",
+
+  // Errors
+  err: 'Błędy',
+  errList: 'Lista błędów',
+  errorHinge: 'Wybrane zawiasy nie pasują do tego modelu drzwi.',
 
 // Elements Warnings
   saveElementsWarning: (

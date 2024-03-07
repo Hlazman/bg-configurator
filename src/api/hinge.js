@@ -2,24 +2,28 @@ import axios from 'axios';
 import {queryLink} from './variables'
 
 export const getHinges = async (orderIdToUse, jwtToken, setHingeData, setIsLoading, setSelectedBrand) => {
-  const axorDoors = ['ALUM UNIQUE 43', 'ALUM UNIQUE 51', 'ALUM PREMIUM 55'];
-  let doorTitle = '';
+  let brandFilter = '';
 
   try {
    await axios.post(queryLink,
       { query: `
-          query Query($orderId: ID) {
-            order(id: $orderId) {
-              data {
-                attributes {
-                  door_suborder {
-                    data {
-                      attributes {
-                        door {
-                          data {
-                            attributes {
-                              product_properties {
-                                title
+      query Query($orderId: ID, $pagination: PaginationArg) {
+        order(id: $orderId) {
+          data {
+            attributes {
+              door_suborder {
+                data {
+                  attributes {
+                    door {
+                      data {
+                        attributes {
+                          product_properties {
+                            title
+                          }
+                          whiteListHinges(pagination: $pagination) {
+                            data {
+                              attributes {
+                                brand
                               }
                             }
                           }
@@ -31,6 +35,8 @@ export const getHinges = async (orderIdToUse, jwtToken, setHingeData, setIsLoadi
               }
             }
           }
+        }
+      }
         `,
         variables: {
           orderId: orderIdToUse
@@ -43,14 +49,13 @@ export const getHinges = async (orderIdToUse, jwtToken, setHingeData, setIsLoadi
         }
       }
     ).then(response => {
-      doorTitle = response.data?.data?.order?.data?.attributes?.door_suborder?.data?.attributes.door?.data?.attributes?.product_properties?.title || '';
+      brandFilter = response.data?.data?.order?.data?.attributes?.door_suborder?.data?.attributes.door?.data?.attributes?.whiteListHinges?.data[0]?.attributes?.brand || '';
     });
   }
   catch (error) {
     console.error('Error:', error);
   }
 
-  const brandFilter = axorDoors.includes(doorTitle) ? 'Otlav' : 'Axor';
   setSelectedBrand(brandFilter);
   
   try {
@@ -81,7 +86,6 @@ export const getHinges = async (orderIdToUse, jwtToken, setHingeData, setIsLoadi
           },
           filters: {
             "brand": {
-              // "eqi": axorDoors.includes(doorTitle) ? 'Otlav' : 'Axor'
               "eqi": brandFilter
             }
           }

@@ -6,6 +6,7 @@ import { useOrder } from '../../Context/OrderContext';
 import { useLanguage } from '../../Context/LanguageContext';
 import languageMap from '../../Languages/language';
 import {queryLink} from '../../api/variables'
+import {validateHinges} from '../../api/validationOrder';
 
 const CanvasStep = ({ setCurrentStepSend, currentStepSend}) => {
   const [messageApi, contextHolder] = message.useMessage();
@@ -155,6 +156,8 @@ const CanvasStep = ({ setCurrentStepSend, currentStepSend}) => {
       console.error(error);
       messageApi.error(`${language.errorQuery}. ${language.wrongSize}`); 
     }
+
+    validateHinges(orderIdToUse, jwtToken);
   };
   
 

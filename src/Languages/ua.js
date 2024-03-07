@@ -239,6 +239,8 @@ const ua = {
   'hidden_standard Loft' : 'Прихований стандарт Loft',
   'hidden_universal Art Decor' : 'Прихований універсальний Art Decor',
   'hidden_universal Loft' : 'Прихований універсальний Loft',
+  'hidden_universal Neo Classic' : 'Прихований універсальний Neo Classic',
+  'hidden_standard Neo Classic ' : 'Прихований стандарт Neo Classic',
 
 // Products Elements
   'aluminium cover': 'Алюмінієвий обклад',
@@ -279,13 +281,29 @@ const ua = {
   'fall stopper Fantom': 'Зупинник падіння Fantom',
   'filling with mineral wool': 'Заповнення мінеральною ватою',
   'sandblasting': 'Піскоструйна обробка',
-  'spindle set': 'Комплект шпинделя',
-  'cutting for decor': 'Вирізання під декор',
+  'spindle set (Hafele)': 'Комплект шпинделя (Hafele)',
+  'spindle set (C-140)': 'Комплект шпинделя (C-140)',
+  'cutting for decor (2mm)': 'Вирізання під декор (2mm)',
+  'cutting for decor (6mm)': 'Вирізання під декор (6mm)',
+  'cutting for decor (10mm)': 'Вирізання під декор (10mm)',
   'filling with PU foam': 'Наповнення пінополіуретановою піною',
   'hidden threshold Hafele (43/51/55)': 'Прихований поріг Hafele (43/51/55)',
   'hidden threshold cce-trend-PLUS (40/45)': 'Прихований поріг cce-trend-PLUS (40/45)',
-  'dropdown threshold (Art Decor / Neo Classic)': 'Випадаючий поріг (Art Decor / Neo Classic)',
-  'dropdown threshold (Loft)': 'Випадаючий поріг (Loft)',
+  'dropdown threshold (CCE Trend Plus)': 'Випадаючий поріг (CCE Trend Plus)',
+  'dropdown threshold (Hafele)': 'Випадаючий поріг (Hafele)',
+  'Replacing the standard glass color' : 'Заміна стандартного кольору скла',
+  "Magnetic stopper Verum Model": 'Магнітний стопор Verum Model',
+  'Finishing the fabric in the door handle': 'Оздоблення полотна y дверну ручку',
+  'Insertion of the client fittings': 'Врізка фурнітури клієнта',
+  'Concealed self-locking JNF': 'Прихований самозамикач JNF',
+  'Sliding system insert' : 'Врізка розсувної системи',
+  'Mounting plates for remote installation of the box' : 'Монтажні пластин для дистанційного монтажу коробу',
+  'Electronic lock Omnitec Os Slim Code (chrome)' : 'Електроний замок Omnitec Os Slim Code (хром)',
+  'Electronic lock Omnitec Os Slim Code (black)' : 'Електроний замок Omnitec Os Slim Code (чорний)',
+  'AGB Eclipse hidden curtain with tensioner (chrome)'  : 'Прихована завіса з дотягувачем AGB Eclipse (хром)',
+  'AGB Eclipse hidden curtain with tensioner (black)' : 'Прихована завіса з дотягувачем AGB Eclipse (чорна)',
+  'Hidden curtain with tensioner Anselmi (chrome)' : 'Прихована завіса з дотягувачем Anselmi ',
+  'Hidden curtain with tensioner Anselmi (black)' : 'Прихована завіса з дотягувачем Anselmi ',
 
 // Products Elements TYPE
   decorInsert: "Вставка декору",
@@ -301,6 +319,11 @@ const ua = {
   moulding: "Молдинг",
   replaceGlass: "Заміна скла",
   anotherSideColor: "Колір з іншого боку",
+
+  // Errors
+  err: 'Помилки',
+  errList: 'Список помилок',
+  errorHinge: 'Обрані петлі не підходять для цієї моделі дверей.',
 
 // Elements Warnings
 saveElementsWarning: (

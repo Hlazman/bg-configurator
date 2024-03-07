@@ -18,6 +18,8 @@ import OptionsStep from '../Components/CreateOrderSteps/OptionsStep';
 import OptionsAdditionalStep from '../Components/CreateOrderSteps/OptionsAdditionalStep';
 import {queryLink} from '../api/variables'
 import DecorSidesGroupStep from '../Components/CreateOrderSteps/DecorSidesGroupStep';
+import ErrorDrawer from '../Components/ErrorDrawer';
+
 
 export const EditOrderPage = () => {
   const { selectedLanguage } = useLanguage();
@@ -173,6 +175,7 @@ export const EditOrderPage = () => {
         <div style={{display: 'flex', flexBasis: '50%', gap: '15px' }}>
           <Button icon={<LeftCircleOutlined />} type="dashed" onClick={()=> navigate(`/orders`)}> {language.orderList} </Button>
           <OrderDrawer/>
+          <ErrorDrawer/>
         </div>
         
         <div style={{display: 'flex', gap: '20px' }}>
