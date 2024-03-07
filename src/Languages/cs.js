@@ -148,7 +148,7 @@ const cs = {
   superGloss: 'Super lesk',
   elementGetDoor: 'Dekor jako na dveřích',
   elementGetDecor: 'Individuální dekor',
-  paintFor: "Barva pro",
+  paintFor: "Barva pro Plátno",
   wall: "stěna",
 
   wrongSize: 'Pravděpodobně jste zadali nesprávné rozměry',

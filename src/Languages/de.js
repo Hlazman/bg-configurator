@@ -148,7 +148,7 @@ const de = {
   superGloss: 'Super Glanz',
   elementGetDoor: 'Dekor wie an der Tür',
   elementGetDecor: 'Individuelles Dekor',
-  paintFor: "Farbe für",
+  paintFor: "Farbe für Leinwand",
   wall: "Wand",
 
   wrongSize: 'Sie haben wahrscheinlich die falschen Abmessungen eingegeben',

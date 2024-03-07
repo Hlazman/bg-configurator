@@ -148,7 +148,7 @@ const ua = {
   superGloss: 'Супер глянець',
   elementGetDoor: 'Декор, як на дверях',
   elementGetDecor: 'Індивідуальна декорація',
-  paintFor: "Фарба для",
+  paintFor: "Фарба для полотна",
   wall: "стіна",
 
   wrongSize: 'Ви, напевно, ввели неправильні розміри',

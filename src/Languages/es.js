@@ -148,7 +148,7 @@ const es = {
   superGloss: 'Súper brillo',
   elementGetDoor: 'Decoración como en la puerta',
   elementGetDecor: 'Decoración individual',
-  paintFor: "Pintura para",
+  paintFor: "Pintura para Lienzo",
   wall: "pared",
 
   wrongSize: 'Probablemente ingresaste las dimensiones incorrectas',

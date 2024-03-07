@@ -150,7 +150,7 @@ const en = {
   superGloss: 'Super gloss',
   elementGetDoor: 'Decor like in door',
   elementGetDecor: 'Individual decor',
-  paintFor: "Paint for",
+  paintFor: "Paint for canvas",
   wall: "wall",
   
   wrongSize: "You probably entered the wrong dimensions",

@@ -148,7 +148,7 @@ const pl = {
   superGloss: 'Super gloss',
   elementGetDoor: 'Dekor jak na drzwiach',
   elementGetDecor: ' Dekor indywidualny',
-  paintFor: "Farba dla",
+  paintFor: "Farba dla Skrzydło",
   wall: "ściana",
 
   wrongSize: 'Możliwy błąd we wprowadzonych wymiarach',
