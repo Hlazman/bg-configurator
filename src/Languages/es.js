@@ -148,7 +148,7 @@ const es = {
   superGloss: 'Súper brillo',
   elementGetDoor: 'Decoración como en la puerta',
   elementGetDecor: 'Decoración individual',
-  paintFor: "Pintura para Lienzo",
+  paintFor: "Color para Lienzo",
   wall: "pared",
 
   wrongSize: 'Probablemente ingresaste las dimensiones incorrectas',
@@ -220,6 +220,7 @@ const es = {
   side1: 'Lado 1',
   side2: 'Lado 2',
   additionally: 'además',
+  preview: 'Avance',
 
 // Decor Types
   painted_veneer: 'Chapa pintada',
@@ -325,6 +326,11 @@ const es = {
   err: 'Errores',
   errList: 'Lista de errores',
   errorHinge: 'Las bisagras seleccionadas no coinciden con este modelo de puerta.',
+  errorOptions: 'Las opciones previamente seleccionadas no son adecuadas para este modelo de puerta',
+  errorOptionsPage: 'Estas opciones no coinciden con este modelo de puerta',
+  errorDecor: 'La decoración previamente seleccionada no coincide con este modelo de puerta',
+  errorDecor2: 'La decoración previamente seleccionada para el lado 2 no coincide con este modelo de puerta',
+  errDecorElement: 'No puedes usar esta decoración para este elemento',
 
 // Elements Warnings
   saveElementsWarning: (
@@ -345,6 +351,7 @@ const es = {
     <ul>
       <li>El <strong>ancho</strong> máximo no debe ser superior a <strong>200 mm</strong>. De lo contrario, debe seleccionar <strong>Paneles de pared</strong>.</li>
       <li>Si necesita seleccionar un <strong>plinto</strong> solo para un lado, seleccione <strong>Cantidad 0.5</strong>.</li>
+      <li>Si necesitas elegir una decoración diferente para cada lado de la <strong>plinto</strong>, debes elegir 2 elementos y elegir <strong>Cantidad 0,5</strong> en cada uno</li>
     </ul>
   ),
 

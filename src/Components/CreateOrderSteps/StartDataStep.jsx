@@ -9,9 +9,11 @@ import { useTotalOrder } from '../../Context/TotalOrderContext';
 import { useSelectedCompany } from '../../Context/CompanyContext';
 import {updateTotalOrder} from '../../api/updateTotalOrder'
 import {queryLink} from '../../api/variables'
+import {updateFrame} from '../../api/frame'
 
 const StartDataStep = ({ setCurrentStepSend, currentStepSend }) => {
-  const { orderId } = useOrder();
+  // const { orderId } = useOrder();
+  const { orderId, frameSuborderId } = useOrder();
   const jwtToken = localStorage.getItem('token');
   const orderIdToUse = orderId;
   const [messageApi, contextHolder] = message.useMessage();
@@ -23,6 +25,12 @@ const StartDataStep = ({ setCurrentStepSend, currentStepSend }) => {
   const { selectedCompany } = useSelectedCompany();
 
   const [btnColor, setBtnColor] = useState('#ff0505');
+
+  const [isInsideDisabled, setIsInsideDisabled] = useState(false);
+
+  const handleHiddenChange = (value) => {
+    setIsInsideDisabled(value);
+  };
 
   const fetchOrderData = async () => {
     try {
@@ -62,6 +70,7 @@ const StartDataStep = ({ setCurrentStepSend, currentStepSend }) => {
         const orderData = response?.data?.data?.order?.data?.attributes;
         setOrderData(orderData);
         form.setFieldsValue(orderData);
+        setIsInsideDisabled(orderData.hidden);
       }
     } catch (error) {
       console.error('Error fetching order data:', error);
@@ -78,7 +87,7 @@ const StartDataStep = ({ setCurrentStepSend, currentStepSend }) => {
 
   const handleFormSubmit = async (values) => {
     try {
-      const response = await axios.post(
+      await axios.post(
         // 'https://api.boki.fortesting.com.ua/graphql',
         queryLink,
         {
@@ -116,6 +125,8 @@ const StartDataStep = ({ setCurrentStepSend, currentStepSend }) => {
         });
       }
       setBtnColor('#4BB543');
+
+      await updateFrame(orderIdToUse, jwtToken, frameSuborderId);
     } catch (error) {
       messageApi.error(language.errorQuery);
     }
@@ -151,7 +162,7 @@ const StartDataStep = ({ setCurrentStepSend, currentStepSend }) => {
             name="hidden"
             rules={[{ required: true, message: language.requiredField }]}
           >
-            <Radio.Group buttonStyle="solid">
+            <Radio.Group buttonStyle="solid" onChange={(e) => handleHiddenChange(e.target.value)}>
               <Radio.Button value={true}>{language.yes}</Radio.Button>
               <Radio.Button value={false}>{language.no}</Radio.Button>
             </Radio.Group>
@@ -178,7 +189,7 @@ const StartDataStep = ({ setCurrentStepSend, currentStepSend }) => {
             rules={[{ required: true, message: language.requiredField }]}
           >
             <Radio.Group buttonStyle="solid">
-              <Radio.Button value="inside">{language.inside}</Radio.Button>
+              <Radio.Button value="inside" disabled={isInsideDisabled}>{language.inside}</Radio.Button>
               <Radio.Button value="outside">{language.outside}</Radio.Button>
               <Radio.Button value="universal">{language.universal}</Radio.Button>
             </Radio.Group>

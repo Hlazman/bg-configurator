@@ -220,6 +220,7 @@ const cs = {
   side1: 'Strana 1',
   side2: 'Strana 2',
   additionally: 'dodatečně',
+  preview: 'Náhled',
 
 // Decor Types
   painted_veneer: 'Natřená dýha',
@@ -324,6 +325,11 @@ const cs = {
   err: 'Chyby',
   errList: 'Seznam chyb',
   errorHinge: 'Vybrané panty neodpovídají tomuto modelu dveří.',
+  errorOptions: 'Dříve vybrané možnosti nejsou vhodné pro tento model dveří',
+  errorOptionsPage: 'Tyto možnosti neodpovídají tomuto modelu dveří',
+  errorDecor: 'Dříve vybraný dekor neodpovídá tomuto modelu dveří',
+  errorDecor2: 'Dříve vybraný dekor pro stranu 2 neodpovídá tomuto modelu dveří',
+  errDecorElement: 'Tento dekor nelze použít pro tento prvek',
 
 // Elements Warnings
   saveElementsWarning: (
@@ -344,6 +350,7 @@ const cs = {
     <ul>
       <li>Maximální <strong>šířka</strong> by neměla být větší než <strong>200 mm</strong>. V opačném případě je nutné zvolit <strong>Stěnové panely</strong>.</li>
       <li>Pokud potřebujete vybrat <strong>lištu</strong> pouze pro jednu stranu, vyberte <strong>Množství 0.5</strong>.</li>
+      <li>Pokud potřebujete pro každou stranu <strong>lištu</strong> vybrat jiný dekor, musíte vybrat 2 prvky a v každém zvolit <strong>Množství 0,5</strong></li>
     </ul>
   ),
 

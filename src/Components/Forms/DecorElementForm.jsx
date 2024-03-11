@@ -7,6 +7,7 @@ import GroupDecorElementStep from '../CreateOrderSteps/GroupDecorElementStep';
 import { useLanguage } from '../../Context/LanguageContext';
 import languageMap from '../../Languages/language';
 import {queryLink} from '../../api/variables'
+import {validateDecorTypeElement} from '../../api/validationOrder'
 
 const { Option } = Select;
 
@@ -51,6 +52,8 @@ const DecorElementForm = ({setCurrentStepSend, elementID, currentStepSend}) => {
   const handleShowDecorClick = () => {
     setShowDecor(true);
   }
+
+  const [realElementId, setRealElementId] = useState(''); 
 
   useEffect(() => {
     axios.post(
@@ -112,6 +115,7 @@ const DecorElementForm = ({setCurrentStepSend, elementID, currentStepSend}) => {
 
       // setCurrentElementField(elementSuborderData?.attributes?.element?.data?.type);
       setCurrentElementField(elementSuborderData?.attributes?.type);
+      setRealElementId(elementSuborderData?.attributes?.element?.data?.id);
 
       if (noWidth.includes(elementSuborderData?.attributes?.type)) {
         setIsWidthDisabled(true);
@@ -138,6 +142,7 @@ const DecorElementForm = ({setCurrentStepSend, elementID, currentStepSend}) => {
       console.error('Error fetching element suborder data:', error);
     });
   }, [jwtToken, elementID, form]);
+
 
   useEffect(() => {
     axios.post(
@@ -240,13 +245,95 @@ const DecorElementForm = ({setCurrentStepSend, elementID, currentStepSend}) => {
       })
       .catch(error => {
         messageApi.error(language.errorQuery);
+        console.log('1', error)
       });
     }
   };
 
-  const getDecorFromSuborder = () => {
+  // const getDecorFromSuborder = () => {
+  //   if (dorSuborderId) {
+  //     axios.post(
+  //       // 'https://api.boki.fortesting.com.ua/graphql',
+  //       queryLink,
+  //       {
+  //         query: `
+  //           query Query($doorSuborderId: ID) {
+  //             doorSuborder(id: $doorSuborderId) {
+  //               data {
+  //                 attributes {
+  //                   decor {
+  //                     data {
+  //                       id
+  //                     }
+  //                   }
+  //                 }
+  //               }
+  //             }
+  //           }
+  //         `,
+  //         variables: {
+  //           doorSuborderId: dorSuborderId,
+  //         },
+  //       },
+  //       {
+  //         headers: {
+  //           'Content-Type': 'application/json',
+  //           Authorization: `Bearer ${jwtToken}`,
+  //         },
+  //       }
+  //     )
+  //       .then((response) => {
+  //         const decorDataId = response.data.data.doorSuborder.data.attributes.decor.data;
+
+  //         if (decorDataId && decorDataId.id) {
+  //           axios.post(
+  //             // 'https://api.boki.fortesting.com.ua/graphql',
+  //             queryLink,
+  //             {
+  //               query: `
+  //                 mutation Mutation($updateElementSuborderId: ID!, $data: ElementSuborderInput!) {
+  //                   updateElementSuborder(id: $updateElementSuborderId, data: $data) {
+  //                     data {
+  //                       id
+  //                     }
+  //                   }
+  //                 }
+  //               `,
+  //               variables: {
+  //                 updateElementSuborderId: elementID.toString(),
+  //                 data: {
+  //                   decor: decorDataId.id,
+  //                 },
+  //               },
+  //             },
+  //             {
+  //               headers: {
+  //                 'Content-Type': 'application/json',
+  //                 Authorization: `Bearer ${jwtToken}`,
+  //               },
+  //             }
+  //           )
+  //             .then((response) => {
+  //               messageApi.success(language.successQuery);
+  //             })
+  //             .catch((error) => {
+  //               messageApi.error(language.errorQuery);
+  //             });
+  //         } else {
+  //           messageApi.error(language.NoDecorData);
+  //         }
+  //       })
+  //       .catch((error) => {
+  //         messageApi.error(language.errorQuery);
+  //       });
+  //   } else {
+  //     messageApi.error(language.NoDecorDataDoor);
+  //   }
+  // };
+
+  const getDecorFromSuborder = async () => {
     if (dorSuborderId) {
-      axios.post(
+      await axios.post(
         // 'https://api.boki.fortesting.com.ua/graphql',
         queryLink,
         {
@@ -258,6 +345,9 @@ const DecorElementForm = ({setCurrentStepSend, elementID, currentStepSend}) => {
                     decor {
                       data {
                         id
+                        attributes {
+                          type
+                        }
                       }
                     }
                   }
@@ -275,12 +365,21 @@ const DecorElementForm = ({setCurrentStepSend, elementID, currentStepSend}) => {
             Authorization: `Bearer ${jwtToken}`,
           },
         }
-      )
-        .then((response) => {
+      ).then(async (response) => {
+
+        const decorType = response?.data?.data?.doorSuborder?.data?.attributes?.decor?.data?.attributes?.type
+        const result = await validateDecorTypeElement(jwtToken, realElementId, decorType);
+        
+        if (result === false) {
+          messageApi.error(language.errDecorElement);
+          return;
+        };
+        console.log('no continue');
+
           const decorDataId = response.data.data.doorSuborder.data.attributes.decor.data;
 
           if (decorDataId && decorDataId.id) {
-            axios.post(
+            await axios.post(
               // 'https://api.boki.fortesting.com.ua/graphql',
               queryLink,
               {
@@ -306,12 +405,12 @@ const DecorElementForm = ({setCurrentStepSend, elementID, currentStepSend}) => {
                   Authorization: `Bearer ${jwtToken}`,
                 },
               }
-            )
-              .then((response) => {
+            ).then((response) => {
                 messageApi.success(language.successQuery);
               })
               .catch((error) => {
                 messageApi.error(language.errorQuery);
+                console.log('4', error)
               });
           } else {
             messageApi.error(language.NoDecorData);
@@ -319,6 +418,7 @@ const DecorElementForm = ({setCurrentStepSend, elementID, currentStepSend}) => {
         })
         .catch((error) => {
           messageApi.error(language.errorQuery);
+          console.log('5', error)
         });
     } else {
       messageApi.error(language.NoDecorDataDoor);
@@ -392,8 +492,9 @@ const DecorElementForm = ({setCurrentStepSend, elementID, currentStepSend}) => {
             placeholder={language.element}
             allowClear
             defaultValue={undefined}
-            onChange={(value) => { 
+            onChange={(value, option) => { 
               setCurrentElementField(value);
+              setRealElementId(option.key);
             }}
           >
               {elementOptions
@@ -419,7 +520,7 @@ const DecorElementForm = ({setCurrentStepSend, elementID, currentStepSend}) => {
           // rules={[{ required: !noDecor.includes(currentElementField) || isDecorRequired, message: language.requiredField }]}
           rules={[{ required: !noDecor.includes(currentElementField) && isDecorRequired, message: language.requiredField }]}
         >
-          <Radio.Group type="dashed" buttonStyle="solid" onChange={handleRadioChange}>
+          <Radio.Group disabled={realElementId ? false : true} type="dashed" buttonStyle="solid" onChange={handleRadioChange}>
             <Radio.Button value="choose">{language.elementGetDecor}</Radio.Button>
             <Radio.Button value="get">{language.elementGetDoor}</Radio.Button>
           </Radio.Group>
@@ -515,7 +616,7 @@ const DecorElementForm = ({setCurrentStepSend, elementID, currentStepSend}) => {
             <>
               <Divider/>
               <h3 style={{textAlign: 'left', paddingBottom: '15px'}}> {language.element} {language.elementGetDecor} </h3>
-              <GroupDecorElementStep elementID={elementID}/>
+              <GroupDecorElementStep elementID={elementID} realElementId = {realElementId}/>
             </>
           }
         </div>

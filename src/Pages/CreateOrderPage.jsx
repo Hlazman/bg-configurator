@@ -316,10 +316,10 @@ export const CreateOrderPage = () => {
             title: language.decor,
             status: (currentStep === 1 ? 'process' : currentStepSend.decorSend ? 'finish' : 'error'),
           },
-          {
-            title: language.frame,
-            status: (currentStep === 2 ? 'process' : currentStepSend.frameSend ? 'finish' : 'error'),
-          },
+          // {
+          //   title: language.frame,
+          //   status: (currentStep === 2 ? 'process' : currentStepSend.frameSend ? 'finish' : 'error'),
+          // },
           {
             title: language.elements,
             status: (currentStep === 3 ? 'process' : currentStepSend.elementSend ? 'finish' : 'error'),

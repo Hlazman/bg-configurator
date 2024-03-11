@@ -220,6 +220,7 @@ const de = {
   side1: 'Seite 1',
   side2: 'Seite 2',
   additionally: 'zusätzlich',
+  preview: 'Vorschau',
 
 // Decor Types
   painted_veneer: 'Lackiertes Furnier',
@@ -323,6 +324,11 @@ const de = {
   err: 'Fehler',
   errList: 'Fehlerliste',
   errorHinge: 'Die ausgewählten Scharniere passen nicht zu diesem Türmodell.',
+  errorOptions: 'Die zuvor ausgewählten Optionen sind nicht für dieses Türmodell geeignet',
+  errorOptionsPage: 'Diese Optionen passen nicht zu diesem Türmodell',
+  errorDecor: 'Die zuvor ausgewählte Dekoration passt nicht zu diesem Türmodell',
+  errorDecor2: 'Die zuvor ausgewählte Dekoration für Seite 2 passt nicht zu diesem Türmodell',
+  errDecorElement: 'Sie können dieses Dekor nicht für dieses Element verwenden',
 
 // Elements Warnings
   saveElementsWarning: (
@@ -343,6 +349,7 @@ const de = {
     <ul>
       <li>Die maximale <strong>Breite</strong> sollte nicht mehr als <strong>200 mm</strong> betragen. Andernfalls müssen Sie <strong>Wandpaneele</strong> auswählen.</li>
       <li>Wenn Sie nur eine <strong>Liste</strong> für eine Seite auswählen müssen, wählen Sie <strong>Menge 0.5</strong>.</li>
+      <li>Wenn Sie für jede Seite des <strong>Liste</strong> ein anderes Dekor wählen müssen, müssen Sie zwei Elemente auswählen und jeweils <strong>Menge 0,5</strong> auswählen</li>
     </ul>
   ),
 

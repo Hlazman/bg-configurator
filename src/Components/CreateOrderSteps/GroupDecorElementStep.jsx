@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Tabs, message } from 'antd';
 import VeneerStep from './VeneerStep';
 import PaintStep from './PaintStep';
@@ -10,13 +10,32 @@ import PrimerStep from './PrimerStep';
 import { useLanguage } from '../../Context/LanguageContext';
 import languageMap from '../../Languages/language';
 import {queryLink} from '../../api/variables'
+import {validateDecorElementsDisabled} from '../../api/validationOrder';
 
-const GroupDecorElementStep = ({elementID}) => {
+const GroupDecorElementStep = ({elementID, realElementId}) => {
   const [activeTab, setActiveTab] = useState('paint');
   const { selectedLanguage } = useLanguage();
   const language = languageMap[selectedLanguage];
   const jwtToken = localStorage.getItem('token');
   const [messageApi, contextHolder] = message.useMessage();
+
+  const [hasDecor, setHasDecor] = useState({
+    ceramogranite: {hasStoneware: false},
+    veneer: {hasVeneer: false},
+    primer: {hasPrimer: false},
+    HPL: {hasHPL: false},
+    paint: {hasPaint: false},
+    mirror: {hasGlass: false},
+  });
+
+  const getHasDecors = async () => {
+    const decorProperties = await validateDecorElementsDisabled(jwtToken, realElementId);
+    setHasDecor(decorProperties);
+  };
+
+  useEffect(() => {
+    getHasDecors();
+  }, [jwtToken, realElementId]);
 
   const handleTabChange = tabKey => {
     setActiveTab(tabKey);
@@ -239,6 +258,7 @@ const GroupDecorElementStep = ({elementID}) => {
         {
           label: language.veneer,
           key: 'veneer',
+          disabled: hasDecor.veneer.hasVeneer,
           children: 
             <VeneerStep 
               fetchDecorData={fetchDecorData}
@@ -250,6 +270,7 @@ const GroupDecorElementStep = ({elementID}) => {
         {
           label: language.paint,
           key: 'paint',
+          disabled: hasDecor.paint.hasPaint,
           children: 
             <PaintStep 
             fetchDecorData={fetchDecorData}
@@ -261,6 +282,7 @@ const GroupDecorElementStep = ({elementID}) => {
         {
           label: language.stoneware,
           key: 'stoneware',
+          disabled: hasDecor.ceramogranite.hasStoneware,
           children: 
             <StoneStep 
             fetchDecorData={fetchDecorData}
@@ -272,6 +294,7 @@ const GroupDecorElementStep = ({elementID}) => {
         {
           label: `${language.mirror} / ${language.glass}`,
           key: 'mirror',
+          disabled: hasDecor.mirror.hasGlass,
           children: 
             <MirrorStep 
               fetchDecorData={fetchDecorData}
@@ -283,6 +306,7 @@ const GroupDecorElementStep = ({elementID}) => {
         {
           label: language.hpl,
           key: 'hpl',
+          disabled: hasDecor.HPL.hasHPL,
           children: 
             <HPLStep 
             fetchDecorData={fetchDecorData}
@@ -294,6 +318,7 @@ const GroupDecorElementStep = ({elementID}) => {
         {
           label: language.primers,
           key: 'primer',
+          disabled: hasDecor.primer.hasPrimer,
           children: 
             <PrimerStep 
             fetchDecorData={fetchDecorData}

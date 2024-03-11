@@ -150,7 +150,7 @@ const en = {
   superGloss: 'Super gloss',
   elementGetDoor: 'Decor like in door',
   elementGetDecor: 'Individual decor',
-  paintFor: "Paint for canvas",
+  paintFor: "Color for canvas",
   wall: "wall",
   
   wrongSize: "You probably entered the wrong dimensions",
@@ -221,6 +221,7 @@ const en = {
   side1: 'Side 1',
   side2: 'Side 2',
   additionally: 'additionally',
+  preview: 'Preview',
 
 // Decor Types
 painted_veneer : 'Painted veneer',
@@ -265,20 +266,20 @@ ceramogranite : 'Ceramogranite',
 
  
 // Products Frame
-  'hidden_standard Hidden': 'Hidden standart',
-  'type 1 outside Neo Classic': 'Neo Classic outside',
   'type 3 inside Art Decore': 'Art Decore inside',
-  'hidden_universal Hidden': 'Hidden universal',
-  'type 1 outside Art Decore': 'Art Decore outside',
   'type 3 inside Neo Classic': 'Neo Classic inside',
-  'type 1 outside Loft': 'Loft outside',
   'type 3 inside Loft': 'Loft inside',
-  'hidden_standard Art Decor' : 'Hidden standart Art Decor',
+  'type 1 outside Neo Classic': 'Neo Classic outside',
+  'type 1 outside Art Decore': 'Art Decore outside',
+  'type 1 outside Loft': 'Loft outside',
+  'hidden_standard Hidden': 'Hidden standart',
   'hidden_standard Loft' : 'Hidden standart Loft',
+  'hidden_standard Art Decor' : 'Hidden standart Art Decor',
+  'hidden_standard Neo Classic' : 'Hidden standard Neo Classic',
+  'hidden_universal Hidden': 'Hidden universal',
   'hidden_universal Art Decor' : 'Hidden universal Art Decor',
   'hidden_universal Loft' : 'Hidden universal Loft',
   'hidden_universal Neo Classic' : 'Hidden universal Neo Classic',
-  'hidden_standard Neo Classic ' : 'Hidden standard Neo Classic',
 
 // Products Elements
   'aluminium cover': 'Aluminium cover',
@@ -326,6 +327,11 @@ ceramogranite : 'Ceramogranite',
   err: 'Errors',
   errList: 'Errors list',
   errorHinge: 'The selected Hinges do not fit this door model.',
+  errorOptions: 'The previously selected Options are not suitable for this door model', 
+  errorOptionsPage: 'These Options do not fit this door model',
+  errorDecor : 'The previously selected decor does not fit this door model',
+  errorDecor2 : 'The previously selected decor for side 2 does not fit this door model',
+  errDecorElement: 'You cannot use this Decor for this element',
 
   // Elements Warnings
   saveElementsWarning: (
@@ -346,6 +352,7 @@ ceramogranite : 'Ceramogranite',
     <ul>
       <li>The maximum <strong>width</strong> should not be more than <strong>200mm</strong>. Otherwise you need to select <strong>Wall panels</strong>.</li>
       <li>If you need to select a <strong>platband</strong> for only one side, select <strong>Amount 0.5</strong></li>
+      <li>If you need to choose a different decor for each side of the <strong>Platband</strong>, you need to choose 2 elements and choose <strong>Amount0.5</strong> in each </li> 
   </ul>
   ),
 

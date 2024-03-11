@@ -205,10 +205,10 @@ export const EditOrderPage = () => {
             title: language.decor,
             status: (currentStep === 1 ? 'process' : 'finish'),
           },
-          {
-            title: language.frame,
-            status: (currentStep === 2 ? 'process' : 'finish'),
-          },
+          // {
+          //   title: language.frame,
+          //   status: (currentStep === 2 ? 'process' : 'finish'),
+          // },
           {
             title: language.elements,
             status: (currentStep === 3 ? 'process' : 'finish'),

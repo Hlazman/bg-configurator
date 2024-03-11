@@ -148,7 +148,7 @@ const pl = {
   superGloss: 'Super gloss',
   elementGetDoor: 'Dekor jak na drzwiach',
   elementGetDecor: ' Dekor indywidualny',
-  paintFor: "Farba dla Skrzydło",
+  paintFor: "Kolor dla Skrzydło",
   wall: "ściana",
 
   wrongSize: 'Możliwy błąd we wprowadzonych wymiarach',
@@ -220,6 +220,7 @@ const pl = {
   side1: 'Strona 1',
   side2: 'Strona 2',
   additionally: 'Dodatkowo',
+  preview: 'Podgląd',
 
 // Decor Types
   painted_veneer: 'Pomalowany fornir',
@@ -324,6 +325,11 @@ const pl = {
   err: 'Błędy',
   errList: 'Lista błędów',
   errorHinge: 'Wybrane zawiasy nie pasują do tego modelu drzwi.',
+  errorOptions: 'Poprzednio wybrane opcje nie pasują do tego modelu drzwi',
+  errorOptionsPage: 'Te opcje nie pasują do tego modelu drzwi',
+  errorDecor: 'Poprzednio wybrana dekoracja nie pasuje do tego modelu drzwi',
+  errorDecor2: 'Poprzednio wybrana dekoracja dla strony 2 nie pasuje do tego modelu drzwi',
+  errDecorElement: 'Nie możesz używać tego dekoru dla tego elementu',
 
 // Elements Warnings
   saveElementsWarning: (
@@ -344,6 +350,7 @@ const pl = {
     <ul>
       <li>Maksymalna <strong>szerokość</strong> nie powinna przekraczać <strong>200 mm</strong>. W przeciwnym razie należy wybrać <strong>Panele ścienne</strong>.</li>
       <li>Jeśli potrzebujesz wybrać <strong>listwę</strong> tylko dla jednej strony, wybierz <strong>Ilość 0.5</strong>.</li>
+      <li>Jeśli chcesz wybrać inny dekor dla każdej strony <strong>listwę</strong>, musisz wybrać 2 elementy i wybrać <strong>Ilość 0,5</strong> w każdym </li> 
     </ul>
   ),
 

@@ -6,13 +6,17 @@ import { useOrder } from '../../Context/OrderContext';
 import { useLanguage } from '../../Context/LanguageContext';
 import languageMap from '../../Languages/language';
 import {queryLink} from '../../api/variables'
-import {validateHinges} from '../../api/validationOrder';
+import {validateHinges, validateOptions, validateDecor} from '../../api/validationOrder';
+import {getOptions, getOptionsDataOrder} from '../../api/options';
+import {updateCanvas} from '../../api/canvas';
+import {updateFrame} from '../../api/frame'
 
 const CanvasStep = ({ setCurrentStepSend, currentStepSend}) => {
   const [messageApi, contextHolder] = message.useMessage();
   const { selectedLanguage } = useLanguage();
   const language = languageMap[selectedLanguage];
-  const { orderId, dorSuborderId } = useOrder();
+  // const { orderId, dorSuborderId } = useOrder();
+  const { orderId, dorSuborderId, frameSuborderId, setNotValidOptions, setOptionsData, setOptionsSuborderData } = useOrder();
   const orderIdToUse = orderId;
   const jwtToken = localStorage.getItem('token');
   const [doorData, setDoorData] = useState([]);
@@ -95,6 +99,16 @@ const CanvasStep = ({ setCurrentStepSend, currentStepSend}) => {
     }
   }, [orderId, jwtToken, form, orderIdToUse]);
 
+
+  const getValid = async () => {
+    const optionsDataResponse = await getOptions(jwtToken, orderIdToUse, setOptionsData);
+    const optionsSuborderDataResponse = await getOptionsDataOrder(orderIdToUse, jwtToken, setOptionsSuborderData);
+
+    await validateOptions(orderIdToUse, jwtToken, optionsDataResponse, optionsSuborderDataResponse, setNotValidOptions);
+    await validateHinges(orderIdToUse, jwtToken);
+    await validateDecor(orderIdToUse, jwtToken)
+};
+
   const onFinish = async (values) => {
     const { width, height, thickness } = values;
     const updateDoorSuborderId = dorSuborderId; 
@@ -109,57 +123,65 @@ const CanvasStep = ({ setCurrentStepSend, currentStepSend}) => {
       }
     };
 
-    try {
-      const response = await axios.post(
-        // 'https://api.boki.fortesting.com.ua/graphql',
-        queryLink,
-        {
-          query: `
-            mutation Mutation($updateDoorSuborderId: ID!, $data: DoorSuborderInput!) {
-              updateDoorSuborder(id: $updateDoorSuborderId, data: $data) {
-                data {
-                  id
-                }
-              }
-            }
-          `,
-          variables: {
-            updateDoorSuborderId: updateDoorSuborderId,
-            data: data
-          }
-        },
-        {
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${jwtToken}`,
-          },
-        }
-      );
+    // try {
+    //   const response = await axios.post(
+    //     // 'https://api.boki.fortesting.com.ua/graphql',
+    //     queryLink,
+    //     {
+    //       query: `
+    //         mutation Mutation($updateDoorSuborderId: ID!, $data: DoorSuborderInput!) {
+    //           updateDoorSuborder(id: $updateDoorSuborderId, data: $data) {
+    //             data {
+    //               id
+    //             }
+    //           }
+    //         }
+    //       `,
+    //       variables: {
+    //         updateDoorSuborderId: updateDoorSuborderId,
+    //         data: data
+    //       }
+    //     },
+    //     {
+    //       headers: {
+    //         'Content-Type': 'application/json',
+    //         Authorization: `Bearer ${jwtToken}`,
+    //       },
+    //     }
+    //   );
       
-      if (response.data.errors) {
-        throw new Error()
+    //   if (response.data.errors) {
+    //     throw new Error()
         
-      } else {
-        messageApi.success(language.successQuery);
-      }
+    //   } else {
+    //     messageApi.success(language.successQuery);
+    //   }
 
-      if (setCurrentStepSend) {
-        setCurrentStepSend(prevState => {
-          return {
-            ...prevState,
-            canvasSend: true
-          };
-        });
-      }
-      setBtnColor('#4BB543');
-    } catch (error) {
-      console.error(error);
-      messageApi.error(`${language.errorQuery}. ${language.wrongSize}`); 
-    }
+    //   if (setCurrentStepSend) {
+    //     setCurrentStepSend(prevState => {
+    //       return {
+    //         ...prevState,
+    //         canvasSend: true
+    //       };
+    //     });
+    //   }
+    //   setBtnColor('#4BB543');
 
-    validateHinges(orderIdToUse, jwtToken);
+    //   // const optionsDataResponse = await getOptions(jwtToken, orderIdToUse, setOptionsData);
+    //   // const optionsSuborderDataResponse = await getOptionsDataOrder(orderIdToUse, jwtToken, setOptionsSuborderData);
+
+    //   // await validateOptions(orderIdToUse, jwtToken, optionsDataResponse, optionsSuborderDataResponse, setNotValidOptions);
+    //   // await validateHinges(orderIdToUse, jwtToken);
+
+    // } catch (error) {
+    //   console.error(error);
+    //   messageApi.error(`${language.errorQuery}. ${language.wrongSize}`); 
+    // }
+
+    await updateCanvas(jwtToken, updateDoorSuborderId, data, messageApi, language, setCurrentStepSend, setBtnColor, getValid);
+    await updateFrame(orderIdToUse, jwtToken, frameSuborderId);
   };
-  
+
 
   useEffect(() => {
     const fetchData = async () => {

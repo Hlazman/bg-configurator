@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Tabs, message } from 'antd';
 import VeneerStep from './VeneerStep';
 import PaintStep from './PaintStep';
@@ -9,15 +9,30 @@ import axios from 'axios';
 import PrimerStep from './PrimerStep';
 import { useLanguage } from '../../Context/LanguageContext';
 import languageMap from '../../Languages/language';
-import {queryLink} from '../../api/variables'
+import {queryLink} from '../../api/variables';
+import {validateDecor} from '../../api/validationOrder';
+import { useOrder } from '../../Context/OrderContext';
+import {updateFrame} from '../../api/frame'
 
 const GroupDecorStep = ({ setCurrentStepSend, currentStepSend }) => {
-  const [activeTab, setActiveTab] = useState('veneer');
+  // const { orderId } = useOrder();
+  const { orderId, frameSuborderId } = useOrder();
+  const orderIdToUse = orderId;
+  const [activeTab, setActiveTab] = useState('paint');
   const jwtToken = localStorage.getItem('token');
   const { selectedLanguage } = useLanguage();
   const language = languageMap[selectedLanguage];
   const [messageApi, contextHolder] = message.useMessage();
   const [btnColor, setBtnColor] = useState('#ff0505');
+
+  const [hasDecor, setHasDecor] = useState({
+    ceramogranite: {hasStoneware: false},
+    veneer: {hasVeneer: false},
+    primer: {hasPrimer: false},
+    HPL: {hasHPL: false},
+    paint: {hasPaint: false},
+    mirror: {hasGlass: false},
+  });
 
   const handleTabChange = tabKey => {
     setActiveTab(tabKey);
@@ -180,15 +195,15 @@ const GroupDecorStep = ({ setCurrentStepSend, currentStepSend }) => {
   
     if (foundDecor) {
       setSelectedDecorId(foundDecor.id);
-      console.log(`Found ${type} ${title}`);
+      // console.log(`Found ${type} ${title}`);
     } else {
-      console.log(`Not found ${type}  ${title} . Creating...`);
+      // console.log(`Not found ${type}  ${title} . Creating...`);
   
       try {
         const newDecorId = await createDecor({ title, type, productId});
         fetchDecorData(setDecorData);
         setSelectedDecorId(newDecorId);
-        console.log(`Created: ${newDecorId}`);
+        // console.log(`Created: ${newDecorId}`);
       } catch (error) {
         console.error('Error creating:', error);
       }
@@ -230,26 +245,50 @@ const GroupDecorStep = ({ setCurrentStepSend, currentStepSend }) => {
         }
       );
 
-      if (response.data.errors) {
-        throw new Error()
-      } else {
-        messageApi.success(language.successQuery);
+      // if (response.data.errors) {
+      //   throw new Error()
+      // } else {
+      //   messageApi.success(language.successQuery);
 
-        if (setCurrentStepSend) {
-          setCurrentStepSend(prevState => {
-            return {
-              ...prevState,
-              decorSend: true
-            };
-          });
-        }
+      //   if (setCurrentStepSend) {
+      //     setCurrentStepSend(prevState => {
+      //       return {
+      //         ...prevState,
+      //         decorSend: true
+      //       };
+      //     });
+      //   }
+      // }
+
+      messageApi.success(language.successQuery);
+
+      if (setCurrentStepSend) {
+        setCurrentStepSend(prevState => {
+          return {
+            ...prevState,
+            decorSend: true
+          };
+        });
       }
+
+      await updateFrame(orderIdToUse, jwtToken, frameSuborderId, selectedDecorId);
+      await getHasDecors();
 
     } catch (error) {
       console.error('Error sending data:', error);
       messageApi.error(`${language.errorQuery}. ${language.wrongDecor}`);
     }
   };
+
+  const getHasDecors = async () => {
+    const decorProperties = await validateDecor(orderIdToUse, jwtToken);
+    setHasDecor(decorProperties);
+  };
+
+  useEffect(() => {
+    getHasDecors();
+    // console.log(hasDecor);
+  }, [orderIdToUse, jwtToken]);
 
   return (
     <>
@@ -263,6 +302,7 @@ const GroupDecorStep = ({ setCurrentStepSend, currentStepSend }) => {
           {
             label: language.veneer,
             key: 'veneer',
+            disabled: hasDecor.veneer.hasVeneer,
             children: 
               <VeneerStep 
                 fetchDecorData={fetchDecorData}
@@ -275,6 +315,7 @@ const GroupDecorStep = ({ setCurrentStepSend, currentStepSend }) => {
           {
             label: language.paint,
             key: 'paint',
+            disabled: hasDecor.paint.hasPaint,
             children: 
               <PaintStep 
               fetchDecorData={fetchDecorData}
@@ -287,6 +328,7 @@ const GroupDecorStep = ({ setCurrentStepSend, currentStepSend }) => {
           {
             label: language.stoneware,
             key: 'stoneware',
+            disabled: hasDecor.ceramogranite.hasStoneware,
             children: 
               <StoneStep 
               fetchDecorData={fetchDecorData}
@@ -299,6 +341,7 @@ const GroupDecorStep = ({ setCurrentStepSend, currentStepSend }) => {
           {
             label: `${language.mirror} / ${language.glass}`,
             key: 'mirror',
+            disabled: hasDecor.mirror.hasGlass,
             children: 
               <MirrorStep 
                 fetchDecorData={fetchDecorData}
@@ -311,6 +354,7 @@ const GroupDecorStep = ({ setCurrentStepSend, currentStepSend }) => {
           {
             label: language.hpl,
             key: 'hpl',
+            disabled: hasDecor.HPL.hasHPL,
             children: 
               <HPLStep 
               fetchDecorData={fetchDecorData}
@@ -323,6 +367,7 @@ const GroupDecorStep = ({ setCurrentStepSend, currentStepSend }) => {
           {
             label: language.primers,
             key: 'primer',
+            disabled: hasDecor.primer.hasPrimer,
             children: 
               <PrimerStep 
               fetchDecorData={fetchDecorData}

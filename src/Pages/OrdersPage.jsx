@@ -187,7 +187,7 @@ const handleOpenOrder = (orderID) => {
     const items = [
     {
       key: 'openOrder',
-      label: `${language.open}`,
+      label: `${language.preview}`,
       icon: <FolderOpenOutlined />,
     },
     {

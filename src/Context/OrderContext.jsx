@@ -10,6 +10,11 @@ const [hingeSuborderId, sethiHgeSuborderId] = useState('');
 const [knobeSuborderId, setKnobeSuborderId] = useState('');
 const [lockSuborderId, setLockSuborderId] = useState('');
 
+// Options
+const [optionsData, setOptionsData] = useState([]);
+const [optionsSuborderData, setOptionsSuborderData] = useState([]);
+const [notValidOptions, setNotValidOptions] = useState([]);
+
   return (
     <OrderContext.Provider value={
       { orderId, setOrderId, 
@@ -18,6 +23,10 @@ const [lockSuborderId, setLockSuborderId] = useState('');
         hingeSuborderId, sethiHgeSuborderId,
         knobeSuborderId, setKnobeSuborderId,
         lockSuborderId, setLockSuborderId,
+
+        optionsData, setOptionsData,
+        optionsSuborderData, setOptionsSuborderData,
+        notValidOptions, setNotValidOptions,
       }
       }>
       {children}
