@@ -50,7 +50,8 @@ const PaintStep = ({ orderID, fetchOrderData, fetchDecorData, checkDecor, sendDe
     setSelectedColorRange(value);
     setSearchQuery('');
   
-    if (value === 'NCS') {
+    if (value === 'NCS' || value === 'bronze' || value === 'gold') {
+      console.log(value);
       setSelectedColorGroup('no_group');
       setIsDisabledGroup(true)
     } else {

@@ -234,42 +234,42 @@ export const CreateOrderPage = () => {
             currentStepSend={currentStepSend}
         />
         );
-        case 2:
-        return (
-          <FrameStep
-            setCurrentStepSend={setCurrentStepSend}
-            currentStepSend={currentStepSend}
-          />
-        );
-      case 3:
+        // case 2:
+        // return (
+        //   <FrameStep
+        //     setCurrentStepSend={setCurrentStepSend}
+        //     currentStepSend={currentStepSend}
+        //   />
+        // );
+      case 2:
         return (
           <ElementsStep
             setCurrentStepSend={setCurrentStepSend}
             currentStepSend={currentStepSend}
           />
         );
-      case 4:
+      case 3:
         return (
           <GroupAccessoriesStep
             setCurrentStepSend={setCurrentStepSend}
             currentStepSend={currentStepSend}
         />
         );
-        case 5:
+        case 4:
         return (
           <OptionsStep
             setCurrentStepSend={setCurrentStepSend}
             currentStepSend={currentStepSend}
         />
         );
-        case 6:
+        case 5:
         return (
           <OptionsAdditionalStep
             setCurrentStepSend={setCurrentStepSend}
             currentStepSend={currentStepSend}
         />
         );
-        case 7:
+        case 6:
         return (
           <InformationStep
             setCurrentStepSend={setCurrentStepSend}

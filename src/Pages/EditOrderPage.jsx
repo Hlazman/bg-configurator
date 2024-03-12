@@ -139,27 +139,27 @@ export const EditOrderPage = () => {
           // <GroupDecorStep />
           <DecorSidesGroupStep />
         );
-        case 2:
-        return (
-          <FrameStep />
-        );
-      case 3:
+        // case 2:
+        // return (
+        //   <FrameStep />
+        // );
+      case 2:
         return (
           <ElementsStep />
         );
-      case 4:
+      case 3:
         return (
           <GroupAccessoriesStep />
         );
-        case 5:
+        case 4:
         return (
           <OptionsStep />
         );
-        case 6:
+        case 5:
         return (
           <OptionsAdditionalStep />
         );
-        case 7:
+        case 6:
           return (
             <InformationStep />
           );
