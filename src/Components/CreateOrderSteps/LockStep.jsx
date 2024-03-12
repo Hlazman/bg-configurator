@@ -73,11 +73,11 @@ const LockStep = ({ setCurrentStepSend, currentStepSend }) => {
       }
     };
 
-    const storedBrand = localStorage.getItem('selectedBrandLock') || 'Polaris';
-    const storedSearchQuery = localStorage.getItem('searchQuery') || '';
+    // const storedBrand = localStorage.getItem('selectedBrandLock') || 'Polaris';
+    // const storedSearchQuery = localStorage.getItem('searchQuery') || '';
 
-    setSelectedBrand(storedBrand);
-    setSearchQuery(storedSearchQuery);
+    // setSelectedBrand(storedBrand);
+    // setSearchQuery(storedSearchQuery);
 
     fetchData();
 
@@ -89,13 +89,13 @@ const LockStep = ({ setCurrentStepSend, currentStepSend }) => {
   const brandOptions = [...new Set(lockData.map(lock => lock.attributes.brand)), 'ALL',];
 
   const handleBrandChange = value => {
-    localStorage.setItem('selectedBrandLock', value);
+    // localStorage.setItem('selectedBrandLock', value);
     setSelectedBrand(value);
     setSearchQuery('');
   };
 
   const handleSearchQueryChange = value => {
-    localStorage.setItem('searchQuery', value);
+    // localStorage.setItem('searchQuery', value);
     setSearchQuery(value);
   };
 
@@ -159,7 +159,6 @@ const LockStep = ({ setCurrentStepSend, currentStepSend }) => {
     });
   }
 
-
   useEffect(() => {
     setIsLoading(true);
 
@@ -177,6 +176,9 @@ const LockStep = ({ setCurrentStepSend, currentStepSend }) => {
                 lock {
                   data {
                     id
+                    attributes {
+                      brand
+                    }
                   }
                 }
               }
@@ -195,6 +197,9 @@ const LockStep = ({ setCurrentStepSend, currentStepSend }) => {
       const lockId = response?.data?.data?.frameFitting?.data?.attributes?.lock?.data?.id;
       if (lockId) {
         setPreviousLockId(lockId);
+
+        const lockBrand = response?.data?.data?.frameFitting?.data?.attributes?.lock?.data?.attributes.brand;
+        setSelectedBrand(lockBrand ? lockBrand : 'Polaris');
       }
       setIsLoading(false);
     })

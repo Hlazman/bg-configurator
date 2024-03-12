@@ -11,7 +11,7 @@ const KnobesStep = ({ setCurrentStepSend, currentStepSend }) => {
   const [knobesData, setKnobesData] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
   const [messageApi, contextHolder] = message.useMessage();
-  const [selectedBrand, setSelectedBrand] = useState('Airone');
+  const [selectedBrand, setSelectedBrand] = useState('5S PVD');
   const [knobeVariant, setKnobeVariant] = useState('standard');
   const [isLoading, setIsLoading] = useState(true);
   const [previousKnobeId, setPreviousKnobeId] = useState(null);
@@ -75,11 +75,12 @@ const KnobesStep = ({ setCurrentStepSend, currentStepSend }) => {
       }
     };
 
-    const storedBrand = localStorage.getItem('selectedBrandKnobe') || 'Airone';
-    const storedSearchQuery = localStorage.getItem('searchQuery') || '';
+ 
+    // const storedBrand = localStorage.getItem('selectedBrandKnobe') || 'Airone';
+    // const storedSearchQuery = localStorage.getItem('searchQuery') || '';
 
-    setSelectedBrand(storedBrand);
-    setSearchQuery(storedSearchQuery);
+    // setSelectedBrand(storedBrand);
+    // setSearchQuery(storedSearchQuery);
 
     fetchData();
 
@@ -91,13 +92,13 @@ const KnobesStep = ({ setCurrentStepSend, currentStepSend }) => {
   const brandOptions = [...new Set(knobesData.map(knob => knob.attributes.brand)), 'ALL'];
 
   const handleBrandChange = value => {
-    localStorage.setItem('selectedBrandKnobe', value);
+    // localStorage.setItem('selectedBrandKnobe', value);
     setSelectedBrand(value);
     setSearchQuery('');
   };
 
   const handleSearchQueryChange = value => {
-    localStorage.setItem('searchQuery', value);
+    // localStorage.setItem('searchQuery', value);
     setSearchQuery(value);
   };
 
@@ -182,6 +183,9 @@ const KnobesStep = ({ setCurrentStepSend, currentStepSend }) => {
                   knobe {
                     data {
                       id
+                      attributes {
+                        brand
+                      }
                     }
                   }
                 }
@@ -203,11 +207,14 @@ const KnobesStep = ({ setCurrentStepSend, currentStepSend }) => {
         if (knobeId) {
           setPreviousKnobeId(knobeId);
           setKnobeVariant(variant)
+
+          const knobeBrand = response?.data?.data?.frameFitting?.data?.attributes?.knobe?.data?.attributes.brand;
+          setSelectedBrand(knobeBrand ? knobeBrand : '5S PVD');
         }
         setIsLoading(false);
       })
       .catch((error) => {
-        console.error('Ошибка:', error);
+        console.error('Error:', error);
         setIsLoading(false);
       });
   

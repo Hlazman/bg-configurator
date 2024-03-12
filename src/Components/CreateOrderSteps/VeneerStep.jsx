@@ -10,7 +10,7 @@ import {queryLink} from '../../api/variables'
 const VeneerStep = ({ fetchOrderData, fetchDecorData, checkDecor, sendDecorForm, currentStepSend }) => {
   const [veneerData, setVeneerData] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
-  const [selectedCategory, setSelectedCategory] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState('lacquer_1');
   const [isloading, setIsLoading] = useState(true);  
   const jwtToken = localStorage.getItem('token');
   const [previousVeneerTitle, setPreviousVeneerTitle] = useState(null);
@@ -30,13 +30,13 @@ const VeneerStep = ({ fetchOrderData, fetchDecorData, checkDecor, sendDecorForm,
   const categoryOptions = [...new Set(veneerData.map(veneer => veneer.attributes.category)), language.all];
 
   const handleCategoryChange = value => {
-    localStorage.setItem('selectedCategory', value);
+    // localStorage.setItem('selectedCategory', value);
     setSelectedCategory(value);
     setSearchQuery('');
   };
 
   const handleSearchQueryChange = value => {
-    localStorage.setItem('searchQuery', value);
+    // localStorage.setItem('searchQuery', value);
     setSearchQuery(value);
   };
 
@@ -112,11 +112,11 @@ const VeneerStep = ({ fetchOrderData, fetchDecorData, checkDecor, sendDecorForm,
       }
     };
 
-    const storedCategory = localStorage.getItem('selectedCategory') || 'lacquer_1';
-    const storedSearchQuery = localStorage.getItem('searchQuery') || '';
+    // const storedCategory = localStorage.getItem('selectedCategory') || 'lacquer_1';
+    // const storedSearchQuery = localStorage.getItem('searchQuery') || '';
 
-    setSelectedCategory(storedCategory);
-    setSearchQuery(storedSearchQuery);
+    // setSelectedCategory(storedCategory);
+    // setSearchQuery(storedSearchQuery);
 
     fetchData();
     fetchDecorData(setDecorData);
@@ -127,6 +127,22 @@ const VeneerStep = ({ fetchOrderData, fetchDecorData, checkDecor, sendDecorForm,
     }
 
   }, [jwtToken, orderIdToUse, fetchDecorData, fetchOrderData]);
+
+  const findVeenerCategory = (array, veenerTitle) => {
+    for (let i = 0; i < array.length; i++) {
+        if (array[i].attributes.main_properties.title === veenerTitle) {
+            return array[i].attributes.category;
+        }
+    }
+    return null;
+}
+
+  useEffect(() => {
+    if (veneerData && previousVeneerTitle) {
+      const veererCategory = findVeenerCategory(veneerData, previousVeneerTitle);
+      setSelectedCategory(veererCategory ? veererCategory : 'lacquer_1');
+    }
+  }, [previousVeneerTitle, veneerData]);
 
   return (
     <Form onFinish={onFinish} form={form}> 

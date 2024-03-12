@@ -46,6 +46,9 @@ const CanvasStep = ({ setCurrentStepSend, currentStepSend}) => {
                             door {
                               data {
                                 id
+                                attributes {
+                                  collection
+                                }
                               }
                             }
                             sizes {
@@ -83,6 +86,9 @@ const CanvasStep = ({ setCurrentStepSend, currentStepSend}) => {
             thickness: sizes?.thickness || null,
             width: sizes?.width || null,
           };
+
+          const collection = doorSuborder.data?.attributes?.door?.data?.attributes?.collection;
+          setSelectedCollection(collection ? collection : 'Loft');
   
           form.setFieldsValue(initialValues);
           setPreviousDoorId(initialValues.door)
@@ -232,11 +238,12 @@ const CanvasStep = ({ setCurrentStepSend, currentStepSend}) => {
       setIsLoading(false);
     };
 
-    const storedCollection = localStorage.getItem('selectedCollection') || 'Loft';
-    const storedSearchQuery = localStorage.getItem('searchQuery') || '';
+    // const storedCollection = localStorage.getItem('selectedCollection') || 'Loft';
+    const storedCollection = 'Loft';
+    // const storedSearchQuery = localStorage.getItem('searchQuery') || '';
 
     setSelectedCollection(storedCollection);
-    setSearchQuery(storedSearchQuery);
+    // setSearchQuery(storedSearchQuery);
 
     fetchData();
   }, [jwtToken]);
@@ -244,13 +251,13 @@ const CanvasStep = ({ setCurrentStepSend, currentStepSend}) => {
   const collectionOptions = [language.all, ...new Set(doorData.map(door => door.attributes.collection))]; 
 
   const handleCollectionChange = value => {
-    localStorage.setItem('selectedCollection', value);
+    // localStorage.setItem('selectedCollection', value);
     setSelectedCollection(value);
     setSearchQuery('');
   };
 
   const handleSearchQueryChange = value => {
-    localStorage.setItem('searchQuery', value);
+    // localStorage.setItem('searchQuery', value);
     setSearchQuery(value);
   };
 

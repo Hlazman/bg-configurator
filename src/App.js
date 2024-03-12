@@ -227,6 +227,17 @@ const getHeaderTitle = (location, Id) => {
     }
   }, [jwtToken, user?.id, selectedCompany, form]);
 
+  // TEMP++++++++++++++++++++++++
+  useEffect(()=> {
+    function removeFromLocalStorage(keysToRemove) {
+      keysToRemove.forEach(key => {
+          localStorage.removeItem(key);
+      });
+  }
+  const keysToRemove = ['searchQuery', 'selectedCollection', 'selectedBrandKnobe', 'selectedBrandLock', 'selectedColorGroup', 'selectedCategory'];
+  removeFromLocalStorage(keysToRemove);
+  }, []);
+ // TEMP++++++++++++++++++++++++
   
   return (
     <ConfigProvider

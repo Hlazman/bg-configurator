@@ -11,7 +11,7 @@ const PaintStep = ({ orderID, fetchOrderData, fetchDecorData, checkDecor, sendDe
   const [paintData, setPaintData] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
   const [messageApi, contextHolder] = message.useMessage();
-  const [selectedColorGroup, setSelectedColorGroup] = useState('');
+  const [selectedColorGroup, setSelectedColorGroup] = useState('black_white_9');
   const [selectedColorRange, setSelectedColorRange] = useState('RAL');
   const { selectedLanguage } = useLanguage();
   const language = languageMap[selectedLanguage];
@@ -43,7 +43,7 @@ const PaintStep = ({ orderID, fetchOrderData, fetchDecorData, checkDecor, sendDe
   const colorRangeOptions = [...new Set(paintData.map(paint => paint.attributes?.color_range))];
 
   const handleColorGroupChange = value => {
-    localStorage.setItem('selectedColorGroup', value);
+    // localStorage.setItem('selectedColorGroup', value);
     setSelectedColorGroup(value);
     setSearchQuery('');
   };
@@ -69,7 +69,7 @@ const PaintStep = ({ orderID, fetchOrderData, fetchDecorData, checkDecor, sendDe
 
 
   const handleSearchQueryChange = value => {
-    localStorage.setItem('searchQuery', value);
+    // localStorage.setItem('searchQuery', value);
     setSearchQuery(value);
   };
 
@@ -138,11 +138,11 @@ const PaintStep = ({ orderID, fetchOrderData, fetchDecorData, checkDecor, sendDe
       }
     };
 
-    const storedColorGroup = localStorage.getItem('selectedColorGroup') || 'black_white_9';
-    const storedSearchQuery = localStorage.getItem('searchQuery') || '';
+    // const storedColorGroup = localStorage.getItem('selectedColorGroup') || 'black_white_9';
+    // const storedSearchQuery = localStorage.getItem('searchQuery') || '';
 
-    setSelectedColorGroup(storedColorGroup);
-    setSearchQuery(storedSearchQuery);
+    // setSelectedColorGroup(storedColorGroup);
+    // setSearchQuery(storedSearchQuery);
 
     fetchData();
     fetchDecorData(setDecorData);
@@ -152,6 +152,23 @@ const PaintStep = ({ orderID, fetchOrderData, fetchDecorData, checkDecor, sendDe
       setBtnColor('#4BB543');
     }
   }, [jwtToken, orderIdToUse, fetchDecorData, fetchOrderData, selectedPaintFor, isPaintType]);
+
+
+  const findColorGroup = (array, colorCode) => {
+    for (let i = 0; i < array.length; i++) {
+        if (array[i].attributes.color_code === colorCode) {
+            return array[i].attributes.color_group;
+        }
+    }
+    return null; // Если совпадение не найдено
+}
+
+  useEffect(() => {
+    if (paintData && previousColorTittle) {
+      const colorGroup = findColorGroup(paintData, previousColorTittle);
+      setSelectedColorGroup(colorGroup ? colorGroup : 'black_white_9');
+    }
+  }, [previousColorTittle, paintData])
 
 
   return (

@@ -36,7 +36,7 @@ const HingeStep = ({ setCurrentStepSend, currentStepSend }) => {
   };
 
   const handleSearchQueryChange = value => {
-    localStorage.setItem('searchQuery', value);
+    // localStorage.setItem('searchQuery', value);
     setSearchQuery(value);
   };
 
@@ -58,8 +58,8 @@ const HingeStep = ({ setCurrentStepSend, currentStepSend }) => {
     }
 
     useEffect(() => {
-      const storedSearchQuery = localStorage.getItem('searchQuery') || '';
-      setSearchQuery(storedSearchQuery);
+      // const storedSearchQuery = localStorage.getItem('searchQuery') || '';
+      // setSearchQuery(storedSearchQuery);
   
       getHinges(orderIdToUse, jwtToken, setHingeData, setIsLoading, setSelectedBrand);
   
