@@ -7,7 +7,7 @@ import { useLanguage } from '../../Context/LanguageContext';
 import languageMap from '../../Languages/language';
 import {queryLink} from '../../api/variables'
 
-const PaintStep = ({ orderID, fetchOrderData, fetchDecorData, checkDecor, sendDecorForm, isPaintDecor, currentStepSend }) => {
+const PaintStep = ({ orderID, fetchOrderData, fetchDecorData, checkDecor, sendDecorForm, isPaintDecor, currentStepSend, colorRangeFilter }) => {
   const [paintData, setPaintData] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
   const [messageApi, contextHolder] = message.useMessage();
@@ -29,6 +29,9 @@ const PaintStep = ({ orderID, fetchOrderData, fetchDecorData, checkDecor, sendDe
   const orderIdToUse = orderId;
   const paintForSelectRef = useRef(null);
   const [btnColor, setBtnColor] = useState('#ff0505');
+  
+  const colorRangeFilterDoors = ["NCS", "RAL"];
+  const colorRangeFilterElements = ["NCS", "RAL", "bronze", "gold"];
 
   const [form] = Form.useForm();
 
@@ -51,7 +54,6 @@ const PaintStep = ({ orderID, fetchOrderData, fetchDecorData, checkDecor, sendDe
     setSearchQuery('');
   
     if (value === 'NCS' || value === 'bronze' || value === 'gold') {
-      console.log(value);
       setSelectedColorGroup('no_group');
       setIsDisabledGroup(true)
     } else {
@@ -87,8 +89,8 @@ const PaintStep = ({ orderID, fetchOrderData, fetchDecorData, checkDecor, sendDe
           queryLink,
           {
             query: `
-              query Data($pagination: PaginationArg) {
-                paints(pagination: $pagination) {
+              query Data($pagination: PaginationArg, $filters: PaintFiltersInput) {
+                paints(pagination: $pagination, filters: $filters) {
                   data {
                     id
                     attributes {
@@ -112,6 +114,11 @@ const PaintStep = ({ orderID, fetchOrderData, fetchDecorData, checkDecor, sendDe
             variables: {
               pagination: {
                 limit: 300,
+              },
+              filters: {
+                "color_range": {
+                  "in": colorRangeFilter === true ? colorRangeFilterDoors : colorRangeFilterElements
+                }
               },
             },
           },

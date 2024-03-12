@@ -323,6 +323,7 @@ const GroupDecorStep = ({ setCurrentStepSend, currentStepSend }) => {
               checkDecor={checkDecor}
               sendDecorForm={sendDecorForm}
               currentStepSend={currentStepSend}
+              colorRangeFilter={true}
               />,
           },
           {
