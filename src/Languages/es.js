@@ -221,6 +221,7 @@ const es = {
   side2: 'Lado 2',
   additionally: 'además',
   preview: 'Avance',
+  dbColor: 'Base de datos de colores',
 
 // Decor Types
   painted_veneer: 'Chapa pintada',

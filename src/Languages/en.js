@@ -222,6 +222,7 @@ const en = {
   side2: 'Side 2',
   additionally: 'additionally',
   preview: 'Preview',
+  dbColor: 'Colors Database',  
 
 // Decor Types
 painted_veneer : 'Painted veneer',

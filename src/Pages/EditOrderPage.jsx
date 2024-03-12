@@ -171,24 +171,25 @@ export const EditOrderPage = () => {
   return (
     <div>
       
-      <div style={{display: 'flex', margin: '25px 0', gap: '20px', flexWrap: 'wrap' }}>
+      <div style={{display: 'flex', margin: '25px 0', gap: '20px', flexWrap: 'wrap', justifyContent: 'space-between', }}>
         <div style={{display: 'flex', flexBasis: '50%', gap: '15px' }}>
           <Button icon={<LeftCircleOutlined />} type="dashed" onClick={()=> navigate(`/orders`)}> {language.orderList} </Button>
           <OrderDrawer/>
-          <ErrorDrawer/>
+          <CreateColorDrawer/>
+          
         </div>
         
-        <div style={{display: 'flex', gap: '20px' }}>
-          <CreateColorDrawer/>
-
-          <Button type="dashed" icon={<SearchOutlined />} href="https://www.ralcolorchart.com/" target="_blank">
+        <div style={{display: 'flex', paddingRight: '30px'}}>
+          <ErrorDrawer/>
+          {/* <Button type="dashed" icon={<SearchOutlined />} href="https://www.ralcolorchart.com/" target="_blank">
             RAL {language.colors}
           </Button>
 
           <Button type="dashed" icon={<SearchOutlined />} href="https://www.ncscolorguide.com/" target="_blank">
             NSC {language.colors}
-          </Button>
+          </Button> */}
         </div>
+
       </div>
 
       <Steps

@@ -221,6 +221,7 @@ const cs = {
   side2: 'Strana 2',
   additionally: 'dodatečně',
   preview: 'Náhled',
+  dbColor: 'Databáze barev',
 
 // Decor Types
   painted_veneer: 'Natřená dýha',

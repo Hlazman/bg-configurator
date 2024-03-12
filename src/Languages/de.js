@@ -221,6 +221,7 @@ const de = {
   side2: 'Seite 2',
   additionally: 'zusätzlich',
   preview: 'Vorschau',
+  dbColor: 'Farbdatenbank',
 
 // Decor Types
   painted_veneer: 'Lackiertes Furnier',

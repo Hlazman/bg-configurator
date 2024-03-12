@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Tabs, message, Affix, Button } from 'antd';
-import { SendOutlined } from '@ant-design/icons';
+import { DeleteOutlined } from '@ant-design/icons';
 import VeneerStep from './VeneerStep';
 import PaintStep from './PaintStep';
 import StoneStep from './StoneStep';
@@ -11,6 +11,7 @@ import PrimerStep from './PrimerStep';
 import { useLanguage } from '../../Context/LanguageContext';
 import languageMap from '../../Languages/language';
 import {queryLink} from '../../api/variables'
+import {checkDecorSecondSide, removeDecorSecondSide} from '../../api/decor'
 import {validateDecor} from '../../api/validationOrder';
 import { useOrder } from '../../Context/OrderContext';
 
@@ -23,7 +24,8 @@ const GroupDecorStepSecond = ({ setCurrentStepSend, currentStepSend }) => {
   const language = languageMap[selectedLanguage];
   const [messageApi, contextHolder] = message.useMessage();
   const [btnColor, setBtnColor] = useState('#ff0505');
-
+  
+  const [isDataSecondDecor, setIsDataSecondDecor] = useState(true);
 
   const [hasDecor, setHasDecor] = useState({
     ceramogranite: {hasStoneware: false},
@@ -272,7 +274,8 @@ const GroupDecorStepSecond = ({ setCurrentStepSend, currentStepSend }) => {
           });
         }
 
-      getHasDecors();
+      await getHasDecors();
+      await checkDecorSecondSide(jwtToken, orderIdToUse, setIsDataSecondDecor);
 
     } catch (error) {
       console.error('Error sending data:', error);
@@ -287,11 +290,22 @@ const GroupDecorStepSecond = ({ setCurrentStepSend, currentStepSend }) => {
 
   useEffect(() => {
     getHasDecors();
-    // console.log(hasDecor);
-  }, [orderIdToUse, jwtToken]);
+    checkDecorSecondSide(jwtToken, orderIdToUse, setIsDataSecondDecor);
+  }, [orderIdToUse, jwtToken, isDataSecondDecor]);
 
   return (
     <>
+       <div style={{ position: 'absolute', top: '-50px', right: '20px'}}>
+        <Button
+          disabled={isDataSecondDecor} 
+          danger 
+          htmlType="submit" 
+          icon={<DeleteOutlined />} 
+          onClick={() => removeDecorSecondSide(jwtToken, orderIdToUse, setIsDataSecondDecor, messageApi, language)}>
+          {`${language.delete} ${language.decor}`}
+        </Button>
+      </div>
+
       {contextHolder}
       <Tabs 
         type="card" 

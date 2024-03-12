@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { Form, Input, Radio, Select, Button, Upload, message, Drawer, Space } from 'antd';
-import { UploadOutlined } from '@ant-design/icons';
+import { Form, Input, Radio, Select, Button, Upload, message, Drawer, Space, Divider } from 'antd';
+import { UploadOutlined, SearchOutlined } from '@ant-design/icons';
 import axios from 'axios';
 import { useLanguage } from '../Context/LanguageContext';
 import languageMap from '../Languages/language';
@@ -127,7 +127,7 @@ export const CreateColorDrawer = () => {
     <>
       {contextHolder}
       <Space>
-        <Button type="primary" onClick={showLargeDrawer}>
+        <Button type="primary" style={{backgroundColor: '#1677ff', color: 'white' }} onClick={showLargeDrawer}>
           {language.createColor}
         </Button>
       </Space>
@@ -222,6 +222,19 @@ export const CreateColorDrawer = () => {
         </Button>
       </Form.Item>
     </Form>
+
+      <Divider/>
+      <p style={{textAlign: 'center'}}> {language.dbColor} </p>
+      <div style={{display: 'flex', gap: '20px', justifyContent: 'center' }}>
+        <Button type="dashed" icon={<SearchOutlined />} href="https://www.ralcolorchart.com/" target="_blank">
+          RAL {language.colors}
+        </Button>
+
+        <Button type="dashed" icon={<SearchOutlined />} href="https://www.ncscolorguide.com/" target="_blank">
+          NSC {language.colors}
+        </Button>
+      </div>
+      <Divider/>
 
       </Drawer>
     </>

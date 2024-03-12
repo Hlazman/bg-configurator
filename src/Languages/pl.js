@@ -221,6 +221,7 @@ const pl = {
   side2: 'Strona 2',
   additionally: 'Dodatkowo',
   preview: 'Podgląd',
+  dbColor: 'Baza danych kolorów',
 
 // Decor Types
   painted_veneer: 'Pomalowany fornir',

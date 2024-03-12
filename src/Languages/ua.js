@@ -221,6 +221,7 @@ const ua = {
   side2: 'Сторона 2',
   additionally: 'додатково',
   preview: 'Перегляд',
+  dbColor: 'База даних кольорів',
 
 // Decor Types
   painted_veneer: 'Фарбований шпон',

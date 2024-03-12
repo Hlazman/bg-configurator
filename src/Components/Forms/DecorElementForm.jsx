@@ -524,9 +524,9 @@ const DecorElementForm = ({setCurrentStepSend, elementID, currentStepSend}) => {
             <Radio.Button value="choose">{language.elementGetDecor}</Radio.Button>
             <Radio.Button value="get">{language.elementGetDoor}</Radio.Button>
           </Radio.Group>
-
-          <Button className="blinking" style={{marginLeft: '10px'}} icon={<IssuesCloseOutlined />} type="primary" onClick={infoModal} />
         </Form.Item>
+
+        <Button className="blinking" style={{marginLeft: '10px'}} icon={<IssuesCloseOutlined />} type="primary" onClick={infoModal} />
       </div>
 
         <Space.Compact wrap="true" direction="hirizontal" size="middle">

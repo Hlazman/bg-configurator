@@ -15,8 +15,8 @@ export const OrderDrawer = () => {
   
   const showLargeDrawer = () => {
     // setSize('large');
-    setOpen(true);
     localStorage.setItem('presentation', 'singleOrder');
+    setOpen(true);
   };
   const onClose = () => {
     setOpen(false);
