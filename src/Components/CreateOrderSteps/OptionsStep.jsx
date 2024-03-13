@@ -394,6 +394,7 @@ const OptionsStep = ({ setCurrentStepSend, currentStepSend }) => {
           </div>
         ))}
 
+
         <div style={{ display: 'flex', gap: '30px' }}>
           <Form.Item
             label={language.horizontalVeneer}

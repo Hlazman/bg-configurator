@@ -1,5 +1,6 @@
 import axios from 'axios';
 import {queryLink} from './variables'
+import { getElements } from './element';
 
 
 export const getOrderErrors = async (jwtToken, orderIdToUse) => {
@@ -15,6 +16,7 @@ export const getOrderErrors = async (jwtToken, orderIdToUse) => {
                   errorFrame
                   errorHinge
                   errorOptions
+                  errorElement
                 }
               }
             }
@@ -77,7 +79,6 @@ export const updateError = async (jwtToken, orderIdToUse, errorField, errorName)
 };
 
 // HINGES
-
 export const validateHinges = async (orderIdToUse, jwtToken) => {
   let allowHinges = '';
   let currentHinge = ''
@@ -164,7 +165,6 @@ export const validateHinges = async (orderIdToUse, jwtToken) => {
 };
 
 // OPTIONS
-
 export const validateOptions = async (orderIdToUse, jwtToken, optionsData, optionsSuborderData, setNotValidOptions) => {
     const notValidIds = [];
 
@@ -233,7 +233,6 @@ export const validateOptions = async (orderIdToUse, jwtToken, optionsData, optio
 };
 
 // DECOR
-
 const validateDecorSides = (orderIdToUse, jwtToken, decorType, doorAttributes, errorField, errorName) => {
   switch (decorType) {
     case "mirror":
@@ -374,7 +373,6 @@ export const validateDecor = async (orderIdToUse, jwtToken) => {
 };
 
 // ELEMENTS
-
 export const validateDecorElementsDisabled = async (jwtToken, realElementId) => {
   
   if (!realElementId) {
@@ -489,4 +487,79 @@ export const validateDecorTypeElement = async (jwtToken, realElementId, decorTyp
   }
 
   return result;
+};
+
+
+
+
+
+
+
+export const validateElements = async (orderIdToUse, jwtToken) => {
+  const elements = await getElements(jwtToken, orderIdToUse);
+  let subOrderElements = [];
+  
+  try {
+    const response = await axios.post(queryLink,
+      { query: `
+          query ElementSuborders($pagination: PaginationArg, $filters: ElementSuborderFiltersInput) {
+            elementSuborders(pagination: $pagination, filters: $filters) {
+              data {
+                id
+                attributes {
+                  element {
+                    data {
+                      id
+                    }
+                  }
+                }
+              }
+            }
+          }
+        `,
+        variables: {
+          pagination: {
+            "limit": 100,
+          },
+          filters: {
+            order: {
+              id: {
+                "eqi": orderIdToUse
+              }
+            }
+          }
+        }
+      },
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${jwtToken}`,
+        }
+      }
+    )
+
+      if(response?.data?.data?.elementSuborders?.data) {
+        const suborders = response?.data?.data?.elementSuborders?.data
+        
+        for (let i = 0; i < suborders.length; i++) {
+          subOrderElements.push(suborders[i]?.attributes?.element?.data?.id);
+        }
+        
+        // console.log('arr', response?.data?.data?.elementSuborders?.data);
+        
+      }
+
+  } catch (error) {
+    console.log(error)
+  }
+  
+  const notValid = subOrderElements.filter(id => !elements.some(element => element.id === id));
+
+  if (notValid.length) {
+    updateError(jwtToken, orderIdToUse, 'errorElement', 'errorElement');
+  } else {
+    updateError(jwtToken, orderIdToUse, 'errorElement', null);
+  }
+
+  return notValid;
 };

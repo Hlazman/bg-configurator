@@ -20,6 +20,7 @@ import OptionsAdditionalStep from '../Components/CreateOrderSteps/OptionsAdditio
 import { useTotalOrder } from '../Context/TotalOrderContext';
 import {queryLink} from '../api/variables'
 import DecorSidesGroupStep from '../Components/CreateOrderSteps/DecorSidesGroupStep';
+import ErrorDrawer from '../Components/ErrorDrawer';
 
 export const CreateOrderPage = () => {
   const { selectedLanguage } = useLanguage();
@@ -288,6 +289,10 @@ export const CreateOrderPage = () => {
         <div style={{display: 'flex', flexBasis: '50%', gap: '20px', }}>
           <OrderDrawer/>
           <CreateColorDrawer/>
+        </div>
+
+        <div style={{display: 'flex', paddingRight: '30px'}}>
+          <ErrorDrawer/>
         </div>
         
         {/* <div style={{display: 'flex', gap: '20px' }}>

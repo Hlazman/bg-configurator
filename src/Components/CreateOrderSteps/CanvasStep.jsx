@@ -6,7 +6,7 @@ import { useOrder } from '../../Context/OrderContext';
 import { useLanguage } from '../../Context/LanguageContext';
 import languageMap from '../../Languages/language';
 import {queryLink} from '../../api/variables'
-import {validateHinges, validateOptions, validateDecor} from '../../api/validationOrder';
+import {validateHinges, validateOptions, validateDecor, validateElements} from '../../api/validationOrder';
 import {getOptions, getOptionsDataOrder} from '../../api/options';
 import {updateCanvas} from '../../api/canvas';
 import {updateFrame} from '../../api/frame'
@@ -112,7 +112,8 @@ const CanvasStep = ({ setCurrentStepSend, currentStepSend}) => {
 
     await validateOptions(orderIdToUse, jwtToken, optionsDataResponse, optionsSuborderDataResponse, setNotValidOptions);
     await validateHinges(orderIdToUse, jwtToken);
-    await validateDecor(orderIdToUse, jwtToken)
+    await validateDecor(orderIdToUse, jwtToken);
+    await validateElements(orderIdToUse, jwtToken);
 };
 
   const onFinish = async (values) => {

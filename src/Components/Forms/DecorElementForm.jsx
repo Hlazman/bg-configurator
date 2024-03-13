@@ -1,46 +1,41 @@
 import React, { useState, useEffect } from 'react';
 import { Form, Button, Select, InputNumber, Spin, Radio, Space, message, Affix, Divider, Alert, Modal } from 'antd';
 import { SendOutlined, IssuesCloseOutlined } from '@ant-design/icons';
-import axios from 'axios';
+// import axios from 'axios';
 import { useOrder } from '../../Context/OrderContext';
 import GroupDecorElementStep from '../CreateOrderSteps/GroupDecorElementStep';
 import { useLanguage } from '../../Context/LanguageContext';
 import languageMap from '../../Languages/language';
-import {queryLink} from '../../api/variables'
+// import {queryLink} from '../../api/variables'
+// import {validateDecorTypeElement, validateElements} from '../../api/validationOrder'
 import {validateDecorTypeElement} from '../../api/validationOrder'
+import {getElements, getElementsDataOrder, updateElementSuborder, getDecorFromSuborder} from '../../api/element'
 
 const { Option } = Select;
 
 const DecorElementForm = ({setCurrentStepSend, elementID, currentStepSend}) => {
-  const [elementOptions, setElementOptions] = useState([]);
-  const [isloading, setIsLoading] = useState(true);
   const jwtToken = localStorage.getItem('token');
   const { selectedLanguage } = useLanguage();
   const language = languageMap[selectedLanguage];
-  const { dorSuborderId } = useOrder();
+  const { orderId, dorSuborderId } = useOrder();
+  const orderIdToUse = orderId;
   const [form] = Form.useForm();
   const [messageApi, contextHolder] = message.useMessage();
+  const [elementOptions, setElementOptions] = useState([]);
   const [currentElementField, setCurrentElementField] = useState('');
   const [showDecor, setShowDecor] = useState(false);
   const [btnColor, setBtnColor] = useState('#ff0505');
-
-  const noWidth = ['anotherSideColor', 'skirting', 'skirtingAluminium', 'moulding', 'border'];
-  const noHeigt = ['anotherSideColor', 'skirting', 'skirtingAluminium', 'moulding', 'platband', 'threadedPlatband', 'kapitel', 'extender', 'border'];
-  const noThickness = ['anotherSideColor', 'platband', 'threadedPlatband', 'kapitel', 'extender', 'decorInsert', 'wallplate', 'border', 'replaceGlass'];
-  const noLength = ['anotherSideColor', 'platband', 'threadedPlatband', 'kapitel', 'extender', 'decorInsert', 'wallplate', 'border', 'replaceGlass'];
-  const noDecor = ['border', 'moulding', 'skirtingAluminium'];
-
-  const [isWidthDisabled, setIsWidthDisabled] = useState(false); 
-  const [isWidthRequired, setIsWidthRequired] = useState(false); 
-  const [isHeightRequired, setIsHeightRequired] = useState(false); 
-  const [isHeightDisabled, setIsHeightDisabled] = useState(false); 
-  const [isThicknessRequired, setIsThicknessRequired] = useState(false); 
-  const [isThicknessDisabled, setIsThicknessDisabled] = useState(false); 
-  const [isLengthRequired, setIsLengthRequired] = useState(false); 
-  const [isLengthDisabled, setIsLengthDisabled] = useState(false);
-  const [isDecorRequired, setIsDecorRequired] = useState(true); 
-  
+  const [hasWidth, setHasWidth] = useState(true); 
+  const [hasHeight, setHasHeight] = useState(true); 
+  const [hasThickness, setHasThickness] = useState(true); 
+  const [hasLength, setHasLength] = useState(true); 
+  // const [hasDecor, setHasDecor] = useState(true); 
+  const [hasDecorRequired, setHasDecorRequired] = useState(true); 
+  const [alert, setAlert] = useState(false);  
+  const [alertMessage, setAlertMessage] = useState('');
   const [step, setStep] = useState(1);
+  const [realElementId, setRealElementId] = useState(''); 
+
   const handleAmountChange = (value) => {
     if (value <= 0.5) {
       setStep(0.5); 
@@ -53,151 +48,55 @@ const DecorElementForm = ({setCurrentStepSend, elementID, currentStepSend}) => {
     setShowDecor(true);
   }
 
-  const [realElementId, setRealElementId] = useState(''); 
+  const requiredFieldsAndAlert = (currentElementField, elementOptions) => {
+    const currentElement = elementOptions?.find(option => option.id === currentElementField);
 
-  useEffect(() => {
-    axios.post(
-      // 'https://api.boki.fortesting.com.ua/graphql',
-      queryLink,
-      {
-        query: `
-          query Query($elementSuborderId: ID) {
-            elementSuborder(id: $elementSuborderId) {
-              data {
-                id
-                attributes {
-                  amount
-                  type
-                  element {
-                    data {
-                      id
-                    }
-                  }
-                  sizes {
-                    height
-                    thickness
-                    width
-                    length
-                  }
-                  decor {
-                    data {
-                      id
-                    }
-                  }
-                }
-              }
-            }
-          }
-        `,
-        variables: {
-          elementSuborderId: elementID || "null",
-        },
-      },
-      {
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${jwtToken}`,
-        },
-      }
-    )
-    .then(response => {
-      const elementSuborderData = response.data.data.elementSuborder.data;
-      if (elementSuborderData) {
-        form.setFieldsValue({
-          name: elementSuborderData?.attributes?.type,
-          width: elementSuborderData?.attributes?.sizes?.width,
-          height: elementSuborderData?.attributes?.sizes?.height,
-          thickness: elementSuborderData?.attributes?.sizes?.thickness,
-          amount: elementSuborderData?.attributes?.amount,
-          length: elementSuborderData?.attributes?.sizes?.length,
-        });
-      }
+    if (currentElement) {
+      setHasWidth(!currentElement.attributes.hasWidth);
+      setHasHeight(!currentElement.attributes.hasHeight);
+      setHasThickness(!currentElement.attributes.hasThickness);
+      setHasLength(!currentElement.attributes.hasLength);
+      // setHasDecor(!currentElement.attributes.hasDecor);
+      setHasDecorRequired(!currentElement.attributes.hasDecorRequired);
 
-      // setCurrentElementField(elementSuborderData?.attributes?.element?.data?.type);
-      setCurrentElementField(elementSuborderData?.attributes?.type);
-      setRealElementId(elementSuborderData?.attributes?.element?.data?.id);
+      const elementType = currentElement.attributes.type;
+      switch (elementType) {
+        case 'platband':
+          setAlert(true);
+          setAlertMessage(language.platbandWarning);
+          break;
 
-      if (noWidth.includes(elementSuborderData?.attributes?.type)) {
-        setIsWidthDisabled(true);
-        setIsWidthRequired(false)
-      }
-      if (noHeigt.includes(elementSuborderData?.attributes?.type)) {
-        setIsHeightDisabled(true);
-        setIsHeightRequired(false)
-      }
-      if (noThickness.includes(elementSuborderData?.attributes?.type)) {
-        setIsThicknessDisabled(true);
-        setIsThicknessRequired(false)
-      }
-      if (noLength.includes(elementSuborderData?.attributes?.type)) {
-        setIsLengthDisabled(true);
-        setIsLengthRequired(false)
-      }
-      // if (noDecor.includes(elementSuborderData?.attributes?.type)) {
-      if (noDecor.includes(elementSuborderData?.attributes?.type) || elementSuborderData?.attributes?.decor?.data?.id) {
-        setIsDecorRequired(false);
-      }
-    })
-    .catch(error => {
-      console.error('Error fetching element suborder data:', error);
-    });
-  }, [jwtToken, elementID, form]);
+        case 'border':
+          setAlert(true);
+          setAlertMessage(language.borderWarning);
+          break;
 
+        case 'moulding':
+          setAlert(true);
+          setAlertMessage(language.mouldingWarning);
+          break;
 
-  useEffect(() => {
-    axios.post(
-      // 'https://api.boki.fortesting.com.ua/graphql',
-      queryLink,
-      {
-        query: `
-          query Query($pagination: PaginationArg) {
-            elements(pagination: $pagination) {
-              data {
-                id
-                attributes {
-                  title
-                  type
-                }
-              }
-            }
-          }
-        `,
-        variables: {
-          pagination: {
-            limit: 30
-          }
-        },
-      },
-      {
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${jwtToken}`,
-        },
+        case 'skirting':
+          setAlert(true);
+          setAlertMessage(language.skirtingWarning);
+          break;
+
+        default:
+          setAlert(false);
+          break;
       }
-    )
-    .then(response => {
-      setElementOptions(response.data.data.elements.data);
-      setIsLoading(false);
-    })
-    .catch(error => {
-      console.error('Error fetching elements data:', error);
-      setIsLoading(false);
-    });
-
-    if (currentStepSend && currentStepSend.elementSend) {
-      setBtnColor('#4BB543');
+    } else {
+      return;
     }
+  };
 
-  }, [jwtToken, form]);
-
-  const handleFormSubmit = values => {
+  const handleFormSubmit = async (values) => {
     const { name, width, height, thickness, amount, length } = values;
-    const selectedElement = elementOptions.find(option => option.attributes.type === name);
 
     if (elementID) {
       const data = {
         amount,
-        type: selectedElement.attributes.type,
+        element: name,
         sizes: {
           height,
           thickness,
@@ -206,238 +105,20 @@ const DecorElementForm = ({setCurrentStepSend, elementID, currentStepSend}) => {
         }
       };
   
-      axios.post(
-        // 'https://api.boki.fortesting.com.ua/graphql',
-        queryLink,
-        {
-          query: `
-            mutation Mutation($updateElementSuborderId: ID!, $data: ElementSuborderInput!) {
-              updateElementSuborder(id: $updateElementSuborderId, data: $data) {
-                data {
-                  id
-                }
-              }
-            }
-          `,
-          variables: {
-            updateElementSuborderId: elementID,
-            data,
-          },
-        },
-        {
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${jwtToken}`,
-          },
-        }
-      )
-      .then(response => {
-        messageApi.success(language.successQuery);
-        if (setCurrentStepSend) {
-          setCurrentStepSend(prevState => {
-            return {
-              ...prevState,
-              elementSend: true
-            };
-          });
-        }
-        setBtnColor('#4BB543');
-      })
-      .catch(error => {
-        messageApi.error(language.errorQuery);
-        console.log('1', error)
-      });
-    }
-  };
-
-  // const getDecorFromSuborder = () => {
-  //   if (dorSuborderId) {
-  //     axios.post(
-  //       // 'https://api.boki.fortesting.com.ua/graphql',
-  //       queryLink,
-  //       {
-  //         query: `
-  //           query Query($doorSuborderId: ID) {
-  //             doorSuborder(id: $doorSuborderId) {
-  //               data {
-  //                 attributes {
-  //                   decor {
-  //                     data {
-  //                       id
-  //                     }
-  //                   }
-  //                 }
-  //               }
-  //             }
-  //           }
-  //         `,
-  //         variables: {
-  //           doorSuborderId: dorSuborderId,
-  //         },
-  //       },
-  //       {
-  //         headers: {
-  //           'Content-Type': 'application/json',
-  //           Authorization: `Bearer ${jwtToken}`,
-  //         },
-  //       }
-  //     )
-  //       .then((response) => {
-  //         const decorDataId = response.data.data.doorSuborder.data.attributes.decor.data;
-
-  //         if (decorDataId && decorDataId.id) {
-  //           axios.post(
-  //             // 'https://api.boki.fortesting.com.ua/graphql',
-  //             queryLink,
-  //             {
-  //               query: `
-  //                 mutation Mutation($updateElementSuborderId: ID!, $data: ElementSuborderInput!) {
-  //                   updateElementSuborder(id: $updateElementSuborderId, data: $data) {
-  //                     data {
-  //                       id
-  //                     }
-  //                   }
-  //                 }
-  //               `,
-  //               variables: {
-  //                 updateElementSuborderId: elementID.toString(),
-  //                 data: {
-  //                   decor: decorDataId.id,
-  //                 },
-  //               },
-  //             },
-  //             {
-  //               headers: {
-  //                 'Content-Type': 'application/json',
-  //                 Authorization: `Bearer ${jwtToken}`,
-  //               },
-  //             }
-  //           )
-  //             .then((response) => {
-  //               messageApi.success(language.successQuery);
-  //             })
-  //             .catch((error) => {
-  //               messageApi.error(language.errorQuery);
-  //             });
-  //         } else {
-  //           messageApi.error(language.NoDecorData);
-  //         }
-  //       })
-  //       .catch((error) => {
-  //         messageApi.error(language.errorQuery);
-  //       });
-  //   } else {
-  //     messageApi.error(language.NoDecorDataDoor);
-  //   }
-  // };
-
-  const getDecorFromSuborder = async () => {
-    if (dorSuborderId) {
-      await axios.post(
-        // 'https://api.boki.fortesting.com.ua/graphql',
-        queryLink,
-        {
-          query: `
-            query Query($doorSuborderId: ID) {
-              doorSuborder(id: $doorSuborderId) {
-                data {
-                  attributes {
-                    decor {
-                      data {
-                        id
-                        attributes {
-                          type
-                        }
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          `,
-          variables: {
-            doorSuborderId: dorSuborderId,
-          },
-        },
-        {
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${jwtToken}`,
-          },
-        }
-      ).then(async (response) => {
-
-        const decorType = response?.data?.data?.doorSuborder?.data?.attributes?.decor?.data?.attributes?.type
-        const result = await validateDecorTypeElement(jwtToken, realElementId, decorType);
-        
-        if (result === false) {
-          messageApi.error(language.errDecorElement);
-          return;
-        };
-        console.log('no continue');
-
-          const decorDataId = response.data.data.doorSuborder.data.attributes.decor.data;
-
-          if (decorDataId && decorDataId.id) {
-            await axios.post(
-              // 'https://api.boki.fortesting.com.ua/graphql',
-              queryLink,
-              {
-                query: `
-                  mutation Mutation($updateElementSuborderId: ID!, $data: ElementSuborderInput!) {
-                    updateElementSuborder(id: $updateElementSuborderId, data: $data) {
-                      data {
-                        id
-                      }
-                    }
-                  }
-                `,
-                variables: {
-                  updateElementSuborderId: elementID.toString(),
-                  data: {
-                    decor: decorDataId.id,
-                  },
-                },
-              },
-              {
-                headers: {
-                  'Content-Type': 'application/json',
-                  Authorization: `Bearer ${jwtToken}`,
-                },
-              }
-            ).then((response) => {
-                messageApi.success(language.successQuery);
-              })
-              .catch((error) => {
-                messageApi.error(language.errorQuery);
-                console.log('4', error)
-              });
-          } else {
-            messageApi.error(language.NoDecorData);
-          }
-        })
-        .catch((error) => {
-          messageApi.error(language.errorQuery);
-          console.log('5', error)
-        });
-    } else {
-      messageApi.error(language.NoDecorDataDoor);
+      await updateElementSuborder(jwtToken, elementID, data, language, messageApi, setCurrentStepSend, setBtnColor);
     }
   };
 
   const handleRadioChange = (e) => {
     const value = e.target.value;
-    setIsDecorRequired(false);
     
     if (value === 'choose') {
       handleShowDecorClick();
     } else if (value === 'get') {
       setShowDecor(false);
-      getDecorFromSuborder();
+      getDecorFromSuborder(dorSuborderId, jwtToken, validateDecorTypeElement, realElementId, language, messageApi, elementID);
     }
   };
-
-  const uniqueTypesSet = new Set();
 
   const infoModal = () => {
     Modal.info({
@@ -448,30 +129,26 @@ const DecorElementForm = ({setCurrentStepSend, elementID, currentStepSend}) => {
       onOk() {},
     });
   };
-
-  const [alert, setAlert] = useState(false);  
-  const [alertMessage, setAlertMessae] = useState('');
   
   useEffect(() => {
-    if (currentElementField === 'platband') {
-      setAlert(true);
-      setAlertMessae(language.platbandWarning);
-    } else if (currentElementField === 'border') {
-      setAlert(true);
-      setAlertMessae(language.borderWarning);
-    } else if (currentElementField === 'moulding') {
-      setAlert(true);
-      setAlertMessae(language.mouldingWarning);
-    } else if (currentElementField === 'skirting') {
-      setAlert(true);
-      setAlertMessae(language.skirtingWarning);
-    } else {
-      setAlert(false);
-    }
-  },[alert, currentElementField, language]);
+    getElements(jwtToken, orderIdToUse, setElementOptions);
+    getElementsDataOrder(jwtToken, elementID, form, setCurrentElementField, setRealElementId);
+
+    requiredFieldsAndAlert(currentElementField, elementOptions);
+    setRealElementId(currentElementField);
+  }, [orderIdToUse, jwtToken, elementID, form]);
+
+  useEffect(()=> {
+    requiredFieldsAndAlert(currentElementField, elementOptions);
+    setRealElementId(currentElementField);
+  }, [currentElementField])
+
+  // useEffect(()=> {
+  //   validateElements(orderIdToUse, jwtToken);
+  // }, [orderIdToUse, jwtToken])
 
   return (
-    <Spin spinning={isloading}>
+    <>
       <Form form={form} onFinish={handleFormSubmit} >
       {contextHolder}
 
@@ -488,37 +165,28 @@ const DecorElementForm = ({setCurrentStepSend, elementID, currentStepSend}) => {
           style={{margin: '10px 0', flex: '1', 'minWidth': "300px"}}
           rules={[{ required: true, message: language.requiredField }]}
         >
-          <Select
+            <Select
             placeholder={language.element}
-            allowClear
             defaultValue={undefined}
             onChange={(value, option) => { 
               setCurrentElementField(value);
               setRealElementId(option.key);
             }}
           >
-              {elementOptions
-                .filter(option => {
-                  if (!uniqueTypesSet.has(option.attributes.type)) {
-                    uniqueTypesSet.add(option.attributes.type);
-                    return true;
-                  }
-                  return false;
-                })
-                .map(option => (
-                  <Option key={option.id} value={option.attributes.type}>
-                    {languageMap[selectedLanguage][option.attributes.type]}
+              {elementOptions?.map(option => (
+                  <Option key={option.id} value={option.id}>
+                    {languageMap[selectedLanguage][option.attributes.title]}
                   </Option>
                 ))}
           </Select>
+          
         </Form.Item>
 
         <Form.Item
           style={{margin: '10px 0', flex: '1', 'minWidth': "300px", textAlign: 'left'}}
           name="radioOption"
           label={language.elementDecor}
-          // rules={[{ required: !noDecor.includes(currentElementField) || isDecorRequired, message: language.requiredField }]}
-          rules={[{ required: !noDecor.includes(currentElementField) && isDecorRequired, message: language.requiredField }]}
+          rules={[{ required: !hasDecorRequired, message: language.requiredField }]}
         >
           <Radio.Group disabled={realElementId ? false : true} type="dashed" buttonStyle="solid" onChange={handleRadioChange}>
             <Radio.Button value="choose">{language.elementGetDecor}</Radio.Button>
@@ -526,26 +194,35 @@ const DecorElementForm = ({setCurrentStepSend, elementID, currentStepSend}) => {
           </Radio.Group>
         </Form.Item>
 
-        <Button className="blinking" style={{marginLeft: '10px'}} icon={<IssuesCloseOutlined />} type="primary" onClick={infoModal} />
+        <Button
+          // className="blinking" 
+          style={{marginLeft: '10px'}} 
+          icon={<IssuesCloseOutlined />} 
+          type="primary" 
+          onClick={infoModal} 
+        > 
+          {language.information}
+        </Button>
+
       </div>
 
         <Space.Compact wrap="true" direction="hirizontal" size="middle">
           <Form.Item 
             name="width" 
-            rules={[{ required: !noWidth.includes(currentElementField) || isWidthRequired, message: language.requiredField }]}
+            rules={[{ required: !hasWidth, message: language.requiredField }]}
           >
             <InputNumber 
               style={{margin: '0 5px'}}
               addonBefore={language.width} 
               addonAfter="mm"
-              disabled={noWidth.includes(currentElementField) || isWidthDisabled}
+              disabled={hasWidth}
             />
           </Form.Item>
           
           <Form.Item 
             name="height" 
             rules={[{ 
-              required: !noHeigt.includes(currentElementField) || isHeightRequired, 
+              required: !hasHeight, 
               message: language.requiredField 
             }]} 
           >
@@ -553,14 +230,14 @@ const DecorElementForm = ({setCurrentStepSend, elementID, currentStepSend}) => {
               style={{margin: '0 5px'}}
               addonBefore={language.height} 
               addonAfter="mm"
-              disabled={noHeigt.includes(currentElementField) || isHeightDisabled}
+              disabled={hasHeight}
               />
           </Form.Item>
 
           <Form.Item 
             name="thickness"
             rules={[{ 
-              required: !noThickness.includes(currentElementField) || isThicknessRequired, 
+              required: !hasThickness, 
               message: language.requiredField 
             }]}  
           >
@@ -568,20 +245,19 @@ const DecorElementForm = ({setCurrentStepSend, elementID, currentStepSend}) => {
               style={{margin: '0 5px'}}
               addonBefore={language.thickness} 
               addonAfter="mm"
-              disabled={noThickness.includes(currentElementField) || isThicknessDisabled}
+              disabled={hasThickness}
             />
           </Form.Item>
 
           <Form.Item 
               name="length"
-              rules={[{ required: !noLength.includes(currentElementField) || isLengthRequired, message: language.requiredField }]} 
+              rules={[{ required: !hasLength, message: language.requiredField }]} 
             >
             <InputNumber
               style={{margin: '0 5px'}}
               addonBefore='length' 
               addonAfter="mm" 
-              disabled={noLength.includes(currentElementField) || isLengthDisabled}
-
+              disabled={hasLength}
             />
           </Form.Item>
 
@@ -597,7 +273,6 @@ const DecorElementForm = ({setCurrentStepSend, elementID, currentStepSend}) => {
               onChange={handleAmountChange}
             />
           </Form.Item>
-
         </Space.Compact>
 
         {alert && (
@@ -608,7 +283,6 @@ const DecorElementForm = ({setCurrentStepSend, elementID, currentStepSend}) => {
             style={{textAlign: 'left'}}
           />
         )}
-
       </Form>
 
         <div style={{paddingTop: '20px' }}>
@@ -620,8 +294,7 @@ const DecorElementForm = ({setCurrentStepSend, elementID, currentStepSend}) => {
             </>
           }
         </div>
-
-    </Spin>
+    </>
   );
 };
 

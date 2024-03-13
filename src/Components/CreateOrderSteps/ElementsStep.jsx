@@ -10,6 +10,7 @@ import {queryLink} from '../../api/variables'
 import {updateTotalOrder} from '../../api/updateTotalOrder'
 import {useSelectedCompany} from '../../Context/CompanyContext'
 import { useTotalOrder } from '../../Context/TotalOrderContext';
+import {validateElements} from '../../api/validationOrder'
 
 const ElementsStep = ({ setCurrentStepSend, currentStepSend }) => {
   const jwtToken = localStorage.getItem('token');
@@ -21,16 +22,21 @@ const ElementsStep = ({ setCurrentStepSend, currentStepSend }) => {
   const { selectedCompany } = useSelectedCompany();
   const { totalOrderId } = useTotalOrder();
 
+  const getValidate = async () => {
+    await validateElements(orderIdToUse, jwtToken);
+  }; 
+
+  useEffect(()=> {
+    getValidate();
+  }, []);
+
   useEffect(() => {
     const fetchElementSuborders = async () => {
       try {
         if (!orderIdToUse) return;
 
-        const response = await axios.post(
-          // 'https://api.boki.fortesting.com.ua/graphql',
-          queryLink,
-          {
-            query: `
+        const response = await axios.post(queryLink,
+          { query: `
               query Query($orderId: ID) {
                 order(id: $orderId) {
                   data {
@@ -38,6 +44,16 @@ const ElementsStep = ({ setCurrentStepSend, currentStepSend }) => {
                       element_suborders {
                         data {
                           id
+                          attributes {
+                            element {
+                              data {
+                                id
+                                attributes {
+                                  title
+                                }
+                              }
+                            }
+                          }
                         }
                       }
                     }
@@ -58,24 +74,27 @@ const ElementsStep = ({ setCurrentStepSend, currentStepSend }) => {
         );
 
         if (response.data.data && response.data.data.order) {
+          const notValid = await validateElements(orderIdToUse, jwtToken);
+
           const orderData = response.data.data.order.data.attributes.element_suborders.data;
           if (orderData && orderData.length > 0) {
             const newItems = orderData.map((data, index) => {
               const newActiveKey = `${language.element} ${1 + newTabIndex.current++}`;
-
+              const labelTitle = data?.attributes?.element?.data?.attributes?.title;
+              const notValidElementid = data?.attributes?.element?.data?.id;
+              
               return {
-                label: newActiveKey,
+                // label: newActiveKey,
+                label: notValid.includes(notValidElementid) ? 'ERROR !!!' : languageMap[selectedLanguage][labelTitle],
                 elemID: data.id,
                 children: (<DecorElementForm elementID={data.id} setCurrentStepSend={setCurrentStepSend} currentStepSend={currentStepSend }/>),
                 key: newActiveKey,
+                error: notValid.includes(notValidElementid), // Добавляем флаг ошибки
               };
             });
             setItems(newItems);
             setActiveKey(newItems[0].key);
           }
-          // } else if (orderData.length < 1) {
-            // add();
-          // }
         } 
       } catch (error) {
         console.error('Error fetching order data:', error);
@@ -198,7 +217,7 @@ const ElementsStep = ({ setCurrentStepSend, currentStepSend }) => {
   };
 
 
-  const remove = (targetKey) => {
+  const remove = async (targetKey) => {
     setIsLoading(true);
     deleteElementSuborder();
 
@@ -220,6 +239,7 @@ const ElementsStep = ({ setCurrentStepSend, currentStepSend }) => {
     setItems(newPanes);
     onChange(newActiveKey)
     setIsLoading(false)
+    await validateElements(orderIdToUse, jwtToken);
   };
 
   const onEdit = async (targetKey, action) => {
@@ -238,10 +258,29 @@ const ElementsStep = ({ setCurrentStepSend, currentStepSend }) => {
     setIsLoading(false);
   };
 
+ 
+  // const errorTabsRef = useRef([]);
+
+  // useEffect(() => {
+  //   errorTabsRef.current.forEach(tabRef => {
+  //     if (tabRef.current) {
+  //       tabRef.current.classList.remove('error-tab');
+  //     }
+  //   });
+  
+  //   items.forEach((item, index) => {
+  //     if (item.label === 'ERROR !!!') {
+  //       if (errorTabsRef.current[index].current) {
+  //         errorTabsRef.current[index].current.classList.add('tabError');
+  //       }
+  //     }
+  //   });
+  // }, [items]);
+
   return (
     <>
       {/* <Button type="primary" onClick={() => add()} icon={<PlusCircleOutlined />}> */}
-      <Button type="primary" onClick={add} icon={<PlusCircleOutlined />}>
+      <Button type="primary" onClick={add} icon={<PlusCircleOutlined />} style={{marginBottom: '15px'}}>
         {language.addElement}
       </Button>
 
@@ -252,6 +291,7 @@ const ElementsStep = ({ setCurrentStepSend, currentStepSend }) => {
         onEdit={onEdit}
         items={items}
         hideAdd
+        addIcon
       />
     </>
 

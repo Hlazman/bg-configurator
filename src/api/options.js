@@ -1,7 +1,7 @@
 import axios from 'axios';
 import {queryLink} from './variables'
 
-export const getOptions = async (jwtToken, orderIdToUse, setOptionsData) => {
+export const getOptions = async (jwtToken, orderIdToUse, setElementOptions) => {
   try {
     const optionsResponse = await axios.post(queryLink,
       {query: `
@@ -53,10 +53,10 @@ export const getOptions = async (jwtToken, orderIdToUse, setOptionsData) => {
     );
 
     if (optionsResponse) {
-      const options = optionsResponse?.data?.data?.order?.data?.attributes?.door_suborder?.data?.attributes?.door?.data?.attributes?.whiteListOptions?.data
-      setOptionsData(options);
+      const elements = optionsResponse?.data?.data?.order?.data?.attributes?.door_suborder?.data?.attributes?.door?.data?.attributes?.whiteListOptions?.data
+      setElementOptions(elements);
       
-      return options;
+      return elements;
     }
 
   } catch (error) {
