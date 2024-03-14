@@ -10,6 +10,7 @@ import {validateHinges, validateOptions, validateDecor, validateElements} from '
 import {getOptions, getOptionsDataOrder} from '../../api/options';
 import {updateCanvas} from '../../api/canvas';
 import {updateFrame} from '../../api/frame'
+import ImagesDoorForm from '../Forms/ImagesDoorForm';
 
 const CanvasStep = ({ setCurrentStepSend, currentStepSend}) => {
   const [messageApi, contextHolder] = message.useMessage();
@@ -355,56 +356,64 @@ const CanvasStep = ({ setCurrentStepSend, currentStepSend}) => {
           <Spin size="large" />
         </div>
       ) : (
-        <Form.Item 
-          name="doorStep"
-          rules={[{ required: true, message: language.requiredField }]}
-        >
-          <Radio.Group
-            value={form.door}
-            >
-
-            <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}>
-              {filteredImgS.map((imgSrc) => {
-                const door = doorData.find(
-                  door =>
-                    door.attributes.product_properties.image.data.attributes.url === imgSrc
-                );
-                return (
-                    <Radio key={door.id} value={door.id} >
-                      <Card
-                        className="custom-card"
-                        hoverable
-                        style={{
-                          width: '200px', 
-                          margin: '20px 10px',
-                          border:
-                            previousDoorId === door.id
-                              ? '7px solid #f06d20'
-                              : 'none',
-                        }}
-                        onClick={() => { 
-                          setPreviousDoorId(door.id);
-                        }}
-                      >
-                        <div style={{ overflow: 'hidden', height: 220 }}>
-                          <img
-                            src={`https://api.boki.fortesting.com.ua${imgSrc}`}
-                            alt={door.attributes.product_properties.title}
-                            style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-                          />
-                        </div>
-                        <Card.Meta
-                          title={door.attributes.product_properties.title}
-                          style={{ paddingTop: '10px' }}
-                        />
+        // <Form.Item
+        //   name="doorStep"
+        //   // rules={[{ required: true, message: language.requiredField }]}
+        //   rules={[{ required: previousDoorId !== null ? false : true, message: language.requiredField }]}
+        // >
+        //   <Radio.Group
+        //     value={form.door}
+        //     >
+        //     <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}>
+        //       {filteredImgS.map((imgSrc) => {
+        //         const door = doorData.find(
+        //           door =>
+        //             door.attributes.product_properties.image.data.attributes.url === imgSrc
+        //         );
+        //         return (
+        //             <Radio key={door.id} value={door.id} >
+        //               <Card
+        //                 className="custom-card"
+        //                 hoverable
+        //                 style={{
+        //                   width: '200px', 
+        //                   margin: '20px 10px',
+        //                   border:
+        //                     previousDoorId === door.id
+        //                       ? '7px solid #f06d20'
+        //                       : 'none',
+        //                 }}
+        //                 onClick={() => { 
+        //                   setPreviousDoorId(door.id);
+        //                 }}
+        //               >
+        //                 <div style={{ overflow: 'hidden', height: 220 }}>
+        //                   <img
+        //                     src={`https://api.boki.fortesting.com.ua${imgSrc}`}
+        //                     alt={door.attributes.product_properties.title}
+        //                     style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+        //                   />
+        //                 </div>
+        //                 <Card.Meta
+        //                   title={door.attributes.product_properties.title}
+        //                   style={{ paddingTop: '10px' }}
+        //                 />
     
-                      </Card>
-                    </Radio>
-                );
-              })}
-            </div>
-          </Radio.Group>
-        </Form.Item>
+        //               </Card>
+        //             </Radio>
+        //         );
+        //       })}
+        //     </div>
+        //   </Radio.Group>
+        // </Form.Item>
+        <ImagesDoorForm
+          form={form} 
+          filteredImgS={filteredImgS}
+          doorData={doorData} 
+          language={language}
+          previousDoorId={previousDoorId} 
+          setPreviousDoorId={setPreviousDoorId}
+        />
       )}
     </Form>
   );

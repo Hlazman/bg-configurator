@@ -25,6 +25,8 @@ const GroupDecorStep = ({ setCurrentStepSend, currentStepSend }) => {
   const [messageApi, contextHolder] = message.useMessage();
   const [btnColor, setBtnColor] = useState('#ff0505');
 
+  const [previesDecorId, setPreviesDecorId] = useState('');
+
   const [hasDecor, setHasDecor] = useState({
     ceramogranite: {hasStoneware: false},
     veneer: {hasVeneer: false},
@@ -83,6 +85,8 @@ const GroupDecorStep = ({ setCurrentStepSend, currentStepSend }) => {
       );
       
       const decorData = response.data.data.order?.data?.attributes?.door_suborder?.data?.attributes?.decor?.data;
+
+      setPreviesDecorId(decorData?.id)
 
       if (decorData && decorData.attributes && decorData.attributes.type === type) {
         setPreviousTitle(decorData.attributes.title);
@@ -182,7 +186,7 @@ const GroupDecorStep = ({ setCurrentStepSend, currentStepSend }) => {
         }
       );
 
-      return response.data.data.createDecor.data.id;
+      return response?.data?.data?.createDecor?.data?.id;
     } catch (error) {
       console.error('Error creating decor:', error);
       throw error;
@@ -214,7 +218,8 @@ const GroupDecorStep = ({ setCurrentStepSend, currentStepSend }) => {
     const updateDoorSuborderId = doorSuborder;
 
     const data = {
-      decor: selectedDecorId,
+      // decor: selectedDecorId,
+      decor: selectedDecorId!== null ? selectedDecorId : previesDecorId,
       order: orderIdToUse,
     };
 
@@ -244,7 +249,7 @@ const GroupDecorStep = ({ setCurrentStepSend, currentStepSend }) => {
           },
         }
       );
-
+      
       // if (response.data.errors) {
       //   throw new Error()
       // } else {

@@ -5,7 +5,7 @@ import { useOrder } from '../../Context/OrderContext';
 import { useLanguage } from '../../Context/LanguageContext';
 import languageMap from '../../Languages/language';
 import {getHinges, getHingesData, updateHinges} from '../../api/hinge';
-import ProductImagesForm from '../Forms/ProductImagesForm';
+import ImagesFittingsForm from '../Forms/ImagesFittingsForm';
 import {validateHinges} from '../../api/validationOrder';
 
 const HingeStep = ({ setCurrentStepSend, currentStepSend }) => {
@@ -161,12 +161,14 @@ const HingeStep = ({ setCurrentStepSend, currentStepSend }) => {
         //     </div>
         //   </Radio.Group>
         // </Form.Item>
-        <ProductImagesForm
+        
+        <ImagesFittingsForm
           filteredImgs={filteredImgs}
           language={language}
           stepName={'hingesStep'}
           previousId={previousHingeId}
           setPreviousId={setPreviousHingeId}
+          imageHeight={'200'}
         />
       )}
     </Form>

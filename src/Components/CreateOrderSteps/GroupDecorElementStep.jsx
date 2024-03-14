@@ -18,6 +18,7 @@ const GroupDecorElementStep = ({elementID, realElementId}) => {
   const language = languageMap[selectedLanguage];
   const jwtToken = localStorage.getItem('token');
   const [messageApi, contextHolder] = message.useMessage();
+  const [previesDecorId, setPreviesDecorId] = useState('');
 
   const [hasDecor, setHasDecor] = useState({
     ceramogranite: {hasStoneware: false},
@@ -79,6 +80,8 @@ const GroupDecorElementStep = ({elementID, realElementId}) => {
       );
     
     const decorData = response.data.data.elementSuborder?.data?.attributes?.decor?.data;
+
+    setPreviesDecorId(decorData?.id);
     
     if (decorData && decorData.attributes && decorData.attributes.type === type) {
       const title = decorData.attributes.title;
@@ -179,7 +182,7 @@ const GroupDecorElementStep = ({elementID, realElementId}) => {
         }
       );
   
-      return response.data.data.createDecor.data.id;
+      return response?.data?.data?.createDecor?.data?.id;
     } catch (error) {
       console.error('Error creating decor:', error);
       throw error;
@@ -210,7 +213,8 @@ const GroupDecorElementStep = ({elementID, realElementId}) => {
 
   const sendDecorForm = async (orderIdToUse, doorSuborder, selectedDecorId) => {
     const data = {
-      decor: selectedDecorId,
+      // decor: selectedDecorId,
+      decor: selectedDecorId!== null ? selectedDecorId : previesDecorId,
     };
 
     try {

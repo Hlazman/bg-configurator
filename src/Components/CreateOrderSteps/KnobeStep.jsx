@@ -6,6 +6,7 @@ import { useOrder } from '../../Context/OrderContext';
 import { useLanguage } from '../../Context/LanguageContext';
 import languageMap from '../../Languages/language';
 import {queryLink} from '../../api/variables'
+import ImagesFittingsForm from '../Forms/ImagesFittingsForm';
 
 const KnobesStep = ({ setCurrentStepSend, currentStepSend }) => {
   const [knobesData, setKnobesData] = useState([]);
@@ -276,41 +277,50 @@ const KnobesStep = ({ setCurrentStepSend, currentStepSend }) => {
       {isLoading ? (
         <Spin size="large" />
       ) : (
-        <Form.Item name="knobeStep" rules={[{ required: previousKnobeId !== null ? false : true, message: language.requiredField }]}>
-          <Radio.Group>
-            <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}>
-              {filteredImgs.map((knob) => (
-                <Radio key={knob.id} value={knob.id}>
-                  <Card
-                    className="custom-card"
-                    hoverable
-                    style={{
-                      width: '220px', 
-                      margin: '20px 10px',
-                      border:
-                      previousKnobeId === knob.id
-                        ? '7px solid #f06d20'
-                        : 'none',
-                    }}
-                    onClick={() => setPreviousKnobeId(knob.id)}
-                  >
-                    <div style={{ overflow: 'hidden', height: 120 }}>
-                      <img
-                        src={`https://api.boki.fortesting.com.ua${knob.imgSrc}`}
-                        alt={knob.title}
-                        style={{ width: '100%', objectFit: 'cover' }}
-                      />
-                    </div>
-                    <Card.Meta
-                      title={knob.title}
-                      style={{ paddingTop: '10px' }}
-                    />
-                  </Card>
-                </Radio>
-              ))}
-            </div>
-          </Radio.Group>
-        </Form.Item>
+        // <Form.Item name="knobeStep" rules={[{ required: previousKnobeId !== null ? false : true, message: language.requiredField }]}>
+        //   <Radio.Group>
+        //     <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}>
+        //       {filteredImgs.map((knob) => (
+        //         <Radio key={knob.id} value={knob.id}>
+        //           <Card
+        //             className="custom-card"
+        //             hoverable
+        //             style={{
+        //               width: '220px', 
+        //               margin: '20px 10px',
+        //               border:
+        //               previousKnobeId === knob.id
+        //                 ? '7px solid #f06d20'
+        //                 : 'none',
+        //             }}
+        //             onClick={() => setPreviousKnobeId(knob.id)}
+        //           >
+        //             <div style={{ overflow: 'hidden', height: 120 }}>
+        //               <img
+        //                 src={`https://api.boki.fortesting.com.ua${knob.imgSrc}`}
+        //                 alt={knob.title}
+        //                 style={{ width: '100%', objectFit: 'cover' }}
+        //               />
+        //             </div>
+        //             <Card.Meta
+        //               title={knob.title}
+        //               style={{ paddingTop: '10px' }}
+        //             />
+        //           </Card>
+        //         </Radio>
+        //       ))}
+        //     </div>
+        //   </Radio.Group>
+        // </Form.Item>
+
+        <ImagesFittingsForm
+          filteredImgs={filteredImgs}
+          language={language}
+          stepName={'knobeStep'}
+          previousId={previousKnobeId}
+          setPreviousId={setPreviousKnobeId}
+          imageHeight={'120'}
+      />
       )}
     </Form>
   );

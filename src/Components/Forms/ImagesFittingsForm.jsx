@@ -1,12 +1,7 @@
 import React from 'react';
-import { Form, Input, Button, Card, Radio } from 'antd';
+import { Form, Card, Radio } from 'antd';
 
-// stepName = hingesStep
-// previousId = previousHingeId
-// setPreviousId =  setPreviousHingeId
-// product = hinge
-
-const ProductImagesForm = ({ filteredImgs, language, stepName, previousId, setPreviousId }) => {
+const ImagesFittingsForm = ({ filteredImgs, language, stepName, previousId, setPreviousId, imageHeight }) => {
   return (
     <Form.Item name={stepName} rules={[{ required: previousId !== null ? false : true, message: language.requiredField }]}>
       <Radio.Group >
@@ -26,7 +21,7 @@ const ProductImagesForm = ({ filteredImgs, language, stepName, previousId, setPr
                 }}
                 onClick={() => setPreviousId(product.id)}
               >
-                <div style={{ overflow: 'hidden', height: 220 }}>
+                <div style={{ overflow: 'hidden', height: imageHeight }}>
                   <img
                     src={`https://api.boki.fortesting.com.ua${product.imgSrc}`}
                     alt={product.title}
@@ -47,4 +42,4 @@ const ProductImagesForm = ({ filteredImgs, language, stepName, previousId, setPr
   );
 };
 
-export default ProductImagesForm;
+export default ImagesFittingsForm;

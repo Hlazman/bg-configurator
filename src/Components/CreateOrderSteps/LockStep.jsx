@@ -6,6 +6,7 @@ import { useOrder } from '../../Context/OrderContext';
 import { useLanguage } from '../../Context/LanguageContext';
 import languageMap from '../../Languages/language';
 import {queryLink} from '../../api/variables'
+import ImagesFittingsForm from '../Forms/ImagesFittingsForm';
 
 const LockStep = ({ setCurrentStepSend, currentStepSend }) => {
   const [lockData, setLockData] = useState([]);
@@ -249,41 +250,50 @@ const LockStep = ({ setCurrentStepSend, currentStepSend }) => {
       {isLoading ? (
         <Spin size="large" />
       ) : (
-        <Form.Item name="lockStep" rules={[{ required: true, message: language.requiredField }]}>
-          <Radio.Group >
-            <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}>
-              {filteredLocks.map((lock) => (
-                <Radio key={lock.id} value={lock.id}>
-                  <Card
-                    className="custom-card"
-                    hoverable
-                    style={{
-                      width: '220px', 
-                      margin: '20px 10px',
-                      border:
-                      previousLockId === lock.id
-                        ? '7px solid #f06d20'
-                        : 'none',
-                    }}
-                    onClick={() => setPreviousLockId(lock.id)}
-                  >
-                    <div style={{ overflow: 'hidden', height: 220 }}>
-                      <img
-                        src={`https://api.boki.fortesting.com.ua${lock.imgSrc}`}
-                        alt={lock.title}
-                        style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-                      />
-                    </div>
-                    <Card.Meta
-                      title={lock.title}
-                      style={{ paddingTop: '10px' }}
-                    />
-                  </Card>
-                </Radio>
-              ))}
-            </div>
-          </Radio.Group>
-        </Form.Item>
+        // <Form.Item name="lockStep" rules={[{ required: true, message: language.requiredField }]}>
+        //   <Radio.Group >
+        //     <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}>
+        //       {filteredLocks.map((lock) => (
+        //         <Radio key={lock.id} value={lock.id}>
+        //           <Card
+        //             className="custom-card"
+        //             hoverable
+        //             style={{
+        //               width: '220px', 
+        //               margin: '20px 10px',
+        //               border:
+        //               previousLockId === lock.id
+        //                 ? '7px solid #f06d20'
+        //                 : 'none',
+        //             }}
+        //             onClick={() => setPreviousLockId(lock.id)}
+        //           >
+        //             <div style={{ overflow: 'hidden', height: 220 }}>
+        //               <img
+        //                 src={`https://api.boki.fortesting.com.ua${lock.imgSrc}`}
+        //                 alt={lock.title}
+        //                 style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+        //               />
+        //             </div>
+        //             <Card.Meta
+        //               title={lock.title}
+        //               style={{ paddingTop: '10px' }}
+        //             />
+        //           </Card>
+        //         </Radio>
+        //       ))}
+        //     </div>
+        //   </Radio.Group>
+        // </Form.Item>
+
+        <ImagesFittingsForm
+          filteredImgs={filteredLocks}
+          language={language}
+          stepName={'lockStep'}
+          previousId={previousLockId}
+          setPreviousId={setPreviousLockId}
+          imageHeight={'200'}
+      />
       )}
     </Form>
   );

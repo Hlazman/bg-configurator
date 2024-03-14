@@ -6,6 +6,7 @@ import { useOrder } from '../../Context/OrderContext';
 import { useLanguage } from '../../Context/LanguageContext';
 import languageMap from '../../Languages/language';
 import {queryLink} from '../../api/variables'
+import ImagesDecorVeenerForm from '../Forms/ImagesDecorVeenerForm';
 
 const VeneerStep = ({ fetchOrderData, fetchDecorData, checkDecor, sendDecorForm, currentStepSend }) => {
   const [veneerData, setVeneerData] = useState([]);
@@ -183,45 +184,57 @@ const VeneerStep = ({ fetchOrderData, fetchDecorData, checkDecor, sendDecorForm,
       {isloading ? (
         <Spin size="large" />
       ) : (
-        <Form.Item name="veneerRadio" rules={[{ required: true, message: language.requiredField }]}>
-          <Radio.Group >
-            <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}>
-              {filteredImgs.map((veneer) => (
-                <Radio key={veneer.id} value={veneer.id}>
-                  <Card
-                    className="custom-card"
-                    hoverable
-                    style={{
-                      width: '200px', 
-                      margin: '20px 10px',
-                      border:
-                        previousVeneerTitle === veneer.title
-                        ? '7px solid #f06d20'
-                        : 'none',
-                    }}
-                    onClick={() => {
-                      checkDecor('veneer', veneer.title, decorData, setSelectedDecorId, veneer.productId, setDecorData);
-                      setPreviousVeneerTitle(veneer.title);
-                    }}
-                  >
-                    <div style={{ overflow: 'hidden', height: 220 }}>
-                      <img
-                        src={`https://api.boki.fortesting.com.ua${veneer.imgSrc}`}
-                        alt={veneer.title}
-                        style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-                      />
-                    </div>
-                    <Card.Meta
-                      title={veneer.title}
-                      description={veneer.description}
-                      style={{ paddingTop: '10px' }}
-                    />
-                  </Card>
-                </Radio>
-              ))}
-            </div>
-          </Radio.Group>
-        </Form.Item>
+        // <Form.Item name="veneerRadio" rules={[{ required: true, message: language.requiredField }]}>
+        //   <Radio.Group >
+        //     <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}>
+        //       {filteredImgs.map((veneer) => (
+        //         <Radio key={veneer.id} value={veneer.id}>
+        //           <Card
+        //             className="custom-card"
+        //             hoverable
+        //             style={{
+        //               width: '200px', 
+        //               margin: '20px 10px',
+        //               border:
+        //                 previousVeneerTitle === veneer.title
+        //                 ? '7px solid #f06d20'
+        //                 : 'none',
+        //             }}
+        //             onClick={() => {
+        //               checkDecor('veneer', veneer.title, decorData, setSelectedDecorId, veneer.productId, setDecorData);
+        //               setPreviousVeneerTitle(veneer.title);
+        //             }}
+        //           >
+        //             <div style={{ overflow: 'hidden', height: 220 }}>
+        //               <img
+        //                 src={`https://api.boki.fortesting.com.ua${veneer.imgSrc}`}
+        //                 alt={veneer.title}
+        //                 style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+        //               />
+        //             </div>
+        //             <Card.Meta
+        //               title={veneer.title}
+        //               description={veneer.description}
+        //               style={{ paddingTop: '10px' }}
+        //             />
+        //           </Card>
+        //         </Radio>
+        //       ))}
+        //     </div>
+        //   </Radio.Group>
+        // </Form.Item>
+
+        <ImagesDecorVeenerForm
+          filteredImgs={filteredImgs}
+          name={'veneerRadio'}
+          previousTitle={previousVeneerTitle}
+          setPreviousTitle={setPreviousVeneerTitle}
+          checkDecor={checkDecor}
+          decorData={decorData}
+          setSelectedDecorId={setSelectedDecorId}
+          setDecorData={setDecorData}
+          language={language}
+        />
       )}
     </Form>
   );

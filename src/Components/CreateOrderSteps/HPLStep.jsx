@@ -6,6 +6,7 @@ import { useOrder } from '../../Context/OrderContext';
 import { useLanguage } from '../../Context/LanguageContext';
 import languageMap from '../../Languages/language';
 import {queryLink} from '../../api/variables'
+import ImagesDecorForm from '../Forms/ImagesDecorForm';
 
 const HPLStep = ({ fetchOrderData, fetchDecorData, checkDecor, sendDecorForm, currentStepSend }) => {
   const [HPLData, setHPLData] = useState([]);
@@ -108,39 +109,52 @@ const HPLStep = ({ fetchOrderData, fetchDecorData, checkDecor, sendDecorForm, cu
           <Spin size="large" />
         </div>
       ) : (
-        <Form.Item name="HPLRadio" rules={[{ required: true, message: language.requiredField }]}>
-          <Radio.Group>
-            <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}>
-              {filteredHplData.map(hpl => (
-                <Radio key={hpl.id} value={hpl.id}>
-                  <Card
-                    className="custom-card"
-                    hoverable
-                    style={{
-                      width: 220, 
-                      margin: '20px 10px',
-                      border:
-                        previousHPLTitle === hpl.attributes.title ? '7px solid #f06d20' : 'none',
-                    }}
-                    onClick={() => {
-                      checkDecor('HPL', hpl.attributes.title, decorData, setSelectedDecorId, hpl.id, setDecorData);
-                      setPreviousHPLTitle(hpl.attributes.title);
-                    }}
-                  >
-                    <div style={{ overflow: 'hidden', height: 220 }}>
-                      <img
-                        src={`https://api.boki.fortesting.com.ua${hpl.attributes.image.data.attributes.url}`}
-                        alt={hpl.attributes.title}
-                        style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-                      />
-                    </div>
-                    <Card.Meta title={hpl.attributes.title} style={{ paddingTop: '10px' }} />
-                  </Card>
-                </Radio>
-              ))}
-            </div>
-          </Radio.Group>
-        </Form.Item>
+        // <Form.Item name="HPLRadio" rules={[{ required: true, message: language.requiredField }]}>
+        //   <Radio.Group>
+        //     <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}>
+        //       {filteredHplData.map(hpl => (
+        //         <Radio key={hpl.id} value={hpl.id}>
+        //           <Card
+        //             className="custom-card"
+        //             hoverable
+        //             style={{
+        //               width: 220, 
+        //               margin: '20px 10px',
+        //               border:
+        //                 previousHPLTitle === hpl.attributes.title ? '7px solid #f06d20' : 'none',
+        //             }}
+        //             onClick={() => {
+        //               checkDecor('HPL', hpl.attributes.title, decorData, setSelectedDecorId, hpl.id, setDecorData);
+        //               setPreviousHPLTitle(hpl.attributes.title);
+        //             }}
+        //           >
+        //             <div style={{ overflow: 'hidden', height: 220 }}>
+        //               <img
+        //                 src={`https://api.boki.fortesting.com.ua${hpl.attributes.image.data.attributes.url}`}
+        //                 alt={hpl.attributes.title}
+        //                 style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+        //               />
+        //             </div>
+        //             <Card.Meta title={hpl.attributes.title} style={{ paddingTop: '10px' }} />
+        //           </Card>
+        //         </Radio>
+        //       ))}
+        //     </div>
+        //   </Radio.Group>
+        // </Form.Item>
+
+          <ImagesDecorForm
+            filteredImg={filteredHplData}
+            name={'HPLRadio'}
+            decorType={'HPL'}
+            previousTitle={previousHPLTitle}
+            setPreviousTitle={setPreviousHPLTitle}
+            checkDecor={checkDecor}
+            decorData={decorData}
+            setSelectedDecorId={setSelectedDecorId}
+            setDecorData={setDecorData}
+            language={language}
+        />
       )}
     </Form>
   );

@@ -6,6 +6,7 @@ import { useOrder } from '../../Context/OrderContext';
 import { useLanguage } from '../../Context/LanguageContext';
 import languageMap from '../../Languages/language';
 import {queryLink} from '../../api/variables'
+import ImagesDecorForm from '../Forms/ImagesDecorForm';
 
 const PrimerStep = ({orderID, fetchOrderData, fetchDecorData, checkDecor, sendDecorForm, currentStepSend }) => {
   const [primerData, setPrimerData] = useState([]);
@@ -81,6 +82,8 @@ const PrimerStep = ({orderID, fetchOrderData, fetchDecorData, checkDecor, sendDe
     if (currentStepSend && currentStepSend.decorSend) {
       setBtnColor('#4BB543');
     }
+
+    console.log('1');
   }, [jwtToken, orderIdToUse, fetchDecorData, fetchOrderData]);
 
   return (
@@ -106,40 +109,53 @@ const PrimerStep = ({orderID, fetchOrderData, fetchDecorData, checkDecor, sendDe
           <Spin size="large" />
         </div>
       ) : (
-        <Form.Item name="primerRadio" rules={[{ required: true, message: language.requiredField }]}>
-          <Radio.Group>
-            <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}>
-              {filteredPrimerData.map(primer => (
-                <Radio key={primer.id} value={primer.id}>
-                  <Card
-                    className="custom-card"
-                    hoverable
-                    style={{
-                      width: 220, 
-                      margin: '20px 10px',
-                      border:
-                        previousPrimerTitle === primer.attributes.title ? '7px solid #f06d20' : 'none',
-                    }}
-                    onClick={() => {
-                      checkDecor('primer', primer.attributes.title, decorData, setSelectedDecorId, primer.id, setDecorData);
-                      setPreviousPrimerTitle(primer.attributes.title);
-                    }}
-                  >
-                    <div style={{ overflow: 'hidden', height: 220 }}>
-                      <img
-                        src={`https://api.boki.fortesting.com.ua${primer.attributes.image.data.attributes.url}`}
-                        alt={primer.attributes.title}
-                        style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-                      />
-                    </div>
-                    <Card.Meta title={primer.attributes.title} style={{ paddingTop: '10px' }} />
-                    <Radio value={primer.id} style={{ display: 'none' }} />
-                  </Card>
-                </Radio>
-              ))}
-            </div>
-          </Radio.Group>
-        </Form.Item>
+        // <Form.Item name="primerRadio" rules={[{ required: true, message: language.requiredField }]}>
+        //   <Radio.Group>
+        //     <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}>
+        //       {filteredPrimerData.map(primer => (
+        //         <Radio key={primer.id} value={primer.id}>
+        //           <Card
+        //             className="custom-card"
+        //             hoverable
+        //             style={{
+        //               width: 220, 
+        //               margin: '20px 10px',
+        //               border:
+        //                 previousPrimerTitle === primer.attributes.title ? '7px solid #f06d20' : 'none',
+        //             }}
+        //             onClick={() => {
+        //               checkDecor('primer', primer.attributes.title, decorData, setSelectedDecorId, primer.id, setDecorData);
+        //               setPreviousPrimerTitle(primer.attributes.title);
+        //             }}
+        //           >
+        //             <div style={{ overflow: 'hidden', height: 220 }}>
+        //               <img
+        //                 src={`https://api.boki.fortesting.com.ua${primer.attributes.image.data.attributes.url}`}
+        //                 alt={primer.attributes.title}
+        //                 style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+        //               />
+        //             </div>
+        //             <Card.Meta title={primer.attributes.title} style={{ paddingTop: '10px' }} />
+        //             <Radio value={primer.id} style={{ display: 'none' }} />
+        //           </Card>
+        //         </Radio>
+        //       ))}
+        //     </div>
+        //   </Radio.Group>
+        // </Form.Item>
+
+        <ImagesDecorForm
+          filteredImg={filteredPrimerData}
+          name={'primerRadio'}
+          decorType={'primer'}
+          previousTitle={previousPrimerTitle}
+          setPreviousTitle={setPreviousPrimerTitle}
+          checkDecor={checkDecor}
+          decorData={decorData}
+          setSelectedDecorId={setSelectedDecorId}
+          setDecorData={setDecorData}
+          language={language}
+        />
       )}
     </Form>
   );
