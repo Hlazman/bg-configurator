@@ -324,6 +324,7 @@ const cs = {
 
   // Errors
   err: 'Chyby',
+  err2: (<span style={{color: 'red', fontWeight : '600'}}> Chyby !!! </span>),
   errList: 'Seznam chyb',
   errorHinge: 'Vybrané panty neodpovídají tomuto modelu dveří.',
   errorOptions: 'Dříve vybrané možnosti nejsou vhodné pro tento model dveří',

@@ -326,6 +326,7 @@ ceramogranite : 'Ceramogranite',
 
   // Errors
   err: 'Errors',
+  err2: (<span style={{color: 'red', fontWeight : '600'}}> Error !!! </span>),
   errList: 'Errors list',
   errorHinge: 'The selected Hinges do not fit this door model.',
   errorOptions: 'The previously selected Options are not suitable for this door model', 

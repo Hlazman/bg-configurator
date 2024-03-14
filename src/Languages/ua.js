@@ -324,6 +324,7 @@ const ua = {
 
   // Errors
   err: 'Помилки',
+  err2: (<span style={{color: 'red', fontWeight : '600'}}> Помилка !!! </span>),
   errList: 'Список помилок',
   errorHinge: 'Обрані петлі не підходять для цієї моделі дверей',
   errorOptions: 'Раніше обрані опції не підходять для цієї моделі дверей',

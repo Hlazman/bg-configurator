@@ -489,12 +489,6 @@ export const validateDecorTypeElement = async (jwtToken, realElementId, decorTyp
   return result;
 };
 
-
-
-
-
-
-
 export const validateElements = async (orderIdToUse, jwtToken) => {
   const elements = await getElements(jwtToken, orderIdToUse);
   let subOrderElements = [];
@@ -544,9 +538,6 @@ export const validateElements = async (orderIdToUse, jwtToken) => {
         for (let i = 0; i < suborders.length; i++) {
           subOrderElements.push(suborders[i]?.attributes?.element?.data?.id);
         }
-        
-        // console.log('arr', response?.data?.data?.elementSuborders?.data);
-        
       }
 
   } catch (error) {

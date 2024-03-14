@@ -21,89 +21,9 @@ const ElementsStep = ({ setCurrentStepSend, currentStepSend }) => {
   const [isLoading, setIsLoading] = useState(false);
   const { selectedCompany } = useSelectedCompany();
   const { totalOrderId } = useTotalOrder();
-
-  const getValidate = async () => {
-    await validateElements(orderIdToUse, jwtToken);
-  }; 
-
-  useEffect(()=> {
-    getValidate();
-  }, []);
-
-  useEffect(() => {
-    const fetchElementSuborders = async () => {
-      try {
-        if (!orderIdToUse) return;
-
-        const response = await axios.post(queryLink,
-          { query: `
-              query Query($orderId: ID) {
-                order(id: $orderId) {
-                  data {
-                    attributes {
-                      element_suborders {
-                        data {
-                          id
-                          attributes {
-                            element {
-                              data {
-                                id
-                                attributes {
-                                  title
-                                }
-                              }
-                            }
-                          }
-                        }
-                      }
-                    }
-                  }
-                }
-              }
-            `,
-            variables: {
-              orderId: orderIdToUse,
-            },
-          },
-          {
-            headers: {
-              'Content-Type': 'application/json',
-              Authorization: `Bearer ${jwtToken}`,
-            },
-          }
-        );
-
-        if (response.data.data && response.data.data.order) {
-          const notValid = await validateElements(orderIdToUse, jwtToken);
-
-          const orderData = response.data.data.order.data.attributes.element_suborders.data;
-          if (orderData && orderData.length > 0) {
-            const newItems = orderData.map((data, index) => {
-              const newActiveKey = `${language.element} ${1 + newTabIndex.current++}`;
-              const labelTitle = data?.attributes?.element?.data?.attributes?.title;
-              const notValidElementid = data?.attributes?.element?.data?.id;
-              
-              return {
-                // label: newActiveKey,
-                label: notValid.includes(notValidElementid) ? 'ERROR !!!' : languageMap[selectedLanguage][labelTitle],
-                elemID: data.id,
-                children: (<DecorElementForm elementID={data.id} setCurrentStepSend={setCurrentStepSend} currentStepSend={currentStepSend }/>),
-                key: newActiveKey,
-                error: notValid.includes(notValidElementid), // Добавляем флаг ошибки
-              };
-            });
-            setItems(newItems);
-            setActiveKey(newItems[0].key);
-          }
-        } 
-      } catch (error) {
-        console.error('Error fetching order data:', error);
-      }
-    };
-
-    fetchElementSuborders();
-  }, [orderIdToUse, jwtToken]); 
-    
+  const [items, setItems] = useState([]);
+  const [activeKey, setActiveKey] = useState(0);
+  const newTabIndex = useRef(0);
 
   const createElementSuborder = async () => {
     try {
@@ -140,11 +60,6 @@ const ElementsStep = ({ setCurrentStepSend, currentStepSend }) => {
     }
   };
 
-  const [items, setItems] = useState([]);
-  const [activeKey, setActiveKey] = useState(0);
-  const newTabIndex = useRef(0);
-  
-
   const getCurrentElementID = () => {
     const currentItem = items.find(item => item.key === activeKey);
     if (currentItem) {
@@ -158,7 +73,6 @@ const ElementsStep = ({ setCurrentStepSend, currentStepSend }) => {
     const currentElementID = getCurrentElementID();
   
     try {
-      // const response = await axios.post('https://api.boki.fortesting.com.ua/graphql', {
       const response = await axios.post(queryLink, {
         query: `
           mutation DeleteElementSuborder($deleteElementSuborderId: ID!) {
@@ -200,7 +114,6 @@ const ElementsStep = ({ setCurrentStepSend, currentStepSend }) => {
   const add = async () => {
     setIsLoading(true);
     const suborderId = await createElementSuborder();
-    // const newActiveKey = `${language.element} ${1 + newTabIndex.current++}`;
     const newActiveKey = `${language.element} ${++newTabIndex.current}`;
     const newPanes = [...items];
     newPanes.push({
@@ -215,7 +128,6 @@ const ElementsStep = ({ setCurrentStepSend, currentStepSend }) => {
     onChange(newActiveKey)
     setIsLoading(false)
   };
-
 
   const remove = async (targetKey) => {
     setIsLoading(true);
@@ -258,28 +170,157 @@ const ElementsStep = ({ setCurrentStepSend, currentStepSend }) => {
     setIsLoading(false);
   };
 
- 
-  // const errorTabsRef = useRef([]);
+  const fetchElementSuborders = async () => {
+    try {
+      if (!orderIdToUse) return;
+
+      const response = await axios.post(queryLink,
+        { query: `
+            query Query($orderId: ID) {
+              order(id: $orderId) {
+                data {
+                  attributes {
+                    element_suborders {
+                      data {
+                        id
+                        attributes {
+                          element {
+                            data {
+                              id
+                              attributes {
+                                title
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          `,
+          variables: {
+            orderId: orderIdToUse,
+          },
+        },
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${jwtToken}`,
+          },
+        }
+      );
+
+      if (response.data.data && response.data.data.order) {
+        const notValid = await validateElements(orderIdToUse, jwtToken);
+
+        const orderData = response.data.data.order.data.attributes.element_suborders.data;
+        if (orderData && orderData.length > 0) {
+          const newItems = orderData.map((data, index) => {
+            const newActiveKey = `${language.element} ${1 + newTabIndex.current++}`;
+            const labelTitle = data?.attributes?.element?.data?.attributes?.title;
+            const notValidElementid = data?.attributes?.element?.data?.id;
+            
+            return {
+              label: notValid.includes(notValidElementid) ? language.err2 : languageMap[selectedLanguage][labelTitle],
+              elemID: data.id,
+              children: (<DecorElementForm elementID={data.id} setCurrentStepSend={setCurrentStepSend} currentStepSend={currentStepSend }/>),
+              key: newActiveKey,
+            };
+          });
+          setItems(newItems);
+          setActiveKey(newItems[0].key);
+        }
+      } 
+    } catch (error) {
+      console.error('Error fetching order data:', error);
+    }
+  };
+
+  const getData = async () => {
+    await fetchElementSuborders()
+    await validateElements(orderIdToUse, jwtToken);
+  }; 
+  
+  useEffect(()=> {
+    getData();
+  }, [orderIdToUse, jwtToken]);
 
   // useEffect(() => {
-  //   errorTabsRef.current.forEach(tabRef => {
-  //     if (tabRef.current) {
-  //       tabRef.current.classList.remove('error-tab');
+  //   const fetchElementSuborders = async () => {
+  //     try {
+  //       if (!orderIdToUse) return;
+
+  //       const response = await axios.post(queryLink,
+  //         { query: `
+  //             query Query($orderId: ID) {
+  //               order(id: $orderId) {
+  //                 data {
+  //                   attributes {
+  //                     element_suborders {
+  //                       data {
+  //                         id
+  //                         attributes {
+  //                           element {
+  //                             data {
+  //                               id
+  //                               attributes {
+  //                                 title
+  //                               }
+  //                             }
+  //                           }
+  //                         }
+  //                       }
+  //                     }
+  //                   }
+  //                 }
+  //               }
+  //             }
+  //           `,
+  //           variables: {
+  //             orderId: orderIdToUse,
+  //           },
+  //         },
+  //         {
+  //           headers: {
+  //             'Content-Type': 'application/json',
+  //             Authorization: `Bearer ${jwtToken}`,
+  //           },
+  //         }
+  //       );
+
+  //       if (response.data.data && response.data.data.order) {
+  //         const notValid = await validateElements(orderIdToUse, jwtToken);
+
+  //         const orderData = response.data.data.order.data.attributes.element_suborders.data;
+  //         if (orderData && orderData.length > 0) {
+  //           const newItems = orderData.map((data, index) => {
+  //             const newActiveKey = `${language.element} ${1 + newTabIndex.current++}`;
+  //             const labelTitle = data?.attributes?.element?.data?.attributes?.title;
+  //             const notValidElementid = data?.attributes?.element?.data?.id;
+              
+  //             return {
+  //               label: notValid.includes(notValidElementid) ? language.err2 : languageMap[selectedLanguage][labelTitle],
+  //               elemID: data.id,
+  //               children: (<DecorElementForm elementID={data.id} setCurrentStepSend={setCurrentStepSend} currentStepSend={currentStepSend }/>),
+  //               key: newActiveKey,
+  //             };
+  //           });
+  //           setItems(newItems);
+  //           setActiveKey(newItems[0].key);
+  //         }
+  //       } 
+  //     } catch (error) {
+  //       console.error('Error fetching order data:', error);
   //     }
-  //   });
-  
-  //   items.forEach((item, index) => {
-  //     if (item.label === 'ERROR !!!') {
-  //       if (errorTabsRef.current[index].current) {
-  //         errorTabsRef.current[index].current.classList.add('tabError');
-  //       }
-  //     }
-  //   });
-  // }, [items]);
+  //   };
+
+  //   fetchElementSuborders();
+  // }, [orderIdToUse, jwtToken]); 
 
   return (
     <>
-      {/* <Button type="primary" onClick={() => add()} icon={<PlusCircleOutlined />}> */}
       <Button type="primary" onClick={add} icon={<PlusCircleOutlined />} style={{marginBottom: '15px'}}>
         {language.addElement}
       </Button>

@@ -130,6 +130,7 @@ export const getElementsDataOrder = async (jwtToken, elementSuborderId, form, se
         });
 
         setCurrentElementField(elementSuborderData?.element?.data?.id);
+        return elementSuborderData?.element?.data?.id;
       }
     }
   } catch (error) {

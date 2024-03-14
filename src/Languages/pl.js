@@ -324,6 +324,7 @@ const pl = {
 
   // Errors
   err: 'Błędy',
+  err2: (<span style={{color: 'red', fontWeight : '600'}}> Błąd !!! </span>),
   errList: 'Lista błędów',
   errorHinge: 'Wybrane zawiasy nie pasują do tego modelu drzwi.',
   errorOptions: 'Poprzednio wybrane opcje nie pasują do tego modelu drzwi',

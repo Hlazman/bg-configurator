@@ -325,6 +325,7 @@ const es = {
 
   // Errors
   err: 'Errores',
+  err2: (<span style={{color: 'red', fontWeight : '600'}}> Error !!! </span>),
   errList: 'Lista de errores',
   errorHinge: 'Las bisagras seleccionadas no coinciden con este modelo de puerta.',
   errorOptions: 'Las opciones previamente seleccionadas no son adecuadas para este modelo de puerta',

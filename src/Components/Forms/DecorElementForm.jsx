@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Form, Button, Select, InputNumber, Spin, Radio, Space, message, Affix, Divider, Alert, Modal } from 'antd';
-import { SendOutlined, IssuesCloseOutlined } from '@ant-design/icons';
+import { Form, Button, Select, InputNumber, Spin, Radio, Space, message, Affix, Divider, Alert, Modal, Badge } from 'antd';
+import { SendOutlined, InfoCircleOutlined } from '@ant-design/icons';
 // import axios from 'axios';
 import { useOrder } from '../../Context/OrderContext';
 import GroupDecorElementStep from '../CreateOrderSteps/GroupDecorElementStep';
@@ -35,6 +35,8 @@ const DecorElementForm = ({setCurrentStepSend, elementID, currentStepSend}) => {
   const [alertMessage, setAlertMessage] = useState('');
   const [step, setStep] = useState(1);
   const [realElementId, setRealElementId] = useState(''); 
+  const [isLoading, setIsLoading] = useState(true); 
+
 
   const handleAmountChange = (value) => {
     if (value <= 0.5) {
@@ -129,26 +131,26 @@ const DecorElementForm = ({setCurrentStepSend, elementID, currentStepSend}) => {
       onOk() {},
     });
   };
+
+  const getData = async () => {
+    await getElements(jwtToken, orderIdToUse, setElementOptions);
+    const currentElement = await getElementsDataOrder(jwtToken, elementID, form, setCurrentElementField, setRealElementId);
+    
+    setCurrentElementField(currentElement);
+  };
   
   useEffect(() => {
-    getElements(jwtToken, orderIdToUse, setElementOptions);
-    getElementsDataOrder(jwtToken, elementID, form, setCurrentElementField, setRealElementId);
-
-    requiredFieldsAndAlert(currentElementField, elementOptions);
-    setRealElementId(currentElementField);
-  }, [orderIdToUse, jwtToken, elementID, form]);
+    getData();
+  }, [orderIdToUse, jwtToken]);
 
   useEffect(()=> {
     requiredFieldsAndAlert(currentElementField, elementOptions);
     setRealElementId(currentElementField);
-  }, [currentElementField])
-
-  // useEffect(()=> {
-  //   validateElements(orderIdToUse, jwtToken);
-  // }, [orderIdToUse, jwtToken])
+    setIsLoading(false);
+  }, [currentElementField]);
 
   return (
-    <>
+    <Spin spinning={isLoading}>
       <Form form={form} onFinish={handleFormSubmit} >
       {contextHolder}
 
@@ -188,13 +190,23 @@ const DecorElementForm = ({setCurrentStepSend, elementID, currentStepSend}) => {
           label={language.elementDecor}
           rules={[{ required: !hasDecorRequired, message: language.requiredField }]}
         >
-          <Radio.Group disabled={realElementId ? false : true} type="dashed" buttonStyle="solid" onChange={handleRadioChange}>
-            <Radio.Button value="choose">{language.elementGetDecor}</Radio.Button>
-            <Radio.Button value="get">{language.elementGetDoor}</Radio.Button>
-          </Radio.Group>
+          <div>
+            <Radio.Group disabled={realElementId ? false : true} type="dashed" buttonStyle="solid" onChange={handleRadioChange}>
+              <Radio.Button value="choose">{language.elementGetDecor}</Radio.Button>
+              <Radio.Button value="get">{language.elementGetDoor}</Radio.Button>
+            </Radio.Group>
+
+            <Button 
+              style={{marginLeft: '12px', backgroundColor: '#1677ff'}} 
+              type="primary" 
+              shape="circle" 
+              icon={<InfoCircleOutlined />} 
+              onClick={infoModal} 
+            />
+          </div> 
         </Form.Item>
 
-        <Button
+        {/* <Button
           // className="blinking" 
           style={{marginLeft: '10px'}} 
           icon={<IssuesCloseOutlined />} 
@@ -202,7 +214,7 @@ const DecorElementForm = ({setCurrentStepSend, elementID, currentStepSend}) => {
           onClick={infoModal} 
         > 
           {language.information}
-        </Button>
+        </Button> */}
 
       </div>
 
@@ -294,7 +306,7 @@ const DecorElementForm = ({setCurrentStepSend, elementID, currentStepSend}) => {
             </>
           }
         </div>
-    </>
+    </Spin>
   );
 };
 
