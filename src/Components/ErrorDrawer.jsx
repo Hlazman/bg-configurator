@@ -52,7 +52,7 @@ const ErrorDrawer = () => {
         closable={false}
         onClose={onClose}
         open={visible}
-        size={'large'}
+        // size={'large'}
       >
         <List
           size="small"

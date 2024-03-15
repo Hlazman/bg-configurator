@@ -328,6 +328,7 @@ const pl = {
   // Errors
   err: 'Błędy',
   err2: (<span style={{color: 'red', fontWeight : '600'}}> Błąd !!! </span>),
+  errorFrame: 'Wystąpił błąd ramy. Albo wybrane otwarcie, albo kolekcja nie pasuje do danych początkowych',
   errList: 'Lista błędów',
   errorHinge: 'Wybrane zawiasy nie pasują do tego modelu drzwi.',
   errorOptions: 'Poprzednio wybrane opcje nie pasują do tego modelu drzwi',

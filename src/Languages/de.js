@@ -327,6 +327,7 @@ const de = {
   // Errors
   err: 'Fehler',
   err2: (<span style={{color: 'red', fontWeight : '600'}}> Fehler !!! </span>),
+  errorFrame: 'Ein Rahmenfehler ist aufgetreten. Entweder die ausgewählte Öffnung oder die Kollektion entspricht nicht den Startdaten',
   errList: 'Fehlerliste',
   errorHinge: 'Die ausgewählten Scharniere passen nicht zu diesem Türmodell.',
   errorOptions: 'Die zuvor ausgewählten Optionen sind nicht für dieses Türmodell geeignet',

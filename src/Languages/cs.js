@@ -328,6 +328,7 @@ const cs = {
   // Errors
   err: 'Chyby',
   err2: (<span style={{color: 'red', fontWeight : '600'}}> Chyby !!! </span>),
+  errorFrame: 'Došlo k chybě rámu. Buď vybrané otevření, nebo kolekce neodpovídá vstupním datům',
   errList: 'Seznam chyb',
   errorHinge: 'Vybrané panty neodpovídají tomuto modelu dveří.',
   errorOptions: 'Dříve vybrané možnosti nejsou vhodné pro tento model dveří',

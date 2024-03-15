@@ -331,9 +331,9 @@ export const OrderDescription = (
             </Descriptions.Item>
 
             <Descriptions.Item className='labelBG' label={language.lock} labelStyle={{fontWeight: '600', color:'#000'}}>
-              {language.title} : {lockData?.lock?.data?.attributes?.title}
+              {language.title} : {lockData?.lock?.data?.attributes?.title ? lockData?.lock?.data?.attributes?.title : '-' }
               <br/>
-              {language.brand} : {lockData?.lock?.data?.attributes?.brand}
+              {language.brand} : {lockData?.lock?.data?.attributes?.brand ? lockData?.lock?.data?.attributes?.brand : '-' }
               <Divider/>
               {
                 lockData?.lock?.data?.attributes?.image?.data?.attributes?.url
@@ -346,16 +346,16 @@ export const OrderDescription = (
                     />
                     <div style={{margin: '15px'}}> <a href={`${imageLink}${lockData?.lock?.data?.attributes?.image?.data?.attributes?.url}`} rel="noreferrer" target="_blank"> <ZoomInOutlined style={{fontSize: '25px'}}/> </a> </div>
                   </div> 
-                : <PictureOutlined style={{fontSize: '150px'}}/>
+                : '-'
                 
               }
 
             </Descriptions.Item>
 
             <Descriptions.Item className='labelBG' label={language.hinges} labelStyle={{fontWeight: '600', color:'#000'}}>
-              {language.title} : {hingeData?.hinge?.data?.attributes?.title}
+              {language.title} : {hingeData?.hinge?.data?.attributes?.title ? hingeData?.hinge?.data?.attributes?.title : '-'}
               <br/>
-              {language.brand} : {hingeData?.hinge?.data?.attributes?.brand}
+              {language.brand} : {hingeData?.hinge?.data?.attributes?.brand ? hingeData?.hinge?.data?.attributes?.brand : '-' }
               <Divider/>
               {
                 hingeData?.hinge?.data?.attributes?.image?.data?.attributes?.url
@@ -369,7 +369,7 @@ export const OrderDescription = (
                     />
                     <div style={{margin: '15px'}}> <a href={`${imageLink}${hingeData?.hinge?.data?.attributes?.image?.data?.attributes?.url}`} rel="noreferrer" target="_blank"> <ZoomInOutlined style={{fontSize: '25px'}}/> </a> </div>
                   </div>
-                : <PictureOutlined style={{fontSize: '150px'}}/>
+                : '-'
               }
 
             </Descriptions.Item>
@@ -404,18 +404,32 @@ export const OrderDescription = (
             </Descriptions.Item>
 
             <Descriptions.Item className='labelBG' label={`${language.price} (${language.lock})`} labelStyle={{fontWeight: '600', color:'#000'}}>
-              {convertedLockPrice ? `${convertedLockPrice} ${currency}` : `${lockData.price} ${orderData?.currency}`} 
+              {/* {convertedLockPrice ? `${convertedLockPrice} ${currency}` : `${lockData.price} ${orderData?.currency}`}  */}
+              {
+                convertedLockPrice !== null
+                  ? `${convertedLockPrice} ${currency}` 
+                  : (lockData?.price)
+                    ? `${lockData?.price} ${orderData?.currency}`
+                    : '-'
+                }
             </Descriptions.Item>
 
             <Descriptions.Item className='labelBG' label={`${language.price} (${language.hinges})`} labelStyle={{fontWeight: '600', color:'#000'}}>
-              {convertedHingePrice ? `${convertedHingePrice} ${currency}` : `${hingeData.price} ${orderData?.currency}`} / {language.amount}: {hingeData?.amount}
+              {/* {convertedHingePrice ? `${convertedHingePrice} ${currency}` : `${hingeData.price} ${orderData?.currency}`} / {language.amount}: {hingeData?.amount} */}
+              {
+                convertedHingePrice !== null
+                  ? `${convertedHingePrice} ${currency}` 
+                  : (hingeData.price?.price)
+                    ? `${hingeData.price?.price} ${orderData?.currency} ${language.amount}: ${hingeData?.amount}`
+                    : '-'
+                }
             </Descriptions.Item>
 
             <Descriptions.Item className='labelBG' label={`${language.price} (${language.knobe})`} labelStyle={{fontWeight: '600', color:'#000'}}>
               {
                 convertedKnobePrice !== null
                   ? `${convertedKnobePrice} ${currency}` 
-                  : knobeData?.price !== null
+                  : (knobeData?.price)
                     ? `${knobeData?.price} ${orderData?.currency}`
                     : '-'
                 }

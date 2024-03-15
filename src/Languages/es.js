@@ -330,6 +330,7 @@ const es = {
   err: 'Errores',
   err2: (<span style={{color: 'red', fontWeight : '600'}}> Error !!! </span>),
   errList: 'Lista de errores',
+  errorFrame: 'Se produjo un error de marco. O la apertura seleccionada o la colección no coincide con los datos iniciales',
   errorHinge: 'Las bisagras seleccionadas no coinciden con este modelo de puerta.',
   errorOptions: 'Las opciones previamente seleccionadas no son adecuadas para este modelo de puerta',
   errorOptionsPage: 'Estas opciones no coinciden con este modelo de puerta',
