@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { Form, Input, Button, Card, Radio, Select, Spin, message, Affix, InputNumber } from 'antd';
-import { SendOutlined } from '@ant-design/icons';
+import { SendOutlined, DeleteOutlined } from '@ant-design/icons';
 import { useOrder } from '../../Context/OrderContext';
 import { useLanguage } from '../../Context/LanguageContext';
 import languageMap from '../../Languages/language';
-import {getHinges, getHingesData, updateHinges} from '../../api/hinge';
+import {getHinges, getHingesData, updateHinges, removeHinge, checkHinge} from '../../api/hinge';
 import ImagesFittingsForm from '../Forms/ImagesFittingsForm';
 import {validateHinges} from '../../api/validationOrder';
 
@@ -23,6 +23,7 @@ const HingeStep = ({ setCurrentStepSend, currentStepSend }) => {
   const jwtToken = localStorage.getItem('token');
   const [btnColor, setBtnColor] = useState('#ff0505');
   const [form] = Form.useForm();
+  const [isDataHinges, setIsDataHinges] = useState(true);
 
   const handleHingeAmount = (value) => {
     setHingeAmount(value)
@@ -54,7 +55,8 @@ const HingeStep = ({ setCurrentStepSend, currentStepSend }) => {
 
     const handleSbmitForm = async () => {
       updateHinges(jwtToken, hingeSuborderId, previousHingeId, hingeAmount, messageApi, language, setCurrentStepSend, setBtnColor);
-      setTimeout(() => validateHinges(orderIdToUse, jwtToken), 100)
+      setIsDataHinges(false);
+      setTimeout(() => validateHinges(orderIdToUse, jwtToken), 100);
     }
 
     useEffect(() => {
@@ -73,15 +75,30 @@ const HingeStep = ({ setCurrentStepSend, currentStepSend }) => {
     }, [jwtToken, hingeSuborderId]);
 
 
-  return (
+    useEffect(() => {
+      checkHinge(jwtToken, orderIdToUse, setIsDataHinges);
+    }, [isDataHinges, previousHingeId]);
+
+  return (    
     <Form onFinish={handleSbmitForm} form={form}>
       {contextHolder}
 
-      <Affix style={{ position: 'absolute', top: '-60px', right: '20px'}} offsetTop={20}>
+      <Affix style={{ position: 'absolute', top: '-60px', right: '170px'}} offsetTop={20}>
         <Button style={{backgroundColor: currentStepSend ? btnColor : '#1677ff', color: 'white' }} htmlType="submit" icon={<SendOutlined />}>
           {`${language.submit} ${language.hinges}`}
         </Button>
       </Affix>
+
+      <div style={{ position: 'absolute', top: '-60px', right: '20px'}}>
+        <Button
+          disabled={isDataHinges} 
+          danger 
+          icon={<DeleteOutlined />} 
+          onClick={() => removeHinge(jwtToken, orderIdToUse, setIsDataHinges, messageApi, language, setPreviousHingeId)}
+          >
+          {`${language.delete} ${language.hinges}`}
+        </Button>
+      </div>
 
     <div style={{display: 'flex', gap: '20px', flexWrap: 'wrap'}}>
       <Input
@@ -168,7 +185,7 @@ const HingeStep = ({ setCurrentStepSend, currentStepSend }) => {
           stepName={'hingesStep'}
           previousId={previousHingeId}
           setPreviousId={setPreviousHingeId}
-          imageHeight={'200'}
+          imageHeight={'200px'}
         />
       )}
     </Form>

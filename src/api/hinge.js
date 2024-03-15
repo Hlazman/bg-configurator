@@ -111,7 +111,6 @@ export const getHinges = async (orderIdToUse, jwtToken, setHingeData, setIsLoadi
   }
 };
 
-
 export const getHingesData = async (jwtToken, setIsLoading, hingeSuborderId, setPreviousHingeId, setHingeAmount) => {
   try {
     setIsLoading(true);
@@ -167,7 +166,6 @@ export const getHingesData = async (jwtToken, setIsLoading, hingeSuborderId, set
   }
 };
 
-
 export const updateHinges = async (
   jwtToken, hingeSuborderId, previousHingeId, hingeAmount, messageApi, language, setCurrentStepSend, setBtnColor
   ) => {
@@ -217,5 +215,104 @@ export const updateHinges = async (
   }
   catch (error) {
     console.error('Error:', error);
+  }
+};
+
+
+
+
+export const checkHinge = async (jwtToken, orderIdToUse, setIsDataHinges) => {
+  try {
+    const response = await axios.post(queryLink,
+      {query: `
+        query Query($orderId: ID, $filters: FrameFittingFiltersInput) {
+          order(id: $orderId) {
+            data {
+              attributes {
+                fitting_suborders(filters: $filters) {
+                  data {
+                    id
+                    attributes {
+                      hinge {
+                        data {
+                          id
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      `,
+        variables: {
+          orderId: orderIdToUse,
+          filters: {
+            hinge: {
+              id: {
+                "not": null
+              }
+            }
+          },
+        },
+      },
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${jwtToken}`,
+        },
+      }
+    );
+
+    if (response?.data?.data?.order?.data?.attributes?.fitting_suborders?.data[0]?.attributes?.hinge?.data?.id) {
+      setIsDataHinges(false);
+      const hingesSuborder = response?.data?.data?.order?.data?.attributes?.fitting_suborders?.data[0]?.id
+      return hingesSuborder;
+  }
+
+    return null;
+
+  } catch (error) {
+    console.log(error)
+  }
+};
+
+export const removeHinge = async (jwtToken, orderIdToUse, setIsDataHinges, messageApi, language, setPreviousHingeId) => {
+  const hingesSuborder = await checkHinge(jwtToken, orderIdToUse, setIsDataHinges);
+  
+  try {
+    const response = await axios.post(queryLink,
+      {query: `
+        mutation Mutation($updateFrameFittingId: ID!, $data: FrameFittingInput!) {
+          updateFrameFitting(id: $updateFrameFittingId, data: $data) {
+            data {
+              id
+            }
+          }
+        }
+      `,
+        variables: {
+          updateFrameFittingId: hingesSuborder,
+          data: {
+            "hinge": null
+          }
+        },
+      },
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${jwtToken}`,
+        },
+      }
+    );
+
+    if (response) {
+      setIsDataHinges(true);
+      setPreviousHingeId(null);
+      messageApi.success(language.successQuery);
+    }
+  } catch (error) {
+    console.log(error)
   }
 };

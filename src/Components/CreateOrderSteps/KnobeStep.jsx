@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { Form, Input, Button, Card, Radio, Select, Spin, message, Affix } from 'antd';
-import { SendOutlined } from '@ant-design/icons';
+import { SendOutlined, DeleteOutlined } from '@ant-design/icons';
 import axios from 'axios';
 import { useOrder } from '../../Context/OrderContext';
 import { useLanguage } from '../../Context/LanguageContext';
 import languageMap from '../../Languages/language';
 import {queryLink} from '../../api/variables'
 import ImagesFittingsForm from '../Forms/ImagesFittingsForm';
+import {removeKnobe, checkKnobe} from '../../api/knobe';
 
 const KnobesStep = ({ setCurrentStepSend, currentStepSend }) => {
   const [knobesData, setKnobesData] = useState([]);
@@ -18,9 +19,11 @@ const KnobesStep = ({ setCurrentStepSend, currentStepSend }) => {
   const [previousKnobeId, setPreviousKnobeId] = useState(null);
   const { selectedLanguage } = useLanguage();
   const language = languageMap[selectedLanguage];
-  const { knobeSuborderId } = useOrder();
+  const {orderId, knobeSuborderId } = useOrder();
+  const orderIdToUse = orderId;
   const jwtToken = localStorage.getItem('token');
   const [btnColor, setBtnColor] = useState('#ff0505');
+  const [isDataKnobe, setIsDataKnobe] = useState(true);
 
   const handleKnobeVariant = (value) => {
     setKnobeVariant(value)
@@ -158,6 +161,7 @@ const KnobesStep = ({ setCurrentStepSend, currentStepSend }) => {
           });
         }
         setBtnColor('#4BB543');
+        setIsDataKnobe(false);
       })
       .catch((error) => {
         messageApi.error(language.errorQuery);
@@ -221,15 +225,30 @@ const KnobesStep = ({ setCurrentStepSend, currentStepSend }) => {
   
     }, [jwtToken, knobeSuborderId]);
 
+    useEffect(() => {
+      checkKnobe(jwtToken, orderIdToUse, setIsDataKnobe);
+    }, [isDataKnobe, previousKnobeId]);
+
   return (
     <Form onFinish={handleSbmitForm} form={form}>
       {contextHolder}
 
-      <Affix style={{ position: 'absolute', top: '-60px', right: '20px'}} offsetTop={20}>
+      <Affix style={{ position: 'absolute', top: '-60px', right: '170px'}} offsetTop={20}>
         <Button style={{backgroundColor: currentStepSend ? btnColor : '#1677ff', color: 'white' }} htmlType="submit" icon={<SendOutlined />}>
           {`${language.submit} ${language.knobe}`}
         </Button>
       </Affix>
+
+      <div style={{ position: 'absolute', top: '-60px', right: '20px'}}>
+        <Button
+          disabled={isDataKnobe} 
+          danger 
+          icon={<DeleteOutlined />} 
+          onClick={() => removeKnobe(jwtToken, orderIdToUse, setIsDataKnobe, messageApi, language, setPreviousKnobeId)}
+          >
+          {`${language.delete} ${language.knobe}`}
+        </Button>
+      </div>
 
       <div style={{display: 'flex', gap: '20px', flexWrap: 'wrap'}}>
         <Input
@@ -319,7 +338,7 @@ const KnobesStep = ({ setCurrentStepSend, currentStepSend }) => {
           stepName={'knobeStep'}
           previousId={previousKnobeId}
           setPreviousId={setPreviousKnobeId}
-          imageHeight={'120'}
+          imageHeight={'100px'}
       />
       )}
     </Form>

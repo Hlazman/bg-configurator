@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { Form, Input, Button, Card, Radio, Select, Spin, message, Affix } from 'antd';
-import { SendOutlined } from '@ant-design/icons';
+import { SendOutlined, DeleteOutlined } from '@ant-design/icons';
 import axios from 'axios';
 import { useOrder } from '../../Context/OrderContext';
 import { useLanguage } from '../../Context/LanguageContext';
 import languageMap from '../../Languages/language';
 import {queryLink} from '../../api/variables'
 import ImagesFittingsForm from '../Forms/ImagesFittingsForm';
+import {removeLock, checkLock} from '../../api/lock';
 
 const LockStep = ({ setCurrentStepSend, currentStepSend }) => {
   const [lockData, setLockData] = useState([]);
@@ -17,9 +18,11 @@ const LockStep = ({ setCurrentStepSend, currentStepSend }) => {
   const [previousLockId, setPreviousLockId] = useState(null);
   const { selectedLanguage } = useLanguage();
   const language = languageMap[selectedLanguage];
-  const { lockSuborderId } = useOrder();
+  const { orderId, lockSuborderId } = useOrder();
+  const orderIdToUse = orderId;
   const jwtToken = localStorage.getItem('token');
   const [btnColor, setBtnColor] = useState('#ff0505');
+  const [isDataLock, setIsDataLock] = useState(true);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -154,6 +157,7 @@ const LockStep = ({ setCurrentStepSend, currentStepSend }) => {
         });
       }
       setBtnColor('#4BB543');
+      setIsDataLock(false);
     })
     .catch((error) => {
       messageApi.error(language.errorQuery);
@@ -211,15 +215,31 @@ const LockStep = ({ setCurrentStepSend, currentStepSend }) => {
 
   }, [jwtToken, lockSuborderId]);
 
+
+  useEffect(() => {
+    checkLock(jwtToken, orderIdToUse, setIsDataLock);
+  }, [isDataLock, previousLockId]);
+
   return (
     <Form onFinish={handleSbmitForm} form={form}>
       {contextHolder}
 
-      <Affix style={{ position: 'absolute', top: '-60px', right: '20px'}} offsetTop={20}>
+      <Affix style={{ position: 'absolute', top: '-60px', right: '170px'}} offsetTop={20}>
         <Button style={{backgroundColor: currentStepSend ? btnColor : '#1677ff', color: 'white' }} htmlType="submit" icon={<SendOutlined />}>
           {`${language.submit} ${language.lock}`}
         </Button>
       </Affix>
+
+      <div style={{ position: 'absolute', top: '-60px', right: '20px'}}>
+        <Button
+          disabled={isDataLock} 
+          danger 
+          icon={<DeleteOutlined />} 
+          onClick={() => removeLock(jwtToken, orderIdToUse, setIsDataLock, messageApi, language, setPreviousLockId)}
+          >
+          {`${language.delete} ${language.lock}`}
+        </Button>
+      </div>
 
     <div style={{display: 'flex', gap: '20px', flexWrap: 'wrap'}}>
       <Input
@@ -292,7 +312,7 @@ const LockStep = ({ setCurrentStepSend, currentStepSend }) => {
           stepName={'lockStep'}
           previousId={previousLockId}
           setPreviousId={setPreviousLockId}
-          imageHeight={'200'}
+          imageHeight={'200px'}
       />
       )}
     </Form>
