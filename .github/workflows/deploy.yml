@@ -1,0 +1,25 @@
+name: Deploy via SSH
+
+on:
+  push:
+    branches:
+      - main
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up SSH connection
+      uses: webfactory/ssh-agent@v0.5.3
+      with:
+        ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+    - name: Run commands on the server
+      run: |
+        ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER_NAME }}@${{ secrets.SSH_SERVER_IP }} 'bash -s' << 'EOF'
+          echo "Running commands on the server..."
+          cd ${{ secrets.SSH_PATH }} && git pull && docker compose down && docker compose up -d --build
+          echo "Finished running commands on the server."
+        EOF
