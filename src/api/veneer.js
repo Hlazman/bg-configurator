@@ -49,8 +49,10 @@ export const updateVeneerDirection = async (orderIdToUse, jwtToken, selectedValu
           }
         `,
         variables: {
-          horizontal_veneer: selectedValue,
           updateOrderId: orderIdToUse,
+          data: {
+            horizontal_veneer: selectedValue,
+          }
         },
       },
       {

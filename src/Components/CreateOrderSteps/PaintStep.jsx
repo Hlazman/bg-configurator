@@ -235,17 +235,17 @@ const PaintStep = ({ orderID, fetchOrderData, fetchDecorData, checkDecor, sendDe
         </Form.Item>
 
         <Form.Item label={language.sorting} style={{margin: '10px 0', flex: '1', 'minWidth': "300px"}} >
-        <Select
-          value={selectedColorGroup}
-          onChange={handleColorGroupChange}
-          disabled={isDisabledGroup}
-        >
-          {colorGroupOptions.map((colorGroup, index) => (
-            <Select.Option key={index} value={colorGroup}>
-              {colorGroup}
-            </Select.Option>
-          ))}
-        </Select>
+          <Select
+            value={selectedColorGroup}
+            onChange={handleColorGroupChange}
+            disabled={isDisabledGroup}
+          >
+            {colorGroupOptions.map((colorGroup, index) => (
+              <Select.Option key={index} value={colorGroup}>
+                {colorGroup}
+              </Select.Option>
+            ))}
+          </Select>
         </Form.Item>
         </div>
 

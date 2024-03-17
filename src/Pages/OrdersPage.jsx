@@ -45,7 +45,7 @@ export const OrdersPage = () => {
 
   const handleEditOrder = (orderID) => {
   setOrderId(orderID)
-  navigate(`/editorder`); 
+  navigate(`/editorder`);
 };
 
 const handleOpenOrder = (orderID) => {

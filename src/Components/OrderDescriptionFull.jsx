@@ -229,20 +229,35 @@ export const OrderDescriptionFull = ({
               }
             </Descriptions.Item>
 
-            <Descriptions.Item span={3} className='labelBG' label={`${language.descr}`} labelStyle={{fontWeight: '600', color:'#000'}}>
-              {doorData.decor?.data?.attributes?.paint?.data?.attributes?.color_range} &nbsp;
-              {doorData.decor?.data?.attributes?.title}
+            <Descriptions.Item style={{textAlign: 'left'}} span={3} className='labelBG' label={`${language.descr}`} labelStyle={{fontWeight: '600', color:'#000'}}>
+              {language.type} : {languageMap[selectedLanguage][doorData.decor?.data?.attributes?.type]}
               <br/>
-              {
-                doorData.decor?.data?.attributes?.paint?.data?.attributes?.color_range !== 'RAL' 
-                ? ''
-                : standartRAL.includes(doorData.decor?.data?.attributes?.title) 
-                  ? '' 
-                  : `${language.cost} + 10%`
-              }
-              <br/>
-              {/* {doorData.decor?.data?.attributes?.type} */}
-              {languageMap[selectedLanguage][doorData.decor?.data?.attributes?.type]}
+            
+              {language.decor} : {doorData.decor?.data?.attributes?.paint?.data?.attributes?.color_range} &nbsp;
+                {doorData.decor?.data?.attributes?.title}
+                <br/>
+
+                {
+                  doorData.decor?.data?.attributes?.paint?.data?.attributes?.color_range !== 'RAL' 
+                  ? ''
+                  : standartRAL.includes(doorData.decor?.data?.attributes?.title) 
+                    ? '' 
+                    : `${language.cost} + 10%`
+                }
+
+                <br/>
+                {orderData?.horizontal_veneer && (
+                  <Descriptions.Item className='labelBG' label={language.title} labelStyle={{fontWeight: '600', color:'#000'}}>
+                    {orderData?.horizontal_veneer ? language.horizontalVeneer : ''}
+                  </Descriptions.Item>
+                )}
+
+                {orderData?.super_gloss && (
+                  <Descriptions.Item className='labelBG' label={language.title} labelStyle={{fontWeight: '600', color:'#000'}}>
+                    {orderData?.super_gloss ? language.superGloss : ''}
+                  </Descriptions.Item>
+                )}
+
             </Descriptions.Item>
 
             {doorData?.otherSideDecor && doorData?.otherSideDecor?.img && (
@@ -263,10 +278,14 @@ export const OrderDescriptionFull = ({
                   }
                 </Descriptions.Item>
 
-                <Descriptions.Item span={3} className='labelBG' label={`${language.descr} (${language.side2})`} labelStyle={{fontWeight: '600', color:'#000'}}>
-                  {doorData.otherSideDecor?.data?.attributes?.paint.data?.attributes?.color_range} &nbsp;
+                <Descriptions.Item style={{textAlign: 'left'}} span={3} className='labelBG' label={`${language.descr} (${language.side2})`} labelStyle={{fontWeight: '600', color:'#000'}}>
+                  {language.type} : {languageMap[selectedLanguage][doorData.otherSideDecor?.data?.attributes?.type]}
+                  <br/>
+
+                  {language.decor} : {doorData.otherSideDecor?.data?.attributes?.paint.data?.attributes?.color_range} &nbsp;
                   {doorData.otherSideDecor?.data?.attributes?.title}
                   <br/>
+                  
                   {
                     doorData.otherSideDecor?.data?.attributes?.paint?.data?.attributes?.color_range !== 'RAL' 
                     ? ''
@@ -274,9 +293,20 @@ export const OrderDescriptionFull = ({
                       ? '' 
                       : `${language.cost} + 10%`
                   }
+
                   <br/>
-                  {/* {doorData.decor?.data?.attributes?.type} */}
-                  {languageMap[selectedLanguage][doorData.otherSideDecor?.data?.attributes?.type]}
+                  {orderData?.horizontal_veneer && (
+                    <Descriptions.Item className='labelBG' label={language.title} labelStyle={{fontWeight: '600', color:'#000'}}>
+                      {orderData?.horizontal_veneer ? language.horizontalVeneer : ''}
+                    </Descriptions.Item>
+                  )}
+
+                  {orderData?.super_gloss && (
+                    <Descriptions.Item className='labelBG' label={language.title} labelStyle={{fontWeight: '600', color:'#000'}}>
+                      {orderData?.super_gloss ? language.superGloss : ''}
+                    </Descriptions.Item>
+                  )}
+
                 </Descriptions.Item>
               </>
             )}
@@ -571,7 +601,7 @@ export const OrderDescriptionFull = ({
                   </React.Fragment>
                 ))}
 
-                  {orderData?.horizontal_veneer && (
+                  {/* {orderData?.horizontal_veneer && (
                     <Descriptions.Item className='labelBG' label={language.title} labelStyle={{fontWeight: '600', color:'#000'}}>
                       {orderData?.horizontal_veneer ? language.horizontalVeneer : ''}
                     </Descriptions.Item>
@@ -581,7 +611,7 @@ export const OrderDescriptionFull = ({
                     <Descriptions.Item className='labelBG' label={language.title} labelStyle={{fontWeight: '600', color:'#000'}}>
                       {orderData?.horizontal_veneer ? language.superGloss : ''}
                     </Descriptions.Item>
-                  )}
+                  )} */}
 
             </Descriptions>
           </div>

@@ -143,35 +143,33 @@ const OptionsStep = ({ setCurrentStepSend, currentStepSend }) => {
   // };
 
   const handleFormSubmit = async (values) => {
-    const data = {'horizontal_veneer': values.horizontal_veneer, 'super_gloss': values.super_gloss,}
+    // const data = {'horizontal_veneer': values.horizontal_veneer, 'super_gloss': values.super_gloss,}
     try {
-      const response = await axios.post(
-        // 'https://api.boki.fortesting.com.ua/graphql',
-        queryLink,
-        {
-          query: `
-            mutation Mutation($data: OrderInput!, $updateOrderId: ID!) {
-              updateOrder(data: $data, id: $updateOrderId) {
-                data {
-                  id
-                }
-              }
-            }
-          `,
-          variables: {
-            data: data,
-            updateOrderId: orderIdToUse,
-          },
-        },
-        {
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${jwtToken}`,
-          },
-        }
-      );
-
-      console.log(response.data)
+      // const response = await axios.post(
+      //   // 'https://api.boki.fortesting.com.ua/graphql',
+      //   queryLink,
+      //   {
+      //     query: `
+      //       mutation Mutation($data: OrderInput!, $updateOrderId: ID!) {
+      //         updateOrder(data: $data, id: $updateOrderId) {
+      //           data {
+      //             id
+      //           }
+      //         }
+      //       }
+      //     `,
+      //     variables: {
+      //       data: data,
+      //       updateOrderId: orderIdToUse,
+      //     },
+      //   },
+      //   {
+      //     headers: {
+      //       'Content-Type': 'application/json',
+      //       Authorization: `Bearer ${jwtToken}`,
+      //     },
+      //   }
+      // );
 
       getOptions(jwtToken, orderIdToUse, setOptionsData);
       getOptionsDataOrder(orderIdToUse, jwtToken, setOptionsSuborderData, form);
@@ -394,11 +392,11 @@ const OptionsStep = ({ setCurrentStepSend, currentStepSend }) => {
                 <Radio.Button value={false}>{language.no}</Radio.Button>
               </Radio.Group>
             </Form.Item>
-          </div>
+            </div>
         ))}
 
 
-        <div style={{ display: 'flex', gap: '30px' }}>
+        {/* <div style={{ display: 'flex', gap: '30px' }}>
           <Form.Item
             label={language.horizontalVeneer}
             name="horizontal_veneer"
@@ -408,9 +406,9 @@ const OptionsStep = ({ setCurrentStepSend, currentStepSend }) => {
               <Radio.Button value={false}>{language.no}</Radio.Button>
             </Radio.Group>
           </Form.Item>
-        </div>
+        </div> */}
 
-        <div style={{ display: 'flex', gap: '30px' }}>
+        {/* <div style={{ display: 'flex', gap: '30px' }}>
           <Form.Item
             label={language.superGloss}
             name="super_gloss"
@@ -420,7 +418,7 @@ const OptionsStep = ({ setCurrentStepSend, currentStepSend }) => {
               <Radio.Button value={false}>{language.no}</Radio.Button>
             </Radio.Group>
           </Form.Item>
-        </div>
+        </div> */}
 
       </Form>
     </Card>

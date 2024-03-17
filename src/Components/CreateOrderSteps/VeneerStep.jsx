@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Form, Input, Button, Card, Radio, Select, Spin, Affix } from 'antd';
+import { Form, Input, Button, Card, Radio, Select, Spin, Affix, Space } from 'antd';
 import { SendOutlined } from '@ant-design/icons';
 import axios from 'axios';
 import { useOrder } from '../../Context/OrderContext';
@@ -112,13 +112,13 @@ const VeneerStep = ({ fetchOrderData, fetchDecorData, checkDecor, sendDecorForm,
         setIsLoading(false);
 
 
-        // const veneerDirectionData = await checkVeneerDirection(orderIdToUse, jwtToken);
+        const veneerDirectionData = await checkVeneerDirection(orderIdToUse, jwtToken);
         
-        // form.setFieldsValue({
-        //   horizontal_veneer: veneerDirectionData,
-        // })
+        form.setFieldsValue({
+          horizontal_veneer: veneerDirectionData,
+        })
         
-        // setVeneerDirection(veneerDirectionData);
+        setVeneerDirection(veneerDirectionData);
 
       } catch (error) {
         console.error('Error fetching data:', error);
@@ -191,6 +191,19 @@ const VeneerStep = ({ fetchOrderData, fetchDecorData, checkDecor, sendDecorForm,
             </Select.Option>
           ))}
         </Select>
+        </Form.Item>
+      </div>
+
+      <div style={{ display: 'flex', gap: '30px' }}> 
+        <Form.Item
+          label={language.horizontalVeneer}
+          name="horizontal_veneer"
+          style={{margin: '10px 0', }}
+        >
+          <Radio.Group buttonStyle="solid" onChange={(value) => updateVeneerDirection(orderIdToUse, jwtToken, value.target.value)}>
+            <Radio.Button value={true}>{language.yes}</Radio.Button>
+            <Radio.Button value={false}>{language.no}</Radio.Button>
+          </Radio.Group>
         </Form.Item>
       </div>
 
