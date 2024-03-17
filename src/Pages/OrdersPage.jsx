@@ -64,6 +64,12 @@ const handleOpenOrder = (orderID) => {
               data {
                 id
                 attributes {
+                  errorDecor
+                  errorDecor2
+                  errorFrame
+                  errorHinge
+                  errorOptions
+                  errorElement
                   door_suborder {
                     data {
                       attributes {
@@ -209,15 +215,41 @@ const handleOpenOrder = (orderID) => {
     },
   ];
 
+  const result = {};
+
+  if (data && data.length) {
+    data.forEach(item => {
+      const id = item.id;
+      let count = 0;
+
+      if (item.attributes.errorDecor !== null) count++;
+      if (item.attributes.errorDecor2 !== null) count++;
+      if (item.attributes.errorElement !== null) count++;
+      if (item.attributes.errorFrame !== null) count++;
+      if (item.attributes.errorHinge !== null) count++;
+      if (item.attributes.errorOptions !== null) count++;
+  
+      result[id] = count;
+  });
+  }
+
   const columns = [
     {
       title: `${language.subOrder}`,
       dataIndex: 'id',
       key: 'id',
-      width: '150px',
+      width: '200px',
       fixed: 'left',
       sorter: (a, b) => (a.id || '').localeCompare(b.id || ''),
-      render: (text) => `${language.subOrder} # ${text || ''}`,
+      // render: (text) => `${language.subOrder} # ${text || ''}`,
+      render: (text, record) => {
+        return (
+          <>
+          <span> {language.subOrder} # {text || ''}</span> <br/>
+          <span style={{color: 'red', fontWeight: 'bold'}}> {result[record.id]!== 0 ? `${language.err}: ${result[record.id]}` : ''} </span>
+        </>
+        )
+      },
       filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters }) => (
         <div style={{ padding: 8 }}>
           <Input

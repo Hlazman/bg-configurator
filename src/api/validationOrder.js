@@ -48,6 +48,8 @@ export const getOrderErrors = async (jwtToken, orderIdToUse) => {
    }
 };
 
+// export const getTotalOrderErrors = async (jwtToken, orderIdToUse) => {}
+
 export const updateError = async (jwtToken, orderIdToUse, errorField, errorName) => {
   try {
     await axios.post(queryLink,
