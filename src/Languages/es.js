@@ -338,6 +338,8 @@ const es = {
   errorDecor2: 'La decoración previamente seleccionada para el lado 2 no coincide con este modelo de puerta',
   errDecorElement: 'No puedes usar esta decoración para este elemento',
   errorElement: 'Los elementos previamente seleccionados no son adecuados para este modelo de puerta',
+  errNotComplete: 'La suborden no está completa',
+  errEmpty: 'La orden está vacía o todas las subórdenes no están completas', 
 
 // Elements Warnings
   saveElementsWarning: (

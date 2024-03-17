@@ -336,6 +336,8 @@ const de = {
   errorDecor2: 'Die zuvor ausgewählte Dekoration für Seite 2 passt nicht zu diesem Türmodell',
   errDecorElement: 'Sie können dieses Dekor nicht für dieses Element verwenden',
   errorElement: 'Die zuvor ausgewählten Elemente sind nicht für dieses Türmodell geeignet',
+  errNotComplete: 'Teilbestellung ist nicht vollständig',
+  errEmpty: 'Die Bestellung ist leer oder alle Teilbestellungen sind nicht vollständig',
 
 // Elements Warnings
   saveElementsWarning: (

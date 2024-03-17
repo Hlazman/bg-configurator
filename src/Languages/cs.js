@@ -336,7 +336,8 @@ const cs = {
   errorDecor: 'Dříve vybraný dekor neodpovídá tomuto modelu dveří',
   errorDecor2: 'Dříve vybraný dekor pro stranu 2 neodpovídá tomuto modelu dveří',
   errDecorElement: 'Tento dekor nelze použít pro tento prvek',
-  errorElement: 'Dříve vybrané prvky nejsou vhodné pro tento model dveří',
+  errNotComplete: 'Podobjednávka není kompletní',
+  errEmpty: 'Objednávka je prázdná nebo všechny podobjednávky nejsou kompletní',
 
 // Elements Warnings
   saveElementsWarning: (

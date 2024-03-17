@@ -339,6 +339,8 @@ ceramogranite : 'Ceramogranite',
   errorDecor2 : 'The previously selected decor for side 2 does not fit this door model',
   errDecorElement: 'You cannot use this Decor for this element',
   errorElement: 'The previously selected Element(s) are not suitable for this door model', 
+  errNotComplete: 'Sub-order is not complete', 
+  errEmpty: 'Order is empty or all sub-orders not complete', 
 
   // Elements Warnings
   saveElementsWarning: (

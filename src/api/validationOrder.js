@@ -48,7 +48,75 @@ export const getOrderErrors = async (jwtToken, orderIdToUse) => {
    }
 };
 
-// export const getTotalOrderErrors = async (jwtToken, orderIdToUse) => {}
+export const getTotalOrderErrors = async (jwtToken, totalOrderId) => {
+  try {
+    const response = await axios.post(queryLink,
+       { query: `
+          query Query($totalOrderId: ID, $pagination: PaginationArg) {
+            totalOrder(id: $totalOrderId) {
+              data {
+                attributes {
+                  orders(pagination: $pagination) {
+                    data {
+                      id
+                      attributes {
+                        errorDecor
+                        errorDecor2
+                        errorElement
+                        errorFrame
+                        errorHinge
+                        errorOptions
+                        totalCost
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+         `,
+         variables: {
+          totalOrderId: totalOrderId,
+          pagination: {
+            "limit": 100
+          },
+         }
+       },
+       {
+         headers: {
+           'Content-Type': 'application/json',
+           Authorization: `Bearer ${jwtToken}`,
+         }
+       }
+     )
+    
+
+     const ordersData = response?.data?.data?.totalOrder?.data?.attributes.orders?.data;
+
+     if (!ordersData?.length) {
+        return true;
+       };
+
+     const hasErrors = ordersData.some(order => {
+      return (
+        order.attributes.errorDecor !== null ||
+        order.attributes.errorDecor2 !== null ||
+        order.attributes.errorElement !== null ||
+        order.attributes.errorFrame !== null ||
+        order.attributes.errorHinge !== null ||
+        order.attributes.errorOptions !== null ||
+        order.attributes.totalCost === 0 || 
+        order.attributes.totalCost === null
+      );
+    });
+
+    return hasErrors;
+   }
+   catch (error) {
+     console.error('Error:', error);
+     return;
+   }
+}
 
 export const updateError = async (jwtToken, orderIdToUse, errorField, errorName) => {
   try {

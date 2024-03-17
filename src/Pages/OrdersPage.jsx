@@ -82,6 +82,11 @@ const handleOpenOrder = (orderID) => {
                             }
                           }
                         }
+                        decor {
+                          data {
+                            id
+                          }
+                        }
                       }
                     }
                   }
@@ -246,7 +251,7 @@ const handleOpenOrder = (orderID) => {
         return (
           <>
           <span> {language.subOrder} # {text || ''}</span> <br/>
-          <span style={{color: 'red', fontWeight: 'bold'}}> {result[record.id]!== 0 ? `${language.err}: ${result[record.id]}` : ''} </span>
+          <span style={{color: '#ff4d4f', fontWeight: 'bold'}}> {result[record.id]!== 0 ? `${language.err}: ${result[record.id]}` : ''} </span>
         </>
         )
       },
@@ -402,7 +407,7 @@ const handleOpenOrder = (orderID) => {
       key: 'orderPrice',
       width: '120px',
       sorter: (a, b) => (a.attributes.totalCost || 0) - (b.attributes.totalCost || 0),
-      render: (text) => text || '',
+      render: (text) => text || (<span style={{color: '#ff4d4f', fontWeight: 'bold'}}> {language.errNotComplete} </span>),
     },
     {
       title: `${language.currency}`,

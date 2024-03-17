@@ -337,6 +337,8 @@ const pl = {
   errorDecor2: 'Poprzednio wybrana dekoracja dla strony 2 nie pasuje do tego modelu drzwi',
   errDecorElement: 'Nie możesz używać tego dekoru dla tego elementu',
   errorElement: 'Poprzednio wybrane elementy nie pasują do tego modelu drzwi',
+  errNotComplete: 'Podzamówienie nie jest kompletne',
+  errEmpty: 'Zamówienie jest puste lub wszystkie podzamówienia nie są kompletne',
 
 // Elements Warnings
   saveElementsWarning: (

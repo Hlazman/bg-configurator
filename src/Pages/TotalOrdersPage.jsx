@@ -10,6 +10,7 @@ import { useLanguage } from '../Context/LanguageContext';
 import languageMap from '../Languages/language';
 import { deleteTotalOrderWithOrders } from '../api/deleteTotalOrderWithOrders'
 import {queryLink} from '../api/variables'
+import {getTotalOrderErrors} from '../api/validationOrder'
 
 export const TotalOrdersPage = () => {
   const { selectedLanguage } = useLanguage();
@@ -232,6 +233,26 @@ const handleOpenTotalOrder = (totalOrderID) => {
     },
   ];
 
+  const [errorsData, setErrorsData] = useState({});
+
+  useEffect(()=> {
+    if (data && data.length) {
+      const ids = data.map(item => item.id);
+      const errorsMap = {};
+
+      const fetchErrors = async () => {
+        const promises = ids.map(async (id) => {
+          const errors = await getTotalOrderErrors(jwtToken, id);
+          errorsMap[id] = errors;
+        });
+
+        await Promise.all(promises);
+        setErrorsData(errorsMap);
+      };
+      fetchErrors();
+    }
+}, [data, jwtToken]);
+
   const columns = [
     {
       title: `ID`,
@@ -249,7 +270,15 @@ const handleOpenTotalOrder = (totalOrderID) => {
       width: '200px',
       fixed: 'left',
       sorter: (a, b) => (a.attributes.title || '').localeCompare(b.attributes.title || ''),
-      render: (text) => `${text || ''}`,
+      // render: (text) => `${text || ''}`,
+      render: (text, record) => {
+        return (
+          <>
+          <span> {text || ''}</span> <br/>
+          <span style={{color: '#ff4d4f', fontWeight: 'bold'}}> {errorsData[record.id]!== false ? `${language.err}` : ''} </span>
+        </>
+        )
+      },
       filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters }) => (
         <div style={{ padding: 8 }}>
           <Input
@@ -500,7 +529,8 @@ const handleOpenTotalOrder = (totalOrderID) => {
       key: 'totalOrderPrice',
       width: '120px',
       sorter: (a, b) => (a.attributes.totalCost || 0) - (b.attributes.totalCost || 0),
-      render: (text) => text || '',
+      // render: (text) => text || '',
+      render: (text) => text || (<span style={{color: '#ff4d4f', fontWeight: 'bold'}}> {language.errEmpty} </span>),
     },
     {
       title: `${language.discount}`,
