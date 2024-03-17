@@ -5,6 +5,7 @@ const ImagesDecorPaintForm = ({
   filteredImages, language, paintData, previousColorTittle, selectedPaintFor, checkDecor, setPreviousColorTitle, decorData,
   setSelectedDecorId, setDecorData, messageApi, paintForSelectRef
   }) => {
+
   return (
     <Form.Item name="paintRadio"
       // rules={[{ required: true, message: language.requiredField }]}
@@ -34,9 +35,11 @@ const ImagesDecorPaintForm = ({
                   if (selectedPaintFor) {
                     checkDecor(selectedPaintFor, paint.attributes.color_code, decorData, setSelectedDecorId, paint.id, setDecorData);
                     setPreviousColorTitle(paint.attributes.color_code);
+                    paintForSelectRef.current.parentNode.parentNode.parentNode.parentNode.classList.remove("paintFor");
                   } else {
                     messageApi.error(language.firstPainFor);
                     paintForSelectRef.current.focus();
+                    paintForSelectRef.current.parentNode.parentNode.parentNode.parentNode.classList.add("paintFor");
                   }
                 }}
               >

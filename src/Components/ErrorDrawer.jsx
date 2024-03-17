@@ -1,13 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { Drawer, Badge, Button, List } from 'antd';
 import { useErrors } from '../Context/ErrorsOrderContext';
-import {getOrderErrors} from '../api/validationOrder';
+import {getOrderErrors } from '../api/validationOrder';
 import { useOrder } from '../Context/OrderContext';
 import { useLanguage } from '../Context/LanguageContext';
 import languageMap from '../Languages/language';
-
-
-//languageMap[selectedLanguage][option.attributes.type]
 
 const ErrorDrawer = () => {
   const [visible, setVisible] = useState(false);
@@ -26,18 +23,26 @@ const ErrorDrawer = () => {
     setVisible(false);
   };
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const errorData = await getOrderErrors(jwtToken, orderIdToUse);
-        setErrorArray(errorData)
-      } catch (error) {
-        console.error('Error fetching data:', error);
-      }
-    };
+  const handleUpdateError = async () => {
+    try {
+      const newErrors = await getOrderErrors(jwtToken, orderIdToUse);
+      setErrorArray(newErrors);
+    } catch (error) {
+      console.error('Error fetching errors:', error);
+    }
+  };
 
-    fetchData();
-  }, [jwtToken, orderIdToUse, errors, setErrorArray]);
+  useEffect(() => {
+    handleUpdateError();
+  }, [])
+
+  useEffect(() => {
+    document.addEventListener('updateError', handleUpdateError);
+    
+    return () => {
+      document.removeEventListener('updateError', handleUpdateError);
+    };
+  }, [jwtToken, orderIdToUse, setErrorArray]);
 
   return (
     <>
@@ -64,7 +69,6 @@ const ErrorDrawer = () => {
                 <span style={{ fontWeight: 'bold', marginRight: '8px', color: '#ed5249' }}>
                   {index + 1}.
                 </span>
-                {/* <span className='errorOrder'>{error}</span> */}
                 <span >{languageMap[selectedLanguage][error]}</span>
               </div>
 
@@ -77,53 +81,3 @@ const ErrorDrawer = () => {
 };
 
 export default ErrorDrawer;
-
-
-// import React, { useState } from 'react';
-// import { Drawer, Badge, Button } from 'antd';
-
-// const ErrorDrawer = ({ orderId, errors }) => {
-//   const [visible, setVisible] = useState(false);
-
-//   const filteredErrors = errors.filter(error => error.orderId === orderId);
-
-//   const showDrawer = () => {
-//     setVisible(true);
-//   };
-
-//   const onClose = () => {
-//     setVisible(false);
-//   };
-
-//   return (
-//     <>
-//       <Badge count={filteredErrors.length || 'O'}>
-//         <Button type="primary" danger onClick={showDrawer}>
-//           Ошибки
-//         </Button>
-//       </Badge>
-//       <Drawer
-//         title='Список ошибок'
-//         placement="right"
-//         closable={false}
-//         onClose={onClose}
-//         open={visible}
-//         size={'large'}
-//       >
-//         <ol>
-//           {filteredErrors.map((error, index) => (
-//             <li key={index}>
-//               {Object.entries(error).map(([key, value]) => (
-//                 <span key={key}>
-//                   <strong>{key}:</strong> {value}
-//                 </span>
-//               ))}
-//             </li>
-//           ))}
-//         </ol>
-//       </Drawer>
-//     </>
-//   );
-// };
-
-// export default ErrorDrawer;

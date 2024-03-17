@@ -170,6 +170,13 @@ const OptionsStep = ({ setCurrentStepSend, currentStepSend }) => {
           },
         }
       );
+
+      console.log(response.data)
+
+      getOptions(jwtToken, orderIdToUse, setOptionsData);
+      getOptionsDataOrder(orderIdToUse, jwtToken, setOptionsSuborderData, form);
+      validateOptions(orderIdToUse, jwtToken, optionsData, optionsSuborderData, setNotValidOptions);
+
       messageApi.success(language.successQuery);
       if (setCurrentStepSend) {
         setCurrentStepSend(prevState => {
@@ -183,10 +190,6 @@ const OptionsStep = ({ setCurrentStepSend, currentStepSend }) => {
     } catch (error) {
       messageApi.error(language.errorQuery);
     }
-    
-    getOptions(jwtToken, orderIdToUse, setOptionsData);
-    getOptionsDataOrder(orderIdToUse, jwtToken, setOptionsSuborderData, form);
-    validateOptions(orderIdToUse, jwtToken, optionsData, optionsSuborderData, setNotValidOptions);
   };
 
   // const createSubOrder = async (option) => {

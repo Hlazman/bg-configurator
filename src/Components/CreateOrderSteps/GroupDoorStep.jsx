@@ -5,7 +5,7 @@ import StartDataStep from './StartDataStep';
 import { useLanguage } from '../../Context/LanguageContext';
 import languageMap from '../../Languages/language';
 
-const GroupDoorStep = ({ setCurrentStepSend, currentStepSend }) => {
+const GroupDoorStep = ({ setCurrentStepSend, currentStepSend, setIsDisabledOtherSteps }) => {
   const [activeTab, setActiveTab] = useState('startdata');
   const { selectedLanguage } = useLanguage();
   const language = languageMap[selectedLanguage];
@@ -28,7 +28,7 @@ const GroupDoorStep = ({ setCurrentStepSend, currentStepSend }) => {
         {
           label: language.canvas,
           key: 'canvas',
-          children: <CanvasStep setCurrentStepSend={setCurrentStepSend} currentStepSend={currentStepSend}/>,
+          children: <CanvasStep setCurrentStepSend={setCurrentStepSend} currentStepSend={currentStepSend} setIsDisabledOtherSteps={setIsDisabledOtherSteps}/>,
         },
       ]}
     />

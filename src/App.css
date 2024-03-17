@@ -52,3 +52,8 @@ aside {
   color: #ff0000;
   font-weight: 600;
 }
+
+.paintFor {
+  padding: 8px;
+  border: 2px solid #ff0000;
+}

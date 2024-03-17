@@ -7,12 +7,16 @@ import { useLanguage } from '../../Context/LanguageContext';
 import languageMap from '../../Languages/language';
 import {queryLink} from '../../api/variables'
 import {validateHinges, validateOptions, validateDecor, validateElements} from '../../api/validationOrder';
+// import {validateHinges, validateOptions, validateDecor, validateElements, getOrderErrors} from '../../api/validationOrder';
 import {getOptions, getOptionsDataOrder} from '../../api/options';
 import {updateCanvas} from '../../api/canvas';
 import {updateFrame} from '../../api/frame'
 import ImagesDoorForm from '../Forms/ImagesDoorForm';
 
-const CanvasStep = ({ setCurrentStepSend, currentStepSend}) => {
+// import { useErrors } from '../../Context/ErrorsOrderContext';
+
+const CanvasStep = ({ setCurrentStepSend, currentStepSend, setIsDisabledOtherSteps}) => {
+  // const { setErrorArray } = useErrors();
   const [messageApi, contextHolder] = message.useMessage();
   const { selectedLanguage } = useLanguage();
   const language = languageMap[selectedLanguage];
@@ -111,6 +115,9 @@ const CanvasStep = ({ setCurrentStepSend, currentStepSend}) => {
     const optionsDataResponse = await getOptions(jwtToken, orderIdToUse, setOptionsData);
     const optionsSuborderDataResponse = await getOptionsDataOrder(orderIdToUse, jwtToken, setOptionsSuborderData);
 
+    // const errorData = await getOrderErrors(jwtToken, orderIdToUse);
+    // setErrorArray(errorData);
+
     await validateOptions(orderIdToUse, jwtToken, optionsDataResponse, optionsSuborderDataResponse, setNotValidOptions);
     await validateHinges(orderIdToUse, jwtToken);
     await validateDecor(orderIdToUse, jwtToken);
@@ -188,6 +195,10 @@ const CanvasStep = ({ setCurrentStepSend, currentStepSend}) => {
 
     await updateCanvas(jwtToken, updateDoorSuborderId, data, messageApi, language, setCurrentStepSend, setBtnColor, getValid);
     await updateFrame(orderIdToUse, jwtToken, frameSuborderId);
+
+    if (setIsDisabledOtherSteps) {
+      setIsDisabledOtherSteps(false);
+    }
   };
 
 

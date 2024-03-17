@@ -6,6 +6,7 @@ import { useOrder } from '../../Context/OrderContext';
 import { useLanguage } from '../../Context/LanguageContext';
 import languageMap from '../../Languages/language';
 import {queryLink} from '../../api/variables'
+import {checkVeneerDirection, updateVeneerDirection} from '../../api/veneer'
 import ImagesDecorVeenerForm from '../Forms/ImagesDecorVeenerForm';
 
 const VeneerStep = ({ fetchOrderData, fetchDecorData, checkDecor, sendDecorForm, currentStepSend }) => {
@@ -22,6 +23,8 @@ const VeneerStep = ({ fetchOrderData, fetchDecorData, checkDecor, sendDecorForm,
   const { orderId, dorSuborderId} = useOrder();
   const orderIdToUse = orderId;
   const [btnColor, setBtnColor] = useState('#ff0505');
+
+  const [veneerDirection, setVeneerDirection] = useState(false);
 
   const [form] = Form.useForm();
   const onFinish = async () => {
@@ -107,6 +110,16 @@ const VeneerStep = ({ fetchOrderData, fetchDecorData, checkDecor, sendDecorForm,
         }));
         setVeneerData(veneers);
         setIsLoading(false);
+
+
+        // const veneerDirectionData = await checkVeneerDirection(orderIdToUse, jwtToken);
+        
+        // form.setFieldsValue({
+        //   horizontal_veneer: veneerDirectionData,
+        // })
+        
+        // setVeneerDirection(veneerDirectionData);
+
       } catch (error) {
         console.error('Error fetching data:', error);
         setIsLoading(false);

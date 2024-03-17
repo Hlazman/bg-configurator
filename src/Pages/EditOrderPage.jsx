@@ -19,6 +19,7 @@ import OptionsAdditionalStep from '../Components/CreateOrderSteps/OptionsAdditio
 import {queryLink} from '../api/variables'
 import DecorSidesGroupStep from '../Components/CreateOrderSteps/DecorSidesGroupStep';
 import ErrorDrawer from '../Components/ErrorDrawer';
+import {validateElements } from '../api/validationOrder';
 
 
 export const EditOrderPage = () => {
@@ -33,16 +34,21 @@ export const EditOrderPage = () => {
     knobeSuborderId, setKnobeSuborderId,
     lockSuborderId, setLockSuborderId,
    } = useOrder();
+  
+  const orderIdToUse = orderId;
   const navigate = useNavigate();
 
   const [currentStep, setCurrentStep] = useState(0);
-
+  const [isDisabledOtherSteps, setIsDisabledOtherSteps] = useState(true);
   // const handlePrev = () => {
   //   setCurrentStep(currentStep - 1);
   // };
 
-  const handleStepClick = (step) => {
+  const handleStepClick = async (step) => {
     setCurrentStep(step);
+    if (step !== 2) {
+      await validateElements(orderIdToUse, jwtToken);
+    }
   };
 
   const handleEditOrder = async () => {
@@ -59,6 +65,13 @@ export const EditOrderPage = () => {
                     door_suborder {
                       data {
                         id
+                        attributes {
+                          door {
+                            data {
+                              id
+                            }
+                          }
+                        }
                       }
                     }
                     fitting_suborders {
@@ -95,6 +108,9 @@ export const EditOrderPage = () => {
   
       const doorSuborderId = orderData.door_suborder.data.id;
       setDoorSuborderId(doorSuborderId);
+        
+      if (orderData?.door_suborder?.data?.attributes?.door?.data?.id)
+      setIsDisabledOtherSteps(false);
   
       const frameSuborderId = orderData.frame_suborder.data.id;
       setFrameSuborderId(frameSuborderId);
@@ -126,13 +142,14 @@ export const EditOrderPage = () => {
     } else {
       handleEditOrder();
     }
-  }, [jwtToken, orderId, urlOrderId]);
+  // }, [jwtToken, orderId, urlOrderId]);
+  }, [jwtToken, orderId, urlOrderId, isDisabledOtherSteps]);
 
   const renderFormStep = () => {
     switch (currentStep) {
       case 0:
         return (
-          <GroupDoorStep />
+          <GroupDoorStep setIsDisabledOtherSteps={setIsDisabledOtherSteps} />
         );
       case 1:
         return (
@@ -168,6 +185,7 @@ export const EditOrderPage = () => {
     }
   };
 
+
   return (
     <div>
       
@@ -181,13 +199,6 @@ export const EditOrderPage = () => {
         
         <div style={{display: 'flex', paddingRight: '30px'}}>
           <ErrorDrawer/>
-          {/* <Button type="dashed" icon={<SearchOutlined />} href="https://www.ralcolorchart.com/" target="_blank">
-            RAL {language.colors}
-          </Button>
-
-          <Button type="dashed" icon={<SearchOutlined />} href="https://www.ncscolorguide.com/" target="_blank">
-            NSC {language.colors}
-          </Button> */}
         </div>
 
       </div>
@@ -205,6 +216,7 @@ export const EditOrderPage = () => {
           {
             title: language.decor,
             status: (currentStep === 1 ? 'process' : 'finish'),
+            disabled: isDisabledOtherSteps,
           },
           // {
           //   title: language.frame,
@@ -213,18 +225,23 @@ export const EditOrderPage = () => {
           {
             title: language.elements,
             status: (currentStep === 3 ? 'process' : 'finish'),
+            disabled: isDisabledOtherSteps,
+            // onBlur: async () => await validateElements(orderIdToUse, jwtToken),
           },
           {
             title: language.fitting,
             status: (currentStep === 4 ? 'process' : 'finish'),
+            disabled: isDisabledOtherSteps,
           },
           {
             title: language.options,
             status: (currentStep === 5 ? 'process' : 'finish'),
+            disabled: isDisabledOtherSteps,
           },
           {
             title: language.additional,
             status: (currentStep === 6 ? 'process' : 'finish'),
+            disabled: isDisabledOtherSteps,
           },
           {
             title: language.information,
@@ -232,7 +249,6 @@ export const EditOrderPage = () => {
           },
         ]}
       >
-
       </Steps>
 
       {renderFormStep()}

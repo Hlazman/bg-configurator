@@ -21,6 +21,7 @@ import { useTotalOrder } from '../Context/TotalOrderContext';
 import {queryLink} from '../api/variables'
 import DecorSidesGroupStep from '../Components/CreateOrderSteps/DecorSidesGroupStep';
 import ErrorDrawer from '../Components/ErrorDrawer';
+import {validateElements } from '../api/validationOrder';
 
 export const CreateOrderPage = () => {
   const { selectedLanguage } = useLanguage();
@@ -38,6 +39,8 @@ export const CreateOrderPage = () => {
   const navigate = useNavigate();
   const [currentStep, setCurrentStep] = useState(0);
   const { orderId: urlOrderId } = useParams();
+  const orderIdToUse = orderId;
+  
   const [currentStepSend, setCurrentStepSend] = useState({
     startDataSend: false,
     canvasSend: false,
@@ -54,9 +57,13 @@ export const CreateOrderPage = () => {
   });
   const { selectedCompany } = useSelectedCompany();
   const { totalOrderId } = useTotalOrder();
-
-  const handleStepClick = (step) => {
+  
+  const handleStepClick = async (step) => {
     setCurrentStep(step);
+
+    if (step !== 2) {
+      await validateElements(orderIdToUse, jwtToken);
+    }
   };
 
   const handleCreateOrder = async () => {
@@ -321,6 +328,7 @@ export const CreateOrderPage = () => {
           {
             title: language.decor,
             status: (currentStep === 1 ? 'process' : currentStepSend.decorSend ? 'finish' : 'error'),
+            disabled: currentStepSend.canvasSend ? false : true,
           },
           // {
           //   title: language.frame,
@@ -329,6 +337,7 @@ export const CreateOrderPage = () => {
           {
             title: language.elements,
             status: (currentStep === 3 ? 'process' : currentStepSend.elementSend ? 'finish' : 'error'),
+            disabled: currentStepSend.canvasSend ? false : true,
           },
           {
             title: language.fitting,
@@ -339,14 +348,17 @@ export const CreateOrderPage = () => {
                   ? 'finish'
                   : 'error'
             ),
+            disabled: currentStepSend.canvasSend ? false : true,
           },
           {
             title: language.options,
             status: (currentStep === 5 ? 'process' : currentStepSend.optionsSend ? 'finish' : 'error'),
+            disabled: currentStepSend.canvasSend ? false : true,
           },
           {
             title: language.additional,
             status: (currentStep === 6 ? 'process' : currentStepSend.optionsAdditionalSend ? 'finish' : 'error'),
+            disabled: currentStepSend.canvasSend ? false : true,
           },
           {
             title: language.information,

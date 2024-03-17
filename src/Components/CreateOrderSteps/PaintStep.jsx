@@ -7,6 +7,7 @@ import { useLanguage } from '../../Context/LanguageContext';
 import languageMap from '../../Languages/language';
 import {queryLink} from '../../api/variables'
 import ImagesDecorPaintForm from '../Forms/ImagesDecorPaintForm';
+import {checkSuperGloss, updateSuperGloss} from '../../api/paint'
 
 const PaintStep = ({ orderID, fetchOrderData, fetchDecorData, checkDecor, sendDecorForm, isPaintDecor, currentStepSend, colorRangeFilter }) => {
   const [paintData, setPaintData] = useState([]);
@@ -33,6 +34,8 @@ const PaintStep = ({ orderID, fetchOrderData, fetchDecorData, checkDecor, sendDe
   
   const colorRangeFilterDoors = ["NCS", "RAL"];
   const colorRangeFilterElements = ["NCS", "RAL", "bronze", "gold"];
+
+  const [superGloss, setSuperGloss] = useState(false);
 
   const [form] = Form.useForm();
 
@@ -65,9 +68,10 @@ const PaintStep = ({ orderID, fetchOrderData, fetchDecorData, checkDecor, sendDe
  
     const handlePaintForChange = value => {
     setIsPaintType(false)
-    setSelectedPaintFor(value);
+    // setSelectedPaintFor(value);
+    setSelectedPaintFor(value.target.value);
+    setPreviousColorTitle(null);
   };
-
 
   const handleSearchQueryChange = value => {
     // localStorage.setItem('searchQuery', value);
@@ -134,6 +138,14 @@ const PaintStep = ({ orderID, fetchOrderData, fetchDecorData, checkDecor, sendDe
         const paints = response.data.data.paints.data;
         setPaintData(paints);
         setIsLoading(false);
+
+        const superGlossData = await checkSuperGloss(orderIdToUse, jwtToken);
+        
+        form.setFieldsValue({
+          super_gloss: superGlossData,
+        })
+        setSuperGloss(superGlossData);
+
       } catch (error) {
         console.error('Error fetching data:', error);
       }
@@ -161,7 +173,7 @@ const PaintStep = ({ orderID, fetchOrderData, fetchDecorData, checkDecor, sendDe
             return array[i].attributes.color_group;
         }
     }
-    return null; // Если совпадение не найдено
+    return null;
 }
 
   useEffect(() => {
@@ -169,8 +181,7 @@ const PaintStep = ({ orderID, fetchOrderData, fetchDecorData, checkDecor, sendDe
       const colorGroup = findColorGroup(paintData, previousColorTittle);
       setSelectedColorGroup(colorGroup ? colorGroup : 'black_white_9');
     }
-  }, [previousColorTittle, paintData])
-
+  }, [previousColorTittle, paintData]);
 
   return (
     <Form onFinish={onFinish} form={form}>
@@ -183,7 +194,6 @@ const PaintStep = ({ orderID, fetchOrderData, fetchDecorData, checkDecor, sendDe
       </Affix>
         
         <div style={{display: 'flex', gap: '20px', flexWrap: 'wrap'}}>
-
         <Input
           placeholder={language.search}
           addonBefore={language.searchBy}
@@ -192,7 +202,7 @@ const PaintStep = ({ orderID, fetchOrderData, fetchDecorData, checkDecor, sendDe
           style={{margin: '10px 0', flex: '1', 'minWidth': "300px"}}
         />
           
-        <Form.Item
+        {/* <Form.Item
           label={language.paintFor} 
           rules={[{ required: true, message: language.requiredField }]}
           style={{margin: '10px 0', flex: '1', 'minWidth': "300px"}}
@@ -209,7 +219,7 @@ const PaintStep = ({ orderID, fetchOrderData, fetchDecorData, checkDecor, sendDe
             <Select.Option value="painted_glass">{language.glass}</Select.Option>
             <Select.Option value="painted_veneer">{language.veneer}</Select.Option>
           </Select>
-        </Form.Item>
+        </Form.Item> */}
 
         <Form.Item label={`${language.type} ${language.colors}`} style={{margin: '10px 0', flex: '1', 'minWidth': "300px"}}>
           <Select
@@ -237,6 +247,38 @@ const PaintStep = ({ orderID, fetchOrderData, fetchDecorData, checkDecor, sendDe
           ))}
         </Select>
         </Form.Item>
+        </div>
+
+        <div style={{display: 'flex', gap: '20px', flexWrap: 'wrap'}}>
+          <Form.Item
+            label={language.paintFor} 
+            rules={[{ required: true, message: language.requiredField }]}
+            style={{margin: '25px 0'}}
+          >
+            <Radio.Group
+              buttonStyle="solid"
+              name="selectedPaintFor"
+              value={selectedPaintFor}
+              onChange={handlePaintForChange}
+              ref={paintForSelectRef}
+              tabIndex={0}
+            >
+              <Radio.Button value="paint">{language.paint}</Radio.Button>
+              <Radio.Button value="painted_glass">{language.glass}</Radio.Button>
+              <Radio.Button value="painted_veneer">{language.veneer}</Radio.Button>
+            </Radio.Group>
+          </Form.Item>
+
+          <Form.Item
+            label={language.superGloss}
+            name="super_gloss"
+            style={{margin: '25px 0'}}
+          >
+            <Radio.Group buttonStyle="solid" onChange={(value) => updateSuperGloss(orderIdToUse, jwtToken, value.target.value)}>
+              <Radio.Button value={true}>{language.yes}</Radio.Button>
+              <Radio.Button value={false}>{language.no}</Radio.Button>
+            </Radio.Group>
+          </Form.Item>
 
         </div>
 

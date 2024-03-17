@@ -192,6 +192,7 @@ const GroupDecorStep = ({ setCurrentStepSend, currentStepSend }) => {
       throw error;
     }
   };
+  
     const checkDecor = async (type, title, decorData, setSelectedDecorId, productId, setDecorData) => {
     const foundDecor = decorData.find(decor =>
       decor.attributes.type === type && decor.attributes.title.toLowerCase() === title.toLowerCase()
@@ -264,7 +265,6 @@ const GroupDecorStep = ({ setCurrentStepSend, currentStepSend }) => {
       //     });
       //   }
       // }
-
       messageApi.success(language.successQuery);
 
       if (setCurrentStepSend) {

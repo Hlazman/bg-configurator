@@ -2,6 +2,7 @@ import axios from 'axios';
 import {queryLink} from './variables'
 import { getElements } from './element';
 
+export const updateErrorEvent = new Event('updateError');
 
 export const getOrderErrors = async (jwtToken, orderIdToUse) => {
   try {
@@ -37,6 +38,7 @@ export const getOrderErrors = async (jwtToken, orderIdToUse) => {
       
     if (errorData) {
       const errorArray = Object.values(errorData).filter(value => value !== null);
+
       return errorArray;
     }
    }
@@ -71,7 +73,9 @@ export const updateError = async (jwtToken, orderIdToUse, errorField, errorName)
            Authorization: `Bearer ${jwtToken}`,
          }
        }
-     )
+     );
+
+     document.dispatchEvent(updateErrorEvent);
    }
    catch (error) {
      console.error('Error:', error);
@@ -533,7 +537,7 @@ export const validateElements = async (orderIdToUse, jwtToken) => {
     )
 
       if(response?.data?.data?.elementSuborders?.data) {
-        const suborders = response?.data?.data?.elementSuborders?.data
+        const suborders = response?.data?.data?.elementSuborders?.data;
         
         for (let i = 0; i < suborders.length; i++) {
           subOrderElements.push(suborders[i]?.attributes?.element?.data?.id);

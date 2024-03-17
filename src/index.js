@@ -21,11 +21,13 @@ root.render(
       <AuthProvider>
         <SelectedCompanyProvider>
           <TotalOrderProvider>
-            <ErrorsProvider>
+            {/* <ErrorsProvider> */}
               <OrderProvider>
-                <App />
+                <ErrorsProvider>
+                  <App />
+                </ErrorsProvider>
               </OrderProvider>
-            </ErrorsProvider>
+            {/* </ErrorsProvider> */}
           </TotalOrderProvider>
         </SelectedCompanyProvider>
       </AuthProvider>
