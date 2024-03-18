@@ -307,8 +307,8 @@ const ua = {
   'Electronic lock Omnitec Os Slim Code (black)' : 'Електроний замок Omnitec Os Slim Code (чорний)',
   'AGB Eclipse hidden curtain with tensioner (chrome)'  : 'Прихована завіса з дотягувачем AGB Eclipse (хром)',
   'AGB Eclipse hidden curtain with tensioner (black)' : 'Прихована завіса з дотягувачем AGB Eclipse (чорна)',
-  'Hidden curtain with tensioner Anselmi (chrome)' : 'Прихована завіса з дотягувачем Anselmi ',
-  'Hidden curtain with tensioner Anselmi (black)' : 'Прихована завіса з дотягувачем Anselmi ',
+  'Hidden curtain with tensioner Anselmi (chrome)' : 'Прихована завіса з дотягувачем Anselmi (хром)',
+  'Hidden curtain with tensioner Anselmi (black)' : 'Прихована завіса з дотягувачем Anselmi (чорна)',
 
 // Products Elements TYPE
   decorInsert: "Вставка декору",
