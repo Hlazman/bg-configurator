@@ -71,7 +71,7 @@ const ElementsStep = ({ setCurrentStepSend, currentStepSend }) => {
 
   const deleteElementSuborder = async () => {
     const currentElementID = getCurrentElementID();
-  
+
     try {
       const response = await axios.post(queryLink, {
         query: `
@@ -93,7 +93,6 @@ const ElementsStep = ({ setCurrentStepSend, currentStepSend }) => {
           Authorization: `Bearer ${jwtToken}`,
         },
       });
-  
       console.log('Deleted success', response.data);
     } catch (error) {
       console.error('Delete Error', error);
@@ -227,6 +226,7 @@ const ElementsStep = ({ setCurrentStepSend, currentStepSend }) => {
               elemID: data.id,
               children: (<DecorElementForm elementID={data.id} setCurrentStepSend={setCurrentStepSend} currentStepSend={currentStepSend }/>),
               key: newActiveKey,
+              closable: newActiveKey === `${language.element} ${1}`,
             };
           });
           setItems(newItems);
@@ -246,78 +246,6 @@ const ElementsStep = ({ setCurrentStepSend, currentStepSend }) => {
   useEffect(()=> {
     getData();
   }, [orderIdToUse, jwtToken]);
-
-  // useEffect(() => {
-  //   const fetchElementSuborders = async () => {
-  //     try {
-  //       if (!orderIdToUse) return;
-
-  //       const response = await axios.post(queryLink,
-  //         { query: `
-  //             query Query($orderId: ID) {
-  //               order(id: $orderId) {
-  //                 data {
-  //                   attributes {
-  //                     element_suborders {
-  //                       data {
-  //                         id
-  //                         attributes {
-  //                           element {
-  //                             data {
-  //                               id
-  //                               attributes {
-  //                                 title
-  //                               }
-  //                             }
-  //                           }
-  //                         }
-  //                       }
-  //                     }
-  //                   }
-  //                 }
-  //               }
-  //             }
-  //           `,
-  //           variables: {
-  //             orderId: orderIdToUse,
-  //           },
-  //         },
-  //         {
-  //           headers: {
-  //             'Content-Type': 'application/json',
-  //             Authorization: `Bearer ${jwtToken}`,
-  //           },
-  //         }
-  //       );
-
-  //       if (response.data.data && response.data.data.order) {
-  //         const notValid = await validateElements(orderIdToUse, jwtToken);
-
-  //         const orderData = response.data.data.order.data.attributes.element_suborders.data;
-  //         if (orderData && orderData.length > 0) {
-  //           const newItems = orderData.map((data, index) => {
-  //             const newActiveKey = `${language.element} ${1 + newTabIndex.current++}`;
-  //             const labelTitle = data?.attributes?.element?.data?.attributes?.title;
-  //             const notValidElementid = data?.attributes?.element?.data?.id;
-              
-  //             return {
-  //               label: notValid.includes(notValidElementid) ? language.err2 : languageMap[selectedLanguage][labelTitle],
-  //               elemID: data.id,
-  //               children: (<DecorElementForm elementID={data.id} setCurrentStepSend={setCurrentStepSend} currentStepSend={currentStepSend }/>),
-  //               key: newActiveKey,
-  //             };
-  //           });
-  //           setItems(newItems);
-  //           setActiveKey(newItems[0].key);
-  //         }
-  //       } 
-  //     } catch (error) {
-  //       console.error('Error fetching order data:', error);
-  //     }
-  //   };
-
-  //   fetchElementSuborders();
-  // }, [orderIdToUse, jwtToken]); 
 
   return (
     <>

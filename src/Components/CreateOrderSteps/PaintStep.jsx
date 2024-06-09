@@ -9,7 +9,9 @@ import {queryLink} from '../../api/variables'
 import ImagesDecorPaintForm from '../Forms/ImagesDecorPaintForm';
 import {checkSuperGloss, updateSuperGloss} from '../../api/paint'
 
-const PaintStep = ({ orderID, fetchOrderData, fetchDecorData, checkDecor, sendDecorForm, isPaintDecor, currentStepSend, colorRangeFilter }) => {
+const PaintStep = ({ 
+  orderID, fetchOrderData, fetchDecorData, checkDecor, sendDecorForm, isPaintDecor, currentStepSend, colorRangeFilter, showBronzeGold 
+}) => {
   const [paintData, setPaintData] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
   const [messageApi, contextHolder] = message.useMessage();
@@ -122,7 +124,8 @@ const PaintStep = ({ orderID, fetchOrderData, fetchDecorData, checkDecor, sendDe
               },
               filters: {
                 "color_range": {
-                  "in": colorRangeFilter === true ? colorRangeFilterDoors : colorRangeFilterElements
+                  // "in": colorRangeFilter === true ? colorRangeFilterDoors : colorRangeFilterElements
+                  "in": colorRangeFilter === true && showBronzeGold === false ? colorRangeFilterDoors : colorRangeFilterElements
                 }
               },
             },

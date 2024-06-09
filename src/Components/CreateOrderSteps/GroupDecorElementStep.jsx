@@ -12,7 +12,7 @@ import languageMap from '../../Languages/language';
 import {queryLink} from '../../api/variables'
 import {validateDecorElementsDisabled} from '../../api/validationOrder';
 
-const GroupDecorElementStep = ({elementID, realElementId}) => {
+const GroupDecorElementStep = ({elementID, realElementId, showBronzeGold}) => {
   const [activeTab, setActiveTab] = useState('paint');
   const { selectedLanguage } = useLanguage();
   const language = languageMap[selectedLanguage];
@@ -276,12 +276,14 @@ const GroupDecorElementStep = ({elementID, realElementId}) => {
           key: 'paint',
           disabled: hasDecor.paint.hasPaint,
           children: 
-            <PaintStep 
-            fetchDecorData={fetchDecorData}
-            fetchOrderData={fetchOrderData}
-            checkDecor={checkDecor}
-            sendDecorForm={sendDecorForm}
-            colorRangeFilter={false}
+            <PaintStep
+              fetchDecorData={fetchDecorData}
+              fetchOrderData={fetchOrderData}
+              checkDecor={checkDecor}
+              sendDecorForm={sendDecorForm}
+              // colorRangeFilter={false}
+              colorRangeFilter={true}
+              showBronzeGold={showBronzeGold}
             />,
         },
         {

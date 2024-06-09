@@ -323,12 +323,13 @@ const GroupDecorStep = ({ setCurrentStepSend, currentStepSend }) => {
             disabled: hasDecor.paint.hasPaint,
             children: 
               <PaintStep 
-              fetchDecorData={fetchDecorData}
-              fetchOrderData={fetchOrderData}
-              checkDecor={checkDecor}
-              sendDecorForm={sendDecorForm}
-              currentStepSend={currentStepSend}
-              colorRangeFilter={true}
+                fetchDecorData={fetchDecorData}
+                fetchOrderData={fetchOrderData}
+                checkDecor={checkDecor}
+                sendDecorForm={sendDecorForm}
+                currentStepSend={currentStepSend}
+                colorRangeFilter={true}
+                showBronzeGold={false}
               />,
           },
           {

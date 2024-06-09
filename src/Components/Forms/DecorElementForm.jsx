@@ -36,6 +36,8 @@ const DecorElementForm = ({setCurrentStepSend, elementID, currentStepSend}) => {
   const [step, setStep] = useState(1);
   const [realElementId, setRealElementId] = useState(''); 
   const [isLoading, setIsLoading] = useState(true); 
+  const [widthLimit, setWidthLimit] = useState({ min: null, max: null });
+  const [isBronzeGold, setIsBoronzeGold] = useState(false)
 
 
   const handleAmountChange = (value) => {
@@ -89,6 +91,28 @@ const DecorElementForm = ({setCurrentStepSend, elementID, currentStepSend}) => {
       }
     } else {
       return;
+    }
+  };
+
+  const getWidthLimitExtender = () => {
+    const currentElement = elementOptions?.find(option => option.id === currentElementField);
+
+    if (currentElement?.attributes?.title.startsWith("extender 200")) {
+      setWidthLimit({ min: null, max: 200 });
+    } else if (currentElement?.attributes?.title.startsWith("extender 300")) {
+      setWidthLimit({ min: 201, max: null });
+    } else {
+      setWidthLimit({ min: null, max: null });
+    }
+  };
+
+  const getBronzeGold = () => {
+    const currentElement = elementOptions?.find(option => option.id === currentElementField);
+
+    if (currentElement?.attributes?.title.toLowerCase().indexOf('aluminium') !== -1) {
+      setIsBoronzeGold(true);
+    } else {
+      setIsBoronzeGold(false);
     }
   };
 
@@ -147,7 +171,13 @@ const DecorElementForm = ({setCurrentStepSend, elementID, currentStepSend}) => {
     requiredFieldsAndAlert(currentElementField, elementOptions);
     setRealElementId(currentElementField);
     setIsLoading(false);
-  }, [currentElementField]);
+
+    getWidthLimitExtender();
+  }, [currentElementField, language]);
+
+  useEffect(() => {
+    getBronzeGold();
+  }, [currentElementField, isBronzeGold]);
 
   return (
     <Spin spinning={isLoading}>
@@ -205,17 +235,6 @@ const DecorElementForm = ({setCurrentStepSend, elementID, currentStepSend}) => {
             />
           </div> 
         </Form.Item>
-
-        {/* <Button
-          // className="blinking" 
-          style={{marginLeft: '10px'}} 
-          icon={<IssuesCloseOutlined />} 
-          type="primary" 
-          onClick={infoModal} 
-        > 
-          {language.information}
-        </Button> */}
-
       </div>
 
         <Space.Compact wrap="true" direction="hirizontal" size="middle">
@@ -228,6 +247,8 @@ const DecorElementForm = ({setCurrentStepSend, elementID, currentStepSend}) => {
               addonBefore={language.width} 
               addonAfter="mm"
               disabled={hasWidth}
+              min={widthLimit.min}
+              max={widthLimit.max}
             />
           </Form.Item>
           
@@ -302,7 +323,8 @@ const DecorElementForm = ({setCurrentStepSend, elementID, currentStepSend}) => {
             <>
               <Divider/>
               <h3 style={{textAlign: 'left', paddingBottom: '15px'}}> {language.element} {language.elementGetDecor} </h3>
-              <GroupDecorElementStep elementID={elementID} realElementId = {realElementId}/>
+              {/* <GroupDecorElementStep elementID={elementID} realElementId = {realElementId}/> */}
+              <GroupDecorElementStep elementID={elementID} realElementId = {realElementId} showBronzeGold = {isBronzeGold}/>
             </>
           }
         </div>
