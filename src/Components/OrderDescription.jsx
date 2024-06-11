@@ -447,10 +447,16 @@ export const OrderDescription = (
             <Descriptions.Item className='labelBG' label={`${language.price} (${language.hinges})`} labelStyle={{fontWeight: '600', color:'#000'}}>
               {/* {convertedHingePrice ? `${convertedHingePrice} ${currency}` : `${hingeData.price} ${orderData?.currency}`} / {language.amount}: {hingeData?.amount} */}
               {
+                // convertedHingePrice !== null
+                //   ? `${convertedHingePrice} ${currency}` 
+                //   : (hingeData.price?.price)
+                //     ? `${hingeData.price?.price} ${orderData?.currency} ${language.amount}: ${hingeData?.amount}`
+                //     : '-'
+                
                 convertedHingePrice !== null
                   ? `${convertedHingePrice} ${currency}` 
-                  : (hingeData.price?.price)
-                    ? `${hingeData.price?.price} ${orderData?.currency} ${language.amount}: ${hingeData?.amount}`
+                  : (hingeData.price)
+                    ? `${hingeData.price} ${orderData?.currency} ${language.amount}: ${hingeData?.amount}`
                     : '-'
                 }
             </Descriptions.Item>
