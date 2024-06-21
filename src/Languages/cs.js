@@ -61,6 +61,7 @@ const cs = {
   inside: 'Vnitřní',
   outside: 'Venkovní',
   universal: 'Univerzální',
+  sliding: 'Posuvné dveře',
   undone: 'Tuto akci nelze vrátit zpět',
   loginFailed: 'Přihlášení se nezdařilo',
   invalid: 'Neplatný e-mail nebo heslo. Zkuste to prosím znovu',
@@ -223,6 +224,9 @@ const cs = {
   preview: 'Náhled',
   dbColor: 'Databáze barev',
 
+  description: 'Popis',
+  articul: 'Kód dodavatele',
+
 // Decor Types
   painted_veneer: 'Natřená dýha',
   painted_glass: 'Natřené sklo',
@@ -243,6 +247,10 @@ const cs = {
   'hidden_universal Loft' : 'Skrytý univerzální Loft',
   'hidden_universal Neo Classic' : 'Skrytý univerzální Neo Classic',
   'hidden_standard Neo Classic ' : 'Skrytý standard Neo Classic',
+
+  'sliding loft': 'posuvné dveře Loft',
+  'sliding Art Decore': 'posuvné dveře Art Decore',
+  'sliding Neo Classic': 'posuvné dveře Neo Classic',
 
 // Products Elements
   'aluminium cover': 'Hliníkový kryt',

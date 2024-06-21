@@ -61,6 +61,7 @@ const pl = {
   inside: 'Wewnętrzne',
   outside: 'Zewnętrzne',
   universal: 'Uniwersalny',
+  sliding: 'Drzwi przesuwne',
   undone: 'Nie można usunąć działania',
   loginFailed: ' Błąd logowania',
   invalid: 'Błędny adres e-mail lub hasło. Spróbuj ponownie',
@@ -223,6 +224,9 @@ const pl = {
   preview: 'Podgląd',
   dbColor: 'Baza danych kolorów',
 
+  description: 'Opis',
+  articul: 'Kod dostawcy',
+
 // Decor Types
   painted_veneer: 'Pomalowany fornir',
   painted_glass: 'Pomalowane szkło',
@@ -243,6 +247,10 @@ const pl = {
   'hidden_universal Loft' : 'Ukryte uniwersalne Loft',
   'hidden_universal Neo Classic' : 'Ukryte uniwersalne Neo Classic',
   'hidden_standard Neo Classic ' : 'Ukryty standard Neo Classic',
+
+  'sliding loft': 'drzwi przesuwne loft',
+  'sliding Art Decore': 'drzwi przesuwne Art Decore',
+  'sliding Neo Classic': 'drzwi przesuwne Neo Classic',
 
 // Products Elements
   'aluminium cover': 'Aluminiowa ramka',

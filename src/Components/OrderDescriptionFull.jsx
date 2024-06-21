@@ -7,7 +7,7 @@ import {imageLink} from '../api/variables'
 
 
 export const OrderDescriptionFull = ({
-  orderData, orderId, frameData, doorData, elementData, lockData, hingeData, knobeData, optionsData, isCreatingPdf, orderName, currancyValue
+  orderData, orderId, frameData, doorData, elementData, lockData, hingeData, knobeData, optionsData, isCreatingPdf, orderName, currancyValue, slidingData
 }) => {
   const { selectedLanguage } = useLanguage();
   const language = languageMap[selectedLanguage];
@@ -322,7 +322,7 @@ export const OrderDescriptionFull = ({
       {/* FRAME AND FITTING DETAILS */}
       <div style={{padding: '5px', backgroundColor: '#FFF', borderRadius: '15px'}}>
         <p style={{fontWeight: '500', padding: '10px', backgroundColor: '#f06d20', color: '#FFF'}}> 
-          {language.frame} & {language.fitting} 
+          {language.frame} / {language.sliding} & {language.fitting}
         </p>
 
         <Descriptions
@@ -332,7 +332,7 @@ export const OrderDescriptionFull = ({
           // size='default'
           size={isCreatingPdf ? 'small' : 'default'}
           >
-          {frameData && lockData && hingeData && (
+          {frameData && frameData.frame?.data?.attributes?.title && (
           <>
             <Descriptions.Item className='labelBG' span={2} label={`${language.frame} ${language.type}`} labelStyle={{fontWeight: '600', color:'#000'}}>
               {languageMap[selectedLanguage][frameData.frame?.data?.attributes?.title]}
@@ -341,7 +341,43 @@ export const OrderDescriptionFull = ({
             <Descriptions.Item className='labelBG' label={`${language.frame} ${language.price}`} labelStyle={{fontWeight: '600', color:'#000'}}>
               {convertedFramePrice ? `${convertedFramePrice} ${currency}` : `${frameData.price} ${orderData?.currency}`}
             </Descriptions.Item>
+            </>
+          )}
 
+          {slidingData && (
+            <>
+              <Descriptions.Item span={2} className='labelBG' label={`${language.sliding}`} labelStyle={{fontWeight: '600', color:'#000'}}>
+                {/* {languageMap[selectedLanguage][frameData.frame?.data?.attributes?.title]} */}
+                <div style={{display: 'flex', justifyContent: 'center'}}>
+                    <img 
+                    src={`${imageLink}${slidingData.image?.data?.attributes?.url}`}
+                    alt="Lock"
+                    // height={150}
+                    width={150}
+                    />
+                    <div style={{margin: '15px'}}> <a href={`${imageLink}${slidingData.image?.data?.attributes?.url}`} rel="noreferrer" target="_blank"> <ZoomInOutlined style={{fontSize: '25px'}}/> </a> </div>
+                  </div> 
+              </Descriptions.Item>
+
+              <Descriptions.Item className='labelBG' label={`${language.sliding} ${language.price}`} labelStyle={{fontWeight: '600', color:'#000'}}>
+                {/* {convertedFramePrice ? `${convertedFramePrice} ${currency}` : `${frameData.price} ${orderData?.currency}`} */}
+                <p>fdhdh</p>
+                <p>fdhdh</p>
+              </Descriptions.Item>
+
+              <Descriptions.Item span={3} className='labelBG' label={`${language.sliding} ${language.description}`} labelStyle={{fontWeight: '600', color:'#000'}}>
+                {/* {languageMap[selectedLanguage][frameData.frame?.data?.attributes?.title]} */}
+                <div style={{textAlign: 'left'}}>
+                <span style={{fontWeight: 600}}>{language.title}</span> : {slidingData?.title} <br/>
+                <span style={{fontWeight: 600}}>{language.description}</span>: {slidingData?.description[0]?.children[0]?.text} <br/>
+                <span style={{fontWeight: 600}}>{language.articul}</span> : {slidingData?.fittingsArticle} <br/>
+                </div>
+              </Descriptions.Item>
+            </>
+          )}
+
+          {lockData && hingeData && knobeData && (
+            <>
             <Descriptions.Item className='labelBG' label={language.lock} labelStyle={{fontWeight: '600', color:'#000'}}>
               {language.title} : {lockData?.lock?.data?.attributes?.title ? lockData?.lock?.data?.attributes?.title : '-' }
               <br/>
@@ -359,7 +395,9 @@ export const OrderDescriptionFull = ({
                     <div style={{margin: '15px'}}> <a href={`${imageLink}${lockData?.lock?.data?.attributes?.image?.data?.attributes?.url}`} rel="noreferrer" target="_blank"> <ZoomInOutlined style={{fontSize: '25px'}}/> </a> </div>
                   </div> 
                 : '-'
+                
               }
+
             </Descriptions.Item>
 
             <Descriptions.Item className='labelBG' label={language.hinges} labelStyle={{fontWeight: '600', color:'#000'}}>
@@ -370,15 +408,15 @@ export const OrderDescriptionFull = ({
               {
                 hingeData?.hinge?.data?.attributes?.image?.data?.attributes?.url
                 ? 
-                <div style={{display: 'flex', justifyContent: 'center'}}>
-                  <img
-                    src={`${imageLink}${hingeData?.hinge?.data?.attributes?.image?.data?.attributes?.url}`}
-                    alt="hinge"
-                    height={150}
-                    style={{ display: 'block', margin: '0 auto' }}
-                  />
-                  <div style={{margin: '15px'}}> <a href={`${imageLink}${hingeData?.hinge?.data?.attributes?.image?.data?.attributes?.url}`} rel="noreferrer" target="_blank"> <ZoomInOutlined style={{fontSize: '25px'}}/> </a> </div>
-                </div>
+                  <div style={{display: 'flex', justifyContent: 'center'}}>
+                    <img
+                      src={`${imageLink}${hingeData?.hinge?.data?.attributes?.image?.data?.attributes?.url}`}
+                      alt="hinge"
+                      height={150}
+                      style={{ display: 'block', margin: '0 auto' }}
+                    />
+                    <div style={{margin: '15px'}}> <a href={`${imageLink}${hingeData?.hinge?.data?.attributes?.image?.data?.attributes?.url}`} rel="noreferrer" target="_blank"> <ZoomInOutlined style={{fontSize: '25px'}}/> </a> </div>
+                  </div>
                 : '-'
               }
 
@@ -409,12 +447,11 @@ export const OrderDescriptionFull = ({
                         />
                         <div style={{margin: '15px'}}> <a href={`${imageLink}${knobeData?.knobe?.data?.attributes?.image?.data?.attributes?.url}`} rel="noreferrer" target="_blank"> <ZoomInOutlined style={{fontSize: '25px'}}/> </a> </div>
                       </div>
-                    :  '-'
+                    : '-'
                   }
             </Descriptions.Item>
 
             <Descriptions.Item className='labelBG' label={`${language.price} (${language.lock})`} labelStyle={{fontWeight: '600', color:'#000'}}>
-              {/* {convertedLockPrice ? `${convertedLockPrice} ${currency}` : `${lockData.price} ${orderData?.currency}`}  */}
               {
                 convertedLockPrice !== null
                   ? `${convertedLockPrice} ${currency}` 
@@ -425,19 +462,12 @@ export const OrderDescriptionFull = ({
             </Descriptions.Item>
 
             <Descriptions.Item className='labelBG' label={`${language.price} (${language.hinges})`} labelStyle={{fontWeight: '600', color:'#000'}}>
-              {/* {convertedHingePrice ? `${convertedHingePrice} ${currency}` : `${hingeData.price} ${orderData?.currency}`} / {language.amount}: {hingeData?.amount} */}
               {
-                // convertedHingePrice !== null
-                //   ? `${convertedHingePrice} ${currency}` 
-                //   : (hingeData.price?.price)
-                //     ? `${hingeData.price?.price} ${orderData?.currency} ${language.amount}: ${hingeData?.amount}`
-                //     : '-'
-
                 convertedHingePrice !== null
-                ? `${convertedHingePrice} ${currency}` 
-                : (hingeData.price)
-                  ? `${hingeData.price} ${orderData?.currency} ${language.amount}: ${hingeData?.amount}`
-                  : '-'
+                  ? `${convertedHingePrice} ${currency}` 
+                  : (hingeData.price)
+                    ? `${hingeData.price} ${orderData?.currency} ${language.amount}: ${hingeData?.amount}`
+                    : '-'
                 }
             </Descriptions.Item>
 
@@ -450,7 +480,9 @@ export const OrderDescriptionFull = ({
                     : '-'
                 }
             </Descriptions.Item>
-
+            </>
+          )}
+          
             <Descriptions.Item span={3} className='labelBG' label={`${language.insertSeal}`} labelStyle={{fontWeight: '600', color:'#000'}}>
               <Descriptions
                 column={2}
@@ -479,8 +511,6 @@ export const OrderDescriptionFull = ({
 
               </Descriptions>
             </Descriptions.Item>
-          </>
-          )}
           </Descriptions>
       </div>
 

@@ -3,6 +3,7 @@ import {Descriptions} from 'antd';
 import { useLanguage } from '../Context/LanguageContext';
 import languageMap from '../Languages/language';
 import {imageLink} from '../api/variables'
+import { ZoomInOutlined } from '@ant-design/icons';
 
 
 export const OrderDescriptionShort = ({
@@ -68,7 +69,7 @@ export const OrderDescriptionShort = ({
   return (
     <div style={{maxWidth: isCreatingPdf ? 'auto' : '900px', margin: '0 auto'}}>
       <div style={{padding: '5px'}}>
-        {imageIndex === 0 && (
+        {/* {imageIndex === 0 && (
           <Descriptions
             column={4}
             layout="vertical"
@@ -95,10 +96,10 @@ export const OrderDescriptionShort = ({
           </>
           )}
       </Descriptions>
-        )}
+        )} */}
 
         <Descriptions
-          column={4}
+          column={5}
           layout="vertical"
           bordered
           size={isCreatingPdf ? 'small' : 'default'}
@@ -113,6 +114,17 @@ export const OrderDescriptionShort = ({
             <Descriptions.Item label={language.subOrder} labelStyle={{fontWeight: '600', color:'#000'}}>
               <h4> {language.subOrder} # {orderName} </h4>
             </Descriptions.Item>
+
+            <Descriptions.Item label={`${language.door}`} labelStyle={{fontWeight: '600', color:'#000'}}>
+                <div style={{display: 'flex', justifyContent: 'center'}}>
+                    <img 
+                    src={`${imageLink}${doorData.door?.data?.attributes?.product_properties?.image?.data?.attributes?.url}`}
+                    alt="door"
+                    height={100}
+                    />
+                    <div style={{margin: '15px'}}> <a href={`${imageLink}${doorData.door?.data?.attributes?.product_properties?.image?.data?.attributes?.url}`} rel="noreferrer" target="_blank"> <ZoomInOutlined style={{fontSize: '25px'}}/> </a> </div>
+                  </div> 
+              </Descriptions.Item>
 
             <Descriptions.Item label={`${language.product} ${language.title}`} labelStyle={{fontWeight: '600', color:'#000'}}>
               {doorData.door?.data?.attributes?.product_properties?.title}

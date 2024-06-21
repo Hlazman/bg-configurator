@@ -78,6 +78,7 @@ const en = {
   inside: 'Inside',
   outside: 'Outside',
   universal: 'Universal',
+  sliding: 'Sliding doors',
   loginFailed: 'Login Failed',
   invalid: 'Invalid email or password. Please try again',
   inputEmail: 'Please input your email!',
@@ -222,7 +223,10 @@ const en = {
   side2: 'Side 2',
   additionally: 'additionally',
   preview: 'Preview',
-  dbColor: 'Colors Database',  
+  dbColor: 'Colors Database',
+
+  description: 'Description',
+  articul: 'Vendor code',
 
 // Decor Types
 painted_veneer : 'Painted veneer',
@@ -281,6 +285,16 @@ ceramogranite : 'Ceramogranite',
   'hidden_universal Art Decor' : 'Hidden universal Art Decor',
   'hidden_universal Loft' : 'Hidden universal Loft',
   'hidden_universal Neo Classic' : 'Hidden universal Neo Classic',
+
+  'sliding loft' : 'sliding doors Loft',
+  'sliding Art Decore' : 'sliding doors Art Decore',
+  'sliding Neo Classic' : 'sliding doors Neo Classic',
+
+  hidden_outside_40 : 'hidden_outside_40',
+  hidden_outside_43 : 'hidden_outside_43',
+  hidden_universal_45 : 'hidden_universal_45',
+  hidden_universal_51 : 'hidden_universal_51',
+  hidden_universal_55 : 'hidden_universal_55',
 
 // Products Elements
   'aluminium cover': 'Aluminium cover',

@@ -61,6 +61,7 @@ const de = {
   inside: 'Innen',
   outside: 'Außen',
   universal: 'Universal',
+  sliding: 'Schiebetüren',
   undone: 'Diese Aktion kann nicht rückgängig gemacht werden',
   loginFailed: 'Anmeldung fehlgeschlagen',
   invalid: 'Ungültige E-Mail oder Passwort. Bitte versuchen Sie es erneut',
@@ -223,6 +224,9 @@ const de = {
   preview: 'Vorschau',
   dbColor: 'Farbdatenbank',
 
+  description: 'Beschreibung',
+  articul: 'Lieferantenkode',
+
 // Decor Types
   painted_veneer: 'Lackiertes Furnier',
   painted_glass: 'Lackiertes Glas',
@@ -243,6 +247,10 @@ const de = {
   'hidden_universal Loft' : 'Versteckter Universal Loft',
   'hidden_universal Neo Classic' : 'Versteckter Universal Neo Classic',
   'hidden_standard Neo Classic ' : 'Versteckter Standard Neo Classic',
+
+  'sliding loft': 'Schiebetüren Loft',
+  'sliding Art Decore': 'Schiebetüren Art Decore',
+  'sliding Neo Classic': 'Schiebetüren Neo Classic',
 
 // Products Elements
   'aluminium cover': 'Aluminiumabdeckung',

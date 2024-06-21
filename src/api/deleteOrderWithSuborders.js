@@ -5,6 +5,7 @@ export const deleteOrderWithSuborders = async (orderId, jwtToken) => {
   
   let doorSuborder = {};
   let frameSuborder  = {};
+  let slidingSuborder  = {};
   let elementsSuborder = [];
   let fittingSuborders = [];
   let optionSuborders = [];
@@ -38,6 +39,11 @@ export const deleteOrderWithSuborders = async (orderId, jwtToken) => {
                       id
                     }
                   }
+                  sliding_suborder {
+                    data {
+                      id
+                    }
+                  }
                   option_suborders {
                     data {
                       id
@@ -66,6 +72,7 @@ export const deleteOrderWithSuborders = async (orderId, jwtToken) => {
       
       doorSuborder = orderData?.door_suborder?.data?.id;
       frameSuborder = orderData?.frame_suborder.data?.id;
+      slidingSuborder = orderData?.sliding_suborder.data?.id;
       elementsSuborder = [...orderData?.element_suborders.data];
       fittingSuborders = [...orderData?.fitting_suborders.data];
       optionSuborders = [...orderData?.option_suborders.data];
@@ -158,6 +165,35 @@ export const deleteOrderWithSuborders = async (orderId, jwtToken) => {
       console.error('Error delete Frame Suborder', error)
   };
 
+  // DELETE SLIDING SUBORDERS +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+  try {
+    const response = await axios.post(
+      queryLink,
+      {
+        query: `
+          mutation Mutation($deleteSlidingSuborderId: ID!) {
+            deleteSlidingSuborder(id: $deleteSlidingSuborderId) {
+              data {
+                id
+              }
+            }
+          }
+        `,
+        variables: {
+          deleteSlidingSuborderId: slidingSuborder,
+        },
+      },
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${jwtToken}`,
+        },
+      }
+    );
+  } catch (error) {
+      console.error('Error delete Frame Suborder', error)
+  };
+
   // DELETE FITTINGS SUBORDERS +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
   for (let i = 0; i< fittingSuborders.length; i++) {
     try {
@@ -219,7 +255,6 @@ export const deleteOrderWithSuborders = async (orderId, jwtToken) => {
         console.error('Error delete Option Suborder', error)
     };
   }
-
 
     // DELETE OPTIONS SUBORDERS +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     for (let i = 0; i< optionSuborders.length; i++) {

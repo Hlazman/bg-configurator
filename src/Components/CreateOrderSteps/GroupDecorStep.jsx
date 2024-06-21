@@ -12,7 +12,7 @@ import languageMap from '../../Languages/language';
 import {queryLink} from '../../api/variables';
 import {validateDecor} from '../../api/validationOrder';
 import { useOrder } from '../../Context/OrderContext';
-import {updateFrame} from '../../api/frame'
+import {updateFrame, getFrameData, updateDecorFrameSuborder} from '../../api/frame'
 
 const GroupDecorStep = ({ setCurrentStepSend, currentStepSend }) => {
   // const { orderId } = useOrder();
@@ -276,7 +276,8 @@ const GroupDecorStep = ({ setCurrentStepSend, currentStepSend }) => {
         });
       }
 
-      await updateFrame(orderIdToUse, jwtToken, frameSuborderId, selectedDecorId);
+      // await updateFrame(orderIdToUse, jwtToken, frameSuborderId, selectedDecorId);
+      await updateDecorFrameSuborder(jwtToken, frameSuborderId, selectedDecorId);
       await getHasDecors();
 
     } catch (error) {

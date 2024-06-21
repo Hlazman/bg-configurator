@@ -9,11 +9,15 @@ const [frameSuborderId, setFrameSuborderId] = useState('');
 const [hingeSuborderId, sethiHgeSuborderId] = useState('');
 const [knobeSuborderId, setKnobeSuborderId] = useState('');
 const [lockSuborderId, setLockSuborderId] = useState('');
+const [slidingSuborderId, setSlidingSuborderId] = useState('');
 
 // Options
 const [optionsData, setOptionsData] = useState([]);
 const [optionsSuborderData, setOptionsSuborderData] = useState([]);
 const [notValidOptions, setNotValidOptions] = useState([]);
+
+// Sliding disabled
+const [isSliding, setIsSliding] = useState(true);
 
   return (
     <OrderContext.Provider value={
@@ -27,6 +31,9 @@ const [notValidOptions, setNotValidOptions] = useState([]);
         optionsData, setOptionsData,
         optionsSuborderData, setOptionsSuborderData,
         notValidOptions, setNotValidOptions,
+
+        isSliding, setIsSliding,
+        slidingSuborderId, setSlidingSuborderId,
       }
       }>
       {children}

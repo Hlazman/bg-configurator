@@ -7,7 +7,7 @@ import languageMap from '../Languages/language';
 import {imageLink} from '../api/variables'
 
 export const OrderDescription = (
-  {orderData, orderId, frameData, doorData, elementData, lockData, hingeData, knobeData, optionsData, companyData}
+  {orderData, orderId, frameData, doorData, elementData, lockData, hingeData, knobeData, optionsData, companyData, slidingData}
   ) => {
   const { user } = useContext(AuthContext);
   const { selectedLanguage } = useLanguage();
@@ -341,7 +341,7 @@ export const OrderDescription = (
       {/* FRAME AND FITTING DETAILS */}
       <div style={{padding: '15px', backgroundColor: '#FFF', borderRadius: '15px'}}>
         <p style={{fontWeight: '500', padding: '10px', backgroundColor: '#f06d20', color: '#FFF'}}> 
-          {language.frame} & {language.fitting} 
+          {language.frame} / {language.sliding} & {language.fitting}
         </p>
 
         <Descriptions
@@ -350,7 +350,9 @@ export const OrderDescription = (
           bordered
           size='default'
           >
-          {frameData && lockData && hingeData && (
+
+          {/* {frameData && !frameData.frame?.data?.attributes?.title?.includes('sliding') && ( */}
+          {frameData && frameData.frame?.data?.attributes?.title && (
           <>
             <Descriptions.Item className='labelBG' span={2} label={`${language.frame} ${language.type}`} labelStyle={{fontWeight: '600', color:'#000'}}>
               {languageMap[selectedLanguage][frameData.frame?.data?.attributes?.title]}
@@ -359,7 +361,43 @@ export const OrderDescription = (
             <Descriptions.Item className='labelBG' label={`${language.frame} ${language.price}`} labelStyle={{fontWeight: '600', color:'#000'}}>
               {convertedFramePrice ? `${convertedFramePrice} ${currency}` : `${frameData.price} ${orderData?.currency}`}
             </Descriptions.Item>
+            </>
+          )}
 
+          {slidingData && (
+            <>
+              <Descriptions.Item span={2} className='labelBG' label={`${language.sliding}`} labelStyle={{fontWeight: '600', color:'#000'}}>
+                {/* {languageMap[selectedLanguage][frameData.frame?.data?.attributes?.title]} */}
+                <div style={{display: 'flex', justifyContent: 'center'}}>
+                    <img 
+                    src={`${imageLink}${slidingData.image?.data?.attributes?.url}`}
+                    alt="Lock"
+                    // height={150}
+                    width={150}
+                    />
+                    <div style={{margin: '15px'}}> <a href={`${imageLink}${slidingData.image?.data?.attributes?.url}`} rel="noreferrer" target="_blank"> <ZoomInOutlined style={{fontSize: '25px'}}/> </a> </div>
+                  </div> 
+              </Descriptions.Item>
+
+              <Descriptions.Item className='labelBG' label={`${language.sliding} ${language.price}`} labelStyle={{fontWeight: '600', color:'#000'}}>
+                {/* {convertedFramePrice ? `${convertedFramePrice} ${currency}` : `${frameData.price} ${orderData?.currency}`} */}
+                <p>fdhdh</p>
+                <p>fdhdh</p>
+              </Descriptions.Item>
+
+              <Descriptions.Item span={3} className='labelBG' label={`${language.sliding} ${language.description}`} labelStyle={{fontWeight: '600', color:'#000'}}>
+                {/* {languageMap[selectedLanguage][frameData.frame?.data?.attributes?.title]} */}
+                <div style={{textAlign: 'left'}}>
+                <span style={{fontWeight: 600}}>{language.title}</span> : {slidingData?.title} <br/>
+                <span style={{fontWeight: 600}}>{language.description}</span>: {slidingData?.description[0]?.children[0]?.text} <br/>
+                <span style={{fontWeight: 600}}>{language.articul}</span> : {slidingData?.fittingsArticle} <br/>
+                </div>
+              </Descriptions.Item>
+            </>
+          )}
+
+          {lockData && hingeData && knobeData && (
+            <>
             <Descriptions.Item className='labelBG' label={language.lock} labelStyle={{fontWeight: '600', color:'#000'}}>
               {language.title} : {lockData?.lock?.data?.attributes?.title ? lockData?.lock?.data?.attributes?.title : '-' }
               <br/>
@@ -434,7 +472,6 @@ export const OrderDescription = (
             </Descriptions.Item>
 
             <Descriptions.Item className='labelBG' label={`${language.price} (${language.lock})`} labelStyle={{fontWeight: '600', color:'#000'}}>
-              {/* {convertedLockPrice ? `${convertedLockPrice} ${currency}` : `${lockData.price} ${orderData?.currency}`}  */}
               {
                 convertedLockPrice !== null
                   ? `${convertedLockPrice} ${currency}` 
@@ -445,14 +482,7 @@ export const OrderDescription = (
             </Descriptions.Item>
 
             <Descriptions.Item className='labelBG' label={`${language.price} (${language.hinges})`} labelStyle={{fontWeight: '600', color:'#000'}}>
-              {/* {convertedHingePrice ? `${convertedHingePrice} ${currency}` : `${hingeData.price} ${orderData?.currency}`} / {language.amount}: {hingeData?.amount} */}
               {
-                // convertedHingePrice !== null
-                //   ? `${convertedHingePrice} ${currency}` 
-                //   : (hingeData.price?.price)
-                //     ? `${hingeData.price?.price} ${orderData?.currency} ${language.amount}: ${hingeData?.amount}`
-                //     : '-'
-                
                 convertedHingePrice !== null
                   ? `${convertedHingePrice} ${currency}` 
                   : (hingeData.price)
@@ -470,6 +500,8 @@ export const OrderDescription = (
                     : '-'
                 }
             </Descriptions.Item>
+            </>
+          )}
 
             <Descriptions.Item span={3} className='labelBG' label={`${language.insertSeal}`} labelStyle={{fontWeight: '600', color:'#000'}}>
               <Descriptions
@@ -499,8 +531,6 @@ export const OrderDescription = (
 
               </Descriptions>
             </Descriptions.Item>
-          </>
-          )}
           </Descriptions>
       </div>
 

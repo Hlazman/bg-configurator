@@ -16,6 +16,7 @@ import { OrderDescriptionShort } from '../Components/OrderDescriptionShort';
 import { OrderDescriptionFull } from '../Components/OrderDescriptionFull';
 import {queryLink} from '../api/variables'
 import {getCompanyData} from '../api/getCompanyData'
+import {getSlidingData} from '../api/sliding'
 import { useSelectedCompany } from '../Context/CompanyContext';
 
 
@@ -39,6 +40,7 @@ export const OrderDetailsPage = ({fromTotalOrder, isCreatingTotalPdf, orderName,
   const [hingeData, setHingeData] = useState(null);
   const [knobeData, setKnobeData] = useState(null);
   const [optionsData, setOptionsData] = useState(null);
+  const [slidingData, setSlidingData] = useState(null);
   const presentation = localStorage.getItem('presentation');
 
   const [companyData, setCompanyData] = useState(null);
@@ -856,9 +858,13 @@ useEffect(() => {
     setOrderId(urlOrderId);
     fetchData();
     getCompanyData(jwtToken, selectedCompany, setCompanyData);
+    getSlidingData(fromTotalOrder ? fromTotalOrder : orderId, jwtToken, null, setSlidingData);
+    // getSlidingData(orderId, jwtToken, null, setSlidingData);
   } else {
     fetchData();
     getCompanyData(jwtToken, selectedCompany, setCompanyData);
+    getSlidingData(fromTotalOrder ? fromTotalOrder : orderId, jwtToken, null, setSlidingData);
+    // getSlidingData(orderId, jwtToken, null, setSlidingData);
   }
 }, [jwtToken, orderId, urlOrderId, selectedCompany]);
 
@@ -931,6 +937,7 @@ const fetchOptionsData = async (optionIds) => {
               optionsData={optionsData}
               // isCreatingPdf={isCreatingPdf}
               companyData={companyData}
+              slidingData={slidingData}
             />
           </div>
         </div>
@@ -951,6 +958,7 @@ const fetchOptionsData = async (optionIds) => {
               isCreatingPdf={isCreatingTotalPdf}
               orderName={orderName}
               currancyValue={currancyValue}
+              slidingData={slidingData}
             />
       )}
 
@@ -969,6 +977,7 @@ const fetchOptionsData = async (optionIds) => {
               isCreatingPdf={isCreatingTotalPdf}
               orderName={orderName}
               currancyValue={currancyValue}
+              slidingData={slidingData}
             />
         )}
 

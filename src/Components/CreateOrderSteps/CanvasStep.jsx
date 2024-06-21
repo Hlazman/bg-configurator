@@ -10,7 +10,7 @@ import {validateHinges, validateOptions, validateDecor, validateElements} from '
 // import {validateHinges, validateOptions, validateDecor, validateElements, getOrderErrors} from '../../api/validationOrder';
 import {getOptions, getOptionsDataOrder} from '../../api/options';
 import {updateCanvas} from '../../api/canvas';
-import {updateFrame} from '../../api/frame'
+import {updateFrame, updateCanvasDataFrameSuborder} from '../../api/frame'
 import ImagesDoorForm from '../Forms/ImagesDoorForm';
 
 // import { useErrors } from '../../Context/ErrorsOrderContext';
@@ -194,7 +194,8 @@ const CanvasStep = ({ setCurrentStepSend, currentStepSend, setIsDisabledOtherSte
     // }
 
     await updateCanvas(jwtToken, updateDoorSuborderId, data, messageApi, language, setCurrentStepSend, setBtnColor, getValid);
-    await updateFrame(orderIdToUse, jwtToken, frameSuborderId);
+    // await updateFrame(orderIdToUse, jwtToken, frameSuborderId);
+    await updateCanvasDataFrameSuborder(orderIdToUse, jwtToken);
 
     if (setIsDisabledOtherSteps) {
       setIsDisabledOtherSteps(false);

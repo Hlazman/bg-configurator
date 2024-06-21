@@ -5,7 +5,7 @@ import languageMap from '../Languages/language';
 
 
 export const OrderDescriptionFactory = ({
-  orderData, orderId, frameData, doorData, elementData, lockData, hingeData, knobeData, optionsData, isCreatingPdf, orderName, currancyValue
+  orderData, orderId, frameData, doorData, elementData, lockData, hingeData, knobeData, optionsData, isCreatingPdf, orderName, currancyValue, slidingData
 }) => {
   const { selectedLanguage } = useLanguage();
   const language = languageMap[selectedLanguage];  
@@ -169,7 +169,7 @@ export const OrderDescriptionFactory = ({
       <div style={{padding: '15px', backgroundColor: '#FFF', borderRadius: '15px'}}>
         
         <p style={{fontWeight: '500', padding: '10px', backgroundColor: '#f06d20', color: '#FFF'}}> 
-          {language.frame} & {language.fitting} 
+          {language.frame} / {language.sliding} & {language.fitting} 
         </p>
 
         <Descriptions
@@ -178,8 +178,10 @@ export const OrderDescriptionFactory = ({
           bordered
           size={isCreatingPdf ? 'small' : 'default'}
           >
-          {/* {frameData && lockData && hingeData && knobeData && ( */}
-          {frameData && lockData && hingeData && (
+  
+          {/* {frameData && lockData && hingeData && ( */}
+          {/* {frameData && !frameData.frame?.data?.attributes?.title?.includes('sliding') && ( */}
+          {frameData && frameData.frame?.data?.attributes?.title && (
           <>
             <Descriptions.Item className='labelBG' span={2} label={`${language.frame} ${language.type}`} labelStyle={{fontWeight: '600', color:'#000'}}>
               {languageMap[selectedLanguage][frameData.frame?.data?.attributes?.title]}
@@ -188,7 +190,30 @@ export const OrderDescriptionFactory = ({
             <Descriptions.Item className='labelBG' label={`${language.frame} ${language.price}`} labelStyle={{fontWeight: '600', color:'#000'}}>
               {convertedFramePrice ? `${convertedFramePrice} ${currency}` : `${frameData.basicPrice} ${orderData?.currency}`}
             </Descriptions.Item>
+            </>
+          )}
 
+          {slidingData && (
+            <>
+              <Descriptions.Item span={2} className='labelBG' label={`${language.sliding} ${language.description}`} labelStyle={{fontWeight: '600', color:'#000'}}>
+                {/* {languageMap[selectedLanguage][frameData.frame?.data?.attributes?.title]} */}
+                <div style={{textAlign: 'left'}}>
+                <span style={{fontWeight: 600}}>{language.title}</span> : {slidingData?.title} <br/>
+                <span style={{fontWeight: 600}}>{language.description}</span>: {slidingData?.description[0]?.children[0]?.text} <br/>
+                <span style={{fontWeight: 600}}>{language.articul}</span> : {slidingData?.fittingsArticle} <br/>
+                </div>
+              </Descriptions.Item>
+
+              <Descriptions.Item className='labelBG' label={`${language.sliding} ${language.price}`} labelStyle={{fontWeight: '600', color:'#000'}}>
+                {/* {convertedFramePrice ? `${convertedFramePrice} ${currency}` : `${frameData.price} ${orderData?.currency}`} */}
+                <p>fdhdh</p>
+                <p>fdhdh</p>
+              </Descriptions.Item>
+            </>
+          )}
+
+          {lockData && lockData?.lock?.data?.attributes?.title && (
+            <>
             <Descriptions.Item className='labelBG' span={2} label={language.lock} labelStyle={{fontWeight: '600', color:'#000'}}>
               {lockData?.lock?.data?.attributes?.title} ({lockData?.lock?.data?.attributes?.brand})
             </Descriptions.Item>
@@ -196,7 +221,11 @@ export const OrderDescriptionFactory = ({
             <Descriptions.Item className='labelBG' label={`${language.price}`} labelStyle={{fontWeight: '600', color:'#000'}}>
               {convertedLockPrice ? `${convertedLockPrice} ${currency}` : `${lockData.basicPrice} ${orderData?.currency}`} 
             </Descriptions.Item>
+            </>
+          )}
 
+          {hingeData && hingeData?.hinge?.data?.attributes?.title && (
+            <>
             <Descriptions.Item className='labelBG' span={2} label={language.hinges} labelStyle={{fontWeight: '600', color:'#000'}}>
               {hingeData?.hinge?.data?.attributes?.title} ({hingeData?.hinge?.data?.attributes?.brand})
             </Descriptions.Item>
@@ -204,30 +233,6 @@ export const OrderDescriptionFactory = ({
             <Descriptions.Item className='labelBG' label={`${language.price}`} labelStyle={{fontWeight: '600', color:'#000'}}>
               {convertedHingePrice ? `${convertedHingePrice} ${currency}` : `${hingeData.basicPrice} ${orderData?.currency}`} / {language.amount}: {hingeData?.amount}
             </Descriptions.Item>
-
-            {/* <Descriptions.Item className='labelBG' span={2} label={language.knobe} labelStyle={{fontWeight: '600', color:'#000'}}>
-              {
-                knobeData?.knobe?.data?.attributes?.title
-                ? `${knobeData?.knobe?.data?.attributes?.title} / ${languageMap[selectedLanguage][knobeData.knobe_variant]}`
-                : '-'
-                }
-                &nbsp; /
-                ({
-                knobeData?.knobe?.data?.attributes?.brand
-                ? knobeData?.knobe?.data?.attributes?.brand
-                : '-'
-              })
-            </Descriptions.Item>
-            
-            <Descriptions.Item className='labelBG' label={`${language.price}`} labelStyle={{fontWeight: '600', color:'#000'}}>
-              {
-                convertedKnobePrice !== null
-                  ? `${convertedKnobePrice} ${currency}` 
-                  : knobeData?.price !== null && knobeData?.price !== 0
-                    ? `${knobeData?.price} ${orderData?.currency}`
-                    : '-'
-                }
-            </Descriptions.Item> */}
           </>
           )}
           </Descriptions>

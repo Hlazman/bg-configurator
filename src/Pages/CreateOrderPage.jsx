@@ -8,6 +8,7 @@ import GroupAccessoriesStep from '../Components/CreateOrderSteps/GroupAccessorie
 import ElementsStep from '../Components/CreateOrderSteps/ElementsStep';
 import InformationStep from '../Components/CreateOrderSteps/InformationStep';
 import FrameStep from '../Components/CreateOrderSteps/FrameStep';
+import GroupFrameStep from '../Components/CreateOrderSteps/GroupFrameStep';
 import axios from 'axios';
 import { useOrder } from '../Context/OrderContext';
 import { useSelectedCompany } from '../Context/CompanyContext';
@@ -34,6 +35,7 @@ export const CreateOrderPage = () => {
     sethiHgeSuborderId,
     setKnobeSuborderId,
     setLockSuborderId,
+    setSlidingSuborderId,
    } = useOrder();
   
   const navigate = useNavigate();
@@ -43,7 +45,7 @@ export const CreateOrderPage = () => {
   
   const [currentStepSend, setCurrentStepSend] = useState({
     startDataSend: false,
-    canvasSend: false,
+    slidingSend: false,
     decorSend: false,
     frameSend: false,
     elementSend: false,
@@ -167,6 +169,40 @@ export const CreateOrderPage = () => {
       const newFrameSuborderId = frameSuborderResponse.data.data.createFrameSuborder.data.id;
       setFrameSuborderId(newFrameSuborderId);
 
+      //+++++++++++++++++++++++ slidingsuboreder start
+      const SlidingSuborderData = {
+        data: {
+          order: createdOrderId
+        }
+      };
+
+      const slidingSuborderResponse = await axios.post(
+        queryLink,
+        {
+          query: `
+            mutation Mutation($data: SlidingSuborderInput!) {
+              createSlidingSuborder(data: $data) {
+                data {
+                  id
+                }
+              }
+            }
+          `,
+          variables: SlidingSuborderData,
+        },
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${jwtToken}`,
+          },
+        }
+      );
+  
+      const newSlidingSuborderId = slidingSuborderResponse.data.data.createSlidingSuborder.data.id;
+      setSlidingSuborderId(newSlidingSuborderId);
+
+      //+++++++++++++++++++++++ slidingsuboreder end
+
       const fittingTypes = ['hinge', 'knobe', 'lock'];
 
       for (const fittingType of fittingTypes) {
@@ -242,42 +278,43 @@ export const CreateOrderPage = () => {
             currentStepSend={currentStepSend}
         />
         );
-        // case 2:
-        // return (
-        //   <FrameStep
-        //     setCurrentStepSend={setCurrentStepSend}
-        //     currentStepSend={currentStepSend}
-        //   />
-        // );
-      case 2:
+        case 2:
         return (
-          <ElementsStep
+          // <FrameStep
+          <GroupFrameStep
             setCurrentStepSend={setCurrentStepSend}
             currentStepSend={currentStepSend}
           />
         );
       case 3:
         return (
-          <GroupAccessoriesStep
+          <ElementsStep
             setCurrentStepSend={setCurrentStepSend}
             currentStepSend={currentStepSend}
-        />
+          />
         );
-        case 4:
+      case 4:
         return (
-          <OptionsStep
+          <GroupAccessoriesStep
             setCurrentStepSend={setCurrentStepSend}
             currentStepSend={currentStepSend}
         />
         );
         case 5:
         return (
-          <OptionsAdditionalStep
+          <OptionsStep
             setCurrentStepSend={setCurrentStepSend}
             currentStepSend={currentStepSend}
         />
         );
         case 6:
+        return (
+          <OptionsAdditionalStep
+            setCurrentStepSend={setCurrentStepSend}
+            currentStepSend={currentStepSend}
+        />
+        );
+        case 7:
         return (
           <InformationStep
             setCurrentStepSend={setCurrentStepSend}
@@ -301,17 +338,6 @@ export const CreateOrderPage = () => {
         <div style={{display: 'flex', paddingRight: '30px'}}>
           <ErrorDrawer/>
         </div>
-        
-        {/* <div style={{display: 'flex', gap: '20px' }}>
-        <CreateColorDrawer/>
-          <Button type="dashed" icon={<SearchOutlined />} href="https://www.ralcolorchart.com/" target="_blank">
-            RAL {language.colors}
-          </Button>
-
-          <Button type="dashed" icon={<SearchOutlined />} href="https://www.ncscolorguide.com/" target="_blank">
-            NSC {language.colors}
-          </Button>
-        </div> */}
 
       </div>
 
@@ -330,10 +356,12 @@ export const CreateOrderPage = () => {
             status: (currentStep === 1 ? 'process' : currentStepSend.decorSend ? 'finish' : 'error'),
             disabled: currentStepSend.canvasSend ? false : true,
           },
-          // {
-          //   title: language.frame,
-          //   status: (currentStep === 2 ? 'process' : currentStepSend.frameSend ? 'finish' : 'error'),
-          // },
+          {
+            // title: language.frame,
+            title: `${language.frame} / Slido`,
+            status: (currentStep === 2 ? 'process' : currentStepSend.frameSend ? 'finish' : 'error'),
+            disabled: currentStepSend.canvasSend ? false : true,
+          },
           {
             title: language.elements,
             status: (currentStep === 3 ? 'process' : currentStepSend.elementSend ? 'finish' : 'error'),

@@ -32,6 +32,7 @@ const PaintStep = ({
   const { orderId, dorSuborderId } = useOrder();
   const orderIdToUse = orderId;
   const paintForSelectRef = useRef(null);
+  
   const [btnColor, setBtnColor] = useState('#ff0505');
   
   const colorRangeFilterDoors = ["NCS", "RAL"];
@@ -148,7 +149,6 @@ const PaintStep = ({
           super_gloss: superGlossData,
         })
         setSuperGloss(superGlossData);
-
       } catch (error) {
         console.error('Error fetching data:', error);
       }
@@ -163,12 +163,11 @@ const PaintStep = ({
     fetchData();
     fetchDecorData(setDecorData);
     fetchOrderData(orderIdToUse, setPreviousColorTitle, selectedPaintFor, setSelectedPaintFor, isPaintType);
-
+    
     if (currentStepSend && currentStepSend.decorSend) {
       setBtnColor('#4BB543');
     }
   }, [jwtToken, orderIdToUse, fetchDecorData, fetchOrderData, selectedPaintFor, isPaintType]);
-
 
   const findColorGroup = (array, colorCode) => {
     for (let i = 0; i < array.length; i++) {

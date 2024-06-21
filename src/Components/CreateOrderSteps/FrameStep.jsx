@@ -1,81 +1,83 @@
-// import { Form, Button, Card, Select, message } from 'antd';
-// import { SendOutlined } from '@ant-design/icons';
-// import { useOrder } from '../../Context/OrderContext';
-// import { useEffect, useState } from 'react';
-// import { useLanguage } from '../../Context/LanguageContext';
-// import languageMap from '../../Languages/language';
-// import {getFrameData, getFrames, updateFrameSuborder} from '../../api/frame'
+import { Form, Button, Card, Select, message, Affix } from 'antd';
+import { SendOutlined } from '@ant-design/icons';
+import { useOrder } from '../../Context/OrderContext';
+import { useEffect, useState } from 'react';
+import { useLanguage } from '../../Context/LanguageContext';
+import languageMap from '../../Languages/language';
+import {getFrameData, getFrames, updateFrameSuborder} from '../../api/frame'
+import { removeSlidingSuborderData } from '../../api/sliding';
 
-// const { Option } = Select;
+const { Option } = Select;
 
-// const FrameStep = ({ setCurrentStepSend, currentStepSend }) => {
-//   const jwtToken = localStorage.getItem('token');
-//   const { selectedLanguage } = useLanguage();
-//   const language = languageMap[selectedLanguage];
-//   const [messageApi, contextHolder] = message.useMessage();
-//   const { orderId, frameSuborderId } = useOrder()
-//   const orderIdToUse = orderId;
-//   const [frames, setFrames] = useState([]);
-//   const [framesFilter, setFrameFilter] = useState({});
-//   const [orderData, setOrderData] = useState({});
-//   const [form] = Form.useForm();
-//   const [btnColor, setBtnColor] = useState('#ff0505');
+const FrameStep = ({ setCurrentStepSend, currentStepSend }) => {
+  const jwtToken = localStorage.getItem('token');
+  const { selectedLanguage } = useLanguage();
+  const language = languageMap[selectedLanguage];
+  const [messageApi, contextHolder] = message.useMessage();
+  const { orderId, frameSuborderId, slidingSuborderId } = useOrder()
+  const orderIdToUse = orderId;
+  const [orderData, setOrderData] = useState({});
+  const [form] = Form.useForm();
+  const [btnColor, setBtnColor] = useState('#ff0505');
   
-//   const handleFormSubmit = () => {
-//     const selectedFrameId = form.getFieldValue('name');
-//     const dataToUpdate = {
-//       decor: orderData?.door_suborder?.data?.attributes?.decor?.data?.id,
-//       frame: selectedFrameId,
-//       side: orderData?.side,
-//       sizes: {
-//         height: orderData?.door_suborder?.data?.attributes?.sizes?.height,
-//         thickness: orderData?.door_suborder?.data?.attributes?.sizes?.thickness,
-//         width: orderData?.door_suborder?.data?.attributes?.sizes?.width,
-//       }
-//     };
+  const [frames, setFrames] = useState([]);
+  const [frameSuborderData, setFrameSuborderData] = useState({});
+  const [selectedFrame, setSelectedFrame] = useState('');
 
-//     updateFrameSuborder(jwtToken, frameSuborderId, dataToUpdate, setBtnColor, messageApi, setCurrentStepSend, language);
-//   };
+  useEffect(() => {
+    getFrameData(orderIdToUse, jwtToken, setFrameSuborderData, setFrames, setSelectedFrame);
+    form.setFieldsValue({ name: selectedFrame});
 
-//   useEffect(() => {
-//     getFrameData(jwtToken, orderIdToUse, setOrderData, form, setFrameFilter);
-//   }, [jwtToken, orderIdToUse, form]);
+    }, [orderIdToUse, jwtToken, selectedFrame]);
 
-//   useEffect(() => {
-//     getFrames(jwtToken, setFrames, currentStepSend, setBtnColor, framesFilter);
-//   }, [jwtToken, orderData, currentStepSend, framesFilter]);
+    const handleFormSubmit = async () => {
+      const selectedFrameId = form.getFieldValue('name');
+      await updateFrameSuborder(jwtToken, frameSuborderData, selectedFrameId, orderIdToUse);
+      await removeSlidingSuborderData(jwtToken, slidingSuborderId);
 
-//   return (
-//     <Card style={{background: '#F8F8F8', borderColor: '#DCDCDC'}}>
-//       <Form form={form} onFinish={handleFormSubmit}>
-//         {contextHolder}
 
-//         <Form.Item
-//           label={language.frame}
-//           name="name"
-//           style={{ marginTop: '20px' }}
-//           rules={[{ required: true, message: language.requiredField }]}
-//         >
-//           <Select
-//             placeholder={language.frame}
-//             allowClear
-//           >
-//             {frames.map(frame => (
-//               <Option key={frame.id} value={frame.id}>{languageMap[selectedLanguage][frame.attributes.title]}</Option>
-//             ))}
-//           </Select>
-//         </Form.Item>
+      messageApi.success(language.successQuery);
+      if (setCurrentStepSend) {
+        setCurrentStepSend(prevState => {
+          return {
+            ...prevState,
+            frameSend: true
+          };
+        });
+      }
+      setBtnColor('#4BB543');
+    }
+  
+  return (
+    <Card style={{background: '#F8F8F8', borderColor: '#DCDCDC'}}>
+      <Form form={form} onFinish={handleFormSubmit}>
+        {contextHolder}
 
-//         <Form.Item wrapperCol={{ offset: 4, span: 16 }}>
-//           <Button style={{backgroundColor: currentStepSend ? btnColor : '#1677ff', color: 'white' }} htmlType="submit" icon={<SendOutlined />}>
-//             {`${language.submit} ${language.frame}`}
-//           </Button>
-//         </Form.Item>
+      <Affix style={{ position: 'absolute', top: '-50px', right: '20px'}} offsetTop={20}>
+        <Button style={{backgroundColor: currentStepSend ? btnColor : '#1677ff', color: 'white' }} htmlType="submit" icon={<SendOutlined />}>
+        {`${language.submit} ${language.startData}`}
+        </Button>
+      </Affix>
 
-//       </Form>
-//     </Card>
-//   );
-// };
+        <Form.Item
+          label={language.frame}
+          name="name"
+          style={{ marginTop: '20px' }}
+          rules={[{ required: true, message: language.requiredField }]}
+        >
+          <Select
+            placeholder={language.frame}
+            allowClear
+          >
+            {frames.map(frame => (
+              <Option key={frame.id} value={frame.id}>{languageMap[selectedLanguage][frame.attributes.title]}</Option>
+            ))}
+          </Select>
+        </Form.Item>
+      </Form>
+    </Card>
+  );
+};
 
-// export default FrameStep;
+export default FrameStep;
 

@@ -5,6 +5,7 @@ import { OrderDrawer } from '../Components/OrderDrawer';
 import GroupDoorStep from '../Components/CreateOrderSteps/GroupDoorStep';
 // import GroupDecorStep from '../Components/CreateOrderSteps/GroupDecorStep';
 import GroupAccessoriesStep from '../Components/CreateOrderSteps/GroupAccessoriesStep';
+import GroupFrameStep from '../Components/CreateOrderSteps/GroupFrameStep';
 import ElementsStep from '../Components/CreateOrderSteps/ElementsStep';
 import InformationStep from '../Components/CreateOrderSteps/InformationStep';
 import FrameStep from '../Components/CreateOrderSteps/FrameStep';
@@ -33,6 +34,7 @@ export const EditOrderPage = () => {
     hingeSuborderId, sethiHgeSuborderId,
     knobeSuborderId, setKnobeSuborderId,
     lockSuborderId, setLockSuborderId,
+    slidingSuborderId, setSlidingSuborderId,
    } = useOrder();
   
   const orderIdToUse = orderId;
@@ -87,6 +89,11 @@ export const EditOrderPage = () => {
                         id
                       }
                     }
+                    sliding_suborder {
+                      data {
+                        id
+                      }
+                    }
                   }
                 }
               }
@@ -114,6 +121,10 @@ export const EditOrderPage = () => {
   
       const frameSuborderId = orderData.frame_suborder.data.id;
       setFrameSuborderId(frameSuborderId);
+
+      // sliding suborder
+      const slidingSuborderId = orderData.sliding_suborder.data.id;
+      setSlidingSuborderId(slidingSuborderId);
   
       for (const fittingSuborder of orderData.fitting_suborders.data) {
         const fittingType = fittingSuborder.attributes.type;
@@ -156,27 +167,28 @@ export const EditOrderPage = () => {
           // <GroupDecorStep />
           <DecorSidesGroupStep />
         );
-        // case 2:
-        // return (
-        //   <FrameStep />
-        // );
-      case 2:
+        case 2:
         return (
-          <ElementsStep />
+          // <FrameStep />
+          <GroupFrameStep />
         );
       case 3:
         return (
-          <GroupAccessoriesStep />
+          <ElementsStep />
         );
-        case 4:
+      case 4:
         return (
-          <OptionsStep />
+          <GroupAccessoriesStep />
         );
         case 5:
         return (
-          <OptionsAdditionalStep />
+          <OptionsStep />
         );
         case 6:
+        return (
+          <OptionsAdditionalStep />
+        );
+        case 7:
           return (
             <InformationStep />
           );
@@ -218,10 +230,11 @@ export const EditOrderPage = () => {
             status: (currentStep === 1 ? 'process' : 'finish'),
             disabled: isDisabledOtherSteps,
           },
-          // {
-          //   title: language.frame,
-          //   status: (currentStep === 2 ? 'process' : 'finish'),
-          // },
+          {
+            // title: language.frame,
+            title: `${language.frame} / Slido`,
+            status: (currentStep === 2 ? 'process' : 'finish'),
+          },
           {
             title: language.elements,
             status: (currentStep === 3 ? 'process' : 'finish'),

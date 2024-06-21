@@ -61,6 +61,7 @@ const ua = {
   inside: 'Всередині',
   outside: 'Зовні',
   universal: 'Універсальний',
+  sliding: 'Розсувні двері',
   undone: 'Цю дію неможливо скасувати',
   loginFailed: 'Помилка входу',
   invalid: 'Невірна електронна пошта чи пароль. Будь ласка, спробуйте ще раз',
@@ -223,6 +224,9 @@ const ua = {
   preview: 'Перегляд',
   dbColor: 'База даних кольорів',
 
+  description: 'Опис',
+  articul: 'Артікул',
+
 // Decor Types
   painted_veneer: 'Фарбований шпон',
   painted_glass: 'Фарбоване скло',
@@ -243,6 +247,10 @@ const ua = {
   'hidden_universal Loft' : 'Прихований універсальний Loft',
   'hidden_universal Neo Classic' : 'Прихований універсальний Neo Classic',
   'hidden_standard Neo Classic ' : 'Прихований стандарт Neo Classic',
+
+  'sliding loft': 'розсувні двері Loft',
+  'sliding Art Decore': 'розсувні двері Art Decore',
+  'sliding Neo Classic': 'розсувні двері Neo Classic',
 
 // Products Elements
   'aluminium cover': 'Алюмінієвий обклад',

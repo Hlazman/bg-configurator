@@ -6,11 +6,13 @@ import LockStep from './LockStep';
 import { useLanguage } from '../../Context/LanguageContext';
 import languageMap from '../../Languages/language';
 import InsertSealStep from './InsertSealStep';
+import { useOrder } from '../../Context/OrderContext';
 
 const GroupAccessoriesStep = ({ setCurrentStepSend, currentStepSend }) => {
-  const [activeTab, setActiveTab] = useState('hinges');
+  const [activeTab, setActiveTab] = useState('knobe');
   const { selectedLanguage } = useLanguage();
   const language = languageMap[selectedLanguage];
+  const { isSliding } = useOrder();
 
   const handleTabChange = tabKey => {
     setActiveTab(tabKey);
@@ -31,11 +33,13 @@ const GroupAccessoriesStep = ({ setCurrentStepSend, currentStepSend }) => {
         label: language.hinges,
         key: 'hinges',
         children: <HingesStep setCurrentStepSend={setCurrentStepSend} currentStepSend={currentStepSend}/>,
+        disabled: !isSliding,
       },
       {
         label: language.lock,
         key: 'lock',
         children: <LockStep setCurrentStepSend={setCurrentStepSend} currentStepSend={currentStepSend}/>,
+        disabled: !isSliding,
       },
       {
         label: language.insertSeal,

@@ -61,6 +61,7 @@ const es = {
   inside: 'Interior',
   outside: 'Exterior',
   universal: 'Universal',
+  sliding: 'Puertas correderas',
   undone: 'Esta acción no se puede deshacer',
   loginFailed: 'Inicio de sesión fallido',
   invalid: 'Correo electrónico o contraseña no válidos. Por favor, inténtalo de nuevo',
@@ -223,6 +224,9 @@ const es = {
   preview: 'Avance',
   dbColor: 'Base de datos de colores',
 
+  description: 'Descripción',
+  articul: 'Código de proveedor',
+
 // Decor Types
   painted_veneer: 'Chapa pintada',
   painted_glass: 'Vidrio pintado',
@@ -244,6 +248,10 @@ const es = {
   'hidden_universal Loft' : 'Universal oculto Loft',
   'hidden_universal Neo Classic' : 'Universal oculto Neo Classic',
   'hidden_standard Neo Classic ' : 'Estándar oculto Neo Classic',
+
+  'sliding loft': 'puertas correderas loft',
+  'sliding Art Decore': 'puertas correderas Art Decore',
+  'sliding Neo Classic': 'puertas correderas Neo Classic',
 
 // Products Elements
   'aluminium cover': 'Cubierta de aluminio',

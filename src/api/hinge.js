@@ -266,7 +266,11 @@ export const checkHinge = async (jwtToken, orderIdToUse, setIsDataHinges) => {
     );
 
     if (response?.data?.data?.order?.data?.attributes?.fitting_suborders?.data[0]?.attributes?.hinge?.data?.id) {
-      setIsDataHinges(false);
+      // setIsDataHinges(false);
+      if (setIsDataHinges !== null) {
+        setIsDataHinges(false);
+      }
+
       const hingesSuborder = response?.data?.data?.order?.data?.attributes?.fitting_suborders?.data[0]?.id
       return hingesSuborder;
   }
@@ -280,6 +284,10 @@ export const checkHinge = async (jwtToken, orderIdToUse, setIsDataHinges) => {
 
 export const removeHinge = async (jwtToken, orderIdToUse, setIsDataHinges, messageApi, language, setPreviousHingeId) => {
   const hingesSuborder = await checkHinge(jwtToken, orderIdToUse, setIsDataHinges);
+  
+  if (!hingesSuborder) {
+    return
+  }
   
   try {
     const response = await axios.post(queryLink,
@@ -308,9 +316,20 @@ export const removeHinge = async (jwtToken, orderIdToUse, setIsDataHinges, messa
     );
 
     if (response) {
-      setIsDataHinges(true);
-      setPreviousHingeId(null);
-      messageApi.success(language.successQuery);
+      // setIsDataHinges(true);
+      // setPreviousHingeId(null);
+      // messageApi.success(language.successQuery);
+
+      if (setIsDataHinges !== null) {
+        setIsDataHinges(true);
+      }
+      if (setPreviousHingeId !== null) {
+        setPreviousHingeId(null);
+      }
+
+      if (messageApi !== null) {
+        messageApi.success(language.successQuery);
+      }
     }
   } catch (error) {
     console.log(error)

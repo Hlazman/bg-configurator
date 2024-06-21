@@ -9,11 +9,14 @@ import { useTotalOrder } from '../../Context/TotalOrderContext';
 import { useSelectedCompany } from '../../Context/CompanyContext';
 import {updateTotalOrder} from '../../api/updateTotalOrder'
 import {queryLink} from '../../api/variables'
-import {updateFrame} from '../../api/frame'
+import {updateFrame, updateCanvasDataFrameSuborder} from '../../api/frame'
+import {removeHinge} from '../../api/hinge';
+import {removeLock} from '../../api/lock';
+import { updateSliding } from '../../api/sliding';
 
 const StartDataStep = ({ setCurrentStepSend, currentStepSend }) => {
   // const { orderId } = useOrder();
-  const { orderId, frameSuborderId } = useOrder();
+  const { orderId, frameSuborderId, setIsSliding, slidingSuborderId } = useOrder();
   const jwtToken = localStorage.getItem('token');
   const orderIdToUse = orderId;
   const [messageApi, contextHolder] = message.useMessage();
@@ -71,6 +74,12 @@ const StartDataStep = ({ setCurrentStepSend, currentStepSend }) => {
         setOrderData(orderData);
         form.setFieldsValue(orderData);
         setIsInsideDisabled(orderData.hidden);
+
+        if (orderData.opening === 'sliding') {
+          setIsSliding(false);
+        } else {
+          setIsSliding(true);
+        }
       }
     } catch (error) {
       console.error('Error fetching order data:', error);
@@ -85,7 +94,19 @@ const StartDataStep = ({ setCurrentStepSend, currentStepSend }) => {
     }
   }, [orderIdToUse, jwtToken, form]);
 
+
+  const [isOpeningChoose, setIsOpeningChoose] = useState(false);
+
   const handleFormSubmit = async (values) => {
+    if (values.opening === 'sliding' && values.hidden === true) {
+      messageApi.error(language.errorQuery);
+      setIsOpeningChoose(true);
+
+      return;
+    }
+
+    setIsOpeningChoose(false);
+
     try {
       await axios.post(
         // 'https://api.boki.fortesting.com.ua/graphql',
@@ -126,7 +147,20 @@ const StartDataStep = ({ setCurrentStepSend, currentStepSend }) => {
       }
       setBtnColor('#4BB543');
 
-      await updateFrame(orderIdToUse, jwtToken, frameSuborderId);
+      // await updateFrame(orderIdToUse, jwtToken, frameSuborderId);
+      await updateCanvasDataFrameSuborder(orderIdToUse, jwtToken);
+
+      if (values.opening === 'sliding') {
+        await removeHinge(jwtToken, orderIdToUse, null, null, language, null);
+        await removeLock(jwtToken, orderIdToUse, null, null, language, null);
+        setIsSliding(false);
+      }
+
+      if (values.opening !== 'sliding') {
+        await updateSliding(jwtToken, slidingSuborderId, null, null, null);
+        setIsSliding(true);
+      }
+      
     } catch (error) {
       messageApi.error(language.errorQuery);
     }
@@ -187,11 +221,14 @@ const StartDataStep = ({ setCurrentStepSend, currentStepSend }) => {
             label={language.opening}
             name="opening"
             rules={[{ required: true, message: language.requiredField }]}
+            style={{border: isOpeningChoose ? 'solid red 2px' : 'none'}}
           >
             <Radio.Group buttonStyle="solid">
-              <Radio.Button value="inside" disabled={isInsideDisabled}>{language.inside}</Radio.Button>
+              {/* <Radio.Button value="inside" disabled={isInsideDisabled}>{language.inside}</Radio.Button> */}
+              <Radio.Button value="inside" >{language.inside}</Radio.Button>
               <Radio.Button value="outside">{language.outside}</Radio.Button>
-              <Radio.Button value="universal">{language.universal}</Radio.Button>
+              {/* <Radio.Button value="universal">{language.universal}</Radio.Button> */}
+              <Radio.Button value="sliding" disabled={isInsideDisabled}> {language.sliding}</Radio.Button>
             </Radio.Group>
           </Form.Item>
         </div>

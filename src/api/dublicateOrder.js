@@ -4,6 +4,7 @@ import {queryLink} from './variables'
 export const dublicateOrder = async (orderId, jwtToken, totalOrderId, selectedCompany, user ) => {
    let orderData = {};
    let frameData = {};
+   let slidingData = {};
    let doorData = {};
    let elementsData = {};
    let lockData = {};
@@ -74,6 +75,11 @@ export const dublicateOrder = async (orderId, jwtToken, totalOrderId, selectedCo
                       }
                     }
                     frame_suborder {
+                      data {
+                        id
+                      }
+                    }
+                    sliding_suborder {
                       data {
                         id
                       }
@@ -187,6 +193,7 @@ export const dublicateOrder = async (orderId, jwtToken, totalOrderId, selectedCo
         }, {}),
         options: orderData?.option_suborders?.data.map(suborder => suborder.id),
         frame: orderData?.frame_suborder?.data?.id,
+        sliding: orderData?.sliding_suborder?.data?.id,
       };
 
       // DOOR +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++        
@@ -551,6 +558,120 @@ export const dublicateOrder = async (orderId, jwtToken, totalOrderId, selectedCo
   
           } catch (error) {
               console.error('Error create Frame', error);
+          }
+      }
+
+      // SLIDING +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++        
+      if (subordersId.sliding) {
+        
+        // QUERY SLIDING
+          try {
+            const slidingSuborderResponse = await axios.post(
+              queryLink,
+              {
+                query: `
+                  query SlidingSuborder($slidingSuborderId: ID) {
+                    slidingSuborder(id: $slidingSuborderId) {
+                      data {
+                        id
+                        attributes {
+                          basicPrice
+                          price
+                          sliding {
+                            data {
+                              id
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                `,
+                variables: {
+                  slidingSuborderId: subordersId.sliding,
+                },
+              },
+              {
+                headers: {
+                  'Content-Type': 'application/json',
+                  Authorization: `Bearer ${jwtToken}`,
+                },
+              }
+            );
+        
+            const slidingSuborderData = slidingSuborderResponse?.data?.data?.slidingSuborder?.data?.attributes;
+            slidingData = slidingSuborderData;
+          
+          } catch (error) {
+              console.error('Error query Sliding', error);
+          }
+
+        // CREATE NEW SLIDING
+          try {
+            const slidingSuborderResponse = await axios.post(
+              queryLink,
+              {
+                query: `
+                  mutation Mutation($data: SlidingSuborderInput!) {
+                    createSlidingSuborder(data: $data) {
+                      data {
+                        id
+                      }
+                    }
+                  }
+                `,
+                variables: {
+                  data: {
+                    order: newOrderId,
+                  }
+                },
+              },
+              {
+                headers: {
+                  'Content-Type': 'application/json',
+                  Authorization: `Bearer ${jwtToken}`,
+                },
+              }
+            );
+  
+            const newSlidingSuborderId = slidingSuborderResponse.data.data.createSlidingSuborder.data.id;
+
+            // UPDATE NEW SLIDING
+            try {
+              const response = await axios.post(
+                queryLink,
+                {
+                  query: `
+                    mutation Mutation($data: SlidingSuborderInput!, $updateSlidingSuborderId: ID!) {
+                      updateSlidingSuborder(data: $data, id: $updateSlidingSuborderId) {
+                        data {
+                          id
+                        }
+                      }
+                    }
+                  `,
+                  variables: {
+                    updateSlidingSuborderId: newSlidingSuborderId,
+                    data: {
+                      sliding: slidingData?.sliding.data?.id,
+                      price: slidingData?.price,
+                      basicPrice: slidingData?.basicPrice,
+                    }
+                  }
+                },
+                {
+                  headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${jwtToken}`,
+                  }
+                }
+              );
+            } catch (error) {
+              console.error('Error update Sliding', error)
+            }
+  
+          } catch (error) {
+              console.error('Error create Sliding', error);
           }
       }
 

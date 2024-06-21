@@ -46,7 +46,11 @@ export const checkLock = async (jwtToken, orderIdToUse, setIsDataLock) => {
     );
 
     if (response?.data?.data?.order?.data?.attributes?.fitting_suborders?.data[0]?.attributes?.lock?.data?.id) {
-      setIsDataLock(false);
+      // setIsDataLock(false);
+      
+      if (setIsDataLock !== null) {
+        setIsDataLock(false);
+      }
       const lockSuborder = response?.data?.data?.order?.data?.attributes?.fitting_suborders?.data[0]?.id
       return lockSuborder;
   }
@@ -60,6 +64,10 @@ export const checkLock = async (jwtToken, orderIdToUse, setIsDataLock) => {
 
 export const removeLock = async (jwtToken, orderIdToUse, setIsDataLock, messageApi, language, setPreviousLockId) => {
   const lockSuborder = await checkLock(jwtToken, orderIdToUse, setIsDataLock);
+
+  if (!lockSuborder) {
+    return
+  }
   
   try {
     const response = await axios.post(queryLink,
@@ -88,9 +96,20 @@ export const removeLock = async (jwtToken, orderIdToUse, setIsDataLock, messageA
     );
 
     if (response) {
-      setIsDataLock(true);
-      setPreviousLockId(null)
-      messageApi.success(language.successQuery);
+      // setIsDataLock(true);
+      // setPreviousLockId(null);
+      // messageApi.success(language.successQuery);
+
+      if (setIsDataLock !== null) {
+        setIsDataLock(true);
+      }
+
+      if (setPreviousLockId !== null) {
+        setPreviousLockId(null);
+      }
+      if (messageApi !== null) {
+        messageApi.success(language.successQuery);
+      }
     }
   } catch (error) {
     console.log(error)
