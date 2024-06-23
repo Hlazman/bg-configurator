@@ -3,7 +3,7 @@ import React, { createContext, useState, useContext } from 'react';
 export const SelectedCompanyContext = createContext();
 
 export const SelectedCompanyProvider = ({ children }) => {
-  const [selectedCompany, setSelectedCompany] = useState('');
+  const [selectedCompany, setSelectedCompany] = useState(0);
 
   return (
     <SelectedCompanyContext.Provider value={{ selectedCompany, setSelectedCompany }}>
