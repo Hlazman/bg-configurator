@@ -56,3 +56,39 @@ export const updateCanvas = async (jwtToken, updateDoorSuborderId, data, message
     messageApi.error(`${language.errorQuery}. ${language.wrongSize}`); 
   }
 }
+
+export const getDoubledoor = async (jwtToken, orderIdToUse, setIsDoubleDoor ) => {
+  try {
+    const response = await axios.post(
+      // 'https://api.boki.fortesting.com.ua/graphql',
+      queryLink,
+      {
+        query: `
+          query Order($orderId: ID) {
+            order(id: $orderId) {
+              data {
+                attributes {
+                  double_door
+                }
+              }
+            }
+          }
+        `,
+        variables: {
+         orderId : orderIdToUse
+        }
+      },
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${jwtToken}`,
+        },
+      }
+    );
+    const doubleDoor = response?.data?.data?.order?.data?.attributes?.double_door;
+    setIsDoubleDoor(doubleDoor);
+
+  } catch (error) {
+    console.error(error);
+  }
+}

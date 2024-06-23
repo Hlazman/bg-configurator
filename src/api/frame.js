@@ -531,7 +531,6 @@ export const getFrameError = async (orderIdToUse, jwtToken) => {
       if (frameID) {
         if (idsArray.includes(frameID)) {
           updateError(jwtToken, orderIdToUse, 'errorFrame', null);
-          console.log('no err')
         } else {
           updateError(jwtToken, orderIdToUse, 'errorFrame', 'errorFrame');
         }

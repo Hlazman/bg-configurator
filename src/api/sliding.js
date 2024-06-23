@@ -133,8 +133,10 @@ export const getSlidingData = async (orderIdToUse, jwtToken, setPreviousSlidingI
       }
     ).then(response => {
       slidingId = response.data?.data?.order?.data?.attributes?.sliding_suborder?.data?.attributes?.sliding.data?.id;
-      sliding = response.data?.data?.order?.data?.attributes?.sliding_suborder?.data?.attributes?.sliding.data?.attributes;
+      // sliding = response.data?.data?.order?.data?.attributes?.sliding_suborder?.data?.attributes?.sliding.data?.attributes;
+      sliding = response.data?.data?.order?.data?.attributes?.sliding_suborder?.data;
       
+      console.log('slidingData', sliding)
     });
   }
   catch (error) {

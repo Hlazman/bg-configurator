@@ -20,6 +20,8 @@ export const OrderDescriptionFactory = ({
   const [convertedPriceTotal, setConvertedPriceTotal] = useState('');
   const [exchangeRates, setExchangeRates] = useState(null);
 
+  const [convertedSlidingPrice, setConvertedSlidingPrice] = useState(null);
+
   const fetchExchangeRates = async () => {
     try {
       const response = await fetch(`https://open.er-api.com/v6/latest/${currency}`);
@@ -53,6 +55,8 @@ export const OrderDescriptionFactory = ({
     const convertedHingePrice = convertCurrency(hingeData.basicPrice, value);
     const convertedLockPrice = convertCurrency(lockData.basicPrice, value);
     
+    const convertedSlidingPrice = convertCurrency(slidingData?.attributes.basicPrice, value);
+
     const convertedElementPrice = elementData.map((element) => {
       const updatedPrice = convertCurrency(element.basicPrice, value);
       return { ...element, convertedPrice: updatedPrice };
@@ -73,6 +77,8 @@ export const OrderDescriptionFactory = ({
     setConvertedElementPrice(convertedElementPrice)
     setConvertedOptionPrice(convertedOptionPrice)
     setConvertedPriceTotal(convertedPriceTotal);
+
+    setConvertedSlidingPrice(convertedSlidingPrice);
   };
 
   const prevCurrencyValue = useRef(currancyValue);
@@ -179,9 +185,8 @@ export const OrderDescriptionFactory = ({
           size={isCreatingPdf ? 'small' : 'default'}
           >
   
-          {/* {frameData && lockData && hingeData && ( */}
-          {/* {frameData && !frameData.frame?.data?.attributes?.title?.includes('sliding') && ( */}
-          {frameData && frameData.frame?.data?.attributes?.title && (
+          {frameData && frameData.frame?.data?.attributes?.title 
+            && !frameData.frame?.data?.attributes?.title?.includes('sliding') && (
           <>
             <Descriptions.Item className='labelBG' span={2} label={`${language.frame} ${language.type}`} labelStyle={{fontWeight: '600', color:'#000'}}>
               {languageMap[selectedLanguage][frameData.frame?.data?.attributes?.title]}
@@ -193,21 +198,19 @@ export const OrderDescriptionFactory = ({
             </>
           )}
 
-          {slidingData && (
+          {slidingData && slidingData?.attributes?.sliding.data?.attributes?.title && (
             <>
-              <Descriptions.Item span={2} className='labelBG' label={`${language.sliding} ${language.description}`} labelStyle={{fontWeight: '600', color:'#000'}}>
+              <Descriptions.Item span={3} className='labelBG' label={`${language.sliding} ${language.description}`} labelStyle={{fontWeight: '600', color:'#000'}}>
                 {/* {languageMap[selectedLanguage][frameData.frame?.data?.attributes?.title]} */}
                 <div style={{textAlign: 'left'}}>
-                <span style={{fontWeight: 600}}>{language.title}</span> : {slidingData?.title} <br/>
-                <span style={{fontWeight: 600}}>{language.description}</span>: {slidingData?.description[0]?.children[0]?.text} <br/>
-                <span style={{fontWeight: 600}}>{language.articul}</span> : {slidingData?.fittingsArticle} <br/>
+                <span style={{fontWeight: 600}}>{language.title}</span> : {slidingData?.attributes?.sliding.data?.attributes?.title} <br/>
+                <span style={{fontWeight: 600}}>{language.description}</span>: {slidingData?.attributes?.sliding.data?.attributes?.description[0]?.children[0]?.text} <br/>
+                <span style={{fontWeight: 600}}>{language.articul}</span> : {slidingData?.attributes?.sliding.data?.attributes?.fittingsArticle} <br/>
                 </div>
               </Descriptions.Item>
 
               <Descriptions.Item className='labelBG' label={`${language.sliding} ${language.price}`} labelStyle={{fontWeight: '600', color:'#000'}}>
-                {/* {convertedFramePrice ? `${convertedFramePrice} ${currency}` : `${frameData.price} ${orderData?.currency}`} */}
-                <p>fdhdh</p>
-                <p>fdhdh</p>
+              {convertedSlidingPrice ? `${convertedSlidingPrice} ${currency}` : `${slidingData?.attributes.basicPrice} ${orderData?.currency}`}
               </Descriptions.Item>
             </>
           )}

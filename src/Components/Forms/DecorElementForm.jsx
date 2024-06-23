@@ -98,9 +98,11 @@ const DecorElementForm = ({setCurrentStepSend, elementID, currentStepSend}) => {
     const currentElement = elementOptions?.find(option => option.id === currentElementField);
 
     if (currentElement?.attributes?.title.startsWith("extender 200")) {
-      setWidthLimit({ min: null, max: 200 });
+      setWidthLimit({ min: 151, max: 200 });
     } else if (currentElement?.attributes?.title.startsWith("extender 300")) {
       setWidthLimit({ min: 201, max: null });
+    } else if (currentElement?.attributes?.title.startsWith("extender 150")) {
+      setWidthLimit({ min: null, max: 150 });
     } else {
       setWidthLimit({ min: null, max: null });
     }

@@ -9,7 +9,7 @@ import {queryLink} from '../../api/variables'
 import {validateHinges, validateOptions, validateDecor, validateElements} from '../../api/validationOrder';
 // import {validateHinges, validateOptions, validateDecor, validateElements, getOrderErrors} from '../../api/validationOrder';
 import {getOptions, getOptionsDataOrder} from '../../api/options';
-import {updateCanvas} from '../../api/canvas';
+import {updateCanvas, getDoubledoor} from '../../api/canvas';
 import {updateFrame, updateCanvasDataFrameSuborder} from '../../api/frame'
 import ImagesDoorForm from '../Forms/ImagesDoorForm';
 
@@ -31,6 +31,24 @@ const CanvasStep = ({ setCurrentStepSend, currentStepSend, setIsDisabledOtherSte
   const [previousDoorId, setPreviousDoorId] = useState(null);
   const [form] = Form.useForm();
   const [btnColor, setBtnColor] = useState('#ff0505');
+  
+  
+  const [isDoubleDoor, setIsDoubleDoor] = useState(false);
+  const [widthLimit, setWidthLimit] = useState({ max: null });
+
+  const getWidthLimit = async () => {
+    await getDoubledoor(jwtToken, orderIdToUse, setIsDoubleDoor);
+  
+      if (!isDoubleDoor) {
+        setWidthLimit({ max: 1100 });
+      } else {
+        setWidthLimit({ max: null });
+      }
+  };
+
+  useEffect(() => {
+    getWidthLimit();
+  }, [isDoubleDoor, jwtToken, orderIdToUse])
 
   useEffect(() => {
     const fetchOrderData = async () => {
@@ -332,7 +350,7 @@ const CanvasStep = ({ setCurrentStepSend, currentStepSend, setIsDisabledOtherSte
         ]}
         >
           {/* <InputNumber addonBefore={language.width} addonAfter="mm"/> */}
-          <InputNumber addonBefore={`${language.width} (${language.canvas})`} addonAfter="mm"/>
+          <InputNumber max={widthLimit.max} addonBefore={`${language.width} (${language.canvas})`} addonAfter="mm"/>
         </Form.Item>
         
         <Form.Item

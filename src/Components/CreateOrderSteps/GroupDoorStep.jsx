@@ -19,7 +19,8 @@ const GroupDoorStep = ({ setCurrentStepSend, currentStepSend, setIsDisabledOther
   };
 
   return (
-    <Tabs 
+    <Tabs
+      destroyInactiveTabPane={true}
       type="card" 
       activeKey={activeTab} 
       onChange={handleTabChange} 
@@ -34,12 +35,6 @@ const GroupDoorStep = ({ setCurrentStepSend, currentStepSend, setIsDisabledOther
           key: 'canvas',
           children: <CanvasStep setCurrentStepSend={setCurrentStepSend} currentStepSend={currentStepSend} setIsDisabledOtherSteps={setIsDisabledOtherSteps}/>,
         },
-        // {
-        //   label: language.sliding,
-        //   key: 'sliding',
-        //   children: <SlidingStep/>,
-        //   disabled: isSliding,
-        // },
       ]}
     />
   );

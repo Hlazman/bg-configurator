@@ -234,7 +234,6 @@ const es = {
 
 
 // Products Frame
-  'hidden_standard Hidden': 'Estándar oculto',
   'type 1 outside Neo Classic': 'Neo Clásico exterior',
   'type 3 inside Art Decore': 'Art Deco interior',
   'hidden_universal Hidden': 'Universal oculto',
@@ -242,16 +241,11 @@ const es = {
   'type 3 inside Neo Classic': 'Neo Clásico interior',
   'type 1 outside Loft': 'Loft exterior',
   'type 3 inside Loft': 'Loft interior',
-  'hidden_standard Art Decor' : 'Estándar oculto Art Decor',
-  'hidden_standard Loft' : 'Estándar oculto Loft',
-  'hidden_universal Art Decor' : 'Universal oculto Art Decor',
-  'hidden_universal Loft' : 'Universal oculto Loft',
-  'hidden_universal Neo Classic' : 'Universal oculto Neo Classic',
-  'hidden_standard Neo Classic ' : 'Estándar oculto Neo Classic',
-
-  'sliding loft': 'puertas correderas loft',
-  'sliding Art Decore': 'puertas correderas Art Decore',
-  'sliding Neo Classic': 'puertas correderas Neo Classic',
+  'hidden_outside_40' : 'oculto exterior 40',
+  'hidden_outside_43' : 'oculto exterior 43',
+  'hidden_universal_45' : 'oculto universal 45',
+  'hidden_universal_51' : 'oculto universal 51',
+  'hidden_universal_55' : 'oculto universal 55',
 
 // Products Elements
   'aluminium cover': 'Cubierta de aluminio',
@@ -261,11 +255,14 @@ const es = {
   'another side color': 'Otro color del otro lado',
   'decor insert Art Decore': 'Inserto decorativo (Art Decore)',
   'decor insert Neo Classic': 'Inserto decorativo (Neo Classic)',
+  'extender 150 Loft': 'Extensor hasta 150mm (Loft)',
+  'extender 150 Art Decore': 'Extensor hasta 150mm (Art Decore)',
+  'extender 150 Neo Classic': 'Extensor hasta 150mm (Neo Classic)',
   'extender 200 Loft': 'Extensor hasta 200mm (Loft)',
-  'extender 300 Loft': 'Extensor hasta 300mm (Loft)',
-  'extender 200 Neo Classic': 'Extensor hasta 200mm (Neo Classic)',
-  'extender 300 Neo Classic': 'Extensor hasta 300mm (Neo Classic)',
   'extender 200 Art Decore': 'Extensor hasta 200mm (Art Decore)',
+  'extender 200 Neo Classic': 'Extensor hasta 200mm (Neo Classic)',
+  'extender 300 Loft': 'Extensor hasta 300mm (Loft)',
+  'extender 300 Neo Classic': 'Extensor hasta 300mm (Neo Classic)',
   'extender 300 Art Decore': 'Extensor hasta 300mm (Art Decore)',
   'kapitel Neo Classic': 'Capitel (Neo Classic)',
   'panelling': 'Revestimiento',

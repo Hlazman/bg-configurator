@@ -109,8 +109,8 @@ const SlidingStep = ({ setCurrentStepSend, currentStepSend }) => {
                       title={sliding.attributes.title}
                       description={sliding.attributes.description[0].children[0].text}
                       style={{ paddingTop: '10px' }}
-                    />
-                     <p> {language.articul} : {sliding.attributes.fittingsArticle} </p>
+                      />
+                      <p> {language.articul} : {sliding.attributes.fittingsArticle} </p>
                   </Card>
                 </Radio>
               ))}

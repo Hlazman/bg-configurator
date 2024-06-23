@@ -25,6 +25,8 @@ export const OrderDescriptionFull = ({
   const [convertedPriceTotal, setConvertedPriceTotal] = useState('');
   const [exchangeRates, setExchangeRates] = useState(null);
 
+  const [convertedSlidingPrice, setConvertedSlidingPrice] = useState(null);
+
   const standartRAL = ['1013', '1015', '7045', '7047', '9001', '9002', '9003', '9010', '9016', '9018'];
 
   const fetchExchangeRates = async () => {
@@ -59,6 +61,8 @@ export const OrderDescriptionFull = ({
     const convertedKnobePrice = convertCurrency(knobeData?.price, value);
     const convertedHingePrice = convertCurrency(hingeData.price, value);
     const convertedLockPrice = convertCurrency(lockData.price, value);
+
+    const convertedSlidingPrice = convertCurrency(slidingData?.attributes.price, value);
     
     const convertedElementPrice = elementData.map((element) => {
       const updatedPrice = convertCurrency(element.price, value);
@@ -80,6 +84,8 @@ export const OrderDescriptionFull = ({
     setConvertedElementPrice(convertedElementPrice)
     setConvertedOptionPrice(convertedOptionPrice)
     setConvertedPriceTotal(convertedPriceTotal);
+
+    setConvertedSlidingPrice(convertedSlidingPrice);
   };
   
   const prevCurrencyValue = useRef(currancyValue);
@@ -332,7 +338,8 @@ export const OrderDescriptionFull = ({
           // size='default'
           size={isCreatingPdf ? 'small' : 'default'}
           >
-          {frameData && frameData.frame?.data?.attributes?.title && (
+          {frameData && frameData.frame?.data?.attributes?.title
+            && !frameData.frame?.data?.attributes?.title?.includes('sliding') && (
           <>
             <Descriptions.Item className='labelBG' span={2} label={`${language.frame} ${language.type}`} labelStyle={{fontWeight: '600', color:'#000'}}>
               {languageMap[selectedLanguage][frameData.frame?.data?.attributes?.title]}
@@ -344,36 +351,35 @@ export const OrderDescriptionFull = ({
             </>
           )}
 
-          {slidingData && (
+          {slidingData && slidingData?.attributes?.sliding.data?.attributes?.title && (
             <>
-              <Descriptions.Item span={2} className='labelBG' label={`${language.sliding}`} labelStyle={{fontWeight: '600', color:'#000'}}>
-                {/* {languageMap[selectedLanguage][frameData.frame?.data?.attributes?.title]} */}
-                <div style={{display: 'flex', justifyContent: 'center'}}>
-                    <img 
-                    src={`${imageLink}${slidingData.image?.data?.attributes?.url}`}
-                    alt="Lock"
-                    // height={150}
-                    width={150}
-                    />
-                    <div style={{margin: '15px'}}> <a href={`${imageLink}${slidingData.image?.data?.attributes?.url}`} rel="noreferrer" target="_blank"> <ZoomInOutlined style={{fontSize: '25px'}}/> </a> </div>
-                  </div> 
-              </Descriptions.Item>
+            <Descriptions.Item span={2} className='labelBG' label={`${language.sliding}`} labelStyle={{fontWeight: '600', color:'#000'}}>
+              {/* {languageMap[selectedLanguage][frameData.frame?.data?.attributes?.title]} */}
+              <div style={{display: 'flex', justifyContent: 'center'}}>
+                  <img 
+                  // src={`${imageLink}${slidingData.image?.data?.attributes?.url}`}
+                  src={`${imageLink}${slidingData?.attributes?.sliding.data?.attributes?.image?.data?.attributes?.url}`}
+                  alt="Lock"
+                  // height={150}
+                  width={150}
+                  />
+                  <div style={{margin: '15px'}}> <a href={`${imageLink}${slidingData?.attributes?.sliding.data?.attributes?.image?.data?.attributes?.url}`} rel="noreferrer" target="_blank"> <ZoomInOutlined style={{fontSize: '25px'}}/> </a> </div>
+                </div> 
+            </Descriptions.Item>
 
-              <Descriptions.Item className='labelBG' label={`${language.sliding} ${language.price}`} labelStyle={{fontWeight: '600', color:'#000'}}>
-                {/* {convertedFramePrice ? `${convertedFramePrice} ${currency}` : `${frameData.price} ${orderData?.currency}`} */}
-                <p>fdhdh</p>
-                <p>fdhdh</p>
-              </Descriptions.Item>
+            <Descriptions.Item className='labelBG' label={`${language.sliding} ${language.price}`} labelStyle={{fontWeight: '600', color:'#000'}}>
+              {convertedSlidingPrice ? `${convertedSlidingPrice} ${currency}` : `${slidingData?.attributes.price} ${orderData?.currency}`}
+            </Descriptions.Item>
 
-              <Descriptions.Item span={3} className='labelBG' label={`${language.sliding} ${language.description}`} labelStyle={{fontWeight: '600', color:'#000'}}>
-                {/* {languageMap[selectedLanguage][frameData.frame?.data?.attributes?.title]} */}
-                <div style={{textAlign: 'left'}}>
-                <span style={{fontWeight: 600}}>{language.title}</span> : {slidingData?.title} <br/>
-                <span style={{fontWeight: 600}}>{language.description}</span>: {slidingData?.description[0]?.children[0]?.text} <br/>
-                <span style={{fontWeight: 600}}>{language.articul}</span> : {slidingData?.fittingsArticle} <br/>
-                </div>
-              </Descriptions.Item>
-            </>
+            <Descriptions.Item span={3} className='labelBG' label={`${language.sliding} ${language.description}`} labelStyle={{fontWeight: '600', color:'#000'}}>
+              {/* {languageMap[selectedLanguage][frameData.frame?.data?.attributes?.title]} */}
+              <div style={{textAlign: 'left'}}>
+              <span style={{fontWeight: 600}}>{language.title}</span> : {slidingData?.attributes?.sliding.data?.attributes?.title} <br/>
+              <span style={{fontWeight: 600}}>{language.description}</span>: {slidingData?.attributes?.sliding.data?.attributes?.description[0]?.children[0]?.text} <br/>
+              <span style={{fontWeight: 600}}>{language.articul}</span> : {slidingData?.attributes?.sliding.data?.attributes?.fittingsArticle} <br/>
+              </div>
+            </Descriptions.Item>
+          </>
           )}
 
           {lockData && hingeData && knobeData && (
