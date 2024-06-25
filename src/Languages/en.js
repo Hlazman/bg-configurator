@@ -283,6 +283,65 @@ ceramogranite : 'Ceramogranite',
   'hidden_universal_51' : 'hidden universal 51',
   'hidden_universal_55' : 'hidden universal 55',
 
+// Slidings
+  'With running rail aluminum without coating 1100 mm and lower support guide 2200 mm' : (
+    <div style={{textAlign: 'left', color: '#000' }}>
+      With running rail aluminum without coating 1100 mm and lower support guide 2200 mm
+    </div>
+  ),
+  'With running tire aluminum without coating 1100 mm' : (
+    <div style={{textAlign: 'left', color: '#000' }}>
+      With running tire aluminum without coating 1100 mm
+    </div>
+  ),
+  'With running tire aluminum without coating 1800 mm' : (
+    <div style={{textAlign: 'left', color: '#000' }}>
+      With running tire aluminum without coating 1800 mm
+    </div>
+  ),
+  'Steel color is black' : (
+    <div style={{textAlign: 'left', color: '#000' }}>
+      Steel color is black
+    </div>
+  ),
+  'Without door closers. With running tire, aluminum without coating 2 m' : (
+    <div style={{textAlign: 'left', color: '#000' }}>
+      <strong> Without door closers</strong> <br/>
+      With running tire, aluminum without coating 2m
+    </div>
+  ),
+  'with 1-sided closer and shock absorber. With running tire 2 m' : (
+    <div style={{textAlign: 'left', color: '#000' }}>
+      <strong> With 1-sided closer and shock absorber</strong> <br/>
+      With running tire 2m
+    </div>
+  ),
+  'With 1 side closer and stopper. With running tire 2 m' : (
+    <div style={{textAlign: 'left', color: '#000' }}>
+      <strong> With 1-side closer and stopper </strong> <br/>
+      With running tire 2m
+    </div>
+  ),
+  'With 2-sided door closer. With running tire 2 m' : (
+    <div style={{textAlign: 'left', color: '#000' }}>
+      <strong> With 2-sided door closer </strong> <br/>
+      With running tire 2m
+    </div>
+  ),
+  'with 1-sided closer and shock absorber. With running tire 2m and mounting to the ceiling' : (
+    <div style={{textAlign: 'left', color: '#000' }}>
+      <strong> with 1-sided closer and shock absorber </strong> <br/>
+      With running tire 2m and mounting to the ceiling
+    </div>
+  ),
+  'With 1 side closer and stopper. With running tire 2 m and mounting to the ceiling' : (
+    <div style={{textAlign: 'left', color: '#000' }}>
+      <strong> With 1 side closer and stopper </strong> <br/>
+      With running tire 2 m and mounting to the ceiling
+    </div>
+  ),
+
+
 // Products Elements
   'aluminium cover': 'Aluminium cover',
   'aluminium cover painting': 'Aluminium cover (painting)',

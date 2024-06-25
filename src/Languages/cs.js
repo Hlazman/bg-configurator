@@ -246,6 +246,64 @@ const cs = {
   'hidden_universal_51' : 'Skrytý univerzální 51',
   'hidden_universal_55' : 'Skrytý univerzální 55',
 
+// Slidings
+  'With running rail aluminum without coating 1100 mm and lower support guide 2200 mm': (
+  <div style={{textAlign: 'left', color: '#000' }}>
+    S hliníkovou pojezdovou lištou bez povlaku 1100 mm a spodním vodícím vedením 2200 mm
+  </div>
+),
+'With running tire aluminum without coating 1100 mm': (
+  <div style={{textAlign: 'left', color: '#000' }}>
+    S hliníkovou pojezdovou pneumatikou bez povlaku 1100 mm
+  </div>
+),
+'With running tire aluminum without coating 1800 mm': (
+  <div style={{textAlign: 'left', color: '#000' }}>
+    S hliníkovou pojezdovou pneumatikou bez povlaku 1800 mm
+  </div>
+),
+'Steel color is black': (
+  <div style={{textAlign: 'left', color: '#000' }}>
+    Ocelová barva je černá
+  </div>
+),
+'Without door closers. With running tire, aluminum without coating 2 m': (
+  <div style={{textAlign: 'left', color: '#000' }}>
+    <strong>Bez dveřních zavíračů</strong> <br/>
+    S hliníkovou pojezdovou pneumatikou bez povlaku 2 m
+  </div>
+),
+'with 1-sided closer and shock absorber. With running tire 2 m': (
+  <div style={{textAlign: 'left', color: '#000' }}>
+    <strong>S jednostranným zavíračem a tlumičem nárazů</strong> <br/>
+    S pojezdovou pneumatikou 2 m
+  </div>
+),
+'With 1 side closer and stopper. With running tire 2 m': (
+  <div style={{textAlign: 'left', color: '#000' }}>
+    <strong>S jednostranným zavíračem a dorazem</strong> <br/>
+    S pojezdovou pneumatikou 2 m
+  </div>
+),
+'With 2-sided door closer. With running tire 2 m': (
+  <div style={{textAlign: 'left', color: '#000' }}>
+    <strong>S oboustranným dveřním zavíračem</strong> <br/>
+    S pojezdovou pneumatikou 2 m
+  </div>
+),
+'with 1-sided closer and shock absorber. With running tire 2m and mounting to the ceiling': (
+  <div style={{textAlign: 'left', color: '#000' }}>
+    <strong>S jednostranným zavíračem a tlumičem nárazů</strong> <br/>
+    S pojezdovou pneumatikou 2 m a montáží ke stropu
+  </div>
+),
+'With 1 side closer and stopper. With running tire 2 m and mounting to the ceiling': (
+  <div style={{textAlign: 'left', color: '#000' }}>
+    <strong>S jednostranným zavíračem a dorazem</strong> <br/>
+    S pojezdovou pneumatikou 2 m a montáží ke stropu
+  </div>
+),
+
 // Products Elements
   'aluminium cover': 'Hliníkový kryt',
   'aluminium cover painting': 'Hliníkový kryt (malovaný)',

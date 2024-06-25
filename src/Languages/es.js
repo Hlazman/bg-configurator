@@ -247,6 +247,64 @@ const es = {
   'hidden_universal_51' : 'oculto universal 51',
   'hidden_universal_55' : 'oculto universal 55',
 
+// Slidings
+'With running rail aluminum without coating 1100 mm and lower support guide 2200 mm': (
+  <div style={{textAlign: 'left', color: '#000' }}>
+    Con riel de aluminio sin revestimiento de 1100 mm y guía de soporte inferior de 2200 mm
+  </div>
+),
+'With running tire aluminum without coating 1100 mm': (
+  <div style={{textAlign: 'left', color: '#000' }}>
+    Con neumático de aluminio sin revestimiento de 1100 mm
+  </div>
+),
+'With running tire aluminum without coating 1800 mm': (
+  <div style={{textAlign: 'left', color: '#000' }}>
+    Con neumático de aluminio sin revestimiento de 1800 mm
+  </div>
+),
+'Steel color is black': (
+  <div style={{textAlign: 'left', color: '#000' }}>
+    El color del acero es negro
+  </div>
+),
+'Without door closers. With running tire, aluminum without coating 2 m': (
+  <div style={{textAlign: 'left', color: '#000' }}>
+    <strong>Sin cierrapuertas</strong> <br/>
+    Con neumático de aluminio sin revestimiento de 2 m
+  </div>
+),
+'with 1-sided closer and shock absorber. With running tire 2 m': (
+  <div style={{textAlign: 'left', color: '#000' }}>
+    <strong>Con cierrapuertas unilateral y amortiguador</strong> <br/>
+    Con neumático de 2 m
+  </div>
+),
+'With 1 side closer and stopper. With running tire 2 m': (
+  <div style={{textAlign: 'left', color: '#000' }}>
+    <strong>Con cierrapuertas unilateral y tope</strong> <br/>
+    Con neumático de 2 m
+  </div>
+),
+'With 2-sided door closer. With running tire 2 m': (
+  <div style={{textAlign: 'left', color: '#000' }}>
+    <strong>Con cierrapuertas bilateral</strong> <br/>
+    Con neumático de 2 m
+  </div>
+),
+'with 1-sided closer and shock absorber. With running tire 2m and mounting to the ceiling': (
+  <div style={{textAlign: 'left', color: '#000' }}>
+    <strong>Con cierrapuertas unilateral y amortiguador</strong> <br/>
+    Con neumático de 2 m y montaje al techo
+  </div>
+),
+'With 1 side closer and stopper. With running tire 2 m and mounting to the ceiling': (
+  <div style={{textAlign: 'left', color: '#000' }}>
+    <strong>Con cierrapuertas unilateral y tope</strong> <br/>
+    Con neumático de 2 m y montaje al techo
+  </div>
+),
+
 // Products Elements
   'aluminium cover': 'Cubierta de aluminio',
   'aluminium cover painting': 'Cubierta de aluminio (pintura)',

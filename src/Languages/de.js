@@ -246,6 +246,64 @@ const de = {
   'hidden_universal_51' : 'Versteckter universal 51',
   'hidden_universal_55' : 'Versteckter universal 55',
 
+// Slidings
+'With running rail aluminum without coating 1100 mm and lower support guide 2200 mm': (
+  <div style={{textAlign: 'left', color: '#000' }}>
+    Mit Aluminiumschiene ohne Beschichtung 1100 mm und unterer Führungsschiene 2200 mm
+  </div>
+),
+'With running tire aluminum without coating 1100 mm': (
+  <div style={{textAlign: 'left', color: '#000' }}>
+    Mit Aluminiumschiene ohne Beschichtung 1100 mm
+  </div>
+),
+'With running tire aluminum without coating 1800 mm': (
+  <div style={{textAlign: 'left', color: '#000' }}>
+    Mit Aluminiumschiene ohne Beschichtung 1800 mm
+  </div>
+),
+'Steel color is black': (
+  <div style={{textAlign: 'left', color: '#000' }}>
+    Stahlfarbe ist schwarz
+  </div>
+),
+'Without door closers. With running tire, aluminum without coating 2 m': (
+  <div style={{textAlign: 'left', color: '#000' }}>
+    <strong>Ohne Türschließer</strong> <br/>
+    Mit Aluminiumschiene ohne Beschichtung 2 m
+  </div>
+),
+'with 1-sided closer and shock absorber. With running tire 2 m': (
+  <div style={{textAlign: 'left', color: '#000' }}>
+    <strong>Mit einseitigem Schließer und Stoßdämpfer</strong> <br/>
+    Mit Aluminiumschiene 2 m
+  </div>
+),
+'With 1 side closer and stopper. With running tire 2 m': (
+  <div style={{textAlign: 'left', color: '#000' }}>
+    <strong>Mit einseitigem Schließer und Anschlag</strong> <br/>
+    Mit Aluminiumschiene 2 m
+  </div>
+),
+'With 2-sided door closer. With running tire 2 m': (
+  <div style={{textAlign: 'left', color: '#000' }}>
+    <strong>Mit zweiseitigem Türschließer</strong> <br/>
+    Mit Aluminiumschiene 2 m
+  </div>
+),
+'with 1-sided closer and shock absorber. With running tire 2m and mounting to the ceiling': (
+  <div style={{textAlign: 'left', color: '#000' }}>
+    <strong>Mit einseitigem Schließer und Stoßdämpfer</strong> <br/>
+    Mit Aluminiumschiene 2 m und Deckenmontage
+  </div>
+),
+'With 1 side closer and stopper. With running tire 2 m and mounting to the ceiling': (
+  <div style={{textAlign: 'left', color: '#000' }}>
+    <strong>Mit einseitigem Schließer und Anschlag</strong> <br/>
+    Mit Aluminiumschiene 2 m und Deckenmontage
+  </div>
+),
+
 // Products Elements
   'aluminium cover': 'Aluminiumabdeckung',
   'aluminium cover painting': 'Aluminiumabdeckung (Bemalung)',

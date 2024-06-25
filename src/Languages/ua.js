@@ -246,6 +246,64 @@ const ua = {
   'hidden_universal_51' : 'Прихований універсальний 51',
   'hidden_universal_55' : 'Прихований універсальний 55',
 
+  // Slidings
+  'With running rail aluminum without coating 1100 mm and lower support guide 2200 mm': (
+  <div style={{textAlign: 'left', color: '#000' }}>
+    З ходовою шиною алюміній без пoкpиття 1100 мм та нижньої опорної направляючої 2200 мм
+  </div>
+),
+'With running tire aluminum without coating 1100 mm': (
+  <div style={{textAlign: 'left', color: '#000' }}>
+    З ходовою шиною алюміній без покриття 1100 мм
+  </div>
+),
+'With running tire aluminum without coating 1800 mm': (
+  <div style={{textAlign: 'left', color: '#000' }}>
+    З ходовою шиною алюміній без покриття 1800 мм
+  </div>
+),
+'Steel color is black': (
+  <div style={{textAlign: 'left', color: '#000' }}>
+    Сталевий колір чорний
+  </div>
+),
+'Without door closers. With running tire, aluminum without coating 2 m': (
+  <div style={{textAlign: 'left', color: '#000' }}>
+    <strong>Без дверних доводчиків</strong> <br/>
+    З ходовою шиною алюміній без покриття 2м
+  </div>
+),
+'with 1-sided closer and shock absorber. With running tire 2 m': (
+  <div style={{textAlign: 'left', color: '#000' }}>
+    <strong>З одностороннім доводчиком та ударопоглиначем</strong> <br/>
+    ходовою шиною 2 м
+  </div>
+),
+'With 1 side closer and stopper. With running tire 2 m': (
+  <div style={{textAlign: 'left', color: '#000' }}>
+    <strong>З одностороннім доводчиком та стопором</strong> <br/>
+    ходовою шиною 2 м
+  </div>
+),
+'With 2-sided door closer. With running tire 2 m': (
+  <div style={{textAlign: 'left', color: '#000' }}>
+    <strong>З двостороннім дверним доводчиком</strong> <br/>
+    ходовою шиною 2 м
+  </div>
+),
+'with 1-sided closer and shock absorber. With running tire 2m and mounting to the ceiling': (
+  <div style={{textAlign: 'left', color: '#000' }}>
+    <strong>З одностороннім доводчиком та ударопоглиначем</strong> <br/>
+    ходовою шиною 2 м та кріпленням до стелі
+  </div>
+),
+'With 1 side closer and stopper. With running tire 2 m and mounting to the ceiling': (
+  <div style={{textAlign: 'left', color: '#000' }}>
+    <strong>З одностороннім доводчиком та стопором</strong> <br/>
+    ходовою шиною 2 м та кріпленням до стелі
+  </div>
+),
+
 // Products Elements
   'aluminium cover': 'Алюмінієвий обклад',
   'aluminium cover painting': 'Алюмінієвий обклад (фарбування)',

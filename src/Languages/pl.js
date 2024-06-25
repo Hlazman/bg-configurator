@@ -240,12 +240,69 @@ const pl = {
   'type 3 inside Neo Classic': 'Neo classic wewnętrzne',
   'type 1 outside Loft': 'Loft zewnętrzne',
   'type 3 inside Loft': 'Loft wewnętrze',
-
   'hidden_outside_40' : 'Ukryty zewnętrzne 40',
   'hidden_outside_43' : 'Ukryty zewnętrzne 43',
   'hidden_universal_45' : 'Ukryty uniwersalne 45',
   'hidden_universal_51' : 'Ukryty uniwersalne 51',
   'hidden_universal_55' : 'Ukryty uniwersalne 55',
+
+// Slidings
+'With running rail aluminum without coating 1100 mm and lower support guide 2200 mm': (
+  <div style={{textAlign: 'left', color: '#000' }}>
+    Z szyną aluminiową bez powłoki 1100 mm i dolnym prowadzeniem 2200 mm
+  </div>
+),
+'With running tire aluminum without coating 1100 mm': (
+  <div style={{textAlign: 'left', color: '#000' }}>
+    Z aluminiową szyną bez powłoki 1100 mm
+  </div>
+),
+'With running tire aluminum without coating 1800 mm': (
+  <div style={{textAlign: 'left', color: '#000' }}>
+    Z aluminiową szyną bez powłoki 1800 mm
+  </div>
+),
+'Steel color is black': (
+  <div style={{textAlign: 'left', color: '#000' }}>
+    Kolor stali jest czarny
+  </div>
+),
+'Without door closers. With running tire, aluminum without coating 2 m': (
+  <div style={{textAlign: 'left', color: '#000' }}>
+    <strong>Bez zamykaczy drzwi</strong> <br/>
+    Z aluminiową szyną bez powłoki 2 m
+  </div>
+),
+'with 1-sided closer and shock absorber. With running tire 2 m': (
+  <div style={{textAlign: 'left', color: '#000' }}>
+    <strong>Z jednostronnym zamykaczem i amortyzatorem</strong> <br/>
+    Z szyną 2 m
+  </div>
+),
+'With 1 side closer and stopper. With running tire 2 m': (
+  <div style={{textAlign: 'left', color: '#000' }}>
+    <strong>Z jednostronnym zamykaczem i stopperem</strong> <br/>
+    Z szyną 2 m
+  </div>
+),
+'With 2-sided door closer. With running tire 2 m': (
+  <div style={{textAlign: 'left', color: '#000' }}>
+    <strong>Z dwustronnym zamykaczem</strong> <br/>
+    Z szyną 2 m
+  </div>
+),
+'with 1-sided closer and shock absorber. With running tire 2m and mounting to the ceiling': (
+  <div style={{textAlign: 'left', color: '#000' }}>
+    <strong>Z jednostronnym zamykaczem i amortyzatorem</strong> <br/>
+    Z szyną 2 m i montażem do sufitu
+  </div>
+),
+'With 1 side closer and stopper. With running tire 2 m and mounting to the ceiling': (
+  <div style={{textAlign: 'left', color: '#000' }}>
+    <strong>Z jednostronnym zamykaczem i stopperem</strong> <br/>
+    Z szyną 2 m i montażem do sufitu
+  </div>
+),
 
 // Products Elements
   'aluminium cover': 'Aluminiowa ramka',
