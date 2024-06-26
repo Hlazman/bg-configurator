@@ -222,6 +222,7 @@ const fetchFrameData = async (frameId) => {
                     }
                     price
                     basicPrice
+                    threshold
                   }
                 }
               }

@@ -44,6 +44,9 @@ export const getSlidings = async (orderIdToUse, jwtToken, setSlidingData) => {
         `,
         variables: {
           orderId: orderIdToUse,
+          "sort": [
+            "title:asc"
+          ],
           "pagination": {
             "limit": 50
           }
@@ -58,6 +61,7 @@ export const getSlidings = async (orderIdToUse, jwtToken, setSlidingData) => {
     ).then(response => {
       slidings = response.data?.data?.slidings?.data;
       
+      // console.log('slidings', slidings)
     });
   }
   catch (error) {
@@ -135,8 +139,6 @@ export const getSlidingData = async (orderIdToUse, jwtToken, setPreviousSlidingI
       slidingId = response.data?.data?.order?.data?.attributes?.sliding_suborder?.data?.attributes?.sliding.data?.id;
       // sliding = response.data?.data?.order?.data?.attributes?.sliding_suborder?.data?.attributes?.sliding.data?.attributes;
       sliding = response.data?.data?.order?.data?.attributes?.sliding_suborder?.data;
-      
-      console.log('slidingData', sliding)
     });
   }
   catch (error) {

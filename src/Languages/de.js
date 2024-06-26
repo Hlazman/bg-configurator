@@ -227,6 +227,8 @@ const de = {
   description: 'Beschreibung',
   articul: 'Lieferantenkode',
 
+  threshold : 'Schwelle',
+
 // Decor Types
   painted_veneer: 'Lackiertes Furnier',
   painted_glass: 'Lackiertes Glas',
@@ -312,6 +314,9 @@ const de = {
   'another side color': 'Andere Farbe auf der anderen Seite',
   'decor insert Art Decore': 'Dekoreinsatz (Art Decore)',
   'decor insert Neo Classic': 'Dekoreinsatz (Neo Classic)',
+  'extender 150 Alum Line': 'Erweiterung bis 150 mm (Alum Line)',
+  'extender 200 Alum Line': 'Erweiterung bis 200 mm (Alum Line)',
+  'extender 300 Alum Line': 'Erweiterung bis 300 mm (Alum Line)',
   'extender 150 Loft': 'Erweiterung bis 150 mm (Loft)',
   'extender 150 Neo Classic': 'Erweiterung bis 150 mm (Neo Classic)',
   'extender 150 Art Decore': 'Erweiterung bis 150 mm (Art Decore)',
@@ -333,6 +338,9 @@ const de = {
   'skirting Art Decore': 'Sockelleiste (Art Decore)',
   'skirting Loft': 'Sockelleiste (Loft)',
   'skirting Neo Classic': 'Sockelleiste (Neo Classic)',
+  'rear platband Alum Line' : 'hintere Plattband Alum Line',
+  'front platband Alum Line' : 'vordere Plattband Alum Line',
+  'sliding system cornice' : 'Schiebesystem Gesims',
 
 // Products Options
   'cat_door': 'Katzentür',

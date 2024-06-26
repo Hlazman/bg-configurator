@@ -228,6 +228,8 @@ const en = {
   description: 'Description',
   articul: 'Vendor code',
 
+  threshold : 'Threshold',
+
 // Decor Types
 painted_veneer : 'Painted veneer',
 painted_glass : 'Painted glass',
@@ -350,6 +352,9 @@ ceramogranite : 'Ceramogranite',
   'another side color': 'Another side color',
   'decor insert Art Decore': 'Art Decore decor insert',
   'decor insert Neo Classic': 'Neo Classic decor insert',
+  'extender 150 Alum Line': 'Extender up to 150 mm (Alum Line)',
+  'extender 200 Alum Line': 'Extender up to 200 mm (Alum Line)',
+  'extender 300 Alum Line': 'Extender up to 300 mm (Alum Line)',
   'extender 150 Loft': 'Extender up to 150 mm (Loft)',
   'extender 150 Neo Classic': 'Extender up to 150 mm (Neo Classic)',
   'extender 150 Art Decore': 'Extender up to 150 mm (Art Decore)',
@@ -371,6 +376,9 @@ ceramogranite : 'Ceramogranite',
   'skirting Art Decore': 'Skirting (Art Decore)',
   'skirting Loft': 'Skirting (Loft)',
   'skirting Neo Classic': 'Skirting (Neo Classic)',
+  'rear platband Alum Line' : 'rear platband Alum Line',
+  'front platband Alum Line' : 'front platband Alum Line',
+  'sliding system cornice' : 'sliding system cornice',
 
 // Products Elements TYPE
   decorInsert: "Insert decor", 

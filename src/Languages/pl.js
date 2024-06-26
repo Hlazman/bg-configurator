@@ -227,6 +227,8 @@ const pl = {
   description: 'Opis',
   articul: 'Kod dostawcy',
 
+  threshold : 'Próg',
+
 // Decor Types
   painted_veneer: 'Pomalowany fornir',
   painted_glass: 'Pomalowane szkło',
@@ -312,6 +314,9 @@ const pl = {
   'another side color': 'Inny kolor z drugiej strony drzwi',
   'decor insert Art Decore': 'Wstawka (element dekoracyjny) Art Decore',
   'decor insert Neo Classic': 'Wstawka (element dekoracyjny) Neo Classic',
+  'extender 150 Alum Line': 'Listwę dodatkową do 150 mm (Alum Line)',
+  'extender 200 Alum Line': 'Listwę dodatkową do 200 mm (Alum Line)',
+  'extender 300 Alum Line': 'Listwę dodatkową do 300 mm (Alum Line)',
   'extender 150 Loft': 'Listwę dodatkową do 150 mm (Loft)',
   'extender 150 Neo Classic': 'Listwę dodatkową do 150 mm (Neo Classic)',
   'extender 150 Art Decore': 'Listwę dodatkową do 150 mm (Art Decore)',
@@ -333,6 +338,11 @@ const pl = {
   'skirting Art Decore': 'Listwa przypodłogowa (Art Decore)',
   'skirting Loft': 'Listwa przypodłogowa (Loft)',
   'skirting Neo Classic': 'Listwa przypodłogowa (Neo Classic)',
+  'rear platband Alum Line' : 'tylna listwa Alum Line',
+  'front platband Alum Line' : 'przednia listwa Alum Line',
+  'sliding system cornice' : 'Gzyms (system przesuwny )',
+
+
 
 // Products Options
   'cat_door': 'Drzwiczki dla kota',

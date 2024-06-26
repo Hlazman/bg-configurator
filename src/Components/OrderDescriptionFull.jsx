@@ -342,7 +342,8 @@ export const OrderDescriptionFull = ({
             && !frameData.frame?.data?.attributes?.title?.includes('sliding') && (
           <>
             <Descriptions.Item className='labelBG' span={2} label={`${language.frame} ${language.type}`} labelStyle={{fontWeight: '600', color:'#000'}}>
-              {languageMap[selectedLanguage][frameData.frame?.data?.attributes?.title]}
+              {languageMap[selectedLanguage][frameData.frame?.data?.attributes?.title]} <br/>
+              {frameData.threshold ? ` + ${language.threshold}` : ``}
             </Descriptions.Item>
 
             <Descriptions.Item className='labelBG' label={`${language.frame} ${language.price}`} labelStyle={{fontWeight: '600', color:'#000'}}>

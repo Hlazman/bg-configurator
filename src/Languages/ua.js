@@ -227,6 +227,8 @@ const ua = {
   description: 'Опис',
   articul: 'Артікул',
 
+  threshold : 'Поріг',
+  
 // Decor Types
   painted_veneer: 'Фарбований шпон',
   painted_glass: 'Фарбоване скло',
@@ -312,6 +314,9 @@ const ua = {
   'another side color': 'Інший колір з іншого боку',
   'decor insert Art Decore': 'Декоративна вставка (Art Decore)',
   'decor insert Neo Classic': 'Декоративна вставка (Neo Classic)',
+  'extender 150 Alum Line': 'Розширювач до 150 мм (Alum Line)',
+  'extender 200 Alum Line': 'Розширювач до 150 мм (Alum Line)',
+  'extender 300 Alum Line': 'Розширювач до 150 мм (Alum Line)',
   'extender 150 Loft': 'Розширювач до 150 мм (Loft)',
   'extender 150 Art Decore': 'Розширювач до 150 мм (Art Decore)',
   'extender 150 Neo Classic': 'Розширювач до 150 мм (Neo Classic)',
@@ -333,6 +338,9 @@ const ua = {
   'skirting Art Decore': 'Плінтус (Art Decore)',
   'skirting Loft': 'Плінтус (Loft)',
   'skirting Neo Classic': 'Плінтус (Neo Classic)',
+  'rear platband Alum Line' : 'задній розширювач Alum Line',
+  'front platband Alum Line' : 'передній розширювач Alum Line',
+  'sliding system cornice' : 'карниз розсувної системи',
 
 // Products Options
   'cat_door': 'Кошачі двері',

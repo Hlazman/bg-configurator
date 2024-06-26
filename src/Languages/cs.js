@@ -227,6 +227,8 @@ const cs = {
   description: 'Popis',
   articul: 'Kód dodavatele',
 
+  threshold : 'Práh',
+
 // Decor Types
   painted_veneer: 'Natřená dýha',
   painted_glass: 'Natřené sklo',
@@ -312,6 +314,9 @@ const cs = {
   'another side color': 'Barva druhé strany',
   'decor insert Art Decore': 'Vložka dekoru Art Decore',
   'decor insert Neo Classic': 'Vložka dekoru Neo Classic',
+  'extender 150 Alum Line': 'Rozšiřovač až 150 mm (Alum Line)',
+  'extender 200 Alum Line': 'Rozšiřovač až 200 mm (Alum Line)',
+  'extender 300 Alum Line': 'Rozšiřovač až 300 mm (Alum Line)',
   'extender 150 Loft': 'Rozšiřovač až 150 mm (Loft)',
   'extender 150 Neo Classic': 'Rozšiřovač až 150 mm (Neo Classic)',
   'extender 150 Art Decore': 'Rozšiřovač až 150 mm (Art Decore)',
@@ -333,6 +338,10 @@ const cs = {
   'skirting Art Decore': 'Podlaha (Art Decore)',
   'skirting Loft': 'Podlaha (Loft)',
   'skirting Neo Classic': 'Podlaha (Neo Classic)',
+  'rear platband Alum Line' : 'zadní obložení Alum Line',
+  'front platband Alum Line' : 'přední obložení Alum Line',
+  'sliding system cornice' : 'posuvný systém římsa',
+
 
 // Products Options
   'cat_door': 'Kočičí dveře',

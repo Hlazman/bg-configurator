@@ -227,6 +227,8 @@ const es = {
   description: 'Descripción',
   articul: 'Código de proveedor',
 
+  threshold : 'Umbral',
+
 // Decor Types
   painted_veneer: 'Chapa pintada',
   painted_glass: 'Vidrio pintado',
@@ -313,6 +315,9 @@ const es = {
   'another side color': 'Otro color del otro lado',
   'decor insert Art Decore': 'Inserto decorativo (Art Decore)',
   'decor insert Neo Classic': 'Inserto decorativo (Neo Classic)',
+  'extender 150 Alum Line': 'Extensor hasta 150mm (Alum Line)',
+  'extender 200 Alum Line': 'Extensor hasta 200mm (Alum Line)',
+  'extender 300 Alum Line': 'Extensor hasta 300mm (Alum Line)',
   'extender 150 Loft': 'Extensor hasta 150mm (Loft)',
   'extender 150 Art Decore': 'Extensor hasta 150mm (Art Decore)',
   'extender 150 Neo Classic': 'Extensor hasta 150mm (Neo Classic)',
@@ -334,6 +339,10 @@ const es = {
   'skirting Art Decore': 'Zócalo (Art Decore)',
   'skirting Loft': 'Zócalo (Loft)',
   'skirting Neo Classic': 'Zócalo (Neo Classic)',
+  'rear platband Alum Line' : 'platabanda trasera Alum Line',
+  'front platband Alum Line' : 'platabanda delantera Alum Line',
+  'sliding system cornice' : 'cornisa del sistema deslizante',
+
 
 // Products Options
   'cat_door': 'Puerta para gatos',

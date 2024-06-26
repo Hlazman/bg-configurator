@@ -3,7 +3,7 @@ import {queryLink} from './variables'
 import {updateError} from './validationOrder'
 
 
-export const getFrameData = async (orderIdToUse, jwtToken, setFrameSuborderData, setFrames, setSelectedFrame)=> {
+export const getFrameData = async (orderIdToUse, jwtToken, setFrameSuborderData, setFrames, setSelectedFrame, setIsthreshold)=> {
   let filters = {};
   let suborderData = {};
   let frameSuborderID = '';
@@ -54,6 +54,7 @@ export const getFrameData = async (orderIdToUse, jwtToken, setFrameSuborderData,
                             id
                           }
                         }
+                        threshold
                       }
                       id
                     }
@@ -78,6 +79,9 @@ export const getFrameData = async (orderIdToUse, jwtToken, setFrameSuborderData,
       frameSuborderID = response.data?.data?.order?.data.attributes?.frame_suborder?.data?.id;
       frameID = response.data?.data?.order?.data.attributes?.frame_suborder?.data.attributes?.frame?.data?.id;
       
+      const threshold = response.data?.data?.order?.data.attributes?.frame_suborder?.data.attributes?.threshold
+      console.log('threshold', threshold)
+
       filters = {
         hidden: data?.hidden,
         opening: data?.opening,
@@ -86,6 +90,7 @@ export const getFrameData = async (orderIdToUse, jwtToken, setFrameSuborderData,
 
       suborderData = {
         frameSuborderID : frameSuborderID,
+        threshold: threshold,
         decor: data?.door_suborder?.data?.attributes?.decor?.data?.id,
         side: data?.side,
         sizes: {
@@ -96,6 +101,7 @@ export const getFrameData = async (orderIdToUse, jwtToken, setFrameSuborderData,
       };
       setSelectedFrame(frameID);
       setFrameSuborderData(suborderData);
+      setIsthreshold(threshold);
     })
 
     if (setFrames !== null) {
@@ -178,7 +184,7 @@ export const getFrames = async (jwtToken, framesFilter, setFrames)=> {
   }
 };
 
-export const updateFrameSuborder = async (jwtToken, frameSuborderData, frameId, orderIdToUse) => {
+export const updateFrameSuborder = async (jwtToken, frameSuborderData, frameId, orderIdToUse, threshold) => {
   try {
     axios.post(queryLink,
       {query: `
@@ -194,6 +200,7 @@ export const updateFrameSuborder = async (jwtToken, frameSuborderData, frameId, 
           updateFrameSuborderId: frameSuborderData.frameSuborderID,
           data: {
             frame: frameId,
+            threshold: threshold,
             // decor: selectedDecorId ? selectedDecorId : frameSuborderData?.decor,
             decor: frameSuborderData?.decor,
             side: frameSuborderData?.side,
@@ -559,6 +566,7 @@ export const removeFrameSuborderData = async (jwtToken, frameSuborderId, orderId
           data: {
             // frame: null,
             frame: '64',
+            threshold : false,
             price: null,
             basicPrice: null,
             decor: null,

@@ -1,4 +1,4 @@
-import { Form, Button, Card, Select, message, Affix } from 'antd';
+import { Form, Button, Card, Select, message, Affix, Radio } from 'antd';
 import { SendOutlined } from '@ant-design/icons';
 import { useOrder } from '../../Context/OrderContext';
 import { useEffect, useState } from 'react';
@@ -22,19 +22,23 @@ const FrameStep = ({ setCurrentStepSend, currentStepSend }) => {
   
   const [frames, setFrames] = useState([]);
   const [frameSuborderData, setFrameSuborderData] = useState({});
+  
   const [selectedFrame, setSelectedFrame] = useState('');
+  const [isThreshold, setIsthreshold] = useState(false);
 
   useEffect(() => {
-    getFrameData(orderIdToUse, jwtToken, setFrameSuborderData, setFrames, setSelectedFrame);
+    getFrameData(orderIdToUse, jwtToken, setFrameSuborderData, setFrames, setSelectedFrame, setIsthreshold);
+    
     form.setFieldsValue({ name: selectedFrame});
+    form.setFieldsValue({ threshold : isThreshold});
 
-    }, [orderIdToUse, jwtToken, selectedFrame]);
+    }, [orderIdToUse, jwtToken, selectedFrame, isThreshold]);
 
     const handleFormSubmit = async () => {
       const selectedFrameId = form.getFieldValue('name');
-      await updateFrameSuborder(jwtToken, frameSuborderData, selectedFrameId, orderIdToUse);
+      const threshold = form.getFieldValue('threshold');
+      await updateFrameSuborder(jwtToken, frameSuborderData, selectedFrameId, orderIdToUse, threshold);
       await removeSlidingSuborderData(jwtToken, slidingSuborderId);
-
 
       messageApi.success(language.successQuery);
       if (setCurrentStepSend) {
@@ -58,6 +62,17 @@ const FrameStep = ({ setCurrentStepSend, currentStepSend }) => {
         {`${language.submit} ${language.startData}`}
         </Button>
       </Affix>
+
+      <Form.Item
+        label= {language.threshold}
+        name='threshold'
+        style={{ display: 'flex', gap: '30px' }}
+      >
+        <Radio.Group buttonStyle="solid">
+          <Radio.Button value={true}>{language.yes}</Radio.Button>
+          <Radio.Button value={false}>{language.no}</Radio.Button>
+        </Radio.Group>
+      </Form.Item>
 
         <Form.Item
           label={language.frame}
