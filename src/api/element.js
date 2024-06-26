@@ -57,8 +57,14 @@ export const getElements = async (jwtToken, orderIdToUse, setElementOptions) => 
     );
 
     if (elementsResponse) {
-      const elements = elementsResponse?.data?.data?.order?.data?.attributes?.door_suborder?.data?.attributes?.door?.data?.attributes?.whiteListElements?.data
+      // const elements = elementsResponse?.data?.data?.order?.data?.attributes?.door_suborder?.data?.attributes?.door?.data?.attributes?.whiteListElements?.data;
+      let elements = elementsResponse?.data?.data?.order?.data?.attributes?.door_suborder?.data?.attributes?.door?.data?.attributes?.whiteListElements?.data;
+      const isSliding = await getIsSlidingFrame(orderIdToUse, jwtToken);
       
+      if (!isSliding) {
+        elements = elements.filter(element => element.id !== "33");
+      }
+
       if (setElementOptions) {
         setElementOptions(elements);
       }
@@ -179,6 +185,50 @@ export const updateElementSuborder = async (jwtToken, elementID, data, language,
     messageApi.error(language.errorQuery);
   }
 };
+
+
+export const getIsSlidingFrame = async (orderIdToUse, jwtToken) => {
+  try {
+    const response = await axios.post(queryLink,
+      { query: `
+          query Query($orderId: ID) {
+            order(id: $orderId) {
+              data {
+                attributes {
+                  frame_suborder {
+                    data {
+                      attributes {
+                        frame {
+                          data {
+                            id
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        `,
+        variables: {
+          orderId: orderIdToUse
+        }
+      },
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${jwtToken}`,
+        }
+      }
+    );
+    const frameID = response.data?.data?.order?.data.attributes?.frame_suborder?.data.attributes?.frame?.data?.id;
+    return frameID === '64' ? true : false;
+  }
+  catch (error) {
+    console.error('Error:', error);
+  }
+}
 
 // TODO: CLEAR CODE ++++++++++++++++++++++++++++++++
 export const getDecorFromSuborder = async (

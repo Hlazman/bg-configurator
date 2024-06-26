@@ -6,6 +6,7 @@ import { useLanguage } from '../../Context/LanguageContext';
 import languageMap from '../../Languages/language';
 import {getFrameData, getFrames, updateFrameSuborder} from '../../api/frame'
 import { removeSlidingSuborderData } from '../../api/sliding';
+import {validateElements} from '../../api/validationOrder'
 
 const { Option } = Select;
 
@@ -39,6 +40,8 @@ const FrameStep = ({ setCurrentStepSend, currentStepSend }) => {
       const threshold = form.getFieldValue('threshold');
       await updateFrameSuborder(jwtToken, frameSuborderData, selectedFrameId, orderIdToUse, threshold);
       await removeSlidingSuborderData(jwtToken, slidingSuborderId);
+
+      await validateElements(orderIdToUse, jwtToken);
 
       messageApi.success(language.successQuery);
       if (setCurrentStepSend) {
