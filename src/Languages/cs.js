@@ -340,7 +340,9 @@ const cs = {
   'skirting Neo Classic': 'Podlaha (Neo Classic)',
   'rear platband Alum Line' : 'zadní obložení Alum Line',
   'front platband Alum Line' : 'přední obložení Alum Line',
-  'sliding system cornice' : 'posuvný systém římsa',
+  'sliding system cornice Neo Classic (Neo Classic)' : 'posuvný systém římsa',
+  'sliding system cornice Loft' : 'posuvný systém římsa (Loft)',
+  'sliding system cornice Art Decore' : 'posuvný systém římsa (Art Decore)',
 
 
 // Products Options

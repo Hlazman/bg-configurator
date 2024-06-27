@@ -340,7 +340,9 @@ const pl = {
   'skirting Neo Classic': 'Listwa przypodłogowa (Neo Classic)',
   'rear platband Alum Line' : 'tylna listwa Alum Line',
   'front platband Alum Line' : 'przednia listwa Alum Line',
-  'sliding system cornice' : 'Gzyms (system przesuwny )',
+  'sliding system cornice Neo Classic' : 'Gzyms (system przesuwny Neo Classic)',
+  'sliding system cornice Loft' : 'Gzyms (system przesuwny Loft)',
+  'sliding system cornice Art Decore' : 'Gzyms (system przesuwny Art Decore)',
 
 
 

@@ -340,7 +340,9 @@ const de = {
   'skirting Neo Classic': 'Sockelleiste (Neo Classic)',
   'rear platband Alum Line' : 'hintere Plattband Alum Line',
   'front platband Alum Line' : 'vordere Plattband Alum Line',
-  'sliding system cornice' : 'Schiebesystem Gesims',
+  'sliding system cornice Neo Classic' : 'Schiebesystem Gesims (Neo Classic)',
+  'sliding system cornice Loft' : 'Schiebesystem Gesims (Loft)',
+  'sliding system cornice Art Decore' : 'Schiebesystem Gesims (Art Decore)',
 
 // Products Options
   'cat_door': 'Katzentür',

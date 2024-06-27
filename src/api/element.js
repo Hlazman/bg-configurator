@@ -62,7 +62,8 @@ export const getElements = async (jwtToken, orderIdToUse, setElementOptions) => 
       const isSliding = await getIsSlidingFrame(orderIdToUse, jwtToken);
       
       if (!isSliding) {
-        elements = elements.filter(element => element.id !== "33");
+        // elements = elements.filter(element => element.id !== "33");
+        elements = elements.filter(element => !["33", "36", "37"].includes(element.id));
       }
 
       if (setElementOptions) {

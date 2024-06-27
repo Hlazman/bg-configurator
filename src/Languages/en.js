@@ -378,7 +378,9 @@ ceramogranite : 'Ceramogranite',
   'skirting Neo Classic': 'Skirting (Neo Classic)',
   'rear platband Alum Line' : 'rear platband Alum Line',
   'front platband Alum Line' : 'front platband Alum Line',
-  'sliding system cornice' : 'sliding system cornice',
+  'sliding system cornice Loft' : 'sliding system cornice (Loft)',
+  'sliding system cornice Art Decore' : 'sliding system cornice (Art Decore)',
+  'sliding system cornice Neo Classic' : 'sliding system cornice (Neo Classic)',
 
 // Products Elements TYPE
   decorInsert: "Insert decor", 

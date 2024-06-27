@@ -341,7 +341,9 @@ const es = {
   'skirting Neo Classic': 'Zócalo (Neo Classic)',
   'rear platband Alum Line' : 'platabanda trasera Alum Line',
   'front platband Alum Line' : 'platabanda delantera Alum Line',
-  'sliding system cornice' : 'cornisa del sistema deslizante',
+  'sliding system cornice Art Decore' : 'cornisa del sistema deslizante (Art Decore)',
+  'sliding system cornice Neo Classic' : 'cornisa del sistema deslizante (Neo Classic)',
+  'sliding system cornice Loft' : 'cornisa del sistema deslizante (Loft)',
 
 
 // Products Options

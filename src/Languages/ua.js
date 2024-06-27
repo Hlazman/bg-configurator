@@ -340,7 +340,9 @@ const ua = {
   'skirting Neo Classic': 'Плінтус (Neo Classic)',
   'rear platband Alum Line' : 'задній розширювач Alum Line',
   'front platband Alum Line' : 'передній розширювач Alum Line',
-  'sliding system cornice' : 'карниз розсувної системи',
+  'sliding system cornice Loft' : 'Карниз розсувної системи (Loft)',
+  'sliding system cornice Art Decore' : 'Карниз розсувної системи (Art Decore)',
+  'sliding system cornice Neo Classic' : 'Карниз розсувної системи (Neo Classic)',
 
 // Products Options
   'cat_door': 'Кошачі двері',
