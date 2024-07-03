@@ -194,11 +194,13 @@ export const OrderDescriptionFull = ({
                   {orderData?.side}
                 </Descriptions.Item>
 
-                <Descriptions.Item label={language.height}>
+                {/* <Descriptions.Item label={language.height}> */}
+                <Descriptions.Item label={`${language.height} (${language.canvas})`}>
                   {`${doorData.sizes.height} mm`}
                   </Descriptions.Item>
 
-                <Descriptions.Item label={language.width}>
+                {/* <Descriptions.Item label={language.width}> */}
+                <Descriptions.Item label={`${language.width} (${language.canvas})`}>
                   {`${doorData.sizes.width} mm`}
                 </Descriptions.Item>
 
@@ -500,8 +502,12 @@ export const OrderDescriptionFull = ({
                   {orderData?.knobInsertion ? language.yes : language.no}
                 </Descriptions.Item>
 
-                <Descriptions.Item label={language.lockInsertion}>
+                {/* <Descriptions.Item label={language.lockInsertion}>
                   {orderData?.lockInsertion ? language.yes : language.no}
+                </Descriptions.Item> */}
+
+                <Descriptions.Item label={language.lockInsertion}>
+                  {orderData?.lockTypeInsertion}
                 </Descriptions.Item>
 
                 <Descriptions.Item label={language.spindleInsertion}>

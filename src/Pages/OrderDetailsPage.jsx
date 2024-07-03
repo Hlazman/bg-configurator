@@ -104,6 +104,7 @@ export const OrderDetailsPage = ({fromTotalOrder, isCreatingTotalPdf, orderName,
                     spindleInsertion
                     thresholdInsertion
                     doorSeal
+                    lockTypeInsertion
                     shippingAddress {
                       address
                       city

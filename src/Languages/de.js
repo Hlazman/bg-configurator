@@ -218,8 +218,8 @@ const de = {
   grey: 'Grau',
   none: 'Keine',
 
-  side1: 'Seite 1',
-  side2: 'Seite 2',
+  side1: 'Seite 1 (Vorderseite)',
+  side2: 'Seite 2 (Rückseite)',
   additionally: 'zusätzlich',
   preview: 'Vorschau',
   dbColor: 'Farbdatenbank',

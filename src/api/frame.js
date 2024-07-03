@@ -8,6 +8,7 @@ export const getFrameData = async (orderIdToUse, jwtToken, setFrameSuborderData,
   let suborderData = {};
   let frameSuborderID = '';
   let frameID = '';
+  let doorModel = '';
   
   try {
     await axios.post(queryLink,
@@ -37,6 +38,9 @@ export const getFrameData = async (orderIdToUse, jwtToken, setFrameSuborderData,
                           data {
                             attributes {
                               collection
+                              product_properties {
+                                title
+                              }
                             }
                           }
                         }
@@ -78,9 +82,9 @@ export const getFrameData = async (orderIdToUse, jwtToken, setFrameSuborderData,
       const data = response.data?.data?.order?.data?.attributes || {};
       frameSuborderID = response.data?.data?.order?.data.attributes?.frame_suborder?.data?.id;
       frameID = response.data?.data?.order?.data.attributes?.frame_suborder?.data.attributes?.frame?.data?.id;
+      doorModel = data?.door_suborder?.data?.attributes?.door?.data?.attributes?.product_properties?.title;
       
-      const threshold = response.data?.data?.order?.data.attributes?.frame_suborder?.data.attributes?.threshold
-      console.log('threshold', threshold)
+      const threshold = response.data?.data?.order?.data.attributes?.frame_suborder?.data.attributes?.threshold;
 
       filters = {
         hidden: data?.hidden,
@@ -105,7 +109,7 @@ export const getFrameData = async (orderIdToUse, jwtToken, setFrameSuborderData,
     })
 
     if (setFrames !== null) {
-      await getFrames(jwtToken, filters, setFrames);
+      await getFrames(jwtToken, filters, setFrames, doorModel);
     }
 
   }
@@ -114,7 +118,7 @@ export const getFrameData = async (orderIdToUse, jwtToken, setFrameSuborderData,
   }
 };
 
-export const getFrames = async (jwtToken, framesFilter, setFrames)=> {
+export const getFrames = async (jwtToken, framesFilter, setFrames, doorModel)=> {
 
   const getOpeningFilter = (opening) => {
 
@@ -126,6 +130,24 @@ export const getFrames = async (jwtToken, framesFilter, setFrames)=> {
       return ['universal']
     }
   }
+
+const getTrueFrames = (data, doorModel) => {
+    const numberMatch = doorModel.match(/\d+/);
+    const number = numberMatch ? numberMatch[0] : null;
+
+    return data.filter(item => {
+        const title = item.attributes.title;
+        if (number === '55') {
+            return title === 'hidden_universal_55';
+        } else if (number === '51') {
+            return title === 'hidden_universal_51';
+        } else if (number === '45') {
+            return title === 'hidden_universal_45';
+        } else {
+            return title === 'hidden_outside_43' || title === 'hidden_universal_45';
+        }
+    });
+};
 
   try {
     await axios.post(queryLink,
@@ -176,7 +198,15 @@ export const getFrames = async (jwtToken, framesFilter, setFrames)=> {
       }
     ).then(response => {
       const data = response.data?.data?.frames?.data;
-      setFrames(data);
+      const realFrames = getTrueFrames(data, doorModel);
+
+      if (framesFilter.hidden) {
+        setFrames(realFrames);
+      } else {
+        setFrames(data);
+      }
+
+      // setFrames(data);
     })
   }
   catch (error) {

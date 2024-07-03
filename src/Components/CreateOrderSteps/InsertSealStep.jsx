@@ -41,6 +41,7 @@ const InsertSealStep = ({ setCurrentStepSend, currentStepSend }) => {
                     spindleInsertion
                     thresholdInsertion
                     doorSeal
+                    lockTypeInsertion
                   }
                 }
               }
@@ -143,7 +144,7 @@ const InsertSealStep = ({ setCurrentStepSend, currentStepSend }) => {
           </Form.Item>
         </div>
 
-        <div style={{ display: 'flex', gap: '30px' }}>
+        {/* <div style={{ display: 'flex', gap: '30px' }}>
           <Form.Item
             label={language.lockInsertion}
             name="lockInsertion"
@@ -153,7 +154,7 @@ const InsertSealStep = ({ setCurrentStepSend, currentStepSend }) => {
               <Radio.Button value={false}>{language.no}</Radio.Button>
             </Radio.Group>
           </Form.Item>
-        </div>
+        </div> */}
 
         <div style={{ display: 'flex', gap: '30px' }}>
           <Form.Item
@@ -189,6 +190,19 @@ const InsertSealStep = ({ setCurrentStepSend, currentStepSend }) => {
               <Radio.Button value="black">{language.black}</Radio.Button>
               <Radio.Button value="grey">{language.grey}</Radio.Button>
               <Radio.Button value="white">{language.white}</Radio.Button>
+            </Radio.Group>
+          </Form.Item>
+        </div>
+
+        <div style={{ display: 'flex', gap: '30px' }}>
+          <Form.Item
+            label={language.lockInsertion}
+            name="lockTypeInsertion"
+          >
+            <Radio.Group buttonStyle="solid">
+              <Radio.Button value="none">{language.none}</Radio.Button>
+              <Radio.Button value="wc">{'WC'}</Radio.Button>
+              <Radio.Button value="pz">{'PZ'}</Radio.Button>
             </Radio.Group>
           </Form.Item>
         </div>

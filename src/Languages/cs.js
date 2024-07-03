@@ -218,8 +218,8 @@ const cs = {
   grey: 'Šedá',
   none: 'Žádná',
 
-  side1: 'Strana 1',
-  side2: 'Strana 2',
+  side1: 'Strana 1 (Přední strana)',
+  side2: 'Strana 2 (Zadní strana)',
   additionally: 'dodatečně',
   preview: 'Náhled',
   dbColor: 'Databáze barev',

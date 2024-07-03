@@ -219,8 +219,8 @@ const en = {
   grey : 'Grey',
   none : 'None',
 
-  side1: 'Side 1',
-  side2: 'Side 2',
+  side1: 'Side 1 (Front side)',
+  side2: 'Side 2 (Backside)',
   additionally: 'additionally',
   preview: 'Preview',
   dbColor: 'Colors Database',

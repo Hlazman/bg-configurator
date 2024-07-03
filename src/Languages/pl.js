@@ -218,8 +218,8 @@ const pl = {
   grey: 'Szary',
   none: 'Brak',
 
-  side1: 'Strona 1',
-  side2: 'Strona 2',
+  side1: 'Strona 1 (Przód)',
+  side2: 'Strona 2 (Tyłek)',
   additionally: 'Dodatkowo',
   preview: 'Podgląd',
   dbColor: 'Baza danych kolorów',

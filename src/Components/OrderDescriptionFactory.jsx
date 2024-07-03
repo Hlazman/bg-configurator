@@ -141,11 +141,13 @@ export const OrderDescriptionFactory = ({
               {orderData?.side}
             </Descriptions.Item>
 
-            <Descriptions.Item label={language.height} labelStyle={{fontWeight: '600', color:'#000'}}>
+            {/* <Descriptions.Item label={language.height} labelStyle={{fontWeight: '600', color:'#000'}}> */}
+            <Descriptions.Item label={`${language.height} (${language.canvas})`} labelStyle={{fontWeight: '600', color:'#000'}}>
               {`${doorData.sizes.height} mm`}
               </Descriptions.Item>
 
-            <Descriptions.Item label={language.width} labelStyle={{fontWeight: '600', color:'#000'}}>
+            {/* <Descriptions.Item label={language.width} labelStyle={{fontWeight: '600', color:'#000'}}> */}
+            <Descriptions.Item label={`${language.width} (${language.canvas})`} labelStyle={{fontWeight: '600', color:'#000'}}>
             {`${doorData.sizes.width} mm`}
             </Descriptions.Item>
 

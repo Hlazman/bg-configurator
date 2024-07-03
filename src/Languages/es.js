@@ -218,8 +218,8 @@ const es = {
   grey: 'Gris',
   none: 'Ninguno',
 
-  side1: 'Lado 1',
-  side2: 'Lado 2',
+  side1: 'Lado 1 (Lado delantero)',
+  side2: 'Lado 2 (Trasero)',
   additionally: 'además',
   preview: 'Avance',
   dbColor: 'Base de datos de colores',
