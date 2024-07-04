@@ -343,6 +343,8 @@ const cs = {
   'sliding system cornice Neo Classic (Neo Classic)' : 'posuvný systém římsa',
   'sliding system cornice Loft' : 'posuvný systém římsa (Loft)',
   'sliding system cornice Art Decore' : 'posuvný systém římsa (Art Decore)',
+  'aluminium canvas carcass painting' : 'malba na hliníkový rám plátna',
+  'aluminium frame painting' : 'hliníkový rám obrazu',
 
 
 // Products Options

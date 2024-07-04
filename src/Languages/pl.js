@@ -343,8 +343,8 @@ const pl = {
   'sliding system cornice Neo Classic' : 'Gzyms (system przesuwny Neo Classic)',
   'sliding system cornice Loft' : 'Gzyms (system przesuwny Loft)',
   'sliding system cornice Art Decore' : 'Gzyms (system przesuwny Art Decore)',
-
-
+  'aluminium canvas carcass painting' : 'obraz na aluminiowej ramie płótna',
+  'aluminium canvas border' : 'aluminiowa rama płótna',
 
 // Products Options
   'cat_door': 'Drzwiczki dla kota',

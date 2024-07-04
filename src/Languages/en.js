@@ -381,6 +381,9 @@ ceramogranite : 'Ceramogranite',
   'sliding system cornice Loft' : 'sliding system cornice (Loft)',
   'sliding system cornice Art Decore' : 'sliding system cornice (Art Decore)',
   'sliding system cornice Neo Classic' : 'sliding system cornice (Neo Classic)',
+  'aluminium canvas carcass painting': 'Aluminium canvas carcass painting',
+  'aluminium frame painting' : 'Aluminium frame painting',
+
 
 // Products Elements TYPE
   decorInsert: "Insert decor", 

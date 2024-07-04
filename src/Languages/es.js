@@ -344,7 +344,8 @@ const es = {
   'sliding system cornice Art Decore' : 'cornisa del sistema deslizante (Art Decore)',
   'sliding system cornice Neo Classic' : 'cornisa del sistema deslizante (Neo Classic)',
   'sliding system cornice Loft' : 'cornisa del sistema deslizante (Loft)',
-
+  'aluminium canvas carcass painting' : 'pintura en armazón de lienzo de aluminio',
+  'aluminium canvas border' : 'borde de lienzo de aluminio',
 
 // Products Options
   'cat_door': 'Puerta para gatos',

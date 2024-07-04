@@ -343,6 +343,9 @@ const de = {
   'sliding system cornice Neo Classic' : 'Schiebesystem Gesims (Neo Classic)',
   'sliding system cornice Loft' : 'Schiebesystem Gesims (Loft)',
   'sliding system cornice Art Decore' : 'Schiebesystem Gesims (Art Decore)',
+  'aluminium canvas carcass painting' : 'Gemälde auf Aluminium-Leinwandrahmen',
+  'aluminium frame painting' : 'Aluminiumrahmen Gemälde',
+
 
 // Products Options
   'cat_door': 'Katzentür',
