@@ -1,7 +1,7 @@
 import axios from 'axios';
 import {queryLink} from './variables'
 
-export const checkKnobe = async (jwtToken, orderIdToUse, setIsDataKnobe) => {
+export const checkKnobe = async (jwtToken, orderIdToUse, setIsDataKnobe, setKnobePrice) => {
   try {
     const response = await axios.post(queryLink,
       {query: `
@@ -18,6 +18,8 @@ export const checkKnobe = async (jwtToken, orderIdToUse, setIsDataKnobe) => {
                           id
                         }
                       }
+                      price
+                      basicPrice
                     }
                   }
                 }
@@ -47,7 +49,14 @@ export const checkKnobe = async (jwtToken, orderIdToUse, setIsDataKnobe) => {
 
     if (response?.data?.data?.order?.data?.attributes?.fitting_suborders?.data[0]?.attributes?.knobe?.data?.id) {
         setIsDataKnobe(false);
-        const knobeSuborder = response?.data?.data?.order?.data?.attributes?.fitting_suborders?.data[0]?.id
+        const knobeSuborder = response?.data?.data?.order?.data?.attributes?.fitting_suborders?.data[0]?.id;
+
+        if (setKnobePrice !== null) {
+          const knobePrice = response?.data?.data?.order?.data?.attributes?.fitting_suborders?.data[0]?.attributes?.price;
+          setKnobePrice(knobePrice);
+        }
+        
+
         return knobeSuborder;
     }
 
@@ -58,8 +67,8 @@ export const checkKnobe = async (jwtToken, orderIdToUse, setIsDataKnobe) => {
   }
 };
 
-export const removeKnobe = async (jwtToken, orderIdToUse, setIsDataKnobe, messageApi, language, setPreviousKnobeId) => {
-  const knobeSuborder = await checkKnobe(jwtToken, orderIdToUse, setIsDataKnobe);
+export const removeKnobe = async (jwtToken, orderIdToUse, setIsDataKnobe, messageApi, language, setPreviousKnobeId, setKnobeVariant, setKnobePrice) => {
+  const knobeSuborder = await checkKnobe(jwtToken, orderIdToUse, setIsDataKnobe, null);
   
   try {
     const response = await axios.post(queryLink,
@@ -75,7 +84,10 @@ export const removeKnobe = async (jwtToken, orderIdToUse, setIsDataKnobe, messag
         variables: {
           updateFrameFittingId: knobeSuborder,
           data: {
-            "knobe": null
+            "knobe": null,
+            knobe_variant: null,
+            basicPrice: 0,
+            price: 0,
           }
         },
       },
@@ -90,6 +102,8 @@ export const removeKnobe = async (jwtToken, orderIdToUse, setIsDataKnobe, messag
     if (response) {
       setIsDataKnobe(true);
       setPreviousKnobeId(null);
+      setKnobePrice(0);
+      setKnobeVariant('standard');
       messageApi.success(language.successQuery);
     }
   } catch (error) {

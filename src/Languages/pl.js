@@ -344,7 +344,7 @@ const pl = {
   'sliding system cornice Loft' : 'Gzyms (system przesuwny Loft)',
   'sliding system cornice Art Decore' : 'Gzyms (system przesuwny Art Decore)',
   'aluminium canvas carcass painting' : 'obraz na aluminiowej ramie płótna',
-  'aluminium canvas border' : 'aluminiowa rama płótna',
+  'aluminium frame painting' : 'obraz na aluminiowej ramie',
 
 // Products Options
   'cat_door': 'Drzwiczki dla kota',

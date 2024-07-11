@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Form, Input, Button, Card, Radio, Select, Spin, message, Affix } from 'antd';
+import { Form, Input, Button, Card, Radio, Select, Spin, message, Affix, InputNumber } from 'antd';
 import { SendOutlined, DeleteOutlined } from '@ant-design/icons';
 import axios from 'axios';
 import { useOrder } from '../../Context/OrderContext';
@@ -24,6 +24,9 @@ const KnobesStep = ({ setCurrentStepSend, currentStepSend }) => {
   const jwtToken = localStorage.getItem('token');
   const [btnColor, setBtnColor] = useState('#ff0505');
   const [isDataKnobe, setIsDataKnobe] = useState(true);
+
+  // ++++++++++++++++
+  const [knobePrice, setKnobePrice] = useState(0);
 
   const handleKnobeVariant = (value) => {
     setKnobeVariant(value)
@@ -119,12 +122,21 @@ const KnobesStep = ({ setCurrentStepSend, currentStepSend }) => {
 
     const [form] = Form.useForm();
 
+      // ++++++++++++++++
+    //form.setFieldsValue({ price: knobePrice});
+    //const selectedFrameId = form.getFieldValue('name');
+
     const handleSbmitForm = async () => {
+        // ++++++++++++++++
+      const price = form.getFieldValue('price');
+
       const variables = {
         "updateFrameFittingId": knobeSuborderId,
         "data": {
           "knobe": previousKnobeId,
           knobe_variant: knobeVariant,
+          basicPrice: price,
+          price: price,
         }
       };
   
@@ -174,7 +186,7 @@ const KnobesStep = ({ setCurrentStepSend, currentStepSend }) => {
 
       const variables = {
         frameFittingId: knobeSuborderId,
-        'knobe_variant': knobeVariant, 
+        'knobe_variant': knobeVariant,
       };
   
       // axios.post('https://api.boki.fortesting.com.ua/graphql', {
@@ -226,8 +238,10 @@ const KnobesStep = ({ setCurrentStepSend, currentStepSend }) => {
     }, [jwtToken, knobeSuborderId]);
 
     useEffect(() => {
-      checkKnobe(jwtToken, orderIdToUse, setIsDataKnobe);
-    }, [isDataKnobe, previousKnobeId]);
+      // checkKnobe(jwtToken, orderIdToUse, setIsDataKnobe);
+      checkKnobe(jwtToken, orderIdToUse, setIsDataKnobe, setKnobePrice);
+      form.setFieldsValue({ price: knobePrice});
+    }, [isDataKnobe, previousKnobeId, knobePrice]);
 
   return (
     <Form onFinish={handleSbmitForm} form={form}>
@@ -244,7 +258,8 @@ const KnobesStep = ({ setCurrentStepSend, currentStepSend }) => {
           disabled={isDataKnobe} 
           danger 
           icon={<DeleteOutlined />} 
-          onClick={() => removeKnobe(jwtToken, orderIdToUse, setIsDataKnobe, messageApi, language, setPreviousKnobeId)}
+          // onClick={() => removeKnobe(jwtToken, orderIdToUse, setIsDataKnobe, messageApi, language, setPreviousKnobeId)}
+          onClick={() => removeKnobe(jwtToken, orderIdToUse, setIsDataKnobe, messageApi, language, setPreviousKnobeId, setKnobeVariant, setKnobePrice)}
           >
           {`${language.delete} ${language.knobe}`}
         </Button>
@@ -256,13 +271,13 @@ const KnobesStep = ({ setCurrentStepSend, currentStepSend }) => {
           addonBefore={language.searchBY}
           value={searchQuery}
           onChange={e => handleSearchQueryChange(e.target.value)}
-          style={{margin: '10px 0', flex: '1', 'minWidth': "300px"}}
+          style={{margin: '10px 0', flex: '1'}}
         />
 
       <Form.Item 
           label={language.knobe} 
           rules={[{ required: true, message: language.requiredField }]}
-          style={{margin: '10px 0', flex: '1', 'minWidth': "300px"}}
+          style={{margin: '10px 0', flex: '1'}}
         >
           <Select
             name="selectedPaintFor"
@@ -278,7 +293,7 @@ const KnobesStep = ({ setCurrentStepSend, currentStepSend }) => {
 
       <Form.Item 
         label={language.sorting}
-        style={{margin: '10px 0', flex: '1', 'minWidth': "300px"}}
+        style={{margin: '10px 0', flex: '1'}}
       >
         <Select
           value={selectedBrand}
@@ -290,6 +305,19 @@ const KnobesStep = ({ setCurrentStepSend, currentStepSend }) => {
             </Select.Option>
           ))}
         </Select>
+        </Form.Item>
+
+        <Form.Item
+         name="price"
+         style={{margin: '10px 0', flex: '1'}}
+         rules={[
+          {
+            required: true,
+            message: language.requiredField,
+          },
+        ]}
+        >
+          <InputNumber addonBefore={language.price} addonAfter="€"/>
         </Form.Item>
       </div>
         
