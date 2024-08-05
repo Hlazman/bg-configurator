@@ -87,6 +87,10 @@ const handleOpenOrder = (orderID) => {
                             id
                           }
                         }
+                        sizes {
+                          height
+                          width
+                        }
                       }
                     }
                   }
@@ -101,6 +105,7 @@ const handleOpenOrder = (orderID) => {
                     }
                   }
                   totalCost
+                  opening
                 }
               }
             }
@@ -344,6 +349,28 @@ const handleOpenOrder = (orderID) => {
             document.querySelector('.ant-table-filter-dropdown input')?.focus();
           }, 0);
         }
+      },
+    },
+    {
+      title: `${language.description}`,
+      // dataIndex: ['attributes', 'door_suborder', 'data', 'attributes', 'sizes'],
+      dataIndex: 'attributes',
+      key: 'orderDescription',
+      // width: '160px',
+      // render: (text) => text || '',
+      render: (attributes) => {
+        const sizes = attributes?.door_suborder?.data?.attributes?.sizes || {};
+        const width = sizes?.width || '';
+        const height = sizes?.height || '';
+        const opening = attributes?.opening || '';
+        // return `${language.width} ${width} ${language.height} ${height} | ${language.opening} ${opening}`;
+        return (
+          <>
+            {`${language.height}: ${height}`}<br />
+            {`${language.width}: ${width}`}<br />
+            {`${language.opening}: ${languageMap[selectedLanguage][opening]}`}
+          </>
+        );
       },
     },
     {
