@@ -228,6 +228,7 @@ const es = {
   articul: 'Código de proveedor',
 
   threshold : 'Umbral',
+  room: 'Habitación',
 
 // Decor Types
   painted_veneer: 'Chapa pintada',

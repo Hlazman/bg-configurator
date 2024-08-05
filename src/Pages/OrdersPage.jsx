@@ -106,6 +106,7 @@ const handleOpenOrder = (orderID) => {
                   }
                   totalCost
                   opening
+                  room
                 }
               }
             }
@@ -356,7 +357,7 @@ const handleOpenOrder = (orderID) => {
       // dataIndex: ['attributes', 'door_suborder', 'data', 'attributes', 'sizes'],
       dataIndex: 'attributes',
       key: 'orderDescription',
-      // width: '160px',
+      width: '200px',
       // render: (text) => text || '',
       render: (attributes) => {
         const sizes = attributes?.door_suborder?.data?.attributes?.sizes || {};
@@ -372,6 +373,13 @@ const handleOpenOrder = (orderID) => {
           </>
         );
       },
+    },
+    {
+      title: `${language.room}`,
+      dataIndex: ['attributes', 'room'],
+      key: 'orderRoom',
+      width: '160px',
+      render: (text) => text || '',
     },
     {
       title: `${language.createdAt}`,

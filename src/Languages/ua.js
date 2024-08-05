@@ -228,6 +228,7 @@ const ua = {
   articul: 'Артікул',
 
   threshold : 'Поріг',
+  room: 'Кімната',
   
 // Decor Types
   painted_veneer: 'Фарбований шпон',

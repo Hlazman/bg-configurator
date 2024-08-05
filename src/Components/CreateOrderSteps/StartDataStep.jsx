@@ -1,4 +1,4 @@
-import { Form, Button, Card, Radio, message, Affix } from 'antd';
+import { Form, Button, Card, Radio, message, Affix, Input } from 'antd';
 import { SendOutlined } from '@ant-design/icons';
 import axios from 'axios';
 import { useOrder } from '../../Context/OrderContext';
@@ -52,6 +52,7 @@ const StartDataStep = ({ setCurrentStepSend, currentStepSend }) => {
                     double_door
                     opening
                     side
+                    room
                   }
                 }
               }
@@ -177,6 +178,14 @@ const StartDataStep = ({ setCurrentStepSend, currentStepSend }) => {
         </Button>
       </Affix>
 
+        <div style={{ display: 'flex', gap: '30px' }}>
+          <Form.Item 
+            name="room"
+          >
+            <Input addonBefore={language.room}/>
+          </Form.Item>
+        </div>
+
       <div style={{ display: 'flex', gap: '30px' }}>
           <Form.Item
             label={language.doubleDoor}
@@ -232,6 +241,7 @@ const StartDataStep = ({ setCurrentStepSend, currentStepSend }) => {
             </Radio.Group>
           </Form.Item>
         </div>
+        
       </Form>
     </Card>
   );

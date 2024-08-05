@@ -228,6 +228,7 @@ const cs = {
   articul: 'Kód dodavatele',
 
   threshold : 'Práh',
+  room: 'Msístnost',
 
 // Decor Types
   painted_veneer: 'Natřená dýha',

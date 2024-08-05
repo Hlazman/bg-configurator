@@ -228,6 +228,7 @@ const pl = {
   articul: 'Kod dostawcy',
 
   threshold : 'Próg',
+  room: 'Komnata',
 
 // Decor Types
   painted_veneer: 'Pomalowany fornir',

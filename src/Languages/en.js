@@ -229,6 +229,7 @@ const en = {
   articul: 'Vendor code',
 
   threshold : 'Threshold',
+  room: 'Room',
 
 // Decor Types
 painted_veneer : 'Painted veneer',

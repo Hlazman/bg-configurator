@@ -228,6 +228,7 @@ const de = {
   articul: 'Lieferantenkode',
 
   threshold : 'Schwelle',
+  room: 'Zimmer',
 
 // Decor Types
   painted_veneer: 'Lackiertes Furnier',
