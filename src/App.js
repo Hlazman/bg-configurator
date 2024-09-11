@@ -325,8 +325,8 @@ const getHeaderTitle = (location, Id) => {
 
             <Footer style={{ textAlign: 'center', backgroundColor: 'white', marginTop:'30px' }}>
               <div style={{display: 'flex', justifyContent: 'space-between'}}>
-              <p> ©2023 Created by <a href="https://www.boki-group.com/" rel="noreferrer" target="_blank"> Boki Group </a> </p> 
-              <p><a href="https://www.exchangerate-api.com" rel="noreferrer" target="_blank"> Rates By Exchange Rate API</a></p>
+              <p> ©2024 Created by <a href="https://www.boki-group.com/" rel="noreferrer" target="_blank"> Boki Group </a> </p> 
+              {/* <p><a href="https://www.exchangerate-api.com" rel="noreferrer" target="_blank"> Rates By Exchange Rate API</a></p> */}
               </div>
             </Footer>
           </Layout>

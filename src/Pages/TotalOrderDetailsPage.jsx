@@ -135,27 +135,37 @@ export const TotalOrderDetailsPage = () => {
   const [deliveryPriceConverted, setDeliveryPriceConverted] = useState('');
   const [exchangeRates, setExchangeRates] = useState(null);
 
-  const fetchExchangeRates = async () => {
-    try {
-      const response = await fetch(`https://open.er-api.com/v6/latest/${currancyValue}`);
-      if (!response.ok) {
-        throw new Error('Failed to fetch exchange rates');
-      }
-      const data = await response.json();
-      setExchangeRates(data.rates);
-    } catch (error) {
-      console.error('Error fetching exchange rates:', error);
-    }
-  };
+  // const fetchExchangeRates = async () => {
+  //   try {
+  //     const response = await fetch(`https://open.er-api.com/v6/latest/${currancyValue}`);
+  //     if (!response.ok) {
+  //       throw new Error('Failed to fetch exchange rates');
+  //     }
+  //     const data = await response.json();
+  //     setExchangeRates(data.rates);
+  //   } catch (error) {
+  //     console.error('Error fetching exchange rates:', error);
+  //   }
+  // };
   
   const convertCurrency = (price, selectedCurrency) => {
-    if (!exchangeRates || !selectedCurrency || !price) {
-      return null;
+    // if (!exchangeRates || !selectedCurrency || !price) {
+    //   return null;
+    // }
+  
+    // const euroPrice = price / exchangeRates['EUR'];
+    // const convertedPrice = euroPrice * exchangeRates[selectedCurrency];
+  
+    // return Math.ceil(convertedPrice);
+
+    let convertedPrice;
+    
+    if (selectedCurrency === 'EUR') {
+      convertedPrice = price; 
+    } else if (selectedCurrency === 'PLN') {
+      convertedPrice = price * 4.3; 
     }
-  
-    const euroPrice = price / exchangeRates['EUR'];
-    const convertedPrice = euroPrice * exchangeRates[selectedCurrency];
-  
+
     return Math.ceil(convertedPrice);
   };
   
@@ -186,9 +196,9 @@ export const TotalOrderDetailsPage = () => {
     handleCurrencyChange(value);
   }
 
-  useEffect(() => {
-    fetchExchangeRates();
-  }, []);
+  // useEffect(() => {
+  //   fetchExchangeRates();
+  // }, []);
 
   
   useEffect(() => {
@@ -215,8 +225,8 @@ export const TotalOrderDetailsPage = () => {
           >
             <Option value="EUR">EUR €</Option>
             <Option value="PLN">PLN zł</Option>
-            <Option value="USD">USD $</Option>
-            <Option value="UAH">UAH ₴</Option>
+            {/* <Option value="USD">USD $</Option> */}
+            {/* <Option value="UAH">UAH ₴</Option> */}
           </Select>
         </Space>
         
