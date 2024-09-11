@@ -230,6 +230,9 @@ const cs = {
   threshold : 'Práh',
   room: 'Msístnost',
 
+  fm: 'Naplnění minerální vlnou',
+  pu: 'Výplň PU pěnou',
+
 // Decor Types
   painted_veneer: 'Natřená dýha',
   painted_glass: 'Natřené sklo',

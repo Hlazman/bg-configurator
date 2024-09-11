@@ -229,6 +229,9 @@ const ua = {
 
   threshold : 'Поріг',
   room: 'Кімната',
+
+  fm: 'Наповнення мінеральною ватою',
+  pu: 'Наповнення PU піною',
   
 // Decor Types
   painted_veneer: 'Фарбований шпон',

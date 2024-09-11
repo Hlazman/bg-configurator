@@ -230,6 +230,9 @@ const pl = {
   threshold : 'Próg',
   room: 'Komnata',
 
+  fm: 'Wypełnienie wełną mineralną',
+  pu: 'Pianka poliuretanowa',
+
 // Decor Types
   painted_veneer: 'Pomalowany fornir',
   painted_glass: 'Pomalowane szkło',

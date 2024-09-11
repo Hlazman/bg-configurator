@@ -12,7 +12,7 @@ export const OrderDescriptionFull = ({
   const { selectedLanguage } = useLanguage();
   const language = languageMap[selectedLanguage];
 
-  const noSota = ['ALUM PREMIUM 55', 'ALUM UNIQUE 43', 'ALUM UNIQUE 51'];
+  const noSota = ['ALUM PREMIUM 55', 'ALUM UNIQUE 43', 'ALUM UNIQUE 51', 'ALUM LINE 43', 'ALUM LINE 51'];
   
   const [currency, setCurrency] = useState('EUR');
   const [convertedDoorPrice, setConvertedDoorPrice] = useState(null);
@@ -225,9 +225,15 @@ export const OrderDescriptionFull = ({
               </Descriptions>
             </Descriptions.Item>
 
-            {doorFilling.length === 0 && !noSota.includes(doorData.door?.data?.attributes?.product_properties?.title) && (
+            {/* {doorFilling.length === 0 && !noSota.includes(doorData.door?.data?.attributes?.product_properties?.title) && (
               <Descriptions.Item span={4} className='labelBG' label={language.doorFilling} labelStyle={{fontWeight: '600', color:'#000'}}>
                 {language.honeycombs}
+              </Descriptions.Item>
+            )} */}
+
+            {doorFilling.length === 0 && (
+              <Descriptions.Item span={4} className='labelBG' label={language.doorFilling} labelStyle={{fontWeight: '600', color:'#000'}}>
+                {!noSota.includes(doorData.door?.data?.attributes?.product_properties?.title) ? language.fm : language.pu }
               </Descriptions.Item>
             )}
 

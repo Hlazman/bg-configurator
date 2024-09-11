@@ -231,6 +231,9 @@ const en = {
   threshold : 'Threshold',
   room: 'Room',
 
+  fm: 'Filling with mineral wool',
+  pu: 'Filling with PU foam',
+
 // Decor Types
 painted_veneer : 'Painted veneer',
 painted_glass : 'Painted glass',

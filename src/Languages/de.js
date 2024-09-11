@@ -230,6 +230,9 @@ const de = {
   threshold : 'Schwelle',
   room: 'Zimmer',
 
+  fm: 'Füllung mit Mineralwolle',
+  pu: 'Füllung mit PU-Schaum',
+
 // Decor Types
   painted_veneer: 'Lackiertes Furnier',
   painted_glass: 'Lackiertes Glas',
