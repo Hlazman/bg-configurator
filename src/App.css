@@ -4,7 +4,6 @@
 
 .header {
   display: flex; 
-  /* justify-content: flex-end; */
   justify-content: space-between;
   align-items: baseline;
   height: auto; 
