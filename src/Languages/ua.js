@@ -232,6 +232,8 @@ const ua = {
 
   fm: 'Наповнення мінеральною ватою',
   pu: 'Наповнення PU піною',
+
+  hideDiscount: 'Сховати знижку',
   
 // Decor Types
   painted_veneer: 'Фарбований шпон',

@@ -233,6 +233,8 @@ const es = {
   fm: 'Relleno con lana mineral',
   pu: 'Relleno con espuma de PU',
 
+  hideDiscount: 'Ocultar descuento',
+
 // Decor Types
   painted_veneer: 'Chapa pintada',
   painted_glass: 'Vidrio pintado',

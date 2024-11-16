@@ -3,7 +3,7 @@ import axios from 'axios';
 import { useTotalOrder } from '../Context/TotalOrderContext';
 import { OrderDetailsPage } from './OrderDetailsPage';
 import html2pdf from 'html2pdf.js';
-import { Button, Divider, Alert, Space, Select, Descriptions, Image } from 'antd';
+import { Button, Divider, Alert, Space, Select, Descriptions, Image, Checkbox } from 'antd';
 import { useLanguage } from '../Context/LanguageContext';
 import languageMap from '../Languages/language';
 import { useNavigate } from 'react-router-dom';
@@ -28,6 +28,12 @@ export const TotalOrderDetailsPage = () => {
   const { selectedCompany } = useSelectedCompany();
   const navigate = useNavigate();
   const [companyData, setCompanyData] = useState(null);
+
+  const [hideDiscount, setHideDiscount] = useState(false);
+
+  const handleCheckboxChange = (e) => {
+    setHideDiscount(e.target.checked); 
+  };
 
   const fetchData = async () => {
     try {
@@ -133,7 +139,7 @@ export const TotalOrderDetailsPage = () => {
   const [basicCostConverted, setBasicCostConverted] = useState('');
   const [installationPriceConverted, setInstallationPriceConverted] = useState('');
   const [deliveryPriceConverted, setDeliveryPriceConverted] = useState('');
-  const [exchangeRates, setExchangeRates] = useState(null);
+  // const [exchangeRates, setExchangeRates] = useState(null);
 
   // const fetchExchangeRates = async () => {
   //   try {
@@ -229,6 +235,12 @@ export const TotalOrderDetailsPage = () => {
             {/* <Option value="UAH">UAH ₴</Option> */}
           </Select>
         </Space>
+
+        <Space style={{display: 'flex', marginBottom: '20px', alignItems: 'baseline'}}>
+          <Checkbox onChange={handleCheckboxChange}>
+              {language.hideDiscount}
+            </Checkbox>
+        </Space>
         
         <Alert
           style={{marginBottom: '20px'}}
@@ -294,9 +306,15 @@ export const TotalOrderDetailsPage = () => {
                     {totalTaxConverted ? `${totalTaxConverted} ${currancyValue}` : `${totalOrderData?.totalTax} ${currancyValue}`}
                   </Descriptions.Item>
 
-                  <Descriptions.Item className='labelBG' label={`${language.discount} %`} labelStyle={{fontWeight: '600', color:'#000'}}>
+                  {/* <Descriptions.Item className='labelBG' label={`${language.discount} %`} labelStyle={{fontWeight: '600', color:'#000'}}>
                     {totalOrderData?.discount ? totalOrderData?.discount: 0}
+                  </Descriptions.Item> */}
+
+                {!hideDiscount && (
+                  <Descriptions.Item className='labelBG' label={`${language.discount} %`} labelStyle={{ fontWeight: '600', color: '#000' }}>
+                    {totalOrderData?.discount ? totalOrderData?.discount : 0}
                   </Descriptions.Item>
+                )}
 
                   <Descriptions.Item className='labelBG' label={`${language.price} ${language.gross}`} labelStyle={{fontWeight: '600', color:'#000'}}>
                     {totalCostConverted ? `${totalCostConverted} ${currancyValue}` : `${totalOrderData?.totalCost} ${currancyValue}`}

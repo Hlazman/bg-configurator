@@ -233,6 +233,8 @@ const pl = {
   fm: 'Wypełnienie wełną mineralną',
   pu: 'Pianka poliuretanowa',
 
+  hideDiscount: 'Ukryj rabat',
+
 // Decor Types
   painted_veneer: 'Pomalowany fornir',
   painted_glass: 'Pomalowane szkło',

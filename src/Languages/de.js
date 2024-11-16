@@ -233,6 +233,8 @@ const de = {
   fm: 'Füllung mit Mineralwolle',
   pu: 'Füllung mit PU-Schaum',
 
+  hideDiscount: 'Rabatt ausblenden',
+
 // Decor Types
   painted_veneer: 'Lackiertes Furnier',
   painted_glass: 'Lackiertes Glas',

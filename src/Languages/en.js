@@ -234,6 +234,8 @@ const en = {
   fm: 'Filling with mineral wool',
   pu: 'Filling with PU foam',
 
+  hideDiscount: 'Hide discount',
+
 // Decor Types
 painted_veneer : 'Painted veneer',
 painted_glass : 'Painted glass',
