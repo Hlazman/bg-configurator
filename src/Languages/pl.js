@@ -228,7 +228,7 @@ const pl = {
   articul: 'Kod dostawcy',
 
   threshold : 'Próg',
-  room: 'Komnata',
+  room: 'Nazwa pokoju',
 
   fm: 'Wypełnienie wełną mineralną',
   pu: 'Pianka poliuretanowa',
