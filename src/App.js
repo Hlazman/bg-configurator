@@ -198,7 +198,10 @@ const getHeaderTitle = (location, Id) => {
           setSelectedCompany('4');
         } else if (user?.id === '8') {
           setSelectedCompany('5');
-        } else {
+        } else if (user?.id === '13') {
+          setSelectedCompany('6');
+        }
+        else  {
           setSelectedCompany('3');
         }
         
