@@ -189,25 +189,41 @@ const getHeaderTitle = (location, Id) => {
   
       setCompanies(response?.data?.data?.companies?.data);
 
-      if (!localStorage.getItem('selectedCompanyId')) {
-        if (user?.id === '4') {
-          setSelectedCompany('1');
-        } else if (user?.id === '5') {
-          setSelectedCompany('2');
-        } else if (user?.id === '6' || user?.id === '7') {
-          setSelectedCompany('4');
-        } else if (user?.id === '8') {
-          setSelectedCompany('5');
-        } else if (user?.id === '13') {
-          setSelectedCompany('6');
-        }
-        else  {
-          setSelectedCompany('3');
+      if (!localStorage.getItem('selectedCompanyId') || localStorage.getItem('selectedCompanyId') === '0') {
+        // if (user?.id === '4') {
+        //   setSelectedCompany('1');
+        // } else if (user?.id === '5') {
+        //   setSelectedCompany('2');
+        // } else if (user?.id === '6' || user?.id === '7') {
+        //   setSelectedCompany('4');
+        // } else if (user?.id === '8') {
+        //   setSelectedCompany('5');
+        // } else if (user?.id === '13') {
+        //   setSelectedCompany('6');
+        // }
+        // else  {
+        //   setSelectedCompany('3');
+        // }
+
+        const companiesData = response?.data?.data?.companies?.data;
+        let currentCompany = '';
+
+        if (companiesData.some(company => company.id === "3")) {
+          currentCompany = "3";
+        } else if (companiesData.some(company => company.id === "1")) {
+            currentCompany = "1";
+        } else {
+            currentCompany = companiesData[0]?.id || '';
         }
         
+        setSelectedCompany(currentCompany);
+
         form.setFieldsValue({
-          company: selectedCompany,
+          // company: selectedCompany,
+          company: currentCompany,
         });
+
+        console.log('currentCompany', currentCompany)
 
         localStorage.setItem('selectedCompanyId', selectedCompany);
       } else {
