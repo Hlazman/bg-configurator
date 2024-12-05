@@ -234,6 +234,7 @@ const de = {
   pu: 'Füllung mit PU-Schaum',
 
   hideDiscount: 'Rabatt ausblenden',
+  newConstruct: 'Neuer Entwurf',
 
 // Decor Types
   painted_veneer: 'Lackiertes Furnier',

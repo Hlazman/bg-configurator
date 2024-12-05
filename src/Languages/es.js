@@ -234,6 +234,7 @@ const es = {
   pu: 'Relleno con espuma de PU',
 
   hideDiscount: 'Ocultar descuento',
+  newConstruct: 'Nuevo diseño',
 
 // Decor Types
   painted_veneer: 'Chapa pintada',

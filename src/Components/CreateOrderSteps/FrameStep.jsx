@@ -26,19 +26,25 @@ const FrameStep = ({ setCurrentStepSend, currentStepSend }) => {
   
   const [selectedFrame, setSelectedFrame] = useState('');
   const [isThreshold, setIsthreshold] = useState(false);
+  const [isNewConstruct, setIsNewConstruct] = useState(false); // NewConstruct
 
   useEffect(() => {
-    getFrameData(orderIdToUse, jwtToken, setFrameSuborderData, setFrames, setSelectedFrame, setIsthreshold);
+    // getFrameData(orderIdToUse, jwtToken, setFrameSuborderData, setFrames, setSelectedFrame, setIsthreshold); //???
+    getFrameData(orderIdToUse, jwtToken, setFrameSuborderData, setFrames, setSelectedFrame, setIsthreshold, setIsNewConstruct); // NewConstruct
     
     form.setFieldsValue({ name: selectedFrame});
     form.setFieldsValue({ threshold : isThreshold});
+    form.setFieldsValue({ newConstruct : isNewConstruct}); // NewConstruct
 
-    }, [orderIdToUse, jwtToken, selectedFrame, isThreshold]);
+    }, [orderIdToUse, jwtToken, selectedFrame, isThreshold, isNewConstruct]);
 
     const handleFormSubmit = async () => {
       const selectedFrameId = form.getFieldValue('name');
       const threshold = form.getFieldValue('threshold');
-      await updateFrameSuborder(jwtToken, frameSuborderData, selectedFrameId, orderIdToUse, threshold);
+      const newConstruct = form.getFieldValue('newConstruct'); // NewConstruct
+
+      // await updateFrameSuborder(jwtToken, frameSuborderData, selectedFrameId, orderIdToUse, threshold);
+      await updateFrameSuborder(jwtToken, frameSuborderData, selectedFrameId, orderIdToUse, threshold, newConstruct); // NewConstruct
       await removeSlidingSuborderData(jwtToken, slidingSuborderId);
 
       await validateElements(orderIdToUse, jwtToken);
@@ -65,6 +71,17 @@ const FrameStep = ({ setCurrentStepSend, currentStepSend }) => {
         {`${language.submit} ${language.startData}`}
         </Button>
       </Affix>
+
+      <Form.Item
+        label= {language.newConstruct}
+        name='newConstruct'
+        style={{ display: 'flex', gap: '30px' }}
+      >
+        <Radio.Group buttonStyle="solid">
+          <Radio.Button value={true}>{language.yes}</Radio.Button>
+          <Radio.Button value={false}>{language.no}</Radio.Button>
+        </Radio.Group>
+      </Form.Item>
 
       <Form.Item
         label= {language.threshold}

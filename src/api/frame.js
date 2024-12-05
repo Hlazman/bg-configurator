@@ -3,7 +3,8 @@ import {queryLink} from './variables'
 import {updateError} from './validationOrder'
 
 
-export const getFrameData = async (orderIdToUse, jwtToken, setFrameSuborderData, setFrames, setSelectedFrame, setIsthreshold)=> {
+// export const getFrameData = async (orderIdToUse, jwtToken, setFrameSuborderData, setFrames, setSelectedFrame, setIsthreshold)=> {
+export const getFrameData = async (orderIdToUse, jwtToken, setFrameSuborderData, setFrames, setSelectedFrame, setIsthreshold, setIsNewConstruct)=> {
   let filters = {};
   let suborderData = {};
   let frameSuborderID = '';
@@ -59,6 +60,7 @@ export const getFrameData = async (orderIdToUse, jwtToken, setFrameSuborderData,
                           }
                         }
                         threshold
+                        newConstruct
                       }
                       id
                     }
@@ -86,6 +88,8 @@ export const getFrameData = async (orderIdToUse, jwtToken, setFrameSuborderData,
       
       const threshold = response.data?.data?.order?.data.attributes?.frame_suborder?.data.attributes?.threshold;
 
+      const newConstruct = response.data?.data?.order?.data.attributes?.frame_suborder?.data.attributes?.newConstruct; // newConstruct
+
       filters = {
         hidden: data?.hidden,
         opening: data?.opening,
@@ -95,6 +99,7 @@ export const getFrameData = async (orderIdToUse, jwtToken, setFrameSuborderData,
       suborderData = {
         frameSuborderID : frameSuborderID,
         threshold: threshold,
+        newConstruct: newConstruct, // newConstruct
         decor: data?.door_suborder?.data?.attributes?.decor?.data?.id,
         side: data?.side,
         sizes: {
@@ -106,6 +111,7 @@ export const getFrameData = async (orderIdToUse, jwtToken, setFrameSuborderData,
       setSelectedFrame(frameID);
       setFrameSuborderData(suborderData);
       setIsthreshold(threshold);
+      setIsNewConstruct(newConstruct); // newConstruct
     })
 
     if (setFrames !== null) {
@@ -214,7 +220,8 @@ const getTrueFrames = (data, doorModel) => {
   }
 };
 
-export const updateFrameSuborder = async (jwtToken, frameSuborderData, frameId, orderIdToUse, threshold) => {
+// export const updateFrameSuborder = async (jwtToken, frameSuborderData, frameId, orderIdToUse, threshold) => {
+export const updateFrameSuborder = async (jwtToken, frameSuborderData, frameId, orderIdToUse, threshold, newConstruct) => {
   try {
     axios.post(queryLink,
       {query: `
@@ -231,6 +238,7 @@ export const updateFrameSuborder = async (jwtToken, frameSuborderData, frameId, 
           data: {
             frame: frameId,
             threshold: threshold,
+            newConstruct: newConstruct, // newConstruct
             // decor: selectedDecorId ? selectedDecorId : frameSuborderData?.decor,
             decor: frameSuborderData?.decor,
             side: frameSuborderData?.side,
@@ -597,6 +605,7 @@ export const removeFrameSuborderData = async (jwtToken, frameSuborderId, orderId
             // frame: null,
             frame: '64',
             threshold : false,
+            newConstruct: false, // newConstruct
             price: null,
             basicPrice: null,
             decor: null,
@@ -624,192 +633,3 @@ export const removeFrameSuborderData = async (jwtToken, frameSuborderId, orderId
   // await getFrameError(orderIdToUse, jwtToken);
   await updateError(jwtToken, orderIdToUse, 'errorFrame', null);
 }
-
-
-// export const updateFrame = async (orderIdToUse, jwtToken, frameSuborderId, selectedDecorId)=> {
-//   let framesFilter = {};
-//   let frameId = '';
-//   let frameSuborderData = {};
-
-//   // ORDER DATA
-//   try {
-//     await axios.post(queryLink,
-//       { query: `
-//           query Query($orderId: ID) {
-//             order(id: $orderId) {
-//               data {
-//                 attributes {
-//                   hidden
-//                   double_door
-//                   opening
-//                   side
-//                   door_suborder {
-//                     data {
-//                       attributes {
-//                         decor {
-//                           data {
-//                             id
-//                           }
-//                         }
-//                         sizes {
-//                           height
-//                           thickness
-//                           width
-//                         }
-//                         door {
-//                           data {
-//                             attributes {
-//                               collection
-//                             }
-//                           }
-//                         }
-//                       }
-//                     }
-//                   }
-//                   frame_suborder {
-//                     data {
-//                       attributes {
-//                         frame {
-//                           data {
-//                             attributes {
-//                               title
-//                             }
-//                             id
-//                           }
-//                         }
-//                       }
-//                     }
-//                   }
-//                 }
-//               }
-//             }
-//           }
-//         `,
-//         variables: {
-//           orderId: orderIdToUse
-//         }
-//       },
-//       {
-//         headers: {
-//           'Content-Type': 'application/json',
-//           Authorization: `Bearer ${jwtToken}`,
-//         }
-//       }
-//     ).then(response => {
-//       const data = response.data?.data?.order?.data?.attributes || {};
-      
-//       framesFilter = {
-//         hidden: data?.hidden,
-//         opening: data?.opening,
-//         collection: data?.door_suborder?.data?.attributes?.door?.data?.attributes?.collection,
-//       } || {};
-
-//       frameSuborderData = {
-//         decor: data?.door_suborder?.data?.attributes?.decor?.data?.id,
-//         side: data?.side,
-//         sizes: {
-//           height: data?.door_suborder?.data?.attributes?.sizes?.height,
-//           thickness: data?.door_suborder?.data?.attributes?.sizes?.thickness,
-//           width: data?.door_suborder?.data?.attributes?.sizes?.width,
-//         }
-//       };
-
-//     });
-//   }
-//   catch (error) {
-//     console.error('Error:', error);
-//   }
-
-//   // FRAME
-//   try {
-//     await axios.post(queryLink,
-//       {query: `
-//           query Frames($pagination: PaginationArg, $filters: FrameFiltersInput) {
-//             frames(pagination: $pagination, filters: $filters) {
-//               data {
-//                 attributes {
-//                   title
-//                 }
-//                 id
-//               }
-//             }
-//           }
-//         `,
-//         variables: {
-//           pagination: {
-//             limit: 20
-//           },
-//           filters: {
-//             "hidden": {
-//               "eqi": framesFilter.hidden
-//             },
-//             "opening": {
-//               "eqi": framesFilter.opening
-//             },
-//             "collection": {
-//               "eqi": framesFilter.collection
-//             }
-//           }
-//         }
-//       },
-//       {
-//         headers: {
-//           'Content-Type': 'application/json',
-//           Authorization: `Bearer ${jwtToken}`,
-//         }
-//       }
-//     ).then(response => {
-//       const data = response.data?.data?.frames?.data[0].id;
-      
-//       if (data) {
-//         frameId = data;
-//         updateError(jwtToken, orderIdToUse, 'errorFrame', null);
-//       }
-
-//     }).catch(()=> {
-//       frameId = undefined;
-//       updateError(jwtToken, orderIdToUse, 'errorFrame', 'errorFrame');
-//     });
-//   }
-//   catch (error) {
-//     console.error('Error:', error);
-//   }
-
-//   // UPDATE FRAME SUBORDER
-//   try {
-//     axios.post(queryLink,
-//       {query: `
-//           mutation Mutation($updateFrameSuborderId: ID!, $data: FrameSuborderInput!) {
-//             updateFrameSuborder(id: $updateFrameSuborderId, data: $data) {
-//               data {
-//                 id
-//               }
-//             }
-//           }
-//         `,
-//         variables: {
-//           updateFrameSuborderId: frameSuborderId,
-//           data: {
-//             frame: frameId,
-//             decor: selectedDecorId ? selectedDecorId : frameSuborderData?.decor,
-//             side: frameSuborderData?.side,
-//             sizes: {
-//               height: frameSuborderData?.sizes?.height,
-//               thickness: frameSuborderData?.sizes?.thickness,
-//               width: frameSuborderData?.sizes?.width,
-//             }
-//           }
-//         }
-//       },
-//       {
-//         headers: {
-//           'Content-Type': 'application/json',
-//           Authorization: `Bearer ${jwtToken}`,
-//         }
-//       }
-//     )
-//   }
-//   catch (error) {
-//     console.error('Error:', error);
-//   }
-// };

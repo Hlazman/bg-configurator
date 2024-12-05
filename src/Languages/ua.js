@@ -234,6 +234,7 @@ const ua = {
   pu: 'Наповнення PU піною',
 
   hideDiscount: 'Сховати знижку',
+  newConstruct: 'Нова конструкція',
   
 // Decor Types
   painted_veneer: 'Фарбований шпон',
