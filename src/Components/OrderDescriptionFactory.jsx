@@ -59,11 +59,11 @@ export const OrderDescriptionFactory = ({
   const handleCurrencyChange = async (value) => {
     setCurrency(value);
   
-    const convertedDoorPrice = convertCurrency(doorData.basicPrice, value);
-    const convertedFramePrice = convertCurrency(frameData.basicPrice, value);
-    const convertedKnobePrice = convertCurrency(knobeData.basicPrice, value);
-    const convertedHingePrice = convertCurrency(hingeData.basicPrice, value);
-    const convertedLockPrice = convertCurrency(lockData.basicPrice, value);
+    const convertedDoorPrice = convertCurrency(doorData?.basicPrice, value);
+    const convertedFramePrice = convertCurrency(frameData?.basicPrice, value);
+    const convertedKnobePrice = convertCurrency(knobeData?.basicPrice, value);
+    const convertedHingePrice = convertCurrency(hingeData?.basicPrice, value);
+    const convertedLockPrice = convertCurrency(lockData?.basicPrice, value);
     
     const convertedSlidingPrice = convertCurrency(slidingData?.attributes.basicPrice, value);
 

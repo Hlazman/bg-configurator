@@ -66,11 +66,11 @@ export const OrderDescriptionFull = ({
   const handleCurrencyChange = async (value) => {
     setCurrency(value);
   
-    const convertedDoorPrice = convertCurrency(doorData.price, value);
-    const convertedFramePrice = convertCurrency(frameData.price, value);
+    const convertedDoorPrice = convertCurrency(doorData?.price, value);
+    const convertedFramePrice = convertCurrency(frameData?.price, value);
     const convertedKnobePrice = convertCurrency(knobeData?.price, value);
-    const convertedHingePrice = convertCurrency(hingeData.price, value);
-    const convertedLockPrice = convertCurrency(lockData.price, value);
+    const convertedHingePrice = convertCurrency(hingeData?.price, value);
+    const convertedLockPrice = convertCurrency(lockData?.price, value);
 
     const convertedSlidingPrice = convertCurrency(slidingData?.attributes.price, value);
     

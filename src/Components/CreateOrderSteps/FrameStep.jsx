@@ -68,7 +68,7 @@ const FrameStep = ({ setCurrentStepSend, currentStepSend }) => {
 
       <Affix style={{ position: 'absolute', top: '-50px', right: '20px'}} offsetTop={20}>
         <Button style={{backgroundColor: currentStepSend ? btnColor : '#1677ff', color: 'white' }} htmlType="submit" icon={<SendOutlined />}>
-        {`${language.submit} ${language.startData}`}
+        {`${language.submit} ${language.frame}`}
         </Button>
       </Affix>
 

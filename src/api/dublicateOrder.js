@@ -454,6 +454,8 @@ export const dublicateOrder = async (orderId, jwtToken, totalOrderId, selectedCo
                       data {
                         id
                         attributes {
+                          threshold
+                          newConstruct
                           frame {
                             data {
                               id
@@ -542,6 +544,8 @@ export const dublicateOrder = async (orderId, jwtToken, totalOrderId, selectedCo
                       sizes: doorData.sizes,
                       price: frameData.price,
                       basicPrice: doorData.basicPrice,
+                      threshold: frameData.threshold, // new
+                      newConstruct: frameData.newConstruct, // new
                     }
                   }
                 },
@@ -1272,12 +1276,12 @@ export const dublicateOrder = async (orderId, jwtToken, totalOrderId, selectedCo
                   variables: {
                     updateFrameFittingId: newFittingSuborderId,
                     data: {
-                      knobe: knobeData.knobe.data.id,
-                      type: knobeData.type,
-                      title: knobeData.title,
-                      price: knobeData.price,
-                      basicPrice: knobeData.basicPrice,
-                      knobe_variant: knobeData.knobe_variant,
+                      knobe: knobeData?.knobe?.data?.id,
+                      type: knobeData?.type,
+                      title: knobeData?.title,
+                      price: knobeData?.price,
+                      basicPrice: knobeData?.basicPrice,
+                      knobe_variant: knobeData?.knobe_variant,
                     }
                   }
                 },

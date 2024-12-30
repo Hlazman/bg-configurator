@@ -234,7 +234,7 @@ const pl = {
   pu: 'Pianka poliuretanowa',
 
   hideDiscount: 'Ukryj rabat',
-  newConstruct: 'New construction',
+  newConstruct: 'Nowy projekt',
 
 // Decor Types
   painted_veneer: 'Pomalowany fornir',
