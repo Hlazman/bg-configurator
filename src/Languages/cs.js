@@ -234,7 +234,7 @@ const cs = {
   pu: 'Výplň PU pěnou',
 
   hideDiscount: 'Skrýt slevu',
-  newConstruct: 'Nový design',
+  newConstruct: 'Rám dveří: nastavitelný/pevný',
 
 // Decor Types
   painted_veneer: 'Natřená dýha',

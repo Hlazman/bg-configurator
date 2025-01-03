@@ -235,7 +235,7 @@ const en = {
   pu: 'Filling with PU foam',
 
   hideDiscount: 'Hide discount',
-  newConstruct: 'New construction',
+  newConstruct: 'Frame: adjustable/fixed',
 
 // Decor Types
 painted_veneer : 'Painted veneer',

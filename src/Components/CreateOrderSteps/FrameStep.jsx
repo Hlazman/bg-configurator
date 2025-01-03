@@ -34,7 +34,10 @@ const FrameStep = ({ setCurrentStepSend, currentStepSend }) => {
     
     form.setFieldsValue({ name: selectedFrame});
     form.setFieldsValue({ threshold : isThreshold});
-    form.setFieldsValue({ newConstruct : isNewConstruct}); // NewConstruct
+    // form.setFieldsValue({ newConstruct : isNewConstruct}); // NewConstruct
+    form.setFieldsValue({ newConstruct : frameSuborderData.hidden ? false : isNewConstruct}); // NewConstruct
+
+    // console.log('frameSuborderData', frameSuborderData.hidden);
 
     }, [orderIdToUse, jwtToken, selectedFrame, isThreshold, isNewConstruct]);
 
@@ -77,7 +80,7 @@ const FrameStep = ({ setCurrentStepSend, currentStepSend }) => {
         name='newConstruct'
         style={{ display: 'flex', gap: '30px' }}
       >
-        <Radio.Group buttonStyle="solid">
+        <Radio.Group buttonStyle="solid" disabled={frameSuborderData.hidden}>
           <Radio.Button value={true}>{language.yes}</Radio.Button>
           <Radio.Button value={false}>{language.no}</Radio.Button>
         </Radio.Group>

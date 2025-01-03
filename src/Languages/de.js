@@ -234,7 +234,7 @@ const de = {
   pu: 'Füllung mit PU-Schaum',
 
   hideDiscount: 'Rabatt ausblenden',
-  newConstruct: 'Neuer Entwurf',
+  newConstruct: 'Türrahmen: verstellbar/fest',
 
 // Decor Types
   painted_veneer: 'Lackiertes Furnier',

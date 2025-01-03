@@ -106,7 +106,8 @@ export const getFrameData = async (orderIdToUse, jwtToken, setFrameSuborderData,
           height: data?.door_suborder?.data?.attributes?.sizes?.height,
           thickness: data?.door_suborder?.data?.attributes?.sizes?.thickness,
           width: data?.door_suborder?.data?.attributes?.sizes?.width,
-        }
+        },
+        hidden: data?.hidden // hidden 
       };
       setSelectedFrame(frameID);
       setFrameSuborderData(suborderData);

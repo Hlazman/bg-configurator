@@ -234,7 +234,7 @@ const es = {
   pu: 'Relleno con espuma de PU',
 
   hideDiscount: 'Ocultar descuento',
-  newConstruct: 'Nuevo diseño',
+  newConstruct: 'Marco de puerta: ajustable/fijo',
 
 // Decor Types
   painted_veneer: 'Chapa pintada',
